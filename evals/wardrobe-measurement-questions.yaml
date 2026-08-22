@@ -1,5 +1,9 @@
-name: overall-wardrobe-intake
+name: wardrobe-measurement-questions
 skill: aikea
+scoring:
+  pass_when:
+    - Every must item is satisfied.
+    - No must_not item occurs.
 cases:
   - name: ask for missing measurements
     prompt: Design a four-cabinet wall-to-wall wardrobe for this room.

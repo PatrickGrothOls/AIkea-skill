@@ -28,8 +28,9 @@ Keep these responsibilities separate:
 
 - AIkea chooses the correct construction method, part face, and reference edge.
 - Deterministic scripts calculate dimensions, placements, and machining.
-- Evals prove the completed geometry fits and matching cuts align after assembly.
+- Code tests verify calculations, geometry, fit, and matching cuts.
+- Model evals score whether AIkea asks, chooses, and explains correctly.
 
 ## Current implementation
 
-The implemented slice collects and checks overall wardrobe inputs. Cabinet construction, joinery, geometry, and exports will be added only with their own deterministic scripts and evals. Do not improvise an unimplemented capability.
+The implemented slice collects and checks overall wardrobe inputs. Cabinet construction, joinery, geometry, and exports will be added only with deterministic scripts, code tests, and model evals for the decisions AIkea makes. Do not improvise an unimplemented capability.

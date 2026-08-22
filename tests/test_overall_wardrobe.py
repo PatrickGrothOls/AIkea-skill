@@ -1,4 +1,4 @@
-"""Scope: Prove overall inputs validate, normalize, and recalculate deterministically."""
+"""Scope: Test overall input validation, normalization, and recalculation."""
 
 from copy import deepcopy
 from pathlib import Path
