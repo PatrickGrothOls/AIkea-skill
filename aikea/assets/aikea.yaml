@@ -1,0 +1,27 @@
+schema_version: 1
+units: mm
+
+measured_space:
+  width: null
+  depth: null
+  ceiling_points: []
+
+design_settings:
+  cabinet_run:
+    cabinet_count: null
+    cabinet_width_shares: []
+    left_clearance: null
+    right_clearance: null
+    cabinet_gap: null
+    ceiling_clearance: null
+
+  base:
+    height: null
+
+  doors:
+    gap: null
+
+  materials:
+    cabinet_panel_thickness: null
+    door_thickness: null
+    back_panel_thickness: null

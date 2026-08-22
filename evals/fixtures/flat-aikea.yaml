@@ -1,0 +1,31 @@
+schema_version: 1
+units: mm
+
+measured_space:
+  width: 3000
+  depth: 600
+  ceiling_points:
+    - distance_from_left: 0
+      height_from_floor: 2400
+    - distance_from_left: 3000
+      height_from_floor: 2400
+
+design_settings:
+  cabinet_run:
+    cabinet_count: 2
+    cabinet_width_shares: [1, 1]
+    left_clearance: 5
+    right_clearance: 5
+    cabinet_gap: 0
+    ceiling_clearance: 0
+
+  base:
+    height: 100
+
+  doors:
+    gap: 2
+
+  materials:
+    cabinet_panel_thickness: 18
+    door_thickness: 18
+    back_panel_thickness: 6

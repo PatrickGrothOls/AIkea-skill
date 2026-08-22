@@ -1,0 +1,4 @@
+interface:
+  display_name: "AIkea"
+  short_description: "Design buildable frameless cabinet runs"
+  default_prompt: "Use $aikea to design a buildable cabinet run from my measurements."
