@@ -5,32 +5,38 @@ description: Design, revise, check, and export generic frameless sheet-material 
 
 # AIkea
 
-Build from saved measurements and shared design settings. Never treat chat history or generated geometry as the source of truth.
+Use explicit user messages to create or revise the saved measurements and shared design settings. Once saved, treat `aikea.yaml`—not chat, prose, or generated geometry—as the project source of truth. Use the skill to choose the workflow and the bundled scripts to calculate results.
 
-## Start from project state
+## Work from the active project
 
-- If `aikea.yaml` exists, read it and continue from its saved values.
-- If the user asks only to inspect or check a project, perform only that operation.
-- If no `aikea.yaml` exists, start with the overall wardrobe measurements below.
+1. Resolve the active project folder from the user's request and current working directory.
+2. If `aikea.yaml` exists, read it and preserve every value the user has not changed.
+3. If the user asks only to inspect or check a project, perform only that operation.
+4. If the project has no `aikea.yaml`, start the overall wardrobe intake.
 
-## Collect the overall wardrobe inputs
+## Run the overall wardrobe intake
 
-1. Read `references/overall-wardrobe-inputs.md` completely.
-2. Inspect only the user's request, user-identified attachments, and the target project's AIkea files.
-3. Ask only for required values that remain missing or contradictory. Never guess a measurement.
-4. Copy `assets/aikea.yaml` into the project root and fill only user-supplied measurements and confirmed design settings.
-5. Run `python scripts/calculate_overall_wardrobe.py <project>/aikea.yaml` from this skill folder.
-6. Correct reported input problems with the user. Do not generate cabinet geometry until the check passes.
+1. Read `references/overall-wardrobe-intake.md` completely.
+2. Read only the user's messages, user-identified attachments, and the active project's AIkea files for project values.
+3. Classify the current inputs as missing, contradictory, or complete.
+4. For missing inputs, ask once for all remaining required values, grouped as measured space and shared design settings. Do not ask for values already supplied.
+5. For contradictory inputs, identify the exact conflict and ask only for the correction needed. Never repair a measurement silently.
+6. For complete inputs, copy `assets/aikea.yaml` only when the project file does not exist, fill the exact schema, and run `python <skill-directory>/scripts/calculate_overall_wardrobe.py <project>/aikea.yaml`.
+7. If the calculator rejects the file, report its specific problems and return to the missing or contradictory state.
+8. If the calculator accepts the file, report the saved path and the calculated cabinet widths, positions, heights, and depths.
+
+Never overwrite an existing `aikea.yaml` with the blank template. Never ask a follow-up question when every required value is present and consistent.
 
 Never take project measurements from this skill's assets, examples, eval fixtures, development documentation, legacy wardrobe code, or another project. Those files are implementation knowledge or test data, not measurements for the active cabinet run.
 
-Keep these responsibilities separate:
+## Keep ownership separate
 
-- AIkea chooses the correct construction method, part face, and reference edge.
-- Deterministic scripts calculate dimensions, placements, and machining.
-- Code tests verify calculations, geometry, fit, and matching cuts.
-- An eval set scores whether AIkea asks, chooses, and explains correctly.
+- Store only measured space and shared geometry choices in the global project file.
+- Keep Cabineo dimensions, cutter placement, part faces, and reference edges inside the Cabineo capability.
+- Keep rail spacing, rail count, and module construction inside the structural plinth capability.
+- Acknowledge later construction requests without inventing unimplemented geometry or adding unsupported global fields.
+- Let deterministic scripts calculate dimensions, placements, and machining.
 
 ## Current implementation
 
-The implemented slice collects and checks overall wardrobe inputs. Cabinet construction, joinery, geometry, and exports will be added only with deterministic scripts, code tests, and an eval set for the decisions AIkea makes. Do not improvise an unimplemented capability.
+Collect, save, and check overall wardrobe inputs. Do not improvise cabinet construction, joinery, plinth geometry, or exports that the bundled implementation does not yet provide.
