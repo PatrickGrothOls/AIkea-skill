@@ -20,7 +20,7 @@ class TestOverallWardrobeEvalSet:
 
     def test_every_case_has_a_complete_final_answer(self) -> None:
         eval_set = self._load_eval_set()
-        assert len(eval_set["cases"]) == 7
+        assert len(eval_set["cases"]) == 8
         for case in eval_set["cases"]:
             final_answer = case["turns"][-1]["answer_key"]
             assert final_answer["expected_aikea_yaml"]

@@ -81,6 +81,81 @@ cases:
               - {cabinet_number: 1, left_position_mm: 10, right_position_mm: 1199, width_mm: 1189, left_height_mm: 2090, right_height_mm: 2090, door_width_mm: 1187}
               - {cabinet_number: 2, left_position_mm: 1201, right_position_mm: 2390, width_mm: 1189, left_height_mm: 2090, right_height_mm: 2090, door_width_mm: 1187}
 
+  - name: flat three-bay wardrobe supplied in stages
+    wardrobe_type: built-in, flat top, equal-width bays, supplied in stages
+    turns:
+      - user: >-
+          I want to build a built-in wardrobe for a bedroom wall. I have not taken
+          any measurements or chosen the cabinet settings yet. Help me start.
+        answer_key:
+          response_required:
+            - Explain that the global specification cannot be completed yet.
+            - Ask for units, width, depth, and ceiling heights at both edges and every change point.
+            - Ask for cabinet count and width shares, all four clearances and gaps, base height, door gap, and all three material thicknesses.
+          response_forbidden:
+            - Create aikea.yaml before any project value has been supplied.
+            - Choose typical dimensions or begin cabinet design.
+          expected_project_state: absent
+      - user: >-
+          All measurements are in millimetres. The space is 2730 mm wide and
+          620 mm deep. The ceiling is flat at 2400 mm from the left edge at 0
+          to the right edge at 2730.
+        answer_key:
+          response_required:
+            - Retain every supplied measured-space value.
+            - Ask only for the remaining shared design settings.
+          response_forbidden:
+            - Ask again for units, width, depth, or ceiling points.
+            - Write or validate aikea.yaml while the shared settings are missing.
+          expected_project_state: incomplete_or_absent
+      - user: >-
+          Use three equal cabinets. Use 10 mm clearance on both sides, 5 mm
+          between cabinets, and 20 mm above. The base is 100 mm high, the door
+          gap is 2 mm, cabinet panels are 18 mm, doors are 20 mm, and the back is 6 mm.
+        answer_key:
+          response_required:
+            - Write the complete aikea.yaml using values retained from all three turns.
+            - Run the overall wardrobe calculator and report that the global specification is complete and valid.
+          response_forbidden:
+            - Ask for a value supplied in an earlier turn.
+            - Begin later cabinet or construction design during this global-specification eval.
+          expected_aikea_yaml:
+            schema_version: 1
+            units: mm
+            measured_space:
+              width: 2730
+              depth: 620
+              ceiling_points:
+                - distance_from_left: 0
+                  height_from_floor: 2400
+                - distance_from_left: 2730
+                  height_from_floor: 2400
+            design_settings:
+              cabinet_run:
+                cabinet_count: 3
+                cabinet_width_shares: [1, 1, 1]
+                left_clearance: 10
+                right_clearance: 10
+                cabinet_gap: 5
+                ceiling_clearance: 20
+              base:
+                height: 100
+              doors:
+                gap: 2
+              materials:
+                cabinet_panel_thickness: 18
+                door_thickness: 20
+                back_panel_thickness: 6
+          expected_calculated:
+            width_mm: 2730
+            finished_depth_mm: 620
+            cabinet_depth_mm: 600
+            inside_depth_mm: 594
+            cabinets:
+              - {cabinet_number: 1, left_position_mm: 10, right_position_mm: 910, width_mm: 900, left_height_mm: 2280, right_height_mm: 2280, door_width_mm: 898}
+              - {cabinet_number: 2, left_position_mm: 915, right_position_mm: 1815, width_mm: 900, left_height_mm: 2280, right_height_mm: 2280, door_width_mm: 898}
+              - {cabinet_number: 3, left_position_mm: 1820, right_position_mm: 2720, width_mm: 900, left_height_mm: 2280, right_height_mm: 2280, door_width_mm: 898}
+
   - name: flat three-bay wall-to-wall wardrobe
     wardrobe_type: wall-to-wall, flat top, equal-width bays
     turns:
