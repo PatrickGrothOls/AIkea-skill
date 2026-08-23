@@ -31,7 +31,7 @@ class OverallSpaceMeasurementReader:
         self,
         data: dict[str, Any],
         scale: float,
-        fit_allowance_mm: float,
+        width_fitting_allowance_mm: float,
         problems: list[str],
     ) -> OverallSpaceMeasurements:
         measured_space = data.get("measured_space")
@@ -52,7 +52,10 @@ class OverallSpaceMeasurementReader:
             scale,
             problems,
         )
-        usable_width = max(min(widths, default=0.0) - fit_allowance_mm, 0.0)
+        usable_width = max(
+            min(widths, default=0.0) - width_fitting_allowance_mm,
+            0.0,
+        )
         heights = HeightMeasurementReader().read(
             measured_space.get("height_measurements"),
             usable_width,

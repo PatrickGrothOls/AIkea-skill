@@ -20,7 +20,9 @@ class CabinetOverallSize:
 class OverallWardrobeResult:
     minimum_measured_width_mm: float
     minimum_measured_depth_mm: float
-    fit_allowance_mm: float
+    width_fitting_allowance_mm: float
+    depth_fitting_allowance_mm: float
+    height_fitting_allowance_mm: float
     usable_width_mm: float
     usable_depth_mm: float
     cabinet_depth_mm: float
@@ -31,7 +33,9 @@ class OverallWardrobeResult:
         return {
             "minimum_measured_width_mm": self.minimum_measured_width_mm,
             "minimum_measured_depth_mm": self.minimum_measured_depth_mm,
-            "fit_allowance_mm": self.fit_allowance_mm,
+            "width_fitting_allowance_mm": self.width_fitting_allowance_mm,
+            "depth_fitting_allowance_mm": self.depth_fitting_allowance_mm,
+            "height_fitting_allowance_mm": self.height_fitting_allowance_mm,
             "usable_width_mm": self.usable_width_mm,
             "usable_depth_mm": self.usable_depth_mm,
             "cabinet_depth_mm": self.cabinet_depth_mm,

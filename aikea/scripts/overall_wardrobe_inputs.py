@@ -31,10 +31,13 @@ class OverallWardrobeInputReader:
         self._check_schema_version(data, problems)
         scale = self._read_unit_scale(data, problems)
         settings = OverallDesignSettingReader().read(data, scale, problems)
+        allowances = settings.enclosed_dimensions.resolve_fitting_allowances(
+            settings.fit_allowance_mm
+        )
         space = OverallSpaceMeasurementReader().read(
             data,
             scale,
-            settings.fit_allowance_mm,
+            allowances.width_mm,
             problems,
         )
         if problems:
@@ -42,8 +45,8 @@ class OverallWardrobeInputReader:
         return OverallWardrobeInputs(space=space, settings=settings)
 
     def _check_schema_version(self, data: dict[str, Any], problems: list[str]) -> None:
-        if type(data.get("schema_version")) is not int or data["schema_version"] != 2:
-            problems.append("schema_version must be 2")
+        if type(data.get("schema_version")) is not int or data["schema_version"] != 3:
+            problems.append("schema_version must be 3")
 
     def _read_unit_scale(self, data: dict[str, Any], problems: list[str]) -> float:
         unit = data.get("units")

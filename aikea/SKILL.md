@@ -11,10 +11,10 @@ Use explicit user messages to create or revise the saved measurements and shared
 
 - Use plain client-facing language and ask one measurement or design topic per response.
 - Default to guiding the client question by question. If they prefer to collect everything during one site visit, adapt `assets/wardrobe-measurement-sheet.md` for them instead.
-- Ask for the unit, then three widths, three depths, and at least three floor-to-ceiling heights. Discuss the wardrobe layout only after the measured space is clear.
+- Ask for the unit, then three widths, three depths, and at least three floor-to-ceiling heights. Once the space is clear, ask how the wardrobe will sit in it before discussing the section layout.
 - Do not mention `aikea.yaml`, schemas, field names, width shares, calculators, validation, fitting allowance, or other internal machinery unless the user asks for technical details or project files.
 - Never ask the client to provide width shares. Ask whether sections should be equal or whether any should be wider or narrower, then translate that relationship internally.
-- Keep every raw measurement unchanged. Use the template's 2 mm fitting allowance when calculating safe usable dimensions; do not ask the client to choose it.
+- Keep every raw measurement unchanged. Apply the template's 2 mm fitting allowance only to a dimension enclosed at both ends: between two side boundaries for width, between floor and ceiling for height, or between fixed back and front boundaries for depth. One wall does not enclose width; an open front does not enclose depth; a freestanding dimension receives no fitting allowance. Do not ask the client to choose the allowance.
 - Present useful design results such as cabinet sizes, positions, and heights. Keep formulas and internal representations private unless requested.
 
 ## Work from the active project

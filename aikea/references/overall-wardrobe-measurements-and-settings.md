@@ -14,9 +14,10 @@ Act like a carpenter helping a client plan a wardrobe, not like software asking 
 
 1. Default to one topic per response: unit, width measurements, depth measurements, height measurements, then each wardrobe choice.
 2. If the client wants to gather everything at once, adapt `assets/wardrobe-measurement-sheet.md` and let them return the completed sheet. Ask only about missing or conflicting answers afterward.
-3. After the space is clear, ask about the wardrobe itself: number of sections, whether they should be equal or which should be wider or narrower, fit at the walls and ceiling, base height, door spacing, and chosen material thicknesses.
-4. Translate the answers into the global specification privately. Do not expose filenames, schema fields, width shares, formulas, calculator commands, validation terminology, or the fitting allowance unless the client asks.
-5. Give the client calculated cabinet sizes and positions, not the internal values used to derive them.
+3. After the space is clear, ask how the wardrobe will sit in it: freestanding or fitted, walls at the left or right, whether it reaches the ceiling, and whether its depth is open at the front or trapped between fixed boundaries.
+4. Then ask about the wardrobe itself: number of sections, whether they should be equal or which should be wider or narrower, fit at the walls and ceiling, base height, door spacing, and chosen material thicknesses.
+5. Translate the answers into the global specification privately. Do not expose filenames, schema fields, width shares, formulas, calculator commands, validation terminology, or the fitting allowance unless the client asks.
+6. Give the client calculated cabinet sizes and positions, not the internal values used to derive them.
 
 ## Allowed project sources
 
@@ -56,11 +57,18 @@ Require the first distance to be `0`, the final distance to cover the calculated
 
 ## Apply the fitting allowance
 
-Keep the raw measurements unchanged. Store the template's positive `fit_allowance` value of `2 mm` and subtract it once when resolving each usable span:
+Keep the raw measurements unchanged. Store whether each dimension is enclosed at both ends under `enclosed_dimensions`:
 
-- usable width is the smallest of the three width readings minus 2 mm;
-- usable depth is the smallest of the three depth readings minus 2 mm;
-- usable height at any point is the measured/interpolated height minus 2 mm before base height and chosen ceiling clearance are removed.
+- `width` is true only when the run is trapped between fixed boundaries on both the left and right. One wall and one open side is not enclosed.
+- `depth` is true only when the run is trapped between fixed boundaries at both the back and front. An ordinary wardrobe against a back wall with an open front is not enclosed.
+- `height` is true when the wardrobe is fitted between the floor and ceiling. A freestanding wardrobe with open space above is not enclosed.
+
+Store the template's positive `fit_allowance` value of `2 mm`. Subtract it once only from dimensions marked as enclosed:
+
+- enclosed width uses the smallest width reading minus 2 mm;
+- enclosed depth uses the smallest depth reading minus 2 mm;
+- enclosed height uses the measured or interpolated height minus 2 mm before base height and chosen ceiling clearance are removed;
+- a dimension that is not enclosed uses its smallest or measured value without the 2 mm subtraction.
 
 This is built-in AIkea fitting knowledge, not a client design question. If the project uses centimetres, store the same allowance as `0.2 cm`.
 
@@ -68,6 +76,7 @@ This is built-in AIkea fitting knowledge, not a client design question. If the p
 
 The template supplies `fit_allowance`. Collect the remaining internal values:
 
+- `enclosed_dimensions.width`, `enclosed_dimensions.depth`, and `enclosed_dimensions.height`, derived from the client's installation description;
 - `cabinet_count`;
 - `cabinet_width_shares`, one positive number per cabinet from left to right;
 - `left_clearance`, `right_clearance`, `cabinet_gap`, and `ceiling_clearance`;
@@ -100,7 +109,7 @@ Translate the answer to shares internally and present the resulting cabinet widt
 Build one checklist containing every required measured-space field and shared setting. Count explicit zeros as present.
 
 - **Missing measured space:** Ask for only the next missing measurement topic. Do not ask about wardrobe choices yet.
-- **Missing wardrobe choices:** Once the measured space is complete, ask for the remaining choices in client-facing language. Do not re-ask supplied values or expose internal field names.
+- **Missing wardrobe choices:** Once the measured space is complete, ask for only the next missing choice topic in client-facing language. Ask how the wardrobe is enclosed before asking about its section layout. Do not re-ask supplied values or expose internal field names.
 - **Contradictory:** Name the exact conflict and ask only for the correction required. Retain all non-conflicting values.
 - **Complete:** Do not ask another question. Save the global specification and run the calculator privately. A valid result completes this step and permits later cabinet design.
 
@@ -115,6 +124,7 @@ Use `assets/aikea.yaml` as the exact schema.
 - Fill only user-supplied measured facts and confirmed shared design settings.
 - Keep height measurements in their measured left-to-right order.
 - Preserve all three width and depth measurements instead of replacing them with the smallest value.
+- Record all three enclosed-dimension decisions from the client's installation description; never infer a fully enclosed dimension from one wall alone.
 - Preserve the template's 2 mm fitting allowance unless the user explicitly changes the project policy.
 - Do not add calculated cabinet dimensions to `aikea.yaml`.
 - Do not add fields that are absent from the template.
@@ -128,7 +138,7 @@ Run the bundled calculator only after the checklist is complete. Require all of 
 - the number of width shares equals `cabinet_count` and every share is positive;
 - three width readings and three depth readings are present;
 - at least three height measurements cover the usable width in increasing order;
-- the 2 mm fitting allowance leaves positive usable width, depth, and height;
+- the 2 mm fitting allowance leaves every enclosed dimension positive;
 - clearances and cabinet gaps leave positive cabinet width;
 - the base and ceiling clearance leave positive cabinet height;
 - door and back thicknesses leave positive cabinet and inside depth.

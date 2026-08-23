@@ -8,14 +8,22 @@ from overall_wardrobe_results import CabinetOverallSize, OverallWardrobeResult
 
 
 class OverallWardrobeCalculator:
-    """Apply fitting allowance and distribute the safe cabinet envelope."""
+    """Apply enclosure-specific fitting room and distribute the cabinet run."""
 
     def calculate(self, inputs: OverallWardrobeInputs) -> OverallWardrobeResult:
         space = inputs.space
         settings = inputs.settings
-        usable_width = space.minimum_width_mm - settings.fit_allowance_mm
-        usable_depth = space.minimum_depth_mm - settings.fit_allowance_mm
-        problems = self._find_impossible_dimensions(inputs, usable_width, usable_depth)
+        allowances = settings.enclosed_dimensions.resolve_fitting_allowances(
+            settings.fit_allowance_mm
+        )
+        usable_width = space.minimum_width_mm - allowances.width_mm
+        usable_depth = space.minimum_depth_mm - allowances.depth_mm
+        problems = self._find_impossible_dimensions(
+            inputs,
+            usable_width,
+            usable_depth,
+            allowances.height_mm,
+        )
         if problems:
             raise OverallWardrobeInputError(problems)
         total_gaps = settings.cabinet_gap_mm * (settings.cabinet_count - 1)
@@ -28,11 +36,17 @@ class OverallWardrobeCalculator:
         width_per_share = distributable_width / sum(settings.cabinet_width_shares)
         cabinet_depth = usable_depth - settings.door_thickness_mm
         inside_depth = cabinet_depth - settings.back_panel_thickness_mm
-        cabinets = self._build_cabinet_sizes(inputs, width_per_share)
+        cabinets = self._build_cabinet_sizes(
+            inputs,
+            width_per_share,
+            allowances.height_mm,
+        )
         return OverallWardrobeResult(
             minimum_measured_width_mm=space.minimum_width_mm,
             minimum_measured_depth_mm=space.minimum_depth_mm,
-            fit_allowance_mm=settings.fit_allowance_mm,
+            width_fitting_allowance_mm=allowances.width_mm,
+            depth_fitting_allowance_mm=allowances.depth_mm,
+            height_fitting_allowance_mm=allowances.height_mm,
             usable_width_mm=usable_width,
             usable_depth_mm=usable_depth,
             cabinet_depth_mm=cabinet_depth,
@@ -41,7 +55,10 @@ class OverallWardrobeCalculator:
         )
 
     def _build_cabinet_sizes(
-        self, inputs: OverallWardrobeInputs, width_per_share: float
+        self,
+        inputs: OverallWardrobeInputs,
+        width_per_share: float,
+        height_fitting_allowance_mm: float,
     ) -> tuple[CabinetOverallSize, ...]:
         settings = inputs.settings
         cabinets: list[CabinetOverallSize] = []
@@ -55,8 +72,16 @@ class OverallWardrobeCalculator:
                     left_position_mm=left_position,
                     right_position_mm=right_position,
                     width_mm=width,
-                    left_height_mm=self._cabinet_height_at(inputs, left_position),
-                    right_height_mm=self._cabinet_height_at(inputs, right_position),
+                    left_height_mm=self._cabinet_height_at(
+                        inputs,
+                        left_position,
+                        height_fitting_allowance_mm,
+                    ),
+                    right_height_mm=self._cabinet_height_at(
+                        inputs,
+                        right_position,
+                        height_fitting_allowance_mm,
+                    ),
                     door_width_mm=width - settings.door_gap_mm,
                 )
             )
@@ -68,6 +93,7 @@ class OverallWardrobeCalculator:
         inputs: OverallWardrobeInputs,
         usable_width: float,
         usable_depth: float,
+        height_fitting_allowance_mm: float,
     ) -> list[str]:
         settings = inputs.settings
         problems: list[str] = []
@@ -97,7 +123,7 @@ class OverallWardrobeCalculator:
             measurement.height_from_floor_mm for measurement in inputs.space.height_measurements
         )
         used_height = (
-            settings.fit_allowance_mm
+            height_fitting_allowance_mm
             + settings.base_height_mm
             + settings.ceiling_clearance_mm
         )
@@ -106,13 +132,16 @@ class OverallWardrobeCalculator:
         return problems
 
     def _cabinet_height_at(
-        self, inputs: OverallWardrobeInputs, position_mm: float
+        self,
+        inputs: OverallWardrobeInputs,
+        position_mm: float,
+        height_fitting_allowance_mm: float,
     ) -> float:
         settings = inputs.settings
         measured_height = self._height_at(inputs.space.height_measurements, position_mm)
         return (
             measured_height
-            - settings.fit_allowance_mm
+            - height_fitting_allowance_mm
             - settings.base_height_mm
             - settings.ceiling_clearance_mm
         )

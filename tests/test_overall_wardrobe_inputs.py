@@ -38,6 +38,16 @@ class TestOverallWardrobeInputs:
         with pytest.raises(OverallWardrobeInputError, match="cover the usable width"):
             OverallWardrobeInputReader().read(data)
 
+    def test_each_enclosed_dimension_must_be_confirmed(self) -> None:
+        data = self.project.load_flat()
+        data["design_settings"]["enclosed_dimensions"]["width"] = None
+        with pytest.raises(OverallWardrobeInputError) as raised:
+            OverallWardrobeInputReader().read(data)
+        assert (
+            "design_settings.enclosed_dimensions.width is required and must be true or false"
+            in raised.value.problems
+        )
+
     def test_centimetres_are_normalized_to_millimetres(self) -> None:
         data = self.project.load_flat()
         data["units"] = "cm"

@@ -36,7 +36,9 @@ class TestOverallWardrobeEvalSet:
             for field in (
                 "minimum_measured_width_mm",
                 "minimum_measured_depth_mm",
-                "fit_allowance_mm",
+                "width_fitting_allowance_mm",
+                "depth_fitting_allowance_mm",
+                "height_fitting_allowance_mm",
                 "usable_width_mm",
                 "usable_depth_mm",
                 "cabinet_depth_mm",

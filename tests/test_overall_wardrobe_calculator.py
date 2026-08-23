@@ -59,7 +59,7 @@ class TestOverallWardrobeCalculator:
         assert [cabinet.width_mm for cabinet in wider_result.cabinets] == [1794.0, 1794.0]
         assert wider_result.cabinets[-1].right_position_mm == 3593.0
 
-    def test_smallest_site_readings_receive_the_fit_allowance(self) -> None:
+    def test_smallest_enclosed_site_readings_receive_the_fit_allowance(self) -> None:
         data = self.project.load_flat()
         data["measured_space"]["width_measurements"] = {
             "bottom": 3000,
@@ -79,7 +79,27 @@ class TestOverallWardrobeCalculator:
         result = self.project.calculate(data)
         assert result.minimum_measured_width_mm == 2996.0
         assert result.minimum_measured_depth_mm == 598.0
-        assert result.fit_allowance_mm == 2.0
+        assert result.width_fitting_allowance_mm == 2.0
+        assert result.depth_fitting_allowance_mm == 2.0
+        assert result.height_fitting_allowance_mm == 2.0
         assert result.usable_width_mm == 2994.0
         assert result.usable_depth_mm == 596.0
         assert result.cabinets[0].left_height_mm == pytest.approx(2297.9933)
+
+    def test_only_enclosed_dimensions_receive_fitting_room(self) -> None:
+        data = self.project.load_flat()
+        data["design_settings"]["enclosed_dimensions"] = {
+            "width": False,
+            "depth": False,
+            "height": True,
+        }
+
+        result = self.project.calculate(data)
+
+        assert result.width_fitting_allowance_mm == 0.0
+        assert result.depth_fitting_allowance_mm == 0.0
+        assert result.height_fitting_allowance_mm == 2.0
+        assert result.usable_width_mm == 3000.0
+        assert result.usable_depth_mm == 600.0
+        assert [cabinet.width_mm for cabinet in result.cabinets] == [1495.0, 1495.0]
+        assert [cabinet.left_height_mm for cabinet in result.cabinets] == [2298.0, 2298.0]

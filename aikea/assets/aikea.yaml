@@ -1,4 +1,4 @@
-schema_version: 2
+schema_version: 3
 units: mm
 
 measured_space:
@@ -14,6 +14,10 @@ measured_space:
 
 design_settings:
   fit_allowance: 2
+  enclosed_dimensions:
+    width: null
+    depth: null
+    height: null
   cabinet_run:
     cabinet_count: null
     cabinet_width_shares: []

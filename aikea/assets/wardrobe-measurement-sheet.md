@@ -39,6 +39,16 @@ Measure from the finished floor to the ceiling at the left, centre, and right. R
 | Right edge: | |
 | Additional change: | |
 
+## How the wardrobe will sit
+
+Circle or describe what applies:
+
+- Left side: wall / open
+- Right side: wall / open
+- Top: reaches the ceiling / open above
+- Depth: open at the front / fixed boundary at both back and front
+- Freestanding or other details:
+
 ## Notes
 
 Record anything that limits the wardrobe space, such as skirting boards, coving, pipes, sockets, radiators, or walls that visibly lean or bow.
