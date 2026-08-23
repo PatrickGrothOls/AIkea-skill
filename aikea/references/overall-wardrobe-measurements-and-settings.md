@@ -2,6 +2,12 @@
 
 Use this file when starting a cabinet run or changing measurements that affect more than one cabinet.
 
+## Finish the global specification first
+
+`aikea.yaml` is the global specification. Questions and user answers are the means of completing it, not a replacement for it.
+
+Remain in this step while any required value is missing, contradictory, or rejected by the calculator. Do not begin cabinet layout, local part design, plinth construction, joinery, or manufacturing design. Move to later cabinet design only after the complete `aikea.yaml` has been written and the calculator reports it as valid.
+
 ## Allowed project sources
 
 Accept measurements only from the user's messages, a source the user identifies, or the active project's `aikea.yaml`. Never reuse dimensions found in this skill, eval cases, development documentation, legacy wardrobe code, or a different project.
@@ -67,7 +73,7 @@ Build one checklist containing every required measured-space field and shared se
 
 - **Missing:** Ask for all missing checklist values in one concise response. Group measurements separately from design settings. Do not re-ask supplied values and do not claim the input is valid.
 - **Contradictory:** Name the exact conflict and ask only for the correction required. Retain all non-conflicting values.
-- **Complete:** Do not ask another question. Save the global project file and run the calculator.
+- **Complete:** Do not ask another question. Save the global specification and run the calculator. A valid result completes this step and permits later cabinet design.
 
 When the user corrects one value, change only that value unless the correction necessarily changes a dependent measurement such as the right-edge ceiling distance after a width change.
 
@@ -104,4 +110,4 @@ Run the bundled calculator only after the checklist is complete. Require all of 
 - the base and ceiling clearance leave positive cabinet height;
 - door and back thicknesses leave positive cabinet and inside depth.
 
-On success, confirm the file path and summarize calculated cabinet widths, left/right positions, left/right heights, door widths, cabinet depth, and inside depth. Do not generate cabinet geometry during this first step.
+On success, confirm that the global specification is complete, confirm the file path, and summarize calculated cabinet widths, left/right positions, left/right heights, door widths, cabinet depth, and inside depth. Do not generate cabinet geometry during this first step.

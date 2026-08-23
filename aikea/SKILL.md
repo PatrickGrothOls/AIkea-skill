@@ -5,7 +5,7 @@ description: Design, revise, check, and export generic frameless sheet-material 
 
 # AIkea
 
-Use explicit user messages to create or revise the saved measurements and shared design settings. Once saved, treat `aikea.yaml`—not chat, prose, or generated geometry—as the project source of truth. Use the skill to choose the workflow and the bundled scripts to calculate results.
+Use explicit user messages to create or revise the saved measurements and shared design settings. `aikea.yaml` is the global specification and the project source of truth—not chat, prose, or generated geometry. Complete and validate it before beginning cabinet and construction design. Use the skill to choose the workflow and the bundled scripts to calculate results.
 
 ## Work from the active project
 
@@ -14,18 +14,19 @@ Use explicit user messages to create or revise the saved measurements and shared
 3. If the user asks only to inspect or check a project, perform only that operation.
 4. If the project has no `aikea.yaml`, collect the overall wardrobe measurements and settings.
 
-## Collect overall wardrobe measurements and settings
+## Complete the global specification
 
 1. Read `references/overall-wardrobe-measurements-and-settings.md` completely.
 2. Read only the user's messages, user-identified attachments, and the active project's AIkea files for project values.
 3. Classify the current inputs as missing, contradictory, or complete.
-4. For missing inputs, ask once for all remaining required values, grouped as measured space and shared design settings. Do not ask for values already supplied.
-5. For contradictory inputs, identify the exact conflict and ask only for the correction needed. Never repair a measurement silently.
+4. For missing inputs, remain in this phase and ask once for all remaining required values, grouped as measured space and shared design settings. Do not ask for values already supplied.
+5. For contradictory inputs, remain in this phase, identify the exact conflict, and ask only for the correction needed. Never repair a measurement silently.
 6. For complete inputs, copy `assets/aikea.yaml` only when the project file does not exist, fill the exact schema, and run `python <skill-directory>/scripts/calculate_overall_wardrobe.py <project>/aikea.yaml`.
 7. If the calculator rejects the file, report its specific problems and return to the missing or contradictory state.
-8. If the calculator accepts the file, report the saved path and the calculated cabinet widths, positions, heights, and depths.
+8. If the calculator accepts the file, report that the global specification is complete, the saved path, and the calculated cabinet widths, positions, heights, and depths.
+9. Only after `aikea.yaml` exists and passes the calculator may a later capability begin cabinet layout, local parts, plinth construction, joints, or manufacturing design.
 
-Never overwrite an existing `aikea.yaml` with the blank template. Never ask a follow-up question when every required value is present and consistent.
+Never overwrite an existing `aikea.yaml` with the blank template. Never ask a follow-up question when every required value is present and consistent. Never treat a chat summary as a substitute for the written and validated global specification.
 
 Never take project measurements from this skill's assets, examples, eval fixtures, development documentation, legacy wardrobe code, or another project. Those files are implementation knowledge or test data, not measurements for the active cabinet run.
 

@@ -20,11 +20,13 @@ scoring:
     - No forbidden response item occurs.
     - The final aikea.yaml semantically matches expected_aikea_yaml.
     - The calculator succeeds and matches expected_calculated.
+    - The model completes and validates aikea.yaml before beginning later cabinet design.
   always_forbidden:
     - Invent measurements or typical cabinet defaults.
     - Reuse measurements from skill assets, eval cases, development docs, legacy code, or another project.
     - Ask the user for Cabineo cutter dimensions, Cabineo pocket coordinates, or base rail spacing.
     - Generate cabinet or joint geometry before the overall input check passes.
+    - Begin cabinet layout, local part design, plinth construction, joinery, or manufacturing design before aikea.yaml exists and validates.
 
 cases:
   - name: flat two-bay freestanding wardrobe
