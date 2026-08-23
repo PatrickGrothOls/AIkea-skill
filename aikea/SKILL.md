@@ -13,6 +13,7 @@ Use explicit user messages to create or revise the saved measurements and shared
 - When space measurements are missing, ask for those first. Discuss the wardrobe layout only after the measured space is clear.
 - Do not mention `aikea.yaml`, schemas, field names, width shares, calculators, validation, or other internal machinery unless the user asks for technical details or project files.
 - Never ask the client to provide width shares. Ask whether sections should be equal or whether any should be wider or narrower, then translate that relationship internally.
+- Never ask the client to supply or choose fixed construction geometry. Cabineo cutter dimensions, offsets, machining faces, reference edges, pocket coordinates, and matching receiver features are built-in Cabineo knowledge. Determine them from the parts being joined and generate both sides from one joint definition.
 - Present useful design results such as cabinet sizes, positions, and heights. Keep formulas and internal representations private unless requested.
 
 ## Work from the active project

@@ -110,7 +110,7 @@ Use `assets/aikea.yaml` as the exact schema.
 
 Do not add a value merely because the final build will use it:
 
-- Keep Cabineo cutter dimensions, face selection, edge selection, and pocket coordinates inside Cabineo construction.
+- Keep Cabineo cutter dimensions, offsets, face selection, edge selection, pocket coordinates, and matching receiver features inside Cabineo construction. Never ask the client to provide or choose them. Determine the correct face and edge from the parts being joined, then generate both participants from the same joint definition.
 - Keep base rail spacing, rail count, braces, and module geometry inside the structural plinth.
 - Keep hinge and door-bracket machining inside their matching-cut construction.
 

@@ -24,7 +24,7 @@ scoring:
   always_forbidden:
     - Invent measurements or typical cabinet defaults.
     - Reuse measurements from skill assets, eval cases, development docs, legacy code, or another project.
-    - Ask the user for Cabineo cutter dimensions, Cabineo pocket coordinates, or base rail spacing.
+    - Ask the client for Cabineo cutter dimensions, offsets, machining faces, reference edges, pocket coordinates, matching receiver features, or base rail spacing.
     - Ask the client to provide width shares or a numeric width-share list.
     - Mention aikea.yaml, the global specification, schemas, field names, calculators, or validation mechanics unless the client asks for technical details.
     - Present a raw data-entry template instead of guiding the client in plain language.
