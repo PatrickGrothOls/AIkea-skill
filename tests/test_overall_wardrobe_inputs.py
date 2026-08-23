@@ -22,13 +22,13 @@ class TestOverallWardrobeInputs:
         )
         assert "design_settings.base.height is required and must be numeric" in raised.value.problems
 
-    def test_each_width_and_depth_location_is_required(self) -> None:
+    def test_open_depth_requires_one_single_measurement(self) -> None:
         data = self.project.load_flat()
-        del data["measured_space"]["depth_measurements"]["middle"]
+        del data["measured_space"]["depth_measurements"]["single"]
         with pytest.raises(OverallWardrobeInputError) as raised:
             OverallWardrobeInputReader().read(data)
         assert (
-            "measured_space.depth_measurements.middle is required and must be numeric"
+            "measured_space.depth_measurements.single is required and must be numeric"
             in raised.value.problems
         )
 
@@ -40,11 +40,11 @@ class TestOverallWardrobeInputs:
 
     def test_each_enclosed_dimension_must_be_confirmed(self) -> None:
         data = self.project.load_flat()
-        data["design_settings"]["enclosed_dimensions"]["width"] = None
+        data["design_settings"]["fitted_dimensions"]["width"] = None
         with pytest.raises(OverallWardrobeInputError) as raised:
             OverallWardrobeInputReader().read(data)
         assert (
-            "design_settings.enclosed_dimensions.width is required and must be true or false"
+            "design_settings.fitted_dimensions.width is required and must be true or false"
             in raised.value.problems
         )
 
@@ -54,9 +54,7 @@ class TestOverallWardrobeInputs:
         data["measured_space"]["width_measurements"] = dict.fromkeys(
             ("bottom", "middle", "top"), 300
         )
-        data["measured_space"]["depth_measurements"] = dict.fromkeys(
-            ("left", "middle", "right"), 60
-        )
+        data["measured_space"]["depth_measurements"] = {"single": 60}
         data["measured_space"]["height_measurements"] = [
             {"distance_from_left": 0, "height_from_floor": 240},
             {"distance_from_left": 150, "height_from_floor": 240},
@@ -78,6 +76,6 @@ class TestOverallWardrobeInputs:
         inputs = OverallWardrobeInputReader().read(data)
 
         assert inputs.space.width_measurements_mm == (3000.0, 3000.0, 3000.0)
-        assert inputs.space.depth_measurements_mm == (600.0, 600.0, 600.0)
+        assert inputs.space.depth_measurements_mm == (600.0,)
         assert inputs.space.height_measurements[1].distance_from_left_mm == 1500.0
         assert inputs.settings.fit_allowance_mm == 2.0

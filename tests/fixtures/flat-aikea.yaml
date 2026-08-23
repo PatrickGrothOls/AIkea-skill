@@ -1,4 +1,4 @@
-schema_version: 4
+schema_version: 5
 units: mm
 
 measured_space:
@@ -7,9 +7,7 @@ measured_space:
     middle: 3000
     top: 3000
   depth_measurements:
-    left: 600
-    middle: 600
-    right: 600
+    single: 600
   height_measurements:
     - distance_from_left: 0
       height_from_floor: 2400
@@ -20,9 +18,8 @@ measured_space:
 
 design_settings:
   fit_allowance: 2
-  enclosed_dimensions:
+  fitted_dimensions:
     width: true
-    depth: true
     height: true
   cabinet_run:
     cabinet_count: 2

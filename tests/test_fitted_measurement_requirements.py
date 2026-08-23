@@ -9,15 +9,14 @@ from overall_wardrobe_inputs import (
 from overall_wardrobe_test_project import OverallWardrobeTestProject
 
 
-class TestEnclosureMeasurementRequirements:
+class TestFittedMeasurementRequirements:
     def setup_method(self) -> None:
         self.project = OverallWardrobeTestProject()
 
     def test_open_dimensions_accept_one_measurement_each(self) -> None:
         data = self.project.load_flat()
-        data["design_settings"]["enclosed_dimensions"] = {
+        data["design_settings"]["fitted_dimensions"] = {
             "width": False,
-            "depth": False,
             "height": False,
         }
         data["measured_space"]["width_measurements"] = {"single": 3000}
@@ -32,29 +31,27 @@ class TestEnclosureMeasurementRequirements:
         assert inputs.space.depth_measurements_mm == (600.0,)
         assert len(inputs.space.height_measurements) == 1
 
-    @pytest.mark.parametrize(
-        ("dimension", "measurements", "error"),
-        [
-            ("width", {"single": 3000}, "width_measurements.bottom"),
-            ("depth", {"single": 600}, "depth_measurements.left"),
-        ],
-    )
-    def test_enclosed_horizontal_dimensions_require_three_measurements(
-        self, dimension: str, measurements: dict, error: str
-    ) -> None:
+    def test_fitted_width_requires_three_measurements(self) -> None:
         data = self.project.load_flat()
-        data["measured_space"][f"{dimension}_measurements"] = measurements
+        data["measured_space"]["width_measurements"] = {"single": 3000}
 
-        with pytest.raises(OverallWardrobeInputError, match=error):
+        with pytest.raises(OverallWardrobeInputError, match="width_measurements.bottom"):
             OverallWardrobeInputReader().read(data)
 
-    def test_enclosed_height_requires_three_measurements(self) -> None:
+    def test_fitted_height_requires_three_measurements(self) -> None:
         data = self.project.load_flat()
         data["measured_space"]["height_measurements"] = [
             {"distance_from_left": 0, "height_from_floor": 2400}
         ]
 
         with pytest.raises(OverallWardrobeInputError, match="at least three"):
+            OverallWardrobeInputReader().read(data)
+
+    def test_fitted_dimensions_do_not_include_depth(self) -> None:
+        data = self.project.load_flat()
+        data["design_settings"]["fitted_dimensions"]["depth"] = True
+
+        with pytest.raises(OverallWardrobeInputError, match="must not include depth"):
             OverallWardrobeInputReader().read(data)
 
     def test_inches_are_normalized_to_millimetres(self) -> None:
@@ -64,9 +61,7 @@ class TestEnclosureMeasurementRequirements:
         data["measured_space"]["width_measurements"] = dict.fromkeys(
             ("bottom", "middle", "top"), 3000 / scale
         )
-        data["measured_space"]["depth_measurements"] = dict.fromkeys(
-            ("left", "middle", "right"), 600 / scale
-        )
+        data["measured_space"]["depth_measurements"] = {"single": 600 / scale}
         data["measured_space"]["height_measurements"] = [
             {"distance_from_left": 0, "height_from_floor": 2400 / scale},
             {"distance_from_left": 1500 / scale, "height_from_floor": 2400 / scale},

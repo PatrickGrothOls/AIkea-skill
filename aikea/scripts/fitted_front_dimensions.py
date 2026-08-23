@@ -1,4 +1,4 @@
-"""Scope: Read enclosed dimensions and resolve their fitting allowances."""
+"""Scope: Read fitted front-view dimensions and resolve fitting allowances."""
 
 from __future__ import annotations
 
@@ -14,33 +14,37 @@ class FittingAllowances:
 
 
 @dataclass(frozen=True)
-class EnclosedDimensions:
+class FittedFrontDimensions:
     width: bool
-    depth: bool
     height: bool
 
     def resolve_fitting_allowances(self, allowance_mm: float) -> FittingAllowances:
         return FittingAllowances(
             width_mm=allowance_mm if self.width else 0.0,
-            depth_mm=allowance_mm if self.depth else 0.0,
+            depth_mm=0.0,
             height_mm=allowance_mm if self.height else 0.0,
         )
 
 
-class EnclosedDimensionReader:
-    """Read which measured dimensions are physically enclosed at both ends."""
+class FittedFrontDimensionReader:
+    """Read which front-view dimensions are fitted at both ends."""
 
-    def read(self, data: dict[str, Any], problems: list[str]) -> EnclosedDimensions:
+    def read(self, data: dict[str, Any], problems: list[str]) -> FittedFrontDimensions:
         settings = data.get("design_settings")
-        raw = settings.get("enclosed_dimensions") if isinstance(settings, dict) else {}
+        raw = settings.get("fitted_dimensions") if isinstance(settings, dict) else {}
+        if isinstance(raw, dict) and "depth" in raw:
+            problems.append(
+                "design_settings.fitted_dimensions must not include depth "
+                "because wardrobe fronts are open"
+            )
         values: dict[str, bool] = {}
-        for dimension in ("width", "depth", "height"):
+        for dimension in ("width", "height"):
             value = raw.get(dimension) if isinstance(raw, dict) else None
             if type(value) is not bool:
                 problems.append(
-                    f"design_settings.enclosed_dimensions.{dimension} "
+                    f"design_settings.fitted_dimensions.{dimension} "
                     "is required and must be true or false"
                 )
                 value = False
             values[dimension] = value
-        return EnclosedDimensions(**values)
+        return FittedFrontDimensions(**values)

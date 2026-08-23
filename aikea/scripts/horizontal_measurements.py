@@ -24,10 +24,7 @@ class HorizontalMeasurementReader:
             problems.append(f"{path} must contain {requirement}")
             return ()
         if not is_enclosed and "single" in raw_measurements:
-            value = self._read_positive_number(
-                raw_measurements.get("single"), f"{path}.single", scale, problems
-            )
-            return (value,) if value is not None else ()
+            return self.read_single(raw_measurements, path, scale, problems)
         values = [
             self._read_positive_number(
                 raw_measurements.get(position), f"{path}.{position}", scale, problems
@@ -35,6 +32,21 @@ class HorizontalMeasurementReader:
             for position in positions
         ]
         return tuple(value for value in values if value is not None)
+
+    def read_single(
+        self,
+        raw_measurements: Any,
+        path: str,
+        scale: float,
+        problems: list[str],
+    ) -> tuple[float, ...]:
+        if not isinstance(raw_measurements, dict):
+            problems.append(f"{path} must contain a single measurement")
+            return ()
+        value = self._read_positive_number(
+            raw_measurements.get("single"), f"{path}.single", scale, problems
+        )
+        return (value,) if value is not None else ()
 
     def _read_positive_number(
         self, value: Any, path: str, scale: float, problems: list[str]

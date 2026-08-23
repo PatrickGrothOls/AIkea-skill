@@ -56,7 +56,7 @@ class TestOverallWardrobeEvalSet:
                         field,
                     )
 
-    def test_staged_case_learns_the_installation_before_dimensions(self) -> None:
+    def test_staged_case_labels_shape_before_asking_how_it_fits(self) -> None:
         eval_set = self._load_eval_set()
         case = next(
             case
@@ -67,18 +67,29 @@ class TestOverallWardrobeEvalSet:
         assert "centimetres, millimetres, and inches" in case["turns"][0][
             "answer_key"
         ]["response_required"][1]
-        assert "fixed walls" in case["turns"][1]["answer_key"]["response_required"][1]
-        assert "reaches the ceiling" in case["turns"][2]["answer_key"][
+        assert "shape of the available space" in case["turns"][1]["answer_key"][
             "response_required"
         ][1]
-        assert "open at the front" in case["turns"][3]["answer_key"][
+        assert "labelled clockwise" in case["turns"][2]["answer_key"][
             "response_required"
-        ][1]
-        assert "one depth" in case["turns"][5]["answer_key"]["response_required"][
+        ][0]
+        assert "one question" in case["turns"][2]["answer_key"]["response_required"][
             1
         ]
+        assert "one depth" in case["turns"][4]["answer_key"]["response_required"][1]
         final_yaml = case["turns"][-1]["answer_key"]["expected_aikea_yaml"]
         assert final_yaml["measured_space"]["depth_measurements"] == {"single": 620}
+
+    def test_every_case_keeps_the_wardrobe_front_open(self) -> None:
+        for case in self._load_eval_set()["cases"]:
+            final_yaml = case["turns"][-1]["answer_key"]["expected_aikea_yaml"]
+            assert set(final_yaml["design_settings"]["fitted_dimensions"]) == {
+                "width",
+                "height",
+            }
+            assert set(final_yaml["measured_space"]["depth_measurements"]) == {
+                "single"
+            }
 
     def _load_eval_set(self) -> dict:
         return yaml.safe_load(self._EVAL_PATH.read_text(encoding="utf-8"))

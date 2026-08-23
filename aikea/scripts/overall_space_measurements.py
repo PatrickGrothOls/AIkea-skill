@@ -5,7 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any
 
-from enclosed_dimensions import EnclosedDimensions
+from fitted_front_dimensions import FittedFrontDimensions
 from height_measurements import HeightMeasurement, HeightMeasurementReader
 from horizontal_measurements import HorizontalMeasurementReader
 
@@ -32,7 +32,7 @@ class OverallSpaceMeasurementReader:
         self,
         data: dict[str, Any],
         scale: float,
-        enclosed_dimensions: EnclosedDimensions,
+        fitted_dimensions: FittedFrontDimensions,
         width_fitting_allowance_mm: float,
         problems: list[str],
     ) -> OverallSpaceMeasurements:
@@ -43,16 +43,14 @@ class OverallSpaceMeasurementReader:
         widths = reader.read(
             measured_space.get("width_measurements"),
             "measured_space.width_measurements",
-            enclosed_dimensions.width,
+            fitted_dimensions.width,
             ("bottom", "middle", "top"),
             scale,
             problems,
         )
-        depths = reader.read(
+        depths = reader.read_single(
             measured_space.get("depth_measurements"),
             "measured_space.depth_measurements",
-            enclosed_dimensions.depth,
-            ("left", "middle", "right"),
             scale,
             problems,
         )
@@ -63,7 +61,7 @@ class OverallSpaceMeasurementReader:
         heights = HeightMeasurementReader().read(
             measured_space.get("height_measurements"),
             usable_width,
-            enclosed_dimensions.height,
+            fitted_dimensions.height,
             scale,
             problems,
         )

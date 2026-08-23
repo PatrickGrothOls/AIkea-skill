@@ -8,16 +8,27 @@ Date measured:
 
 Unit: mm / cm / inches
 
-## How the wardrobe will sit
+## Front-view shape
 
-Mark or describe what applies before measuring. This tells you where one reading
-is enough and where three are needed.
+Looking straight at the wardrobe space, circle the closest shape or draw your own:
 
-- Left side: wall / open
-- Right side: wall / open
-- Top: reaches the ceiling / open above
-- Front: open / fixed boundary
-- Freestanding or other details:
+- Rectangle
+- One sloping top
+- Flat top followed by a slope
+- Stepped or another shape
+
+Draw the outline here:
+
+
+
+Label every outside edge clockwise with `A`, `B`, `C`, and onward, starting with
+the left edge. Give each flat, slope, or step along the top its own letter.
+
+## How the wardrobe fits
+
+Is the wardrobe fitted against the room on every labelled edge? Yes / No
+
+If no, which letters are not fitted?
 
 ## Width
 
@@ -33,15 +44,11 @@ take one reading from the starting edge to the intended wardrobe edge.
 
 ## Depth
 
-If both back and front are fixed, measure at all three positions. If the front
-is open, take one reading from the back to the intended wardrobe front.
+Take one reading from the back to the intended wardrobe front.
 
 | Position | Measurement |
 | --- | ---: |
-| Single reading when the front is open | |
-| Left | |
-| Centre | |
-| Right | |
+| Intended depth | |
 
 ## Height
 

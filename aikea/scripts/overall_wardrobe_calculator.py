@@ -13,7 +13,7 @@ class OverallWardrobeCalculator:
     def calculate(self, inputs: OverallWardrobeInputs) -> OverallWardrobeResult:
         space = inputs.space
         settings = inputs.settings
-        allowances = settings.enclosed_dimensions.resolve_fitting_allowances(
+        allowances = settings.fitted_dimensions.resolve_fitting_allowances(
             settings.fit_allowance_mm
         )
         usable_width = space.minimum_width_mm - allowances.width_mm
