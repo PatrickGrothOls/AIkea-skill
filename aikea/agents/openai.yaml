@@ -1,4 +1,4 @@
 interface:
   display_name: "AIkea"
-  short_description: "Design buildable frameless cabinet runs"
-  default_prompt: "Use $aikea to design a buildable cabinet run from my measurements."
+  short_description: "Plan wardrobe dimensions from a measured space"
+  default_prompt: "Use $aikea to plan my wardrobe overall measurements and cabinet sizes."

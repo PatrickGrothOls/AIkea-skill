@@ -1,11 +1,11 @@
 ---
 name: aikea
-description: Design, revise, check, and export generic frameless sheet-material cabinet runs from measured spaces. Use for new or existing AIkea projects involving multiple cabinet bays, flat or sloped ceilings, shared cabinet dimensions, structural plinths, Cabineo connectors, equal-thickness miters, STEP models, BOMs, or cut lists. Also use to inspect or diagnose AIkea measurements and geometry. AIkea v1 excludes LED grooves, drawers, face frames, and machine-specific NC output.
+description: Establish, revise, and check the overall measurements and shared design choices for a generic frameless sheet-material cabinet run. Use when starting an AIkea wardrobe project, measuring a flat or sloped space, deciding the number and relative widths of cabinet sections, or recalculating the overall design after a shared measurement or choice changes.
 ---
 
 # AIkea
 
-Use explicit user messages to create or revise the saved measurements and shared design settings. `aikea.yaml` is the global specification and the project source of truth—not chat, prose, or generated geometry. Complete and validate it before beginning cabinet and construction design. Use the skill to choose the workflow and the bundled scripts to calculate results.
+Use explicit user messages to create or revise the saved measurements and shared design settings. `aikea.yaml` is the global specification and the project source of truth—not chat or prose. Complete and validate it before moving beyond the overall wardrobe design. Use the bundled script to calculate results.
 
 ## Speak like a carpenter helping a client
 
@@ -13,7 +13,6 @@ Use explicit user messages to create or revise the saved measurements and shared
 - When space measurements are missing, ask for those first. Discuss the wardrobe layout only after the measured space is clear.
 - Do not mention `aikea.yaml`, schemas, field names, width shares, calculators, validation, or other internal machinery unless the user asks for technical details or project files.
 - Never ask the client to provide width shares. Ask whether sections should be equal or whether any should be wider or narrower, then translate that relationship internally.
-- Never ask the client to supply or choose fixed construction geometry. Cabineo cutter dimensions, offsets, machining faces, reference edges, pocket coordinates, and matching receiver features are built-in Cabineo knowledge. Determine them from the parts being joined and generate both sides from one joint definition.
 - Present useful design results such as cabinet sizes, positions, and heights. Keep formulas and internal representations private unless requested.
 
 ## Work from the active project
@@ -34,20 +33,12 @@ Use explicit user messages to create or revise the saved measurements and shared
 7. For complete inputs, copy `assets/aikea.yaml` only when the project file does not exist, fill the exact schema, and run `python <skill-directory>/scripts/calculate_overall_wardrobe.py <project>/aikea.yaml`.
 8. If the calculator rejects the file, explain the specific problem in client-facing language and return to the missing or contradictory state.
 9. If the calculator accepts the file, tell the client that the measurements and shared choices are saved and checked, then present the calculated cabinet widths, positions, heights, and depths.
-10. Only after `aikea.yaml` exists and passes the calculator may a later capability begin cabinet layout, local parts, plinth construction, joints, or manufacturing design.
+10. Stop after presenting the checked overall dimensions. Do not begin another design stage in the same response.
 
 Never overwrite an existing `aikea.yaml` with the blank template. Never ask a follow-up question when every required value is present and consistent. Never treat a chat summary as a substitute for the written and validated global specification.
 
 Never take project measurements from this skill's assets, examples, eval fixtures, development documentation, legacy wardrobe code, or another project. Those files are implementation knowledge or test data, not measurements for the active cabinet run.
 
-## Keep ownership separate
-
-- Store only measured space and shared geometry choices in the global project file.
-- Keep Cabineo dimensions, cutter placement, part faces, and reference edges inside the Cabineo capability.
-- Keep rail spacing, rail count, and module construction inside the structural plinth capability.
-- Acknowledge later construction requests without inventing unimplemented geometry or adding unsupported global fields.
-- Let deterministic scripts calculate dimensions, placements, and machining.
-
 ## Current implementation
 
-Collect, save, and check overall wardrobe inputs. Do not improvise cabinet construction, joinery, plinth geometry, or exports that the bundled implementation does not yet provide.
+Collect, save, and check the measured space and shared wardrobe choices. Stop when the calculated cabinet sizes and positions have been presented.

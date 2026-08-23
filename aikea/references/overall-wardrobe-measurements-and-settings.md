@@ -6,7 +6,7 @@ Use this file when starting a cabinet run or changing measurements that affect m
 
 `aikea.yaml` is the global specification. Questions and user answers are the means of completing it, not a replacement for it.
 
-Remain in this step while any required value is missing, contradictory, or rejected by the calculator. Do not begin cabinet layout, local part design, plinth construction, joinery, or manufacturing design. Move to later cabinet design only after the complete `aikea.yaml` has been written and the calculator reports it as valid.
+Remain in this step while any required value is missing, contradictory, or rejected by the calculator. When the complete `aikea.yaml` passes, present the calculated overall dimensions and stop.
 
 ## Guide the client in plain language
 
@@ -88,7 +88,7 @@ Translate the answer to shares internally and present the resulting cabinet widt
 
 Build one checklist containing every required measured-space field and shared setting. Count explicit zeros as present.
 
-- **Missing measured space:** Ask only for the missing space measurements. Do not ask about cabinet construction or internal design values yet.
+- **Missing measured space:** Ask only for the missing space measurements. Do not ask about wardrobe choices yet.
 - **Missing wardrobe choices:** Once the measured space is complete, ask for the remaining choices in client-facing language. Do not re-ask supplied values or expose internal field names.
 - **Contradictory:** Name the exact conflict and ask only for the correction required. Retain all non-conflicting values.
 - **Complete:** Do not ask another question. Save the global specification and run the calculator privately. A valid result completes this step and permits later cabinet design.
@@ -104,17 +104,7 @@ Use `assets/aikea.yaml` as the exact schema.
 - Fill only user-supplied measured facts and confirmed shared design settings.
 - Keep ceiling points in their measured left-to-right order.
 - Do not add calculated cabinet dimensions to `aikea.yaml`.
-- Do not add unsupported labels or local construction parameters.
-
-## Keep local construction out
-
-Do not add a value merely because the final build will use it:
-
-- Keep Cabineo cutter dimensions, offsets, face selection, edge selection, pocket coordinates, and matching receiver features inside Cabineo construction. Never ask the client to provide or choose them. Determine the correct face and edge from the parts being joined, then generate both participants from the same joint definition.
-- Keep base rail spacing, rail count, braces, and module geometry inside the structural plinth.
-- Keep hinge and door-bracket machining inside their matching-cut construction.
-
-Acknowledge a request for a later capability, but state that the current step stores only its global geometry drivers. Do not improvise an implementation that is not bundled with the skill.
+- Do not add fields that are absent from the template.
 
 ## Require the deterministic check
 
@@ -128,4 +118,4 @@ Run the bundled calculator only after the checklist is complete. Require all of 
 - the base and ceiling clearance leave positive cabinet height;
 - door and back thicknesses leave positive cabinet and inside depth.
 
-On success, tell the client that the measurements and shared choices are saved and checked, then summarize calculated cabinet widths, left/right positions, left/right heights, door widths, cabinet depth, and inside depth. Do not mention the file path or checking mechanism unless asked. Do not generate cabinet geometry during this first step.
+On success, tell the client that the measurements and shared choices are saved and checked, then summarize calculated cabinet widths, left/right positions, left/right heights, door widths, cabinet depth, and inside depth. Do not mention the file path or checking mechanism unless asked. Stop after presenting these overall results.

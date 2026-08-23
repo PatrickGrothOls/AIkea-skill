@@ -24,12 +24,10 @@ scoring:
   always_forbidden:
     - Invent measurements or typical cabinet defaults.
     - Reuse measurements from skill assets, eval cases, development docs, legacy code, or another project.
-    - Ask the client for Cabineo cutter dimensions, offsets, machining faces, reference edges, pocket coordinates, matching receiver features, or base rail spacing.
     - Ask the client to provide width shares or a numeric width-share list.
     - Mention aikea.yaml, the global specification, schemas, field names, calculators, or validation mechanics unless the client asks for technical details.
     - Present a raw data-entry template instead of guiding the client in plain language.
-    - Generate cabinet or joint geometry before the overall input check passes.
-    - Begin cabinet layout, local part design, plinth construction, joinery, or manufacturing design before aikea.yaml exists and validates.
+    - Continue into another design stage instead of stopping after the checked overall results.
 
 cases:
   - name: flat two-bay freestanding wardrobe
@@ -454,23 +452,20 @@ cases:
               - {cabinet_number: 3, left_position_mm: 1800, right_position_mm: 2700, width_mm: 900, left_height_mm: 2160, right_height_mm: 1910, door_width_mm: 897}
               - {cabinet_number: 4, left_position_mm: 2700, right_position_mm: 3600, width_mm: 900, left_height_mm: 1910, right_height_mm: 1760, door_width_mm: 897}
 
-  - name: long six-bay wardrobe with a future split plinth
-    wardrobe_type: wall-to-wall, flat top, long run requiring plinth modules
+  - name: long six-bay wardrobe
+    wardrobe_type: wall-to-wall, flat top, long run
     turns:
       - user: >-
           I measured a 6000 mm wide, 650 mm deep wall-to-wall space with a flat
           2500 mm ceiling. Use six equal cabinets, no side clearances or cabinet gaps,
           15 mm above, a 120 mm base, 2 mm door gaps, 18 mm cabinet panels,
-          20 mm doors, and a 6 mm back. The structural base will need to be split
-          into modules later because this is a long run.
+          20 mm doors, and a 6 mm back.
         answer_key:
           response_required:
             - Complete and validate the overall wardrobe inputs for all six cabinets.
-            - Acknowledge that the split structural plinth is a later local construction decision.
-            - Keep the current work limited to the implemented overall-input capability.
+            - Present the checked overall cabinet dimensions and stop.
           response_forbidden:
-            - Add rail spacing, rail count, or plinth module geometry to the global project file.
-            - Improvise the unimplemented structural plinth design.
+            - Continue into another design stage.
           expected_aikea_yaml:
             schema_version: 1
             units: mm
