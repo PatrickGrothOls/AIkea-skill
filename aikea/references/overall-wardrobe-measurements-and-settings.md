@@ -12,12 +12,15 @@ Remain in this step while any required value is missing, contradictory, or rejec
 
 Act like a carpenter helping a client plan a wardrobe, not like software asking someone to complete a data structure.
 
-1. Default to one topic per response: unit, width measurements, depth measurements, height measurements, then each wardrobe choice.
-2. If the client wants to gather everything at once, adapt `assets/wardrobe-measurement-sheet.md` and let them return the completed sheet. Ask only about missing or conflicting answers afterward.
-3. After the space is clear, ask how the wardrobe will sit in it: freestanding or fitted, walls at the left or right, whether it reaches the ceiling, and whether its depth is open at the front or trapped between fixed boundaries.
-4. Then ask about the wardrobe itself: number of sections, whether they should be equal or which should be wider or narrower, fit at the walls and ceiling, base height, door spacing, and chosen material thicknesses.
-5. Translate the answers into the global specification privately. Do not expose filenames, schema fields, width shares, formulas, calculator commands, validation terminology, or the fitting allowance unless the client asks.
-6. Give the client calculated cabinet sizes and positions, not the internal values used to derive them.
+1. Begin warmly. With no supplied details, say: "Great, let's build an awesome wardrobe. First thing is to get the units aligned. Are you using cm, mm, or inches?"
+2. Default to one topic per response: unit; left and right sides; top; back and
+   front; each measurement topic; then each wardrobe choice. Never combine the
+   three installation questions into one response.
+3. If the client wants to gather everything at once, adapt `assets/wardrobe-measurement-sheet.md` and let them return the completed sheet. Ask only about missing or conflicting answers afterward.
+4. Establish how the wardrobe will sit before asking for dimensions: freestanding or fitted, walls at the left or right, whether it reaches the ceiling, and whether its front is open.
+5. Then ask about the wardrobe itself: number of sections, whether they should be equal or which should be wider or narrower, fit at the walls and ceiling, base height, door spacing, and chosen material thicknesses.
+6. Translate the answers into the global specification privately. Do not expose filenames, schema fields, width shares, formulas, calculator commands, validation terminology, or the fitting allowance unless the client asks.
+7. Give the client calculated cabinet sizes and positions, not the internal values used to derive them.
 
 ## Allowed project sources
 
@@ -29,24 +32,31 @@ Accept measurements only from the user's messages, a source the user identifies,
 - Interpret left and right as the user's left and right while facing the wardrobe.
 - Measure horizontal positions from the inside-left edge of the available space.
 - Measure ceiling heights upward from the finished floor.
-- Record one unit in `units`: `mm` or `cm`.
+- Record one unit in `units`: `mm`, `cm`, or `in` for inches.
 - Preserve the unit the user supplied when all values use that unit. Let the calculator normalize calculations to millimetres.
 - Ask for clarification when the user mixes units ambiguously.
 
 ## Required measured space
 
-Collect the raw readings without subtracting any allowance:
+Collect the raw readings without subtracting any allowance. The installation
+arrangement decides how many readings are required:
 
-1. `width_measurements`: wall-to-wall width near the floor, halfway up, and near the ceiling.
-2. `depth_measurements`: back-wall to intended wardrobe-front depth at the left, centre, and right.
-3. `height_measurements`: finished-floor to ceiling height at the left, centre, right, and every place where a flat, sloped, or stepped section begins or ends.
+1. `width_measurements`: if both sides are fixed, record `bottom`, `middle`, and
+   `top`; otherwise record one `single` width from the fixed or intended left edge
+   to the fixed or intended right edge.
+2. `depth_measurements`: if both back and front are fixed, record `left`, `middle`,
+   and `right`; otherwise record one `single` depth from the back to the intended
+   wardrobe front.
+3. `height_measurements`: if the wardrobe reaches the ceiling, record at least
+   left, centre, and right plus every place where a flat, sloped, or stepped section
+   begins or ends. If it is open above, record one intended height.
 
 Each height measurement contains:
 
 - `distance_from_left`: horizontal distance from the inside-left edge;
 - `height_from_floor`: vertical height from the finished floor.
 
-Translate clear descriptions directly:
+Translate ceiling descriptions directly when height is enclosed:
 
 - A flat ceiling still requires left, centre, and right readings; preserve small differences rather than flattening them.
 - One continuous slope requires at least left, centre, and right readings.
@@ -70,7 +80,9 @@ Store the template's positive `fit_allowance` value of `2 mm`. Subtract it once 
 - enclosed height uses the measured or interpolated height minus 2 mm before base height and chosen ceiling clearance are removed;
 - a dimension that is not enclosed uses its smallest or measured value without the 2 mm subtraction.
 
-This is built-in AIkea fitting knowledge, not a client design question. If the project uses centimetres, store the same allowance as `0.2 cm`.
+This is built-in AIkea fitting knowledge, not a client design question. If the
+project uses centimetres, store the same allowance as `0.2 cm`. If it uses inches,
+store it as `0.0787401575 in`.
 
 ## Required internal design values
 
@@ -123,7 +135,8 @@ Use `assets/aikea.yaml` as the exact schema.
 - Update an existing file in place and preserve values the user did not change.
 - Fill only user-supplied measured facts and confirmed shared design settings.
 - Keep height measurements in their measured left-to-right order.
-- Preserve all three width and depth measurements instead of replacing them with the smallest value.
+- Preserve every supplied width and depth measurement. Store `single` for a
+  one-reading open dimension and the three named readings for an enclosed dimension.
 - Record all three enclosed-dimension decisions from the client's installation description; never infer a fully enclosed dimension from one wall alone.
 - Preserve the template's 2 mm fitting allowance unless the user explicitly changes the project policy.
 - Do not add calculated cabinet dimensions to `aikea.yaml`.
@@ -136,8 +149,8 @@ Run the bundled calculator only after the checklist is complete. Require all of 
 - every required input is present and numeric;
 - all lengths and thicknesses are positive, except confirmed clearances and gaps may be zero;
 - the number of width shares equals `cabinet_count` and every share is positive;
-- three width readings and three depth readings are present;
-- at least three height measurements cover the usable width in increasing order;
+- an enclosed width or depth has three named readings, while an open width or depth has at least one reading;
+- an enclosed height has at least three measurements covering the usable width in increasing order, while an open height has at least one;
 - the 2 mm fitting allowance leaves every enclosed dimension positive;
 - clearances and cabinet gaps leave positive cabinet width;
 - the base and ceiling clearance leave positive cabinet height;

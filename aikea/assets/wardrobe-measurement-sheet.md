@@ -6,48 +6,56 @@ Project:
 
 Date measured:
 
-Unit: mm / cm
+Unit: mm / cm / inches
+
+## How the wardrobe will sit
+
+Mark or describe what applies before measuring. This tells you where one reading
+is enough and where three are needed.
+
+- Left side: wall / open
+- Right side: wall / open
+- Top: reaches the ceiling / open above
+- Front: open / fixed boundary
+- Freestanding or other details:
 
 ## Width
 
-Measure wall to wall at three heights.
+If both sides are fixed, measure at all three heights. If either side is open,
+take one reading from the starting edge to the intended wardrobe edge.
 
 | Position | Measurement |
 | --- | ---: |
+| Single reading when a side is open | |
 | Near the floor | |
 | Halfway up | |
 | Near the ceiling | |
 
 ## Depth
 
-Measure from the back wall to the intended wardrobe front at three positions.
+If both back and front are fixed, measure at all three positions. If the front
+is open, take one reading from the back to the intended wardrobe front.
 
 | Position | Measurement |
 | --- | ---: |
+| Single reading when the front is open | |
 | Left | |
 | Centre | |
 | Right | |
 
 ## Height
 
-Measure from the finished floor to the ceiling at the left, centre, and right. Record each position's distance from the left wall. Add a row wherever a flat, slope, or step begins or ends.
+If the wardrobe reaches the ceiling, measure at the left, centre, and right.
+Record each position's distance from the left edge and add a row wherever a flat,
+slope, or step begins or ends. If it is open above, record one intended height.
 
 | Distance from left wall | Floor-to-ceiling height |
 | ---: | ---: |
+| Single intended height when open above | |
 | 0 | |
 | Centre: | |
 | Right edge: | |
 | Additional change: | |
-
-## How the wardrobe will sit
-
-Circle or describe what applies:
-
-- Left side: wall / open
-- Right side: wall / open
-- Top: reaches the ceiling / open above
-- Depth: open at the front / fixed boundary at both back and front
-- Freestanding or other details:
 
 ## Notes
 

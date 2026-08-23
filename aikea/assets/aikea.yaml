@@ -1,15 +1,9 @@
-schema_version: 3
+schema_version: 4
 units: mm
 
 measured_space:
-  width_measurements:
-    bottom: null
-    middle: null
-    top: null
-  depth_measurements:
-    left: null
-    middle: null
-    right: null
+  width_measurements: {}
+  depth_measurements: {}
   height_measurements: []
 
 design_settings:

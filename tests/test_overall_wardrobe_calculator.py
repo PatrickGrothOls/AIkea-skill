@@ -93,6 +93,8 @@ class TestOverallWardrobeCalculator:
             "depth": False,
             "height": True,
         }
+        data["measured_space"]["width_measurements"] = {"single": 3000}
+        data["measured_space"]["depth_measurements"] = {"single": 600}
 
         result = self.project.calculate(data)
 
@@ -103,3 +105,27 @@ class TestOverallWardrobeCalculator:
         assert result.usable_depth_mm == 600.0
         assert [cabinet.width_mm for cabinet in result.cabinets] == [1495.0, 1495.0]
         assert [cabinet.left_height_mm for cabinet in result.cabinets] == [2298.0, 2298.0]
+
+    def test_open_dimensions_calculate_from_one_measurement_each(self) -> None:
+        data = self.project.load_flat()
+        data["design_settings"]["enclosed_dimensions"] = {
+            "width": False,
+            "depth": False,
+            "height": False,
+        }
+        data["measured_space"]["width_measurements"] = {"single": 3000}
+        data["measured_space"]["depth_measurements"] = {"single": 600}
+        data["measured_space"]["height_measurements"] = [
+            {"distance_from_left": 0, "height_from_floor": 2400}
+        ]
+
+        result = self.project.calculate(data)
+
+        assert [cabinet.left_height_mm for cabinet in result.cabinets] == [
+            2300.0,
+            2300.0,
+        ]
+        assert [cabinet.right_height_mm for cabinet in result.cabinets] == [
+            2300.0,
+            2300.0,
+        ]

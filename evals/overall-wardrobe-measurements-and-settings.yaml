@@ -29,8 +29,12 @@ scoring:
     - Mention aikea.yaml, the global specification, schemas, field names, calculators, validation mechanics, or the built-in fitting allowance unless the client asks for technical details.
     - Present a raw data-entry template unless the client asks for a site measurement sheet.
     - Ask about more than one missing measurement or design topic in a response unless providing the requested site measurement sheet.
+    - Combine the side, top, and depth installation questions in one response.
     - Subtract the fitting allowance from a dimension that is not enclosed at both ends.
     - Treat one wall and one open side as an enclosed width.
+    - Ask for three readings of a dimension after the client has established that it has an open end.
+    - Ask for only one reading of a dimension enclosed at both ends.
+    - Begin a new-project conversation with a blunt data request instead of a warm, service-minded acknowledgement.
     - Continue into another design stage instead of stopping after the checked overall results.
 
 cases:
@@ -40,9 +44,8 @@ cases:
       - user: >-
           Design a freestanding two-door wardrobe with open space at both sides,
           above it, and in front. All measurements are in centimetres.
-          The wall widths at the bottom, middle, and top are all 240. The available
-          depths at the left, centre, and right are all 60. Floor-to-ceiling height is
-          220 at the left edge, centre, and right edge, at distances 0, 120, and 240.
+          The intended overall width is 240, the depth from the back to the front is
+          60, and the intended wardrobe height is 220.
           Use two equal cabinets, 1 cm clearance on both sides and above, a 0.2 cm
           cabinet gap, a 10 cm base, a 0.2 cm door gap, 1.8 cm cabinet and door
           panels, and a 0.6 cm back panel.
@@ -54,15 +57,13 @@ cases:
           response_forbidden:
             - Ask a follow-up measurement question.
           expected_aikea_yaml:
-            schema_version: 3
+            schema_version: 4
             units: cm
             measured_space:
-              width_measurements: {bottom: 240, middle: 240, top: 240}
-              depth_measurements: {left: 60, middle: 60, right: 60}
+              width_measurements: {single: 240}
+              depth_measurements: {single: 60}
               height_measurements:
                 - {distance_from_left: 0, height_from_floor: 220}
-                - {distance_from_left: 120, height_from_floor: 220}
-                - {distance_from_left: 240, height_from_floor: 220}
             design_settings:
               fit_allowance: 0.2
               enclosed_dimensions: {width: false, depth: false, height: false}
@@ -99,8 +100,8 @@ cases:
       - user: I want to build a built-in wardrobe for a bedroom wall. I have not measured anything yet. Help me start.
         answer_key:
           response_required:
-            - Sound like a carpenter helping the client begin measuring the space.
-            - Ask which unit the client will use.
+            - Warmly acknowledge that the client is starting a wardrobe project.
+            - Ask which unit the client will use and offer centimetres, millimetres, and inches.
           response_forbidden:
             - Ask for dimensions or wardrobe choices in the same response.
             - Create a project file before any project value has been supplied.
@@ -109,22 +110,46 @@ cases:
         answer_key:
           response_required:
             - Retain millimetres as the unit.
+            - Ask only whether the wardrobe has fixed walls at the left and right or an open side.
+          response_forbidden:
+            - Ask about the top, depth, or any dimensions in the same response.
+          expected_project_state: incomplete_or_absent
+      - user: It will fit between both side walls.
+        answer_key:
+          response_required:
+            - Retain that width is fixed at both ends.
+            - Ask only whether the wardrobe reaches the ceiling or has open space above it.
+          response_forbidden:
+            - Ask about depth or any dimensions in the same response.
+          expected_project_state: incomplete_or_absent
+      - user: It will go from floor to ceiling.
+        answer_key:
+          response_required:
+            - Retain that height is fixed between the floor and ceiling.
+            - Ask only whether the wardrobe is open at the front or fixed between back and front boundaries.
+          response_forbidden:
+            - Ask for any dimensions in the same response.
+          expected_project_state: incomplete_or_absent
+      - user: It is against the back wall and open at the front.
+        answer_key:
+          response_required:
+            - Retain that depth is open at the front.
             - Ask for wall-to-wall widths near the floor, halfway up, and near the ceiling.
           response_forbidden:
-            - Ask for depth, height, or wardrobe choices yet.
+            - Mention internal enclosed-dimension fields or the fitting allowance.
           expected_project_state: incomplete_or_absent
       - user: The bottom, middle, and top widths are all 2730 mm.
         answer_key:
           response_required:
             - Retain all three width readings.
-            - Ask for available depth at the left, centre, and right.
+            - Ask for one depth from the back wall to the intended wardrobe front.
           response_forbidden:
-            - Ask for height or wardrobe choices yet.
+            - Ask for three depth readings when the front is open.
           expected_project_state: incomplete_or_absent
-      - user: Left, centre, and right depths are all 620 mm.
+      - user: Make the wardrobe 620 mm deep from the back wall to the front.
         answer_key:
           response_required:
-            - Retain all three depth readings.
+            - Retain the single depth reading.
             - Ask for floor-to-ceiling heights at the left, centre, and right with their distances from the left edge, plus any place the ceiling changes.
           response_forbidden:
             - Ask for wardrobe choices yet.
@@ -133,17 +158,9 @@ cases:
         answer_key:
           response_required:
             - Retain all three heights and recognize that the measured space is complete.
-            - Ask how the wardrobe will sit between walls, below the ceiling, and in depth.
-          response_forbidden:
-            - Ask about the section layout or other choices in the same response.
-          expected_project_state: incomplete_or_absent
-      - user: It will fit between both side walls and from floor to ceiling. Its front is open.
-        answer_key:
-          response_required:
-            - Retain that width and height are enclosed while depth is open at the front.
             - Ask how many wardrobe sections the client wants.
           response_forbidden:
-            - Mention the fitting allowance or internal enclosed-dimension fields.
+            - Ask again how the wardrobe will sit.
           expected_project_state: incomplete_or_absent
       - user: Three sections.
         answer_key:
@@ -200,11 +217,11 @@ cases:
             - Ask for a value supplied in an earlier turn.
             - Begin later cabinet or construction design.
           expected_aikea_yaml:
-            schema_version: 3
+            schema_version: 4
             units: mm
             measured_space:
               width_measurements: {bottom: 2730, middle: 2730, top: 2730}
-              depth_measurements: {left: 620, middle: 620, right: 620}
+              depth_measurements: {single: 620}
               height_measurements:
                 - {distance_from_left: 0, height_from_floor: 2400}
                 - {distance_from_left: 1365, height_from_floor: 2400}
@@ -247,7 +264,9 @@ cases:
         answer_key:
           response_required:
             - Provide a client-facing site sheet adapted from the skill asset.
-            - Include unit and three named readings each for width, depth, and height.
+            - Put the installation arrangement before the measurement tables.
+            - Explain that a dimension fixed at both ends needs three readings and a dimension with an open end needs one.
+            - Include centimetres, millimetres, and inches as unit choices.
             - Provide room for height change points and site notes.
             - Include plain choices for walls, open sides, ceiling, and whether depth is open at the front.
             - Tell the client to record actual measurements without subtracting fitting room.
@@ -256,8 +275,8 @@ cases:
             - Claim any project measurement is known.
           expected_project_state: absent
       - user: >-
-          I used mm. Width is 3000 at the bottom, middle, and top. Depth is 600 at
-          the left, centre, and right. Heights are 2400 at 0, 1500, and 3000 from the
+          I used mm. Width is 3000 at the bottom, middle, and top. The single depth
+          from the back to the intended front is 600. Heights are 2400 at 0, 1500, and 3000 from the
           left, with no other changes. It is wall-to-wall and floor-to-ceiling, with
           an open front. Make three equal cabinets with zero room at the
           left and right walls and zero gaps between cabinets, 10 mm below the ceiling,
@@ -270,11 +289,11 @@ cases:
           response_forbidden:
             - Replace an intentional zero with a typical clearance or gap.
           expected_aikea_yaml:
-            schema_version: 3
+            schema_version: 4
             units: mm
             measured_space:
               width_measurements: {bottom: 3000, middle: 3000, top: 3000}
-              depth_measurements: {left: 600, middle: 600, right: 600}
+              depth_measurements: {single: 600}
               height_measurements:
                 - {distance_from_left: 0, height_from_floor: 2400}
                 - {distance_from_left: 1500, height_from_floor: 2400}
@@ -332,7 +351,7 @@ cases:
             - Average the uneven readings.
             - Ask the client to calculate each cabinet width.
           expected_aikea_yaml:
-            schema_version: 3
+            schema_version: 4
             units: mm
             measured_space:
               width_measurements: {bottom: 2600, middle: 2597, top: 2595}
@@ -389,7 +408,7 @@ cases:
           response_forbidden:
             - Replace the slope with an average or minimum height.
           expected_aikea_yaml:
-            schema_version: 3
+            schema_version: 4
             units: mm
             measured_space:
               width_measurements: {bottom: 3200, middle: 3200, top: 3200}
@@ -448,7 +467,7 @@ cases:
           response_forbidden:
             - Reduce the ceiling to one generic slope.
           expected_aikea_yaml:
-            schema_version: 3
+            schema_version: 4
             units: mm
             measured_space:
               width_measurements: {bottom: 3000, middle: 3000, top: 3000}
@@ -515,7 +534,7 @@ cases:
           response_forbidden:
             - Reduce or reorder the measured height readings.
           expected_aikea_yaml:
-            schema_version: 3
+            schema_version: 4
             units: mm
             measured_space:
               width_measurements: {bottom: 3600, middle: 3600, top: 3600}
@@ -576,7 +595,7 @@ cases:
           response_forbidden:
             - Continue into another design stage.
           expected_aikea_yaml:
-            schema_version: 3
+            schema_version: 4
             units: mm
             measured_space:
               width_measurements: {bottom: 6000, middle: 6000, top: 6000}

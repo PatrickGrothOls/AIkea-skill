@@ -5,8 +5,9 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any
 
+from enclosed_dimensions import EnclosedDimensions
 from height_measurements import HeightMeasurement, HeightMeasurementReader
-from three_point_measurements import ThreePointMeasurementReader
+from horizontal_measurements import HorizontalMeasurementReader
 
 
 @dataclass(frozen=True)
@@ -31,16 +32,18 @@ class OverallSpaceMeasurementReader:
         self,
         data: dict[str, Any],
         scale: float,
+        enclosed_dimensions: EnclosedDimensions,
         width_fitting_allowance_mm: float,
         problems: list[str],
     ) -> OverallSpaceMeasurements:
         measured_space = data.get("measured_space")
         if not isinstance(measured_space, dict):
             measured_space = {}
-        reader = ThreePointMeasurementReader()
+        reader = HorizontalMeasurementReader()
         widths = reader.read(
             measured_space.get("width_measurements"),
             "measured_space.width_measurements",
+            enclosed_dimensions.width,
             ("bottom", "middle", "top"),
             scale,
             problems,
@@ -48,6 +51,7 @@ class OverallSpaceMeasurementReader:
         depths = reader.read(
             measured_space.get("depth_measurements"),
             "measured_space.depth_measurements",
+            enclosed_dimensions.depth,
             ("left", "middle", "right"),
             scale,
             problems,
@@ -59,6 +63,7 @@ class OverallSpaceMeasurementReader:
         heights = HeightMeasurementReader().read(
             measured_space.get("height_measurements"),
             usable_width,
+            enclosed_dimensions.height,
             scale,
             problems,
         )

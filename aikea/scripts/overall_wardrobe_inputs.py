@@ -37,6 +37,7 @@ class OverallWardrobeInputReader:
         space = OverallSpaceMeasurementReader().read(
             data,
             scale,
+            settings.enclosed_dimensions,
             allowances.width_mm,
             problems,
         )
@@ -45,13 +46,13 @@ class OverallWardrobeInputReader:
         return OverallWardrobeInputs(space=space, settings=settings)
 
     def _check_schema_version(self, data: dict[str, Any], problems: list[str]) -> None:
-        if type(data.get("schema_version")) is not int or data["schema_version"] != 3:
-            problems.append("schema_version must be 3")
+        if type(data.get("schema_version")) is not int or data["schema_version"] != 4:
+            problems.append("schema_version must be 4")
 
     def _read_unit_scale(self, data: dict[str, Any], problems: list[str]) -> float:
         unit = data.get("units")
-        scales = {"mm": 1.0, "cm": 10.0}
+        scales = {"mm": 1.0, "cm": 10.0, "in": 25.4}
         if unit not in scales:
-            problems.append("units must be either 'mm' or 'cm'")
+            problems.append("units must be 'mm', 'cm', or 'in'")
             return 1.0
         return scales[unit]

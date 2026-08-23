@@ -19,12 +19,19 @@ class HeightMeasurementReader:
         self,
         raw_measurements: Any,
         required_width_mm: float,
+        is_enclosed: bool,
         scale: float,
         problems: list[str],
     ) -> tuple[HeightMeasurement, ...]:
         path = "measured_space.height_measurements"
-        if not isinstance(raw_measurements, list) or len(raw_measurements) < 3:
-            problems.append(f"{path} must contain at least three measurements")
+        minimum_count = 3 if is_enclosed else 1
+        if (
+            not isinstance(raw_measurements, list)
+            or len(raw_measurements) < minimum_count
+        ):
+            count = "at least three" if is_enclosed else "at least one"
+            suffix = "s" if is_enclosed else ""
+            problems.append(f"{path} must contain {count} measurement{suffix}")
             return ()
         measurements: list[HeightMeasurement] = []
         for index, raw in enumerate(raw_measurements):
@@ -70,6 +77,8 @@ class HeightMeasurementReader:
         problems: list[str],
     ) -> None:
         if len(measurements) != len(raw_measurements):
+            return
+        if len(measurements) == 1:
             return
         distances = [measurement.distance_from_left_mm for measurement in measurements]
         if distances[0] != 0 or distances[-1] < required_width_mm:

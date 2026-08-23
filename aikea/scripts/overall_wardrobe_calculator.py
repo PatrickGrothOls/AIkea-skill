@@ -149,6 +149,8 @@ class OverallWardrobeCalculator:
     def _height_at(
         self, measurements: tuple[HeightMeasurement, ...], position_mm: float
     ) -> float:
+        if len(measurements) == 1:
+            return measurements[0].height_from_floor_mm
         for left, right in zip(measurements, measurements[1:]):
             if left.distance_from_left_mm <= position_mm <= right.distance_from_left_mm:
                 run = right.distance_from_left_mm - left.distance_from_left_mm
