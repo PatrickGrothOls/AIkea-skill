@@ -46,8 +46,8 @@ class OverallWardrobeInputReader:
         return OverallWardrobeInputs(space=space, settings=settings)
 
     def _check_schema_version(self, data: dict[str, Any], problems: list[str]) -> None:
-        if type(data.get("schema_version")) is not int or data["schema_version"] != 5:
-            problems.append("schema_version must be 5")
+        if type(data.get("schema_version")) is not int or data["schema_version"] != 6:
+            problems.append("schema_version must be 6")
 
     def _read_unit_scale(self, data: dict[str, Any], problems: list[str]) -> float:
         unit = data.get("units")

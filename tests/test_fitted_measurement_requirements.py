@@ -17,6 +17,7 @@ class TestFittedMeasurementRequirements:
         data = self.project.load_flat()
         data["design_settings"]["fitted_dimensions"] = {
             "width": False,
+            "depth": False,
             "height": False,
         }
         data["measured_space"]["width_measurements"] = {"single": 3000}
@@ -47,11 +48,11 @@ class TestFittedMeasurementRequirements:
         with pytest.raises(OverallWardrobeInputError, match="at least three"):
             OverallWardrobeInputReader().read(data)
 
-    def test_fitted_dimensions_do_not_include_depth(self) -> None:
+    def test_flush_depth_requires_three_measurements(self) -> None:
         data = self.project.load_flat()
         data["design_settings"]["fitted_dimensions"]["depth"] = True
 
-        with pytest.raises(OverallWardrobeInputError, match="must not include depth"):
+        with pytest.raises(OverallWardrobeInputError, match="depth_measurements.left"):
             OverallWardrobeInputReader().read(data)
 
     def test_inches_are_normalized_to_millimetres(self) -> None:

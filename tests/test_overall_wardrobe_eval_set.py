@@ -76,20 +76,30 @@ class TestOverallWardrobeEvalSet:
         assert "one question" in case["turns"][2]["answer_key"]["response_required"][
             1
         ]
-        assert "one depth" in case["turns"][4]["answer_key"]["response_required"][1]
+        assert "finish flush" in case["turns"][3]["answer_key"]["response_required"][1]
+        assert "wall-to-wall widths" in case["turns"][4]["answer_key"][
+            "response_required"
+        ][1]
+        assert "one depth" in case["turns"][5]["answer_key"]["response_required"][1]
         final_yaml = case["turns"][-1]["answer_key"]["expected_aikea_yaml"]
         assert final_yaml["measured_space"]["depth_measurements"] == {"single": 620}
 
-    def test_every_case_keeps_the_wardrobe_front_open(self) -> None:
+    def test_every_case_uses_the_depth_count_required_by_its_flush_line(self) -> None:
         for case in self._load_eval_set()["cases"]:
             final_yaml = case["turns"][-1]["answer_key"]["expected_aikea_yaml"]
             assert set(final_yaml["design_settings"]["fitted_dimensions"]) == {
                 "width",
+                "depth",
                 "height",
             }
-            assert set(final_yaml["measured_space"]["depth_measurements"]) == {
-                "single"
-            }
+            expected_positions = (
+                {"left", "middle", "right"}
+                if final_yaml["design_settings"]["fitted_dimensions"]["depth"]
+                else {"single"}
+            )
+            assert set(final_yaml["measured_space"]["depth_measurements"]) == (
+                expected_positions
+            )
 
     def _load_eval_set(self) -> dict:
         return yaml.safe_load(self._EVAL_PATH.read_text(encoding="utf-8"))

@@ -1,4 +1,4 @@
-"""Scope: Read one or three horizontal space measurements based on enclosure."""
+"""Scope: Read one or three horizontal measurements based on required fit."""
 
 from __future__ import annotations
 
@@ -12,18 +12,18 @@ class HorizontalMeasurementReader:
         self,
         raw_measurements: Any,
         path: str,
-        is_enclosed: bool,
+        is_fitted: bool,
         positions: tuple[str, str, str],
         scale: float,
         problems: list[str],
     ) -> tuple[float, ...]:
         if not isinstance(raw_measurements, dict):
             requirement = (
-                ", ".join(positions) if is_enclosed else "a single measurement"
+                ", ".join(positions) if is_fitted else "a single measurement"
             )
             problems.append(f"{path} must contain {requirement}")
             return ()
-        if not is_enclosed and "single" in raw_measurements:
+        if not is_fitted and "single" in raw_measurements:
             return self.read_single(raw_measurements, path, scale, problems)
         values = [
             self._read_positive_number(

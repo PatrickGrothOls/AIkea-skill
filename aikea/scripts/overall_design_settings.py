@@ -5,13 +5,13 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any
 
-from fitted_front_dimensions import FittedFrontDimensionReader, FittedFrontDimensions
+from fitted_dimensions import FittedDimensionReader, FittedDimensions
 
 
 @dataclass(frozen=True)
 class OverallDesignSettings:
     fit_allowance_mm: float
-    fitted_dimensions: FittedFrontDimensions
+    fitted_dimensions: FittedDimensions
     cabinet_count: int
     cabinet_width_shares: tuple[float, ...]
     left_clearance_mm: float
@@ -52,7 +52,7 @@ class OverallDesignSettingReader:
         shares = self._read_width_shares(data, cabinet_count, problems)
         return OverallDesignSettings(
             fit_allowance_mm=numbers["design_settings.fit_allowance"],
-            fitted_dimensions=FittedFrontDimensionReader().read(data, problems),
+            fitted_dimensions=FittedDimensionReader().read(data, problems),
             cabinet_count=cabinet_count,
             cabinet_width_shares=shares,
             left_clearance_mm=numbers["design_settings.cabinet_run.left_clearance"],

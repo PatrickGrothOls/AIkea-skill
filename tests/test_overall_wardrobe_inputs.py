@@ -38,7 +38,7 @@ class TestOverallWardrobeInputs:
         with pytest.raises(OverallWardrobeInputError, match="cover the usable width"):
             OverallWardrobeInputReader().read(data)
 
-    def test_each_enclosed_dimension_must_be_confirmed(self) -> None:
+    def test_each_fitted_dimension_must_be_confirmed(self) -> None:
         data = self.project.load_flat()
         data["design_settings"]["fitted_dimensions"]["width"] = None
         with pytest.raises(OverallWardrobeInputError) as raised:

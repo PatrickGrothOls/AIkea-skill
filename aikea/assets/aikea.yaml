@@ -1,4 +1,4 @@
-schema_version: 5
+schema_version: 6
 units: mm
 
 measured_space:
@@ -10,6 +10,7 @@ design_settings:
   fit_allowance: 2
   fitted_dimensions:
     width: null
+    depth: null
     height: null
   cabinet_run:
     cabinet_count: null

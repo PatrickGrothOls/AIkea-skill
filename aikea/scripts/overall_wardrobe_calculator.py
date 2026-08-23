@@ -8,7 +8,7 @@ from overall_wardrobe_results import CabinetOverallSize, OverallWardrobeResult
 
 
 class OverallWardrobeCalculator:
-    """Apply enclosure-specific fitting room and distribute the cabinet run."""
+    """Apply dimension-specific fitting room and distribute the cabinet run."""
 
     def calculate(self, inputs: OverallWardrobeInputs) -> OverallWardrobeResult:
         space = inputs.space

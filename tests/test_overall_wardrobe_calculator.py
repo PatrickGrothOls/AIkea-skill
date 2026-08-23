@@ -86,6 +86,7 @@ class TestOverallWardrobeCalculator:
         data = self.project.load_flat()
         data["design_settings"]["fitted_dimensions"] = {
             "width": False,
+            "depth": False,
             "height": True,
         }
         data["measured_space"]["width_measurements"] = {"single": 3000}
@@ -101,10 +102,28 @@ class TestOverallWardrobeCalculator:
         assert [cabinet.width_mm for cabinet in result.cabinets] == [1495.0, 1495.0]
         assert [cabinet.left_height_mm for cabinet in result.cabinets] == [2298.0, 2298.0]
 
+    def test_flush_depth_uses_smallest_reading_and_fitting_room(self) -> None:
+        data = self.project.load_flat()
+        data["design_settings"]["fitted_dimensions"]["depth"] = True
+        data["measured_space"]["depth_measurements"] = {
+            "left": 600,
+            "middle": 598,
+            "right": 599,
+        }
+
+        result = self.project.calculate(data)
+
+        assert result.minimum_measured_depth_mm == 598.0
+        assert result.depth_fitting_allowance_mm == 2.0
+        assert result.usable_depth_mm == 596.0
+        assert result.cabinet_depth_mm == 578.0
+        assert result.inside_depth_mm == 572.0
+
     def test_open_dimensions_calculate_from_one_measurement_each(self) -> None:
         data = self.project.load_flat()
         data["design_settings"]["fitted_dimensions"] = {
             "width": False,
+            "depth": False,
             "height": False,
         }
         data["measured_space"]["width_measurements"] = {"single": 3000}

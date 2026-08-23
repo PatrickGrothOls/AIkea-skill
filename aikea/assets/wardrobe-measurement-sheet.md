@@ -30,6 +30,8 @@ Is the wardrobe fitted against the room on every labelled edge? Yes / No
 
 If no, which letters are not fitted?
 
+Must the wardrobe front finish flush with a wall or another fixed line? Yes / No
+
 ## Width
 
 If both sides are fixed, measure at all three heights. If either side is open,
@@ -44,11 +46,16 @@ take one reading from the starting edge to the intended wardrobe edge.
 
 ## Depth
 
-Take one reading from the back to the intended wardrobe front.
+If the wardrobe front can stop at a freely chosen depth, take one intended-depth
+reading. If it must finish flush with a fixed line, measure from the back boundary
+to that line at the left, centre, and right.
 
 | Position | Measurement |
 | --- | ---: |
-| Intended depth | |
+| Single intended depth when freely chosen | |
+| Left when finishing flush | |
+| Centre when finishing flush | |
+| Right when finishing flush | |
 
 ## Height
 

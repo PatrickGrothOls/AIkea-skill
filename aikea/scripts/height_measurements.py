@@ -19,18 +19,18 @@ class HeightMeasurementReader:
         self,
         raw_measurements: Any,
         required_width_mm: float,
-        is_enclosed: bool,
+        is_fitted: bool,
         scale: float,
         problems: list[str],
     ) -> tuple[HeightMeasurement, ...]:
         path = "measured_space.height_measurements"
-        minimum_count = 3 if is_enclosed else 1
+        minimum_count = 3 if is_fitted else 1
         if (
             not isinstance(raw_measurements, list)
             or len(raw_measurements) < minimum_count
         ):
-            count = "at least three" if is_enclosed else "at least one"
-            suffix = "s" if is_enclosed else ""
+            count = "at least three" if is_fitted else "at least one"
+            suffix = "s" if is_fitted else ""
             problems.append(f"{path} must contain {count} measurement{suffix}")
             return ()
         measurements: list[HeightMeasurement] = []

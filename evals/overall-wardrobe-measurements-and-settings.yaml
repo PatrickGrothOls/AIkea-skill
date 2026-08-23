@@ -31,11 +31,11 @@ scoring:
     - Ask about more than one missing measurement or design topic in a response unless providing the requested site measurement sheet.
     - Ask how the wardrobe is fitted before establishing and labelling its front-view shape.
     - Split the labelled-edge fit question into separate questions about individual sides.
-    - Ask whether the wardrobe front is enclosed or fixed; wardrobe fronts are open.
+    - Ask whether the wardrobe front is enclosed; it remains open even when its finished face must align with a fixed line.
     - Subtract the fitting allowance from a dimension that is not fitted at both ends.
-    - Treat one wall and one open side as an enclosed width.
-    - Ask for three readings of a dimension after the client has established that it has an open end.
-    - Ask for only one reading of a dimension fitted at both ends.
+    - Treat one wall and one open side as a fitted width.
+    - Ask for three width or height readings after the client established an open end, or three depth readings after establishing a freely chosen depth.
+    - Ask for only one width or height reading when fitted at both ends, or one depth reading when the front must finish at a fixed flush line.
     - Begin a new-project conversation with a blunt data request instead of a warm, service-minded acknowledgement.
     - Continue into another design stage instead of stopping after the checked overall results.
 
@@ -47,7 +47,8 @@ cases:
           Design a rectangular freestanding two-door wardrobe with open space at both sides,
           above it, and in front. All measurements are in centimetres.
           The intended overall width is 240, the depth from the back to the front is
-          60, and the intended wardrobe height is 220.
+          60, the front does not need to align with a fixed line, and the intended
+          wardrobe height is 220.
           Use two equal cabinets, 1 cm clearance on both sides and above, a 0.2 cm
           cabinet gap, a 10 cm base, a 0.2 cm door gap, 1.8 cm cabinet and door
           panels, and a 0.6 cm back panel.
@@ -59,7 +60,7 @@ cases:
           response_forbidden:
             - Ask a follow-up measurement question.
           expected_aikea_yaml:
-            schema_version: 5
+            schema_version: 6
             units: cm
             measured_space:
               width_measurements: {single: 240}
@@ -68,7 +69,7 @@ cases:
                 - {distance_from_left: 0, height_from_floor: 220}
             design_settings:
               fit_allowance: 0.2
-              fitted_dimensions: {width: false, height: false}
+              fitted_dimensions: {width: false, depth: false, height: false}
               cabinet_run:
                 cabinet_count: 2
                 cabinet_width_shares: [1, 1]
@@ -129,10 +130,18 @@ cases:
         answer_key:
           response_required:
             - Retain that the left, top, right, and floor edges are all fitted.
-            - Ask for wall-to-wall widths near the floor, halfway up, and near the ceiling.
+            - Ask only whether the wardrobe front must finish flush with a wall or another fixed line.
           response_forbidden:
             - Ask whether the wardrobe front is enclosed.
             - Mention internal fitted-dimension fields or the fitting allowance.
+          expected_project_state: incomplete_or_absent
+      - user: No, the wardrobe can use a freely chosen depth.
+        answer_key:
+          response_required:
+            - Retain that the depth is freely chosen.
+            - Ask for wall-to-wall widths near the floor, halfway up, and near the ceiling.
+          response_forbidden:
+            - Ask for the depth or height in the same response.
           expected_project_state: incomplete_or_absent
       - user: The bottom, middle, and top widths are all 2730 mm.
         answer_key:
@@ -140,7 +149,7 @@ cases:
             - Retain all three width readings.
             - Ask for one depth from the back wall to the intended wardrobe front.
           response_forbidden:
-            - Ask for three depth readings when the front is open.
+            - Ask for three depth readings after the client said the depth is freely chosen.
           expected_project_state: incomplete_or_absent
       - user: Make the wardrobe 620 mm deep from the back wall to the front.
         answer_key:
@@ -213,7 +222,7 @@ cases:
             - Ask for a value supplied in an earlier turn.
             - Begin later cabinet or construction design.
           expected_aikea_yaml:
-            schema_version: 5
+            schema_version: 6
             units: mm
             measured_space:
               width_measurements: {bottom: 2730, middle: 2730, top: 2730}
@@ -224,7 +233,7 @@ cases:
                 - {distance_from_left: 2730, height_from_floor: 2400}
             design_settings:
               fit_allowance: 2
-              fitted_dimensions: {width: true, height: true}
+              fitted_dimensions: {width: true, depth: false, height: true}
               cabinet_run:
                 cabinet_count: 3
                 cabinet_width_shares: [1, 1, 1]
@@ -266,7 +275,8 @@ cases:
             - Explain that a dimension fixed at both ends needs three readings and a dimension with an open end needs one.
             - Include centimetres, millimetres, and inches as unit choices.
             - Provide room for height change points and site notes.
-            - Include one intended depth measurement without asking whether the wardrobe front is enclosed.
+            - Ask whether the wardrobe front must finish flush with a wall or another fixed line.
+            - Include one intended-depth row for a freely chosen depth and left, centre, and right rows for a required flush depth.
             - Tell the client to record actual measurements without subtracting fitting room.
           response_forbidden:
             - Ask the client about internal representations or construction joinery.
@@ -276,7 +286,8 @@ cases:
           I used mm. Width is 3000 at the bottom, middle, and top. The single depth
           from the back to the intended front is 600. Heights are 2400 at 0, 1500, and 3000 from the
           left, with no other changes. The front-view shape is rectangle A-D and all
-          four labelled edges are fitted. Make three equal cabinets with zero room at the
+          four labelled edges are fitted. The front does not need to finish at a fixed
+          flush line. Make three equal cabinets with zero room at the
           left and right walls and zero gaps between cabinets, 10 mm below the ceiling,
           a 100 mm base, 2 mm door gaps, 18 mm cabinet and door panels, and a 6 mm back.
         answer_key:
@@ -287,7 +298,7 @@ cases:
           response_forbidden:
             - Replace an intentional zero with a typical clearance or gap.
           expected_aikea_yaml:
-            schema_version: 5
+            schema_version: 6
             units: mm
             measured_space:
               width_measurements: {bottom: 3000, middle: 3000, top: 3000}
@@ -298,7 +309,7 @@ cases:
                 - {distance_from_left: 3000, height_from_floor: 2400}
             design_settings:
               fit_allowance: 2
-              fitted_dimensions: {width: true, height: true}
+              fitted_dimensions: {width: true, depth: false, height: true}
               cabinet_run:
                 cabinet_count: 3
                 cabinet_width_shares: [1, 1, 1]
@@ -334,7 +345,8 @@ cases:
           All values are mm. The front-view outline is rectangular: A is the fitted
           left edge, B is the fitted top, C is the open right edge, and D is the fitted
           floor edge. Widths at the bottom, middle, and top are 2600, 2597,
-          and 2595. The intended depth is 598.
+          and 2595. The intended depth is 598 and does not need to align with a
+          fixed line.
           Floor-to-ceiling heights are 2350 at distances 0, 1297.5, and 2595 from
           the left. I want three cabinets: the left and middle should match and the
           right should be half their width. Use 5 mm at each side, 2 mm between
@@ -350,7 +362,7 @@ cases:
             - Average the uneven readings.
             - Ask the client to calculate each cabinet width.
           expected_aikea_yaml:
-            schema_version: 5
+            schema_version: 6
             units: mm
             measured_space:
               width_measurements: {bottom: 2600, middle: 2597, top: 2595}
@@ -361,7 +373,7 @@ cases:
                 - {distance_from_left: 2595, height_from_floor: 2350}
             design_settings:
               fit_allowance: 2
-              fitted_dimensions: {width: false, height: true}
+              fitted_dimensions: {width: false, depth: false, height: true}
               cabinet_run:
                 cabinet_count: 3
                 cabinet_width_shares: [1, 1, 0.5]
@@ -395,7 +407,7 @@ cases:
     turns:
       - user: >-
           All measurements are mm. Width is 3200 at the bottom, middle, and top.
-          The intended depth is 650. Floor-to-ceiling heights are
+          The intended depth is 650 and can stop freely. Floor-to-ceiling heights are
           2600 at 0 from the left, 2280 at 1600, and 1960 at 3200, forming one straight
           slope. The run is between both side walls and reaches the ceiling; its front
           is open. Use four equal cabinets, no side room or cabinet gaps, 20 mm above,
@@ -407,7 +419,7 @@ cases:
           response_forbidden:
             - Replace the slope with an average or minimum height.
           expected_aikea_yaml:
-            schema_version: 5
+            schema_version: 6
             units: mm
             measured_space:
               width_measurements: {bottom: 3200, middle: 3200, top: 3200}
@@ -418,7 +430,7 @@ cases:
                 - {distance_from_left: 3200, height_from_floor: 1960}
             design_settings:
               fit_allowance: 2
-              fitted_dimensions: {width: true, height: true}
+              fitted_dimensions: {width: true, depth: false, height: true}
               cabinet_run:
                 cabinet_count: 4
                 cabinet_width_shares: [1, 1, 1, 1]
@@ -453,7 +465,7 @@ cases:
     turns:
       - user: >-
           All values are mm. The three width readings are 3000 and the intended
-          depth is 600. Heights are 2400 at 0 from the left, 2400 at 1000, and
+          depth is 600 with no required flush line. Heights are 2400 at 0 from the left, 2400 at 1000, and
           1200 at 3000. The ceiling is flat to 1000, then slopes to the right.
           The run is enclosed between side walls and from floor to ceiling, with an
           open front. Use three equal cabinets with no side room or cabinet gaps, 10 mm above,
@@ -466,7 +478,7 @@ cases:
           response_forbidden:
             - Reduce the ceiling to one generic slope.
           expected_aikea_yaml:
-            schema_version: 5
+            schema_version: 6
             units: mm
             measured_space:
               width_measurements: {bottom: 3000, middle: 3000, top: 3000}
@@ -477,7 +489,7 @@ cases:
                 - {distance_from_left: 3000, height_from_floor: 1200}
             design_settings:
               fit_allowance: 2
-              fitted_dimensions: {width: true, height: true}
+              fitted_dimensions: {width: true, depth: false, height: true}
               cabinet_run:
                 cabinet_count: 3
                 cabinet_width_shares: [1, 1, 1]
@@ -510,8 +522,10 @@ cases:
     wardrobe_type: built-in, piecewise-linear top with flats and slopes
     turns:
       - user: >-
-          All values are mm. Width is 3600 at the bottom, middle, and top; the
-          intended depth is 700. From the left, floor-to-ceiling readings
+          All values are mm. Width is 3600 at the bottom, middle, and top. The
+          wardrobe front must finish flush with a fixed wall line; depths from the
+          back to that line are 700 at the left, 699 in the middle, and 701 at the
+          right. From the left, floor-to-ceiling readings
           are 0 at 2500 high, 600 at 2500, 1400 at 2300, 2200 at 2300, 3000 at 1900,
           and 3500 at 1900. Every edge of the front-view outline is fitted against
           the room. Use four equal cabinets, no side room or cabinet gaps,
@@ -533,11 +547,11 @@ cases:
           response_forbidden:
             - Reduce or reorder the measured height readings.
           expected_aikea_yaml:
-            schema_version: 5
+            schema_version: 6
             units: mm
             measured_space:
               width_measurements: {bottom: 3600, middle: 3600, top: 3600}
-              depth_measurements: {single: 700}
+              depth_measurements: {left: 700, middle: 699, right: 701}
               height_measurements:
                 - {distance_from_left: 0, height_from_floor: 2500}
                 - {distance_from_left: 600, height_from_floor: 2500}
@@ -547,7 +561,7 @@ cases:
                 - {distance_from_left: 3600, height_from_floor: 1900}
             design_settings:
               fit_allowance: 2
-              fitted_dimensions: {width: true, height: true}
+              fitted_dimensions: {width: true, depth: true, height: true}
               cabinet_run:
                 cabinet_count: 4
                 cabinet_width_shares: [1, 1, 1, 1]
@@ -563,14 +577,14 @@ cases:
                 back_panel_thickness: 8
           expected_calculated:
             minimum_measured_width_mm: 3600
-            minimum_measured_depth_mm: 700
+            minimum_measured_depth_mm: 699
             width_fitting_allowance_mm: 2
-            depth_fitting_allowance_mm: 0
+            depth_fitting_allowance_mm: 2
             height_fitting_allowance_mm: 2
             usable_width_mm: 3598
-            usable_depth_mm: 700
-            cabinet_depth_mm: 680
-            inside_depth_mm: 672
+            usable_depth_mm: 697
+            cabinet_depth_mm: 677
+            inside_depth_mm: 669
             cabinets:
               - {cabinet_number: 1, left_position_mm: 0, right_position_mm: 899.5, width_mm: 899.5, left_height_mm: 2358, right_height_mm: 2283.125, door_width_mm: 896.5}
               - {cabinet_number: 2, left_position_mm: 899.5, right_position_mm: 1799, width_mm: 899.5, left_height_mm: 2283.125, right_height_mm: 2158, door_width_mm: 896.5}
@@ -582,7 +596,7 @@ cases:
     turns:
       - user: >-
           All values are mm. Width is 6000 at the bottom, middle, and top; the
-          intended depth is 650; and floor-to-ceiling height is 2500 at
+          intended depth is 650 with no required flush line; and floor-to-ceiling height is 2500 at
           distances 0, 3000, and 6000 from the left. The run is wall-to-wall and
           floor-to-ceiling with an open front. Use six equal cabinets, no side
           room or cabinet gaps, 15 mm above, a 120 mm base, 2 mm door gaps, 18 mm
@@ -594,7 +608,7 @@ cases:
           response_forbidden:
             - Continue into another design stage.
           expected_aikea_yaml:
-            schema_version: 5
+            schema_version: 6
             units: mm
             measured_space:
               width_measurements: {bottom: 6000, middle: 6000, top: 6000}
@@ -605,7 +619,7 @@ cases:
                 - {distance_from_left: 6000, height_from_floor: 2500}
             design_settings:
               fit_allowance: 2
-              fitted_dimensions: {width: true, height: true}
+              fitted_dimensions: {width: true, depth: false, height: true}
               cabinet_run:
                 cabinet_count: 6
                 cabinet_width_shares: [1, 1, 1, 1, 1, 1]

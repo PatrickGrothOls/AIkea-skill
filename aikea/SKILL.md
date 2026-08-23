@@ -21,15 +21,20 @@ Use explicit user messages to create or revise the saved measurements and shared
 - After showing the labelled outline, ask one placement question: "Is the wardrobe
   fitted against the room on every labelled edge? If not, which letters are not
   fitted?" Do not split this into separate questions about each side.
-- Use that arrangement to choose the measurements. A dimension trapped at both ends
+- Then ask one separate depth question: "Does the wardrobe front need to finish
+  flush with a wall or another fixed line?" This is not a question about enclosing
+  the front.
+- Use those answers to choose the measurements. A dimension trapped at both ends
   needs three readings to catch uneven walls, floors, or ceilings. A dimension with
   an open end needs one reading. For a height that reaches the ceiling, also ask for
   a reading wherever a slope, flat, or step begins or ends.
-- A wardrobe is open at the front. Never ask whether its front is enclosed, and
-  always ask for one intended depth from the back to the wardrobe front.
+- A wardrobe is open at the front. Never ask whether its front is enclosed. For a
+  freely chosen depth, ask for one intended depth. When the front must finish flush
+  with a fixed line, ask for left, centre, and right readings from the back to that
+  line.
 - Do not mention `aikea.yaml`, schemas, field names, width shares, calculators, validation, fitting allowance, or other internal machinery unless the user asks for technical details or project files.
 - Never ask the client to provide width shares. Ask whether sections should be equal or whether any should be wider or narrower, then translate that relationship internally.
-- Keep every raw measurement unchanged. Apply the template's 2 mm fitting allowance only to a front-view dimension fitted at both ends: between two side boundaries for width or between floor and ceiling for height. One wall does not fit width at both ends; an open edge receives no fitting allowance. Depth never receives the allowance because the wardrobe front is open. Do not ask the client to choose the allowance.
+- Keep every raw measurement unchanged. Apply the template's 2 mm fitting allowance only to a dimension fitted between fixed boundaries: between two side boundaries for width, between the floor and ceiling for height, or between the back and a required flush-front line for depth. A freely chosen edge receives no fitting allowance. Do not ask the client to choose the allowance.
 - Present useful design results such as cabinet sizes, positions, and heights. Keep formulas and internal representations private unless requested.
 
 ## Work from the active project
