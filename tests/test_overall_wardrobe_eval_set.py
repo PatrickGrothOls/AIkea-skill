@@ -1,4 +1,4 @@
-"""Scope: Verify that manual overall-wardrobe eval answers are complete and calculable."""
+"""Scope: Verify manual overall-wardrobe eval cases and calculated answer keys."""
 
 from pathlib import Path
 
@@ -10,12 +10,17 @@ from overall_wardrobe_inputs import OverallWardrobeInputReader
 
 
 class TestOverallWardrobeEvalSet:
-    """Keep manual model-eval answer keys aligned with deterministic calculations."""
+    """Keep model-eval cases complete and calculated answers aligned."""
 
     _EVAL_PATH = (
         Path(__file__).parents[1]
         / "evals"
         / "overall-wardrobe-measurements-and-settings.yaml"
+    )
+    _GUIDANCE_EVAL_PATH = (
+        Path(__file__).parents[1]
+        / "evals"
+        / "labelled-measurement-guidance.yaml"
     )
 
     def test_every_case_has_a_complete_final_answer(self) -> None:
@@ -77,10 +82,18 @@ class TestOverallWardrobeEvalSet:
             1
         ]
         assert "finish flush" in case["turns"][3]["answer_key"]["response_required"][1]
-        assert "wall-to-wall widths" in case["turns"][4]["answer_key"][
+        assert "labelled side edges A and C" in case["turns"][4]["answer_key"][
             "response_required"
         ][1]
-        assert "one depth" in case["turns"][5]["answer_key"]["response_required"][1]
+        assert "same two walls" in case["turns"][4]["answer_key"][
+            "response_required"
+        ][2]
+        assert "labelled location" in case["turns"][5]["answer_key"][
+            "response_required"
+        ][1]
+        assert "floor edge D to top edge B" in case["turns"][6]["answer_key"][
+            "response_required"
+        ][1]
         final_yaml = case["turns"][-1]["answer_key"]["expected_aikea_yaml"]
         assert final_yaml["measured_space"]["depth_measurements"] == {"single": 620}
 
@@ -100,6 +113,24 @@ class TestOverallWardrobeEvalSet:
             assert set(final_yaml["measured_space"]["depth_measurements"]) == (
                 expected_positions
             )
+
+    def test_labelled_measurement_cases_define_useful_next_questions(self) -> None:
+        eval_set = yaml.safe_load(
+            self._GUIDANCE_EVAL_PATH.read_text(encoding="utf-8")
+        )
+
+        assert len(eval_set["cases"]) == 3
+        for case in eval_set["cases"]:
+            assert case["established_outline"]
+            assert case["chat_history"]
+            assert case["next_user_message"]
+            assert case["answer_key"]["response_required"]
+            assert case["answer_key"]["response_forbidden"]
+            scored_text = " ".join(
+                case["answer_key"]["response_required"]
+                + case["answer_key"]["response_forbidden"]
+            )
+            assert any(label in scored_text for label in ("A", "B", "C", "D", "E"))
 
     def _load_eval_set(self) -> dict:
         return yaml.safe_load(self._EVAL_PATH.read_text(encoding="utf-8"))

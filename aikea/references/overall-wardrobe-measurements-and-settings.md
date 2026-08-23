@@ -2,6 +2,21 @@
 
 Use this file when starting a cabinet run or changing measurements that affect more than one cabinet.
 
+## Contents
+
+- Finish the global specification first
+- Guide the client in plain language
+- Allowed project sources
+- Orientation and units
+- Plan useful measurements from the labelled outline
+- Required measured space
+- Apply the fitting allowance
+- Required internal design values
+- Translate relative cabinet widths
+- Decide the next response
+- Write the global project file
+- Require the deterministic check
+
 ## Finish the global specification first
 
 `aikea.yaml` is the global specification. Questions and user answers are the means of completing it, not a replacement for it.
@@ -47,21 +62,70 @@ Accept measurements only from the user's messages, a source the user identifies,
 - Preserve the unit the user supplied when all values use that unit. Let the calculator normalize calculations to millimetres.
 - Ask for clarification when the user mixes units ambiguously.
 
+## Plan useful measurements from the labelled outline
+
+Keep the labelled outline as the shared measuring map. After drawing it, every
+measurement question must name:
+
+- the two boundaries the tape or laser spans;
+- the labelled edge or edge junction that locates the reading;
+- the fit problem the repeated position helps reveal, when that is not obvious.
+
+Use junction names such as `B-C` for the point where edges `B` and `C` meet. Do
+not revert to an unqualified "top," "middle," "left," or "right" once labels
+exist.
+
+Choose lines that reveal the actual space:
+
+- Repeat a measurement only where it compares the same two relevant surfaces.
+  Place repeated lines so they can reveal lean, bow, taper, or a surface that is
+  out of square.
+- Do not measure to a slope and call it a wall-width check. Move that check to a
+  height where both side boundaries exist, or replace it with a measurement that
+  records the slope itself.
+- Measure every corner where a flat, slope, or step starts or ends. Add a useful
+  point along a long segment when it helps verify that the real surface follows
+  the intended straight line.
+- If access makes a proposed line impractical, choose another reachable line that
+  tests the same surfaces. Briefly explain the change instead of forcing the
+  standard position.
+
+For a rectangular outline `A` left, `B` top, `C` right, and `D` floor,
+describe width checks as between `A` and `C`, located just above `D`, midway
+up the shared wall height, and just below `B`. Describe height checks as
+vertical from `D` to `B`, beside `A`, midway between `A` and `C`, and
+beside `C`.
+
+For an outline `A` left, `B` top flat, `C` slope, `D` right, and `E`
+floor, compare `A` and `D` only below the `C-D` junction where both side
+walls exist. Locate the top change at the `B-C` junction. Record vertical
+heights from `E` to the top boundary at the `A-B`, `B-C`, and `C-D`
+junctions, plus useful points along `C` when needed to represent or verify the
+slope.
+
+For depth, locate readings from the front-view map as well. A freely chosen depth
+can be measured from the back to the intended front midway along the floor edge.
+A required flush depth is measured from the back boundary to the fixed front line
+near the left edge, at the centre of the floor edge, and near the right edge.
+
 ## Required measured space
 
 Collect the raw readings without subtracting any allowance. The installation
-arrangement decides how many readings are required:
+arrangement and labelled shape decide how many readings are useful:
 
-1. `width_measurements`: if both sides are fixed, record `bottom`, `middle`, and
-   `top`; otherwise record one `single` width from the fixed or intended left edge
-   to the fixed or intended right edge.
+1. `width_measurements`: if both sides are fixed, normally record `bottom`,
+   `middle`, and `top` between the same side boundaries at three useful heights;
+   otherwise record one `single` width from the fixed or intended left edge to the
+   fixed or intended right edge. These internal names do not override the labelled
+   measurement plan shown to the client.
 2. `depth_measurements`: when the depth is freely chosen, record one `single`
    intended depth from the back to the wardrobe front. When the front must finish
    flush with a fixed line, record `left`, `middle`, and `right` readings from the
    back boundary to that required line.
-3. `height_measurements`: if the wardrobe reaches the ceiling, record at least
-   left, centre, and right plus every place where a flat, sloped, or stepped section
-   begins or ends. If it is open above, record one intended height.
+3. `height_measurements`: if the wardrobe reaches the ceiling, record the useful
+   left-to-right positions that define and check the top boundary, including every
+   place where a flat, slope, or step begins or ends. If it is open above, record
+   one intended height.
 
 Each height measurement contains:
 
@@ -70,9 +134,9 @@ Each height measurement contains:
 
 Translate ceiling descriptions directly when height is fitted:
 
-- A flat ceiling still requires left, centre, and right readings; preserve small differences rather than flattening them.
-- One continuous slope requires at least left, centre, and right readings.
-- A flat section followed by a slope requires the usual three readings plus the exact place where the slope begins.
+- A flat ceiling normally uses left, centre, and right readings; preserve small differences rather than flattening them.
+- One continuous slope uses its labelled endpoints plus useful intermediate readings that can verify the real surface.
+- A flat section followed by a slope requires the exact labelled junction where the slope begins plus the other readings needed to define and check both sections.
 - Additional flats, slopes, or steps require a reading at every stated change.
 
 Require the first distance to be `0`, the final distance to cover the calculated usable width, and all distances to increase from left to right. Preserve every raw reading and measured change point. Never average readings, reorder points, extend a section, or infer a missing endpoint to make the outline pass.

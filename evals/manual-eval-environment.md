@@ -68,9 +68,11 @@ claude \
 After every turn:
 
 1. Save the model's response outside the temporary project folder.
-2. Compare it with that turn's answer key in `overall-wardrobe-measurements-and-settings.yaml`.
+2. Compare it with that turn's answer key in the eval set being run.
 3. Fail the case if any forbidden behavior occurs.
-4. After the final turn, compare the generated `aikea.yaml` and calculated dimensions with the expected values.
+4. When a case includes final project values, compare the generated `aikea.yaml`
+   and calculated dimensions with the expected values. Next-question cases stop
+   after scoring the response.
 5. Record the model, session ID, pass or fail result, and short failure notes.
 
 Do not correct the model during a case. A changed prompt is a new eval case and requires a new empty folder and conversation.

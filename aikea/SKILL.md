@@ -24,10 +24,18 @@ Use explicit user messages to create or revise the saved measurements and shared
 - Then ask one separate depth question: "Does the wardrobe front need to finish
   flush with a wall or another fixed line?" This is not a question about enclosing
   the front.
-- Use those answers to choose the measurements. A dimension trapped at both ends
-  needs three readings to catch uneven walls, floors, or ceilings. A dimension with
-  an open end needs one reading. For a height that reaches the ceiling, also ask for
-  a reading wherever a slope, flat, or step begins or ends.
+- Keep using the outline labels in every later measurement question. Name the two
+  boundaries being measured and the labelled edge or junction that locates the
+  reading, so the client never has to reinterpret words such as "top" or "middle."
+- Choose readings for the fit information they reveal, not to complete a rigid
+  checklist. Repeated readings must compare the same two boundaries and should
+  expose lean, bow, taper, or an out-of-square surface. If a standard position hits
+  a slope or another boundary, move it to a useful labelled position. Record every
+  slope, flat, step, and junction needed to describe the outline.
+- A dimension trapped at both ends normally needs three useful readings. A dimension
+  with an open end normally needs one. Reposition or add readings when the shape,
+  access, or an additional feature requires it; never force a meaningless line.
+  Briefly tell the client why an adapted position is useful.
 - A wardrobe is open at the front. Never ask whether its front is enclosed. For a
   freely chosen depth, ask for one intended depth. When the front must finish flush
   with a fixed line, ask for left, centre, and right readings from the back to that

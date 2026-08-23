@@ -24,6 +24,11 @@ Draw the outline here:
 Label every outside edge clockwise with `A`, `B`, `C`, and onward, starting with
 the left edge. Give each flat, slope, or step along the top its own letter.
 
+Write those labels into every measurement instruction below before measuring.
+Each line should identify the two boundaries being measured and the edge or
+junction that locates it. If a line would hit a slope instead of comparing the
+intended surfaces, move it to a useful location and note why.
+
 ## How the wardrobe fits
 
 Is the wardrobe fitted against the room on every labelled edge? Yes / No
@@ -34,15 +39,17 @@ Must the wardrobe front finish flush with a wall or another fixed line? Yes / No
 
 ## Width
 
-If both sides are fixed, measure at all three heights. If either side is open,
-take one reading from the starting edge to the intended wardrobe edge.
+If both sides are fixed, choose three useful heights that compare the same two
+side edges and can reveal whether the walls lean, bow, or taper. If either side is
+open, take one reading from the fixed or intended starting edge to the intended
+wardrobe edge.
 
-| Position | Measurement |
+| Labelled line and location | Measurement |
 | --- | ---: |
-| Single reading when a side is open | |
-| Near the floor | |
-| Halfway up | |
-| Near the ceiling | |
+| Single open-side line: ___ to ___ near ___ | |
+| Lowest useful line: ___ to ___ near ___ | |
+| Middle useful line: ___ to ___ near ___ | |
+| Highest useful line between the same surfaces: ___ to ___ near ___ | |
 
 ## Depth
 
@@ -50,26 +57,27 @@ If the wardrobe front can stop at a freely chosen depth, take one intended-depth
 reading. If it must finish flush with a fixed line, measure from the back boundary
 to that line at the left, centre, and right.
 
-| Position | Measurement |
+| Labelled location | Measurement |
 | --- | ---: |
-| Single intended depth when freely chosen | |
-| Left when finishing flush | |
-| Centre when finishing flush | |
-| Right when finishing flush | |
+| Single intended depth midway along edge ___ | |
+| Flush depth near left edge ___ | |
+| Flush depth at the centre of floor edge ___ | |
+| Flush depth near right edge ___ | |
 
 ## Height
 
-If the wardrobe reaches the ceiling, measure at the left, centre, and right.
-Record each position's distance from the left edge and add a row wherever a flat,
-slope, or step begins or ends. If it is open above, record one intended height.
+If the wardrobe reaches the ceiling, measure vertically from the labelled floor
+edge to the labelled top boundary at every junction where a flat, slope, or step
+begins or ends. Add useful checks along long surfaces. If it is open above, record
+one intended height at a labelled location.
 
-| Distance from left wall | Floor-to-ceiling height |
-| ---: | ---: |
-| Single intended height when open above | |
-| 0 | |
-| Centre: | |
-| Right edge: | |
-| Additional change: | |
+| Labelled vertical line or junction | Distance from left reference | Height |
+| --- | ---: | ---: |
+| Single intended height near ___ | | |
+| At junction ___ | | |
+| At junction ___ | | |
+| Useful check along edge ___ | | |
+| At junction ___ | | |
 
 ## Notes
 

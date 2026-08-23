@@ -31,6 +31,8 @@ scoring:
     - Ask about more than one missing measurement or design topic in a response unless providing the requested site measurement sheet.
     - Ask how the wardrobe is fitted before establishing and labelling its front-view shape.
     - Split the labelled-edge fit question into separate questions about individual sides.
+    - Drop the edge labels after drawing the outline and ask for a measurement using ambiguous positions alone.
+    - Request a repeated reading that reaches a different boundary or reveals no useful fit information merely to complete a standard count.
     - Ask whether the wardrobe front is enclosed; it remains open even when its finished face must align with a fixed line.
     - Subtract the fitting allowance from a dimension that is not fitted at both ends.
     - Treat one wall and one open side as a fitted width.
@@ -139,7 +141,8 @@ cases:
         answer_key:
           response_required:
             - Retain that the depth is freely chosen.
-            - Ask for wall-to-wall widths near the floor, halfway up, and near the ceiling.
+            - Ask for widths between labelled side edges A and C just above floor edge D, midway up their shared height, and just below top edge B.
+            - Make clear that the three lines compare the same two walls and can reveal lean, bow, or taper.
           response_forbidden:
             - Ask for the depth or height in the same response.
           expected_project_state: incomplete_or_absent
@@ -147,7 +150,7 @@ cases:
         answer_key:
           response_required:
             - Retain all three width readings.
-            - Ask for one depth from the back wall to the intended wardrobe front.
+            - Ask for one depth from the back wall to the intended wardrobe front at a labelled location, such as midway along floor edge D between A and C.
           response_forbidden:
             - Ask for three depth readings after the client said the depth is freely chosen.
           expected_project_state: incomplete_or_absent
@@ -155,7 +158,7 @@ cases:
         answer_key:
           response_required:
             - Retain the single depth reading.
-            - Ask for floor-to-ceiling heights at the left, centre, and right with their distances from the left edge, plus any place the ceiling changes.
+            - Ask for vertical heights from floor edge D to top edge B beside A, midway between A and C, and beside C, with their distances from A, plus any labelled top junction where the ceiling changes.
           response_forbidden:
             - Ask for wardrobe choices yet.
           expected_project_state: incomplete_or_absent
@@ -272,7 +275,8 @@ cases:
             - Put the front-view shape and labelled-edge fit before the measurement tables.
             - Tell the client to label outline edges A, B, C, and onward clockwise from the left edge.
             - Ask one fit question covering every labelled edge and which letters are not fitted.
-            - Explain that a dimension fixed at both ends needs three readings and a dimension with an open end needs one.
+            - Use the actual outline labels in every measurement row and identify the two boundaries and labelled location for each line.
+            - Explain that repeated lines must compare the same surfaces and should be moved when a slope or obstruction makes a standard position unhelpful.
             - Include centimetres, millimetres, and inches as unit choices.
             - Provide room for height change points and site notes.
             - Ask whether the wardrobe front must finish flush with a wall or another fixed line.
