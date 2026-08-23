@@ -1,4 +1,5 @@
 name: wardrobe-measurement-questions
+type: eval_set
 skill: aikea
 scoring:
   pass_when:
