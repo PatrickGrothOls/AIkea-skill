@@ -13,7 +13,9 @@ class TestOverallWardrobeEvalSet:
     """Keep manual model-eval answer keys aligned with deterministic calculations."""
 
     _EVAL_PATH = (
-        Path(__file__).parents[1] / "evals" / "overall-wardrobe-intake.yaml"
+        Path(__file__).parents[1]
+        / "evals"
+        / "overall-wardrobe-measurements-and-settings.yaml"
     )
 
     def test_every_case_has_a_complete_final_answer(self) -> None:

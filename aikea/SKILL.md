@@ -12,11 +12,11 @@ Use explicit user messages to create or revise the saved measurements and shared
 1. Resolve the active project folder from the user's request and current working directory.
 2. If `aikea.yaml` exists, read it and preserve every value the user has not changed.
 3. If the user asks only to inspect or check a project, perform only that operation.
-4. If the project has no `aikea.yaml`, start the overall wardrobe intake.
+4. If the project has no `aikea.yaml`, collect the overall wardrobe measurements and settings.
 
-## Run the overall wardrobe intake
+## Collect overall wardrobe measurements and settings
 
-1. Read `references/overall-wardrobe-intake.md` completely.
+1. Read `references/overall-wardrobe-measurements-and-settings.md` completely.
 2. Read only the user's messages, user-identified attachments, and the active project's AIkea files for project values.
 3. Classify the current inputs as missing, contradictory, or complete.
 4. For missing inputs, ask once for all remaining required values, grouped as measured space and shared design settings. Do not ask for values already supplied.

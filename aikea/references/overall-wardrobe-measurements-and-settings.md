@@ -1,4 +1,4 @@
-# Overall wardrobe intake
+# Overall wardrobe measurements and settings
 
 Use this file when starting a cabinet run or changing measurements that affect more than one cabinet.
 
@@ -90,7 +90,7 @@ Do not add a value merely because the final build will use it:
 - Keep base rail spacing, rail count, braces, and module geometry inside the structural plinth.
 - Keep hinge and door-bracket machining inside their matching-cut construction.
 
-Acknowledge a request for a later capability, but state that the current intake stores only its global geometry drivers. Do not improvise an implementation that is not bundled with the skill.
+Acknowledge a request for a later capability, but state that the current step stores only its global geometry drivers. Do not improvise an implementation that is not bundled with the skill.
 
 ## Require the deterministic check
 
@@ -104,4 +104,4 @@ Run the bundled calculator only after the checklist is complete. Require all of 
 - the base and ceiling clearance leave positive cabinet height;
 - door and back thicknesses leave positive cabinet and inside depth.
 
-On success, confirm the file path and summarize calculated cabinet widths, left/right positions, left/right heights, door widths, cabinet depth, and inside depth. Do not generate cabinet geometry during this intake slice.
+On success, confirm the file path and summarize calculated cabinet widths, left/right positions, left/right heights, door widths, cabinet depth, and inside depth. Do not generate cabinet geometry during this first step.
