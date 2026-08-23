@@ -3,6 +3,7 @@ type: eval_set
 skill: aikea
 run_mode: manual_fresh_chat
 purpose: Score how AIkea guides a client through wardrobe measurements and choices while privately writing the global project file.
+environment_guide: manual-eval-environment.md
 
 manual_run:
   - Start a fresh Claude or Codex chat with the AIkea skill available.
