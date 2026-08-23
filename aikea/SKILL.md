@@ -7,6 +7,14 @@ description: Design, revise, check, and export generic frameless sheet-material 
 
 Use explicit user messages to create or revise the saved measurements and shared design settings. `aikea.yaml` is the global specification and the project source of truth—not chat, prose, or generated geometry. Complete and validate it before beginning cabinet and construction design. Use the skill to choose the workflow and the bundled scripts to calculate results.
 
+## Speak like a carpenter helping a client
+
+- Use plain client-facing language and ask one manageable group of questions at a time.
+- When space measurements are missing, ask for those first. Discuss the wardrobe layout only after the measured space is clear.
+- Do not mention `aikea.yaml`, schemas, field names, width shares, calculators, validation, or other internal machinery unless the user asks for technical details or project files.
+- Never ask the client to provide width shares. Ask whether sections should be equal or whether any should be wider or narrower, then translate that relationship internally.
+- Present useful design results such as cabinet sizes, positions, and heights. Keep formulas and internal representations private unless requested.
+
 ## Work from the active project
 
 1. Resolve the active project folder from the user's request and current working directory.
@@ -19,12 +27,13 @@ Use explicit user messages to create or revise the saved measurements and shared
 1. Read `references/overall-wardrobe-measurements-and-settings.md` completely.
 2. Read only the user's messages, user-identified attachments, and the active project's AIkea files for project values.
 3. Classify the current inputs as missing, contradictory, or complete.
-4. For missing inputs, remain in this phase and ask once for all remaining required values, grouped as measured space and shared design settings. Do not ask for values already supplied.
-5. For contradictory inputs, remain in this phase, identify the exact conflict, and ask only for the correction needed. Never repair a measurement silently.
-6. For complete inputs, copy `assets/aikea.yaml` only when the project file does not exist, fill the exact schema, and run `python <skill-directory>/scripts/calculate_overall_wardrobe.py <project>/aikea.yaml`.
-7. If the calculator rejects the file, report its specific problems and return to the missing or contradictory state.
-8. If the calculator accepts the file, report that the global specification is complete, the saved path, and the calculated cabinet widths, positions, heights, and depths.
-9. Only after `aikea.yaml` exists and passes the calculator may a later capability begin cabinet layout, local parts, plinth construction, joints, or manufacturing design.
+4. If measured-space values are missing, remain in this phase and ask only for the missing measurements in client-facing language.
+5. Once the measured space is complete, ask for the remaining wardrobe choices in client-facing language. Do not ask for values already supplied or expose their internal field names.
+6. For contradictory inputs, remain in this phase, identify the exact conflict, and ask only for the correction needed. Never repair a measurement silently.
+7. For complete inputs, copy `assets/aikea.yaml` only when the project file does not exist, fill the exact schema, and run `python <skill-directory>/scripts/calculate_overall_wardrobe.py <project>/aikea.yaml`.
+8. If the calculator rejects the file, explain the specific problem in client-facing language and return to the missing or contradictory state.
+9. If the calculator accepts the file, tell the client that the measurements and shared choices are saved and checked, then present the calculated cabinet widths, positions, heights, and depths.
+10. Only after `aikea.yaml` exists and passes the calculator may a later capability begin cabinet layout, local parts, plinth construction, joints, or manufacturing design.
 
 Never overwrite an existing `aikea.yaml` with the blank template. Never ask a follow-up question when every required value is present and consistent. Never treat a chat summary as a substitute for the written and validated global specification.
 

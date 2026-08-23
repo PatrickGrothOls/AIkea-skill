@@ -2,7 +2,7 @@ name: overall-wardrobe-measurements-and-settings
 type: eval_set
 skill: aikea
 run_mode: manual_fresh_chat
-purpose: Score how AIkea collects overall wardrobe inputs and writes the global project file.
+purpose: Score how AIkea guides a client through wardrobe measurements and choices while privately writing the global project file.
 
 manual_run:
   - Start a fresh Claude or Codex chat with the AIkea skill available.
@@ -25,6 +25,9 @@ scoring:
     - Invent measurements or typical cabinet defaults.
     - Reuse measurements from skill assets, eval cases, development docs, legacy code, or another project.
     - Ask the user for Cabineo cutter dimensions, Cabineo pocket coordinates, or base rail spacing.
+    - Ask the client to provide width shares or a numeric width-share list.
+    - Mention aikea.yaml, the global specification, schemas, field names, calculators, or validation mechanics unless the client asks for technical details.
+    - Present a raw data-entry template instead of guiding the client in plain language.
     - Generate cabinet or joint geometry before the overall input check passes.
     - Begin cabinet layout, local part design, plinth construction, joinery, or manufacturing design before aikea.yaml exists and validates.
 
@@ -42,7 +45,7 @@ cases:
           response_required:
             - Recognize that every required overall input has been supplied.
             - Write a complete aikea.yaml using centimetres without changing the measurements.
-            - Run the overall wardrobe calculator and report that the input is valid.
+            - Run the overall wardrobe calculator privately and present the checked cabinet dimensions in client-facing language.
           response_forbidden:
             - Ask a follow-up measurement question.
           expected_aikea_yaml:
@@ -89,12 +92,13 @@ cases:
           any measurements or chosen the cabinet settings yet. Help me start.
         answer_key:
           response_required:
-            - Explain that the global specification cannot be completed yet.
-            - Ask for units, width, depth, and ceiling heights at both edges and every change point.
-            - Ask for cabinet count and width shares, all four clearances and gaps, base height, door gap, and all three material thicknesses.
+            - Sound like a carpenter helping the client begin measuring the space.
+            - Ask only for units, wall width, available depth, and ceiling height across the width.
+            - Explain plainly how to report a slope or point where the ceiling height changes.
           response_forbidden:
             - Create aikea.yaml before any project value has been supplied.
             - Choose typical dimensions or begin cabinet design.
+            - Ask about cabinet count, relative section widths, clearances, gaps, base, doors, or materials before the space has been measured.
           expected_project_state: absent
       - user: >-
           All measurements are in millimetres. The space is 2730 mm wide and
@@ -103,7 +107,8 @@ cases:
         answer_key:
           response_required:
             - Retain every supplied measured-space value.
-            - Ask only for the remaining shared design settings.
+            - Ask for the remaining wardrobe choices in client-facing language.
+            - Ask how many sections the client wants and whether they should be equal or whether some should be wider or narrower.
           response_forbidden:
             - Ask again for units, width, depth, or ceiling points.
             - Write or validate aikea.yaml while the shared settings are missing.
@@ -115,7 +120,7 @@ cases:
         answer_key:
           response_required:
             - Write the complete aikea.yaml using values retained from all three turns.
-            - Run the overall wardrobe calculator and report that the global specification is complete and valid.
+            - Run the overall wardrobe calculator privately and present the saved, checked cabinet dimensions in client-facing language.
           response_forbidden:
             - Ask for a value supplied in an earlier turn.
             - Begin later cabinet or construction design during this global-specification eval.
@@ -164,9 +169,9 @@ cases:
           The ceiling is flat at 2400 mm from the left edge to the right edge.
         answer_key:
           response_required:
-            - Ask for cabinet count and width shares.
-            - Ask for left, right, cabinet-gap, and ceiling clearances.
-            - Ask for base height, door gap, and all three material thicknesses.
+            - Ask how many sections the client wants and whether they should be equal or whether some should be wider or narrower.
+            - Ask about the intended fit at the left wall, right wall, between sections, and below the ceiling in client-facing language.
+            - Ask about base height, door spacing, and material thicknesses in client-facing language.
           response_forbidden:
             - Claim that the overall input is complete.
             - Run the calculator as though missing choices were zero.
@@ -178,7 +183,7 @@ cases:
         answer_key:
           response_required:
             - Write the complete aikea.yaml without asking for already supplied values.
-            - Run the overall wardrobe calculator and report that the input is valid.
+            - Run the overall wardrobe calculator privately and present the checked cabinet dimensions in client-facing language.
           response_forbidden:
             - Replace an intentional zero with a typical clearance or gap.
           expected_aikea_yaml:
@@ -231,7 +236,7 @@ cases:
           response_required:
             - Translate the relative widths into shares [1, 1, 0.5].
             - Preserve one global width calculation rather than hard-coding three cabinet widths.
-            - Run the overall wardrobe calculator and report that the input is valid.
+            - Run the overall wardrobe calculator privately and present the checked cabinet dimensions in client-facing language.
           response_forbidden:
             - Treat 0.5 as half of the complete wardrobe width.
             - Ask the user to calculate each cabinet width.
@@ -284,7 +289,7 @@ cases:
           response_required:
             - Represent the ceiling as points at 0 mm and 3200 mm.
             - Preserve the left-to-right slope direction.
-            - Run the overall wardrobe calculator and report that the input is valid.
+            - Run the overall wardrobe calculator privately and present the checked cabinet dimensions in client-facing language.
           response_forbidden:
             - Replace the slope with an average or minimum height.
           expected_aikea_yaml:
@@ -337,7 +342,7 @@ cases:
           response_required:
             - Save ceiling points at 0, 1000, and 3000 mm.
             - Keep the flat section and slope as separate measured segments.
-            - Run the overall wardrobe calculator and report that the input is valid.
+            - Run the overall wardrobe calculator privately and present the checked cabinet dimensions in client-facing language.
           response_forbidden:
             - Reduce the ceiling to one generic slope.
           expected_aikea_yaml:
@@ -400,7 +405,7 @@ cases:
         answer_key:
           response_required:
             - Correct only the final ceiling point and retain every other supplied value.
-            - Run the overall wardrobe calculator and report that the input is valid.
+            - Run the overall wardrobe calculator privately and present the checked cabinet dimensions in client-facing language.
           response_forbidden:
             - Reduce or reorder the measured ceiling points.
           expected_aikea_yaml:
