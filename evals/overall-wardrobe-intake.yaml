@@ -1,0 +1,430 @@
+name: overall-wardrobe-intake
+type: eval_set
+skill: aikea
+run_mode: manual_fresh_chat
+purpose: Score how AIkea collects overall wardrobe inputs and writes the global project file.
+
+manual_run:
+  - Start a fresh Claude or Codex chat with the AIkea skill available.
+  - Send each user message in order and save the response from every turn.
+  - Compare the response and project file with that turn's answer key.
+  - Record the model, pass or fail result, and short failure notes separately.
+
+scoring:
+  required_item_points: 1
+  forbidden_item_result: fail_case
+  project_file_result: exact_semantic_match
+  calculated_result: numeric_match
+  pass_when:
+    - Every required response item is satisfied.
+    - No forbidden response item occurs.
+    - The final aikea.yaml semantically matches expected_aikea_yaml.
+    - The calculator succeeds and matches expected_calculated.
+  always_forbidden:
+    - Invent measurements or typical cabinet defaults.
+    - Reuse measurements from skill assets, eval cases, development docs, legacy code, or another project.
+    - Ask the user for Cabineo cutter dimensions, Cabineo pocket coordinates, or base rail spacing.
+    - Generate cabinet or joint geometry before the overall input check passes.
+
+cases:
+  - name: flat two-bay freestanding wardrobe
+    wardrobe_type: freestanding, flat top, equal-width bays
+    turns:
+      - user: >-
+          Design a freestanding two-door wardrobe. All measurements are in centimetres.
+          The available width is 240, depth is 60, and the ceiling is flat at 220
+          from the left edge at 0 to the right edge at 240. Use two equal cabinets,
+          1 cm clearance on both sides and above, a 0.2 cm cabinet gap, a 10 cm base,
+          a 0.2 cm door gap, 1.8 cm cabinet and door panels, and a 0.6 cm back panel.
+        answer_key:
+          response_required:
+            - Recognize that every required overall input has been supplied.
+            - Write a complete aikea.yaml using centimetres without changing the measurements.
+            - Run the overall wardrobe calculator and report that the input is valid.
+          response_forbidden:
+            - Ask a follow-up measurement question.
+          expected_aikea_yaml:
+            schema_version: 1
+            units: cm
+            measured_space:
+              width: 240
+              depth: 60
+              ceiling_points:
+                - distance_from_left: 0
+                  height_from_floor: 220
+                - distance_from_left: 240
+                  height_from_floor: 220
+            design_settings:
+              cabinet_run:
+                cabinet_count: 2
+                cabinet_width_shares: [1, 1]
+                left_clearance: 1
+                right_clearance: 1
+                cabinet_gap: 0.2
+                ceiling_clearance: 1
+              base:
+                height: 10
+              doors:
+                gap: 0.2
+              materials:
+                cabinet_panel_thickness: 1.8
+                door_thickness: 1.8
+                back_panel_thickness: 0.6
+          expected_calculated:
+            width_mm: 2400
+            finished_depth_mm: 600
+            cabinet_depth_mm: 582
+            inside_depth_mm: 576
+            cabinets:
+              - {cabinet_number: 1, left_position_mm: 10, right_position_mm: 1199, width_mm: 1189, left_height_mm: 2090, right_height_mm: 2090, door_width_mm: 1187}
+              - {cabinet_number: 2, left_position_mm: 1201, right_position_mm: 2390, width_mm: 1189, left_height_mm: 2090, right_height_mm: 2090, door_width_mm: 1187}
+
+  - name: flat three-bay wall-to-wall wardrobe
+    wardrobe_type: wall-to-wall, flat top, equal-width bays
+    turns:
+      - user: >-
+          I measured a wall-to-wall space that is 3000 mm wide and 600 mm deep.
+          The ceiling is flat at 2400 mm from the left edge to the right edge.
+        answer_key:
+          response_required:
+            - Ask for cabinet count and width shares.
+            - Ask for left, right, cabinet-gap, and ceiling clearances.
+            - Ask for base height, door gap, and all three material thicknesses.
+          response_forbidden:
+            - Claim that the overall input is complete.
+            - Run the calculator as though missing choices were zero.
+          expected_project_state: incomplete_or_absent
+      - user: >-
+          Make three equal cabinets. Use zero left and right clearance and zero gaps
+          between cabinets, with 10 mm ceiling clearance. The base is 100 mm high,
+          the door gap is 2 mm, cabinet and door panels are 18 mm, and the back is 6 mm.
+        answer_key:
+          response_required:
+            - Write the complete aikea.yaml without asking for already supplied values.
+            - Run the overall wardrobe calculator and report that the input is valid.
+          response_forbidden:
+            - Replace an intentional zero with a typical clearance or gap.
+          expected_aikea_yaml:
+            schema_version: 1
+            units: mm
+            measured_space:
+              width: 3000
+              depth: 600
+              ceiling_points:
+                - distance_from_left: 0
+                  height_from_floor: 2400
+                - distance_from_left: 3000
+                  height_from_floor: 2400
+            design_settings:
+              cabinet_run:
+                cabinet_count: 3
+                cabinet_width_shares: [1, 1, 1]
+                left_clearance: 0
+                right_clearance: 0
+                cabinet_gap: 0
+                ceiling_clearance: 10
+              base:
+                height: 100
+              doors:
+                gap: 2
+              materials:
+                cabinet_panel_thickness: 18
+                door_thickness: 18
+                back_panel_thickness: 6
+          expected_calculated:
+            width_mm: 3000
+            finished_depth_mm: 600
+            cabinet_depth_mm: 582
+            inside_depth_mm: 576
+            cabinets:
+              - {cabinet_number: 1, left_position_mm: 0, right_position_mm: 1000, width_mm: 1000, left_height_mm: 2290, right_height_mm: 2290, door_width_mm: 998}
+              - {cabinet_number: 2, left_position_mm: 1000, right_position_mm: 2000, width_mm: 1000, left_height_mm: 2290, right_height_mm: 2290, door_width_mm: 998}
+              - {cabinet_number: 3, left_position_mm: 2000, right_position_mm: 3000, width_mm: 1000, left_height_mm: 2290, right_height_mm: 2290, door_width_mm: 998}
+
+  - name: flat mixed-width built-in wardrobe
+    wardrobe_type: built-in, flat top, one narrow bay
+    turns:
+      - user: >-
+          The built-in space is 2600 mm wide, 600 mm deep, and 2350 mm high across
+          the full width. I want three cabinets: the left and middle should be the same
+          width and the right should be half their width. Use 5 mm side clearances,
+          2 mm between cabinets, 10 mm above, an 80 mm base, 2 mm door gaps,
+          18 mm cabinet and door panels, and a 6 mm back.
+        answer_key:
+          response_required:
+            - Translate the relative widths into shares [1, 1, 0.5].
+            - Preserve one global width calculation rather than hard-coding three cabinet widths.
+            - Run the overall wardrobe calculator and report that the input is valid.
+          response_forbidden:
+            - Treat 0.5 as half of the complete wardrobe width.
+            - Ask the user to calculate each cabinet width.
+          expected_aikea_yaml:
+            schema_version: 1
+            units: mm
+            measured_space:
+              width: 2600
+              depth: 600
+              ceiling_points:
+                - distance_from_left: 0
+                  height_from_floor: 2350
+                - distance_from_left: 2600
+                  height_from_floor: 2350
+            design_settings:
+              cabinet_run:
+                cabinet_count: 3
+                cabinet_width_shares: [1, 1, 0.5]
+                left_clearance: 5
+                right_clearance: 5
+                cabinet_gap: 2
+                ceiling_clearance: 10
+              base:
+                height: 80
+              doors:
+                gap: 2
+              materials:
+                cabinet_panel_thickness: 18
+                door_thickness: 18
+                back_panel_thickness: 6
+          expected_calculated:
+            width_mm: 2600
+            finished_depth_mm: 600
+            cabinet_depth_mm: 582
+            inside_depth_mm: 576
+            cabinets:
+              - {cabinet_number: 1, left_position_mm: 5, right_position_mm: 1039.4, width_mm: 1034.4, left_height_mm: 2260, right_height_mm: 2260, door_width_mm: 1032.4}
+              - {cabinet_number: 2, left_position_mm: 1041.4, right_position_mm: 2075.8, width_mm: 1034.4, left_height_mm: 2260, right_height_mm: 2260, door_width_mm: 1032.4}
+              - {cabinet_number: 3, left_position_mm: 2077.8, right_position_mm: 2595, width_mm: 517.2, left_height_mm: 2260, right_height_mm: 2260, door_width_mm: 515.2}
+
+  - name: four-bay wardrobe under one slope
+    wardrobe_type: built-in, continuously sloped top, equal-width bays
+    turns:
+      - user: >-
+          The wardrobe space is 3200 mm wide and 650 mm deep. The ceiling slopes in
+          one straight line from 2600 mm high at the left edge to 1960 mm at the right.
+          Use four equal cabinets, no side clearances or cabinet gaps, 20 mm above,
+          a 100 mm base, 2 mm door gaps, 18 mm cabinet panels, 20 mm doors, and a 6 mm back.
+        answer_key:
+          response_required:
+            - Represent the ceiling as points at 0 mm and 3200 mm.
+            - Preserve the left-to-right slope direction.
+            - Run the overall wardrobe calculator and report that the input is valid.
+          response_forbidden:
+            - Replace the slope with an average or minimum height.
+          expected_aikea_yaml:
+            schema_version: 1
+            units: mm
+            measured_space:
+              width: 3200
+              depth: 650
+              ceiling_points:
+                - distance_from_left: 0
+                  height_from_floor: 2600
+                - distance_from_left: 3200
+                  height_from_floor: 1960
+            design_settings:
+              cabinet_run:
+                cabinet_count: 4
+                cabinet_width_shares: [1, 1, 1, 1]
+                left_clearance: 0
+                right_clearance: 0
+                cabinet_gap: 0
+                ceiling_clearance: 20
+              base:
+                height: 100
+              doors:
+                gap: 2
+              materials:
+                cabinet_panel_thickness: 18
+                door_thickness: 20
+                back_panel_thickness: 6
+          expected_calculated:
+            width_mm: 3200
+            finished_depth_mm: 650
+            cabinet_depth_mm: 630
+            inside_depth_mm: 624
+            cabinets:
+              - {cabinet_number: 1, left_position_mm: 0, right_position_mm: 800, width_mm: 800, left_height_mm: 2480, right_height_mm: 2320, door_width_mm: 798}
+              - {cabinet_number: 2, left_position_mm: 800, right_position_mm: 1600, width_mm: 800, left_height_mm: 2320, right_height_mm: 2160, door_width_mm: 798}
+              - {cabinet_number: 3, left_position_mm: 1600, right_position_mm: 2400, width_mm: 800, left_height_mm: 2160, right_height_mm: 2000, door_width_mm: 798}
+              - {cabinet_number: 4, left_position_mm: 2400, right_position_mm: 3200, width_mm: 800, left_height_mm: 2000, right_height_mm: 1840, door_width_mm: 798}
+
+  - name: three-bay wardrobe under a flat section and slope
+    wardrobe_type: built-in, flat section followed by a slope
+    turns:
+      - user: >-
+          The space is 3000 mm wide and 600 mm deep. The ceiling is 2400 mm high at
+          the left, stays flat for 1000 mm, then slopes down to 1200 mm at the right.
+          Use three equal cabinets with no side clearances or cabinet gaps, 10 mm above,
+          a 100 mm base, 2 mm door gaps, 18 mm cabinet and door panels, and a 6 mm back.
+        answer_key:
+          response_required:
+            - Save ceiling points at 0, 1000, and 3000 mm.
+            - Keep the flat section and slope as separate measured segments.
+            - Run the overall wardrobe calculator and report that the input is valid.
+          response_forbidden:
+            - Reduce the ceiling to one generic slope.
+          expected_aikea_yaml:
+            schema_version: 1
+            units: mm
+            measured_space:
+              width: 3000
+              depth: 600
+              ceiling_points:
+                - distance_from_left: 0
+                  height_from_floor: 2400
+                - distance_from_left: 1000
+                  height_from_floor: 2400
+                - distance_from_left: 3000
+                  height_from_floor: 1200
+            design_settings:
+              cabinet_run:
+                cabinet_count: 3
+                cabinet_width_shares: [1, 1, 1]
+                left_clearance: 0
+                right_clearance: 0
+                cabinet_gap: 0
+                ceiling_clearance: 10
+              base:
+                height: 100
+              doors:
+                gap: 2
+              materials:
+                cabinet_panel_thickness: 18
+                door_thickness: 18
+                back_panel_thickness: 6
+          expected_calculated:
+            width_mm: 3000
+            finished_depth_mm: 600
+            cabinet_depth_mm: 582
+            inside_depth_mm: 576
+            cabinets:
+              - {cabinet_number: 1, left_position_mm: 0, right_position_mm: 1000, width_mm: 1000, left_height_mm: 2290, right_height_mm: 2290, door_width_mm: 998}
+              - {cabinet_number: 2, left_position_mm: 1000, right_position_mm: 2000, width_mm: 1000, left_height_mm: 2290, right_height_mm: 1690, door_width_mm: 998}
+              - {cabinet_number: 3, left_position_mm: 2000, right_position_mm: 3000, width_mm: 1000, left_height_mm: 1690, right_height_mm: 1090, door_width_mm: 998}
+
+  - name: four-bay wardrobe under a multi-point ceiling
+    wardrobe_type: built-in, piecewise-linear top with flats and slopes
+    turns:
+      - user: >-
+          The space is 3600 mm wide and 700 mm deep. From the left, my ceiling points
+          are: 0 at 2500 high, 600 at 2500, 1400 at 2300, 2200 at 2300,
+          3000 at 1900, and 3500 at 1900. Use four equal cabinets, no side clearances
+          or cabinet gaps, 20 mm above, a 120 mm base, 3 mm door gaps, 18 mm cabinet
+          panels, 20 mm doors, and an 8 mm back.
+        answer_key:
+          response_required:
+            - Identify that the final ceiling point does not reach the measured 3600 mm width.
+            - Ask for the correct right-edge distance or an additional right-edge point.
+          response_forbidden:
+            - Silently extend the final flat section to 3600 mm.
+            - Report that the input check passed.
+          expected_project_state: incomplete_or_invalid
+      - user: The last point should be 3600 mm from the left and 1900 mm high.
+        answer_key:
+          response_required:
+            - Correct only the final ceiling point and retain every other supplied value.
+            - Run the overall wardrobe calculator and report that the input is valid.
+          response_forbidden:
+            - Reduce or reorder the measured ceiling points.
+          expected_aikea_yaml:
+            schema_version: 1
+            units: mm
+            measured_space:
+              width: 3600
+              depth: 700
+              ceiling_points:
+                - distance_from_left: 0
+                  height_from_floor: 2500
+                - distance_from_left: 600
+                  height_from_floor: 2500
+                - distance_from_left: 1400
+                  height_from_floor: 2300
+                - distance_from_left: 2200
+                  height_from_floor: 2300
+                - distance_from_left: 3000
+                  height_from_floor: 1900
+                - distance_from_left: 3600
+                  height_from_floor: 1900
+            design_settings:
+              cabinet_run:
+                cabinet_count: 4
+                cabinet_width_shares: [1, 1, 1, 1]
+                left_clearance: 0
+                right_clearance: 0
+                cabinet_gap: 0
+                ceiling_clearance: 20
+              base:
+                height: 120
+              doors:
+                gap: 3
+              materials:
+                cabinet_panel_thickness: 18
+                door_thickness: 20
+                back_panel_thickness: 8
+          expected_calculated:
+            width_mm: 3600
+            finished_depth_mm: 700
+            cabinet_depth_mm: 680
+            inside_depth_mm: 672
+            cabinets:
+              - {cabinet_number: 1, left_position_mm: 0, right_position_mm: 900, width_mm: 900, left_height_mm: 2360, right_height_mm: 2285, door_width_mm: 897}
+              - {cabinet_number: 2, left_position_mm: 900, right_position_mm: 1800, width_mm: 900, left_height_mm: 2285, right_height_mm: 2160, door_width_mm: 897}
+              - {cabinet_number: 3, left_position_mm: 1800, right_position_mm: 2700, width_mm: 900, left_height_mm: 2160, right_height_mm: 1910, door_width_mm: 897}
+              - {cabinet_number: 4, left_position_mm: 2700, right_position_mm: 3600, width_mm: 900, left_height_mm: 1910, right_height_mm: 1760, door_width_mm: 897}
+
+  - name: long six-bay wardrobe with a future split plinth
+    wardrobe_type: wall-to-wall, flat top, long run requiring plinth modules
+    turns:
+      - user: >-
+          I measured a 6000 mm wide, 650 mm deep wall-to-wall space with a flat
+          2500 mm ceiling. Use six equal cabinets, no side clearances or cabinet gaps,
+          15 mm above, a 120 mm base, 2 mm door gaps, 18 mm cabinet panels,
+          20 mm doors, and a 6 mm back. The structural base will need to be split
+          into modules later because this is a long run.
+        answer_key:
+          response_required:
+            - Complete and validate the overall wardrobe inputs for all six cabinets.
+            - Acknowledge that the split structural plinth is a later local construction decision.
+            - Keep the current work limited to the implemented overall-input capability.
+          response_forbidden:
+            - Add rail spacing, rail count, or plinth module geometry to the global project file.
+            - Improvise the unimplemented structural plinth design.
+          expected_aikea_yaml:
+            schema_version: 1
+            units: mm
+            measured_space:
+              width: 6000
+              depth: 650
+              ceiling_points:
+                - distance_from_left: 0
+                  height_from_floor: 2500
+                - distance_from_left: 6000
+                  height_from_floor: 2500
+            design_settings:
+              cabinet_run:
+                cabinet_count: 6
+                cabinet_width_shares: [1, 1, 1, 1, 1, 1]
+                left_clearance: 0
+                right_clearance: 0
+                cabinet_gap: 0
+                ceiling_clearance: 15
+              base:
+                height: 120
+              doors:
+                gap: 2
+              materials:
+                cabinet_panel_thickness: 18
+                door_thickness: 20
+                back_panel_thickness: 6
+          expected_calculated:
+            width_mm: 6000
+            finished_depth_mm: 650
+            cabinet_depth_mm: 630
+            inside_depth_mm: 624
+            cabinets:
+              - {cabinet_number: 1, left_position_mm: 0, right_position_mm: 1000, width_mm: 1000, left_height_mm: 2365, right_height_mm: 2365, door_width_mm: 998}
+              - {cabinet_number: 2, left_position_mm: 1000, right_position_mm: 2000, width_mm: 1000, left_height_mm: 2365, right_height_mm: 2365, door_width_mm: 998}
+              - {cabinet_number: 3, left_position_mm: 2000, right_position_mm: 3000, width_mm: 1000, left_height_mm: 2365, right_height_mm: 2365, door_width_mm: 998}
+              - {cabinet_number: 4, left_position_mm: 3000, right_position_mm: 4000, width_mm: 1000, left_height_mm: 2365, right_height_mm: 2365, door_width_mm: 998}
+              - {cabinet_number: 5, left_position_mm: 4000, right_position_mm: 5000, width_mm: 1000, left_height_mm: 2365, right_height_mm: 2365, door_width_mm: 998}
+              - {cabinet_number: 6, left_position_mm: 5000, right_position_mm: 6000, width_mm: 1000, left_height_mm: 2365, right_height_mm: 2365, door_width_mm: 998}
