@@ -32,6 +32,11 @@ Use explicit user messages to create or revise the saved measurements and shared
   expose lean, bow, taper, or an out-of-square surface. If a standard position hits
   a slope or another boundary, move it to a useful labelled position. Record every
   slope, flat, step, and junction needed to describe the outline.
+- Treat an explicit client statement about the design as confirmed evidence. Do
+  not ask the client to prove it with an unhelpful measurement. Record a statement
+  that changes how geometry is interpreted or which measurements are needed under
+  `design_decisions`, including its design effect, and act on it. Keep this
+  internal record out of the client-facing conversation.
 - A dimension trapped at both ends normally needs three useful readings. A dimension
   with an open end normally needs one. Reposition or add readings when the shape,
   access, or an additional feature requires it; never force a meaningless line.
@@ -59,11 +64,12 @@ Use explicit user messages to create or revise the saved measurements and shared
 3. Classify the current inputs as missing, contradictory, or complete.
 4. If measured-space values are missing, remain in this phase and ask only for the missing measurements in client-facing language.
 5. Once the measured space is complete, ask for the remaining wardrobe choices in client-facing language. Do not ask for values already supplied or expose their internal field names.
-6. For contradictory inputs, remain in this phase, identify the exact conflict, and ask only for the correction needed. Never repair a measurement silently.
-7. For complete inputs, copy `assets/aikea.yaml` only when the project file does not exist, fill the exact schema, and run `python <skill-directory>/scripts/calculate_overall_wardrobe.py <project>/aikea.yaml`.
-8. If the calculator rejects the file, explain the specific problem in client-facing language and return to the missing or contradictory state.
-9. If the calculator accepts the file, tell the client that the measurements and shared choices are saved and checked, then present the calculated cabinet widths, positions, heights, and depths.
-10. Stop after presenting the checked overall dimensions. Do not begin another design stage in the same response.
+6. Preserve every confirmed design decision and its client statement in the global specification. Replace the earlier record when the client changes the same decision.
+7. For contradictory inputs, remain in this phase, identify the exact conflict, and ask only for the correction needed. Never repair a measurement silently.
+8. For complete inputs, copy `assets/aikea.yaml` only when the project file does not exist, fill the exact schema, and run `python <skill-directory>/scripts/calculate_overall_wardrobe.py <project>/aikea.yaml`.
+9. If the calculator rejects the file, explain the specific problem in client-facing language and return to the missing or contradictory state.
+10. If the calculator accepts the file, tell the client that the measurements and shared choices are saved and checked, then present the calculated cabinet widths, positions, heights, and depths.
+11. Stop after presenting the checked overall dimensions. Do not begin another design stage in the same response.
 
 Never overwrite an existing `aikea.yaml` with the blank template. Never ask a follow-up question when every required value is present and consistent. Never treat a chat summary as a substitute for the written and validated global specification.
 

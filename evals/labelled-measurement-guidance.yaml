@@ -11,7 +11,7 @@ scoring:
   pass_when:
     - Every required response item is satisfied.
     - No forbidden response item occurs.
-    - The response asks about only the next measurement topic.
+    - The response asks about only the next unfinished measurement or design topic.
   always_forbidden:
     - Drop the established edge labels and rely on ambiguous positions alone.
     - Request a line that ends on a different surface merely to complete a standard count.
@@ -70,3 +70,26 @@ cases:
         - Ask only for generic left, centre, and right heights.
         - Infer the slope from its description without measuring its labelled endpoints.
         - Ask for a horizontal width that terminates on slope C.
+
+  - name: accept a client-confirmed straight slope
+    established_outline: A left wall, B top flat, C slope, D short right wall, E floor
+    chat_history:
+      - role: user
+        text: The heights at B-C and C-D are measured, so both endpoints of edge C are known.
+      - role: assistant
+        text: Please take one additional height along edge C so I can check whether the slope is straight.
+    next_user_message: Edge C is straight. Use its endpoints; another reading there would be impractical.
+    answer_key:
+      response_required:
+        - Accept the client's confirmation that edge C is straight as sufficient evidence.
+        - Use the measured B-C and C-D endpoints without requesting another reading on C.
+        - Continue with only the next unfinished measurement or design topic.
+      response_forbidden:
+        - Describe the confirmed straightness as an assumption or unverified claim.
+        - Ask the client to prove edge C is straight.
+        - Repeat the request for an intermediate reading on edge C.
+      expected_design_decision:
+        subject: front_outline.edge_C
+        decision: straight
+        design_effect: use_measured_endpoints
+        client_statement: Edge C is straight. Use its endpoints; another reading there would be impractical.

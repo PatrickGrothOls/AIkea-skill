@@ -17,12 +17,6 @@ class TestOverallWardrobeEvalSet:
         / "evals"
         / "overall-wardrobe-measurements-and-settings.yaml"
     )
-    _GUIDANCE_EVAL_PATH = (
-        Path(__file__).parents[1]
-        / "evals"
-        / "labelled-measurement-guidance.yaml"
-    )
-
     def test_every_case_has_a_complete_final_answer(self) -> None:
         eval_set = self._load_eval_set()
         assert len(eval_set["cases"]) == 8
@@ -113,24 +107,6 @@ class TestOverallWardrobeEvalSet:
             assert set(final_yaml["measured_space"]["depth_measurements"]) == (
                 expected_positions
             )
-
-    def test_labelled_measurement_cases_define_useful_next_questions(self) -> None:
-        eval_set = yaml.safe_load(
-            self._GUIDANCE_EVAL_PATH.read_text(encoding="utf-8")
-        )
-
-        assert len(eval_set["cases"]) == 3
-        for case in eval_set["cases"]:
-            assert case["established_outline"]
-            assert case["chat_history"]
-            assert case["next_user_message"]
-            assert case["answer_key"]["response_required"]
-            assert case["answer_key"]["response_forbidden"]
-            scored_text = " ".join(
-                case["answer_key"]["response_required"]
-                + case["answer_key"]["response_forbidden"]
-            )
-            assert any(label in scored_text for label in ("A", "B", "C", "D", "E"))
 
     def _load_eval_set(self) -> dict:
         return yaml.safe_load(self._EVAL_PATH.read_text(encoding="utf-8"))

@@ -9,6 +9,7 @@ Use this file when starting a cabinet run or changing measurements that affect m
 - Allowed project sources
 - Orientation and units
 - Plan useful measurements from the labelled outline
+- Record confirmed design decisions
 - Required measured space
 - Apply the fitting allowance
 - Required internal design values
@@ -107,6 +108,31 @@ For depth, locate readings from the front-view map as well. A freely chosen dept
 can be measured from the back to the intended front midway along the floor edge.
 A required flush depth is measured from the back boundary to the fixed front line
 near the left edge, at the centre of the floor edge, and near the right edge.
+
+## Record confirmed design decisions
+
+Treat the client's explicit description of the intended geometry as evidence, not
+as an unverified assumption. A measurement checks an unknown physical condition;
+it is unnecessary when the client has directly settled the design property and an
+extra reading would reveal nothing useful.
+
+Use `design_decisions` for a confirmed statement that changes how geometry is
+interpreted or which readings are required, and that is not already represented by
+a normal measurement or setting. Each record contains:
+
+- `subject`: the labelled design element, such as `front_outline.edge_C`;
+- `decision`: the confirmed property, such as `straight`;
+- `design_effect`: the action this permits, such as `use_measured_endpoints`;
+- `client_statement`: the client's statement that supports the decision.
+
+For example, if the client confirms that slope edge `C` is straight and a useful
+intermediate reading cannot be taken, preserve that statement and use the measured
+`B-C` and `C-D` endpoints. Do not ask for another reading merely to prove the
+straightness they have confirmed.
+
+Do not duplicate cabinet count, material thicknesses, clearances, or other values
+that already have dedicated fields. If the client changes a decision, replace the
+record for that subject; do not retain conflicting decisions.
 
 ## Required measured space
 
@@ -217,6 +243,8 @@ Use `assets/aikea.yaml` as the exact schema.
 - Copy it only when `aikea.yaml` does not already exist.
 - Update an existing file in place and preserve values the user did not change.
 - Fill only user-supplied measured facts and confirmed shared design settings.
+- Preserve confirmed geometry interpretations under `design_decisions`, including
+  the client's supporting statement and the effect AIkea may apply.
 - Keep height measurements in their measured left-to-right order.
 - Preserve every supplied width and depth measurement. Store `single` for a freely
   chosen dimension and the three named readings for a fitted one.

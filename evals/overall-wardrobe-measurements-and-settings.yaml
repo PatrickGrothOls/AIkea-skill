@@ -62,13 +62,14 @@ cases:
           response_forbidden:
             - Ask a follow-up measurement question.
           expected_aikea_yaml:
-            schema_version: 6
+            schema_version: 7
             units: cm
             measured_space:
               width_measurements: {single: 240}
               depth_measurements: {single: 60}
               height_measurements:
                 - {distance_from_left: 0, height_from_floor: 220}
+            design_decisions: []
             design_settings:
               fit_allowance: 0.2
               fitted_dimensions: {width: false, depth: false, height: false}
@@ -225,7 +226,7 @@ cases:
             - Ask for a value supplied in an earlier turn.
             - Begin later cabinet or construction design.
           expected_aikea_yaml:
-            schema_version: 6
+            schema_version: 7
             units: mm
             measured_space:
               width_measurements: {bottom: 2730, middle: 2730, top: 2730}
@@ -234,6 +235,7 @@ cases:
                 - {distance_from_left: 0, height_from_floor: 2400}
                 - {distance_from_left: 1365, height_from_floor: 2400}
                 - {distance_from_left: 2730, height_from_floor: 2400}
+            design_decisions: []
             design_settings:
               fit_allowance: 2
               fitted_dimensions: {width: true, depth: false, height: true}
@@ -302,7 +304,7 @@ cases:
           response_forbidden:
             - Replace an intentional zero with a typical clearance or gap.
           expected_aikea_yaml:
-            schema_version: 6
+            schema_version: 7
             units: mm
             measured_space:
               width_measurements: {bottom: 3000, middle: 3000, top: 3000}
@@ -311,6 +313,7 @@ cases:
                 - {distance_from_left: 0, height_from_floor: 2400}
                 - {distance_from_left: 1500, height_from_floor: 2400}
                 - {distance_from_left: 3000, height_from_floor: 2400}
+            design_decisions: []
             design_settings:
               fit_allowance: 2
               fitted_dimensions: {width: true, depth: false, height: true}
@@ -366,7 +369,7 @@ cases:
             - Average the uneven readings.
             - Ask the client to calculate each cabinet width.
           expected_aikea_yaml:
-            schema_version: 6
+            schema_version: 7
             units: mm
             measured_space:
               width_measurements: {bottom: 2600, middle: 2597, top: 2595}
@@ -375,6 +378,7 @@ cases:
                 - {distance_from_left: 0, height_from_floor: 2350}
                 - {distance_from_left: 1297.5, height_from_floor: 2350}
                 - {distance_from_left: 2595, height_from_floor: 2350}
+            design_decisions: []
             design_settings:
               fit_allowance: 2
               fitted_dimensions: {width: false, depth: false, height: true}
@@ -423,7 +427,7 @@ cases:
           response_forbidden:
             - Replace the slope with an average or minimum height.
           expected_aikea_yaml:
-            schema_version: 6
+            schema_version: 7
             units: mm
             measured_space:
               width_measurements: {bottom: 3200, middle: 3200, top: 3200}
@@ -432,6 +436,7 @@ cases:
                 - {distance_from_left: 0, height_from_floor: 2600}
                 - {distance_from_left: 1600, height_from_floor: 2280}
                 - {distance_from_left: 3200, height_from_floor: 1960}
+            design_decisions: []
             design_settings:
               fit_allowance: 2
               fitted_dimensions: {width: true, depth: false, height: true}
@@ -482,7 +487,7 @@ cases:
           response_forbidden:
             - Reduce the ceiling to one generic slope.
           expected_aikea_yaml:
-            schema_version: 6
+            schema_version: 7
             units: mm
             measured_space:
               width_measurements: {bottom: 3000, middle: 3000, top: 3000}
@@ -491,6 +496,7 @@ cases:
                 - {distance_from_left: 0, height_from_floor: 2400}
                 - {distance_from_left: 1000, height_from_floor: 2400}
                 - {distance_from_left: 3000, height_from_floor: 1200}
+            design_decisions: []
             design_settings:
               fit_allowance: 2
               fitted_dimensions: {width: true, depth: false, height: true}
@@ -551,7 +557,7 @@ cases:
           response_forbidden:
             - Reduce or reorder the measured height readings.
           expected_aikea_yaml:
-            schema_version: 6
+            schema_version: 7
             units: mm
             measured_space:
               width_measurements: {bottom: 3600, middle: 3600, top: 3600}
@@ -563,6 +569,7 @@ cases:
                 - {distance_from_left: 2200, height_from_floor: 2300}
                 - {distance_from_left: 3000, height_from_floor: 1900}
                 - {distance_from_left: 3600, height_from_floor: 1900}
+            design_decisions: []
             design_settings:
               fit_allowance: 2
               fitted_dimensions: {width: true, depth: true, height: true}
@@ -612,7 +619,7 @@ cases:
           response_forbidden:
             - Continue into another design stage.
           expected_aikea_yaml:
-            schema_version: 6
+            schema_version: 7
             units: mm
             measured_space:
               width_measurements: {bottom: 6000, middle: 6000, top: 6000}
@@ -621,6 +628,7 @@ cases:
                 - {distance_from_left: 0, height_from_floor: 2500}
                 - {distance_from_left: 3000, height_from_floor: 2500}
                 - {distance_from_left: 6000, height_from_floor: 2500}
+            design_decisions: []
             design_settings:
               fit_allowance: 2
               fitted_dimensions: {width: true, depth: false, height: true}

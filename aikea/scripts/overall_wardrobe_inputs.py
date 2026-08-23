@@ -5,6 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any
 
+from design_decisions import DesignDecision, DesignDecisionReader
 from overall_design_settings import OverallDesignSettingReader, OverallDesignSettings
 from overall_space_measurements import OverallSpaceMeasurementReader, OverallSpaceMeasurements
 
@@ -21,6 +22,7 @@ class OverallWardrobeInputError(ValueError):
 class OverallWardrobeInputs:
     space: OverallSpaceMeasurements
     settings: OverallDesignSettings
+    design_decisions: tuple[DesignDecision, ...]
 
 
 class OverallWardrobeInputReader:
@@ -30,6 +32,7 @@ class OverallWardrobeInputReader:
         problems: list[str] = []
         self._check_schema_version(data, problems)
         scale = self._read_unit_scale(data, problems)
+        design_decisions = DesignDecisionReader().read(data, problems)
         settings = OverallDesignSettingReader().read(data, scale, problems)
         allowances = settings.fitted_dimensions.resolve_fitting_allowances(
             settings.fit_allowance_mm
@@ -43,11 +46,15 @@ class OverallWardrobeInputReader:
         )
         if problems:
             raise OverallWardrobeInputError(problems)
-        return OverallWardrobeInputs(space=space, settings=settings)
+        return OverallWardrobeInputs(
+            space=space,
+            settings=settings,
+            design_decisions=design_decisions,
+        )
 
     def _check_schema_version(self, data: dict[str, Any], problems: list[str]) -> None:
-        if type(data.get("schema_version")) is not int or data["schema_version"] != 6:
-            problems.append("schema_version must be 6")
+        if type(data.get("schema_version")) is not int or data["schema_version"] != 7:
+            problems.append("schema_version must be 7")
 
     def _read_unit_scale(self, data: dict[str, Any], problems: list[str]) -> float:
         unit = data.get("units")
