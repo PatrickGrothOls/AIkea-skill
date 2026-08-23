@@ -34,8 +34,11 @@ class TestOverallWardrobeEvalSet:
             actual = OverallWardrobeCalculator().calculate(inputs).as_dict()
             expected = answer["expected_calculated"]
             for field in (
-                "width_mm",
-                "finished_depth_mm",
+                "minimum_measured_width_mm",
+                "minimum_measured_depth_mm",
+                "fit_allowance_mm",
+                "usable_width_mm",
+                "usable_depth_mm",
                 "cabinet_depth_mm",
                 "inside_depth_mm",
             ):

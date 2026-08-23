@@ -1,16 +1,25 @@
-schema_version: 1
+schema_version: 2
 units: mm
 
 measured_space:
-  width: 3000
-  depth: 600
-  ceiling_points:
+  width_measurements:
+    bottom: 3000
+    middle: 3000
+    top: 3000
+  depth_measurements:
+    left: 600
+    middle: 600
+    right: 600
+  height_measurements:
     - distance_from_left: 0
+      height_from_floor: 2400
+    - distance_from_left: 1500
       height_from_floor: 2400
     - distance_from_left: 3000
       height_from_floor: 2400
 
 design_settings:
+  fit_allowance: 2
   cabinet_run:
     cabinet_count: 2
     cabinet_width_shares: [1, 1]

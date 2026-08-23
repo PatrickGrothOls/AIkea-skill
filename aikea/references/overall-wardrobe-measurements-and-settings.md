@@ -12,10 +12,11 @@ Remain in this step while any required value is missing, contradictory, or rejec
 
 Act like a carpenter helping a client plan a wardrobe, not like software asking someone to complete a data structure.
 
-1. Ask for the space measurements first: preferred unit, wall width, available depth, and ceiling height across the width. Explain how to describe a slope or height change only when relevant.
-2. After the space is clear, ask about the wardrobe itself: number of sections, whether they should be equal or which should be wider or narrower, fit at the walls and ceiling, base height, door spacing, and chosen material thicknesses.
-3. Translate the answers into the global specification privately. Do not expose filenames, schema fields, width shares, formulas, calculator commands, or validation terminology unless the client asks.
-4. Give the client calculated cabinet sizes and positions, not the internal values used to derive them.
+1. Default to one topic per response: unit, width measurements, depth measurements, height measurements, then each wardrobe choice.
+2. If the client wants to gather everything at once, adapt `assets/wardrobe-measurement-sheet.md` and let them return the completed sheet. Ask only about missing or conflicting answers afterward.
+3. After the space is clear, ask about the wardrobe itself: number of sections, whether they should be equal or which should be wider or narrower, fit at the walls and ceiling, base height, door spacing, and chosen material thicknesses.
+4. Translate the answers into the global specification privately. Do not expose filenames, schema fields, width shares, formulas, calculator commands, validation terminology, or the fitting allowance unless the client asks.
+5. Give the client calculated cabinet sizes and positions, not the internal values used to derive them.
 
 ## Allowed project sources
 
@@ -33,29 +34,39 @@ Accept measurements only from the user's messages, a source the user identifies,
 
 ## Required measured space
 
-Collect:
+Collect the raw readings without subtracting any allowance:
 
-1. `width`: inside-left to inside-right width available to the wardrobe.
-2. `depth`: finished front-to-back depth available to the wardrobe.
-3. `ceiling_points`: the ceiling height at the left edge, right edge, and every place where a flat or sloped section begins or ends.
+1. `width_measurements`: wall-to-wall width near the floor, halfway up, and near the ceiling.
+2. `depth_measurements`: back-wall to intended wardrobe-front depth at the left, centre, and right.
+3. `height_measurements`: finished-floor to ceiling height at the left, centre, right, and every place where a flat, sloped, or stepped section begins or ends.
 
-Each ceiling point contains:
+Each height measurement contains:
 
 - `distance_from_left`: horizontal distance from the inside-left edge;
 - `height_from_floor`: vertical height from the finished floor.
 
 Translate clear descriptions directly:
 
-- A flat ceiling becomes `(0, height)` and `(width, height)`.
-- One continuous slope becomes `(0, left height)` and `(width, right height)`.
-- A flat section followed by a slope becomes `(0, flat height)`, `(slope start, flat height)`, and `(width, right height)`.
-- Additional flats or slopes require a point at every stated change.
+- A flat ceiling still requires left, centre, and right readings; preserve small differences rather than flattening them.
+- One continuous slope requires at least left, centre, and right readings.
+- A flat section followed by a slope requires the usual three readings plus the exact place where the slope begins.
+- Additional flats, slopes, or steps require a reading at every stated change.
 
-Require the first distance to be `0`, the final distance to equal `width`, and all distances to increase from left to right. Preserve every measured change point. Never average heights, reorder points, extend a section, or infer a missing endpoint to make the outline pass.
+Require the first distance to be `0`, the final distance to cover the calculated usable width, and all distances to increase from left to right. Preserve every raw reading and measured change point. Never average readings, reorder points, extend a section, or infer a missing endpoint to make the outline pass.
+
+## Apply the fitting allowance
+
+Keep the raw measurements unchanged. Store the template's positive `fit_allowance` value of `2 mm` and subtract it once when resolving each usable span:
+
+- usable width is the smallest of the three width readings minus 2 mm;
+- usable depth is the smallest of the three depth readings minus 2 mm;
+- usable height at any point is the measured/interpolated height minus 2 mm before base height and chosen ceiling clearance are removed.
+
+This is built-in AIkea fitting knowledge, not a client design question. If the project uses centimetres, store the same allowance as `0.2 cm`.
 
 ## Required internal design values
 
-Collect:
+The template supplies `fit_allowance`. Collect the remaining internal values:
 
 - `cabinet_count`;
 - `cabinet_width_shares`, one positive number per cabinet from left to right;
@@ -88,7 +99,7 @@ Translate the answer to shares internally and present the resulting cabinet widt
 
 Build one checklist containing every required measured-space field and shared setting. Count explicit zeros as present.
 
-- **Missing measured space:** Ask only for the missing space measurements. Do not ask about wardrobe choices yet.
+- **Missing measured space:** Ask for only the next missing measurement topic. Do not ask about wardrobe choices yet.
 - **Missing wardrobe choices:** Once the measured space is complete, ask for the remaining choices in client-facing language. Do not re-ask supplied values or expose internal field names.
 - **Contradictory:** Name the exact conflict and ask only for the correction required. Retain all non-conflicting values.
 - **Complete:** Do not ask another question. Save the global specification and run the calculator privately. A valid result completes this step and permits later cabinet design.
@@ -102,7 +113,9 @@ Use `assets/aikea.yaml` as the exact schema.
 - Copy it only when `aikea.yaml` does not already exist.
 - Update an existing file in place and preserve values the user did not change.
 - Fill only user-supplied measured facts and confirmed shared design settings.
-- Keep ceiling points in their measured left-to-right order.
+- Keep height measurements in their measured left-to-right order.
+- Preserve all three width and depth measurements instead of replacing them with the smallest value.
+- Preserve the template's 2 mm fitting allowance unless the user explicitly changes the project policy.
 - Do not add calculated cabinet dimensions to `aikea.yaml`.
 - Do not add fields that are absent from the template.
 
@@ -113,7 +126,9 @@ Run the bundled calculator only after the checklist is complete. Require all of 
 - every required input is present and numeric;
 - all lengths and thicknesses are positive, except confirmed clearances and gaps may be zero;
 - the number of width shares equals `cabinet_count` and every share is positive;
-- ceiling points cover the full width in increasing order;
+- three width readings and three depth readings are present;
+- at least three height measurements cover the usable width in increasing order;
+- the 2 mm fitting allowance leaves positive usable width, depth, and height;
 - clearances and cabinet gaps leave positive cabinet width;
 - the base and ceiling clearance leave positive cabinet height;
 - door and back thicknesses leave positive cabinet and inside depth.

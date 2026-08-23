@@ -1,12 +1,19 @@
-schema_version: 1
+schema_version: 2
 units: mm
 
 measured_space:
-  width: null
-  depth: null
-  ceiling_points: []
+  width_measurements:
+    bottom: null
+    middle: null
+    top: null
+  depth_measurements:
+    left: null
+    middle: null
+    right: null
+  height_measurements: []
 
 design_settings:
+  fit_allowance: 2
   cabinet_run:
     cabinet_count: null
     cabinet_width_shares: []
