@@ -1,6 +1,6 @@
 ---
 name: aikea
-description: Establish, revise, and check the overall measurements and shared design choices for a generic frameless sheet-material cabinet run. Use when starting an AIkea wardrobe project, measuring a flat or sloped space, deciding the number and relative widths of cabinet sections, or recalculating the overall design after a shared measurement or choice changes.
+description: Start and route an AIkea frameless sheet-material furniture project by establishing, revising, and checking the overall measured space and shared design choices. Use when starting an AIkea wardrobe or fitted-furniture project, measuring a flat or sloped space, recalculating overall dimensions, or deciding which AIkea design stage should run next.
 ---
 
 # AIkea
@@ -101,3 +101,7 @@ Never take project measurements from this skill's assets, examples, eval fixture
 ## Current implementation
 
 Collect, save, and check the measured space and shared wardrobe choices. Stop when the calculated cabinet sizes and positions have been presented.
+
+## Route the next stage
+
+On a later response, when the overall space is checked and the client wants to decide what units the furniture contains, load `$aikea-arrange-units`. Keep unit arrangement out of this entry skill rather than duplicating its questions or saved-result rules here.
