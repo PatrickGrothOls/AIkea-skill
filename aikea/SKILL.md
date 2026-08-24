@@ -72,6 +72,7 @@ Use explicit user messages to create or revise the saved measurements and shared
 - Never ask the client to provide width shares. Ask whether sections should be equal or whether any should be wider or narrower, then translate that relationship internally.
 - Keep every raw measurement unchanged. Apply the template's 2 mm fitting allowance only to a dimension fitted between fixed boundaries: between two side boundaries for width, between the floor and ceiling for height, or between the back and a required flush-front line for depth. A freely chosen edge receives no fitting allowance. Do not ask the client to choose the allowance.
 - Present useful design results such as cabinet sizes, positions, and heights. Keep formulas and internal representations private unless requested.
+- End every client-facing response with one concrete action that advances the project: ask the exact next question, give a numbered reply instruction, or begin the next checked stage. Never end with a passive invitation such as "ready when you are," "let me know," or "tell me when to continue."
 
 ## Work from the active project
 
@@ -92,16 +93,17 @@ Use explicit user messages to create or revise the saved measurements and shared
 8. For complete inputs, copy `assets/aikea.yaml` only when the project file does not exist, fill the exact schema, and run `python <skill-directory>/scripts/calculate_overall_wardrobe.py <project>/aikea.yaml`.
 9. If the calculator rejects the file, explain the specific problem in client-facing language and return to the missing or contradictory state.
 10. If the calculator accepts the file, tell the client that the measurements and shared choices are saved and checked, then present the calculated cabinet widths, positions, heights, and depths.
-11. Stop after presenting the checked overall dimensions. Do not begin another design stage in the same response.
+11. Immediately load `$aikea-arrange-units` and continue with its first unfinished action in the same response. Reuse any purpose, order, or width relationship the client already supplied; do not ask for it again.
+12. If the client later replies only with an acknowledgement such as "great," treat it as permission to continue the active workflow and perform the next unfinished action. Never answer an acknowledgement with another invitation to proceed.
 
-Never overwrite an existing `aikea.yaml` with the blank template. Never ask a follow-up question when every required value is present and consistent. Never treat a chat summary as a substitute for the written and validated global specification.
+Never overwrite an existing `aikea.yaml` with the blank template. Never ask another overall-measurement question when every required value is present and consistent. Never treat a chat summary as a substitute for the written and validated global specification.
 
 Never take project measurements from this skill's assets, examples, eval fixtures, development documentation, legacy wardrobe code, or another project. Those files are implementation knowledge or test data, not measurements for the active cabinet run.
 
 ## Current implementation
 
-Collect, save, and check the measured space and shared wardrobe choices. Stop when the calculated cabinet sizes and positions have been presented.
+Collect, save, and check the measured space and shared wardrobe choices, present the calculated cabinet sizes and positions, then lead directly into unit arrangement.
 
 ## Route the next stage
 
-On a later response, when the overall space is checked and the client wants to decide what units the furniture contains, load `$aikea-arrange-units`. Keep unit arrangement out of this entry skill rather than duplicating its questions or saved-result rules here.
+When the overall space is checked, load `$aikea-arrange-units` immediately rather than waiting for the client to request the next stage. Keep unit arrangement out of this entry skill instead of duplicating its questions or saved-result rules here.

@@ -52,6 +52,7 @@ Act like a carpenter helping a client plan a wardrobe, not like software asking 
    numbered choices or one numbered value line.
 8. Translate the answers into the global specification privately. Do not expose filenames, schema fields, width shares, formulas, calculator commands, validation terminology, or the fitting allowance unless the client asks.
 9. Give the client calculated cabinet sizes and positions, not the internal values used to derive them.
+10. Lead directly into the next unfinished design question after presenting results. Never make the client send a separate message merely to authorize continuation.
 
 ## Format questions for short replies
 
@@ -333,7 +334,7 @@ Build one checklist containing every required measured-space field and shared se
 - **Missing measured space:** Ask for only the next missing measurement topic. Do not ask about wardrobe choices yet.
 - **Missing wardrobe choices:** Once the measured space is complete, ask for only the next missing choice topic in client-facing language. The shape and labelled-edge fit must already be settled before asking about the section layout. Do not re-ask supplied values or expose internal field names.
 - **Contradictory:** Name the exact conflict and ask only for the correction required. Retain all non-conflicting values.
-- **Complete:** Do not ask another question. Save the global specification and run the calculator privately. A valid result completes this step and permits later cabinet design.
+- **Complete:** Do not ask another measurement or shared-setting question. Save the global specification and run the calculator privately. After presenting the valid result, hand off immediately to the first unfinished unit-arrangement action.
 
 When the user corrects one value, change only that value unless the correction necessarily changes a dependent measurement such as the right-edge ceiling distance after a width change.
 
@@ -372,4 +373,4 @@ Run the bundled calculator only after the checklist is complete. Require all of 
 - the base and ceiling clearance leave positive cabinet height;
 - door and back thicknesses leave positive cabinet and inside depth.
 
-On success, tell the client that the measurements and shared choices are saved and checked, then summarize calculated cabinet widths, left/right positions, left/right heights, door widths, cabinet depth, and inside depth. Do not mention the file path or checking mechanism unless asked. Stop after presenting these overall results.
+On success, tell the client that the measurements and shared choices are saved and checked, then summarize calculated cabinet widths, left/right positions, left/right heights, door widths, cabinet depth, and inside depth. Do not mention the file path or checking mechanism unless asked. Immediately load `$aikea-arrange-units` and end with its next concrete question or reply action. If the arrangement was already fully supplied, let that skill save it and lead into the first local-unit question instead of repeating it.

@@ -5,7 +5,7 @@ description: Arrange the physical units in a measured AIkea furniture project fr
 
 # AIkea arrange units
 
-Settle one ordered furniture arrangement and save it in the global project specification. Speak like a carpenter helping a client; keep project-file fields and calculations private.
+Settle one ordered furniture arrangement and save it in the global project specification. Speak like a carpenter helping a client; keep project-file fields and calculations private. End every response with one concrete question or reply action that advances the project.
 
 ## Establish the project state
 
@@ -13,6 +13,7 @@ Settle one ordered furniture arrangement and save it in the global project speci
 2. Require an existing `aikea.yaml` with checked overall measurements and shared settings. If that work is unfinished, return to `$aikea` and ask only for the missing earlier information.
 3. Read `references/unit-arrangement.md` completely before changing the project.
 4. Preserve every measurement, design decision, and shared setting that this stage does not own.
+5. Treat a short acknowledgement such as "great" as permission to continue the active workflow. Resume from the saved project and supplied conversation details; never ask whether the client is ready.
 
 ## Arrange the units
 
@@ -29,12 +30,15 @@ Settle one ordered furniture arrangement and save it in the global project speci
 3. Preserve the existing run-wide left clearance, right clearance, gap, and ceiling clearance. Rename `cabinet_gap` to `gap` when replacing a legacy `cabinet_run`.
 4. Replace `cabinet_run` only when the new arrangement is complete. Never keep both representations.
 5. Check that every ID is unique, every purpose is non-empty, every width share is positive, and list order matches the confirmed left-to-right order.
-6. Summarize the saved arrangement in client-facing language and stop. Do not begin local unit design in the same response.
+6. Summarize the saved arrangement in client-facing language.
+7. Lead into local design with one concrete question. Start with the leftmost unit and ask what it needs to store unless the client already supplied that answer; otherwise ask the next unanswered local-design question.
 
 ## Keep later design out
 
-Do not ask for or decide heights, shelves, doors, panels, supports, plinth construction, joint types, Cabineo placement, miters, machining, or manufacturing output. Do not create `assemblies/` folders in this stage. Those responsibilities begin only after the arrangement has been saved and checked.
+Do not decide heights, shelves, doors, panels, supports, plinth construction, joint types, Cabineo placement, miters, machining, or manufacturing output. Do not create `assemblies/` folders in this stage. The final local-design question is only a handoff; those decisions begin after the arrangement has been saved and checked.
+
+Never end with "ready when you are," "let me know," "tell me when to continue," or another passive availability statement.
 
 ## Current implementation
 
-Guide, save, and review the ordered `assembly_run`. Folder generation and local design are later deterministic stages.
+Guide, save, and review the ordered `assembly_run`, then lead into the first local-design question. Folder generation and local design remain later deterministic stages.
