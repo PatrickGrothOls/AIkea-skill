@@ -63,24 +63,74 @@ question.
   `E (bottom)`. Do not later shorten these to bare letters.
 - Write a junction by naming both edges, for example
   `B (top flat)-C (sloped top) junction`.
-- Put every requested reading on its own numbered line, even when the topic needs
-  only one reading. Keep one measurement topic per response.
-- End a measurement request by showing the reply form, such as
-  `Reply 1: 250 cm, 2: 249.8 cm, 3: 250.1 cm.`
+- Start each measurement group with a headline that names the direction and the
+  purpose, such as `Width measurements - side-wall fit`, `Height measurement -
+  start of slope`, or `Depth measurements - flush front`. State the view and the
+  chosen unit once below the headline.
+- Put a compact ASCII guide before the numbered readings. Use solid lines for
+  physical edges and dotted lines with arrowheads for measurement paths. Mark
+  each path with the number of its matching text line. Say that the guide is not
+  to scale.
+- Show both physical sides for a side-to-side reading. When the target is a point
+  formed by two edges, show both edges that form the junction and the opposite
+  reference edge from which the measurement starts. Up to three repeated paths
+  between the same boundaries may share one guide.
+- Keep every guide to one direction: width, height, or depth. If locating one
+  feature requires two directions, use separate headlines and guides. Omit edges
+  that do not help orient the client or identify the requested path.
+- Put every requested reading on its own numbered line in the form
+  `1. Measurement description: where to measure`, even when the topic needs only
+  one reading. Do not append a blank, underscores, `: cm`, or any other pretend
+  value field. Keep one measurement topic per response.
+- End a measurement request by showing a short reply example without repeating
+  the unit on every item, such as `Reply with 1: 250, 2: 249.8, 3: 250.1.`
 - Put every design decision into numbered choices. The client may answer with only
   the option number. If the decision requires a value, use one numbered line such
-  as `1. Base height: ___` and invite `1: 100 mm`.
+  as `1. Base height` and invite `1: 100` after stating the unit once.
 - Restart numbering at `1` for each response. Interpret a short numbered reply
   against the immediately preceding question only.
 - Offer only meaningful choices. Do not invent a typical value or silently turn a
   missing answer into a default.
 
-Example measurement request:
+Example repeated side-to-side request:
 
-1. `A (left side)` to `D (right side)`, just above `E (bottom)`: ___
-2. `A (left side)` to `D (right side)`, halfway up their shared height: ___
-3. `A (left side)` to `D (right side)`, just below the
-   `C (sloped top)-D (right side)` junction: ___
+### Width measurements - side-wall fit
+
+Front view. All measurements in centimetres. Guide not to scale.
+
+```text
+A (left side) |---- B (top flat) -----+
+              |                        \\ C (sloped top)
+              |<........ 3 ..........>| D (right side)
+              |<........ 2 ..........>|
+              |<........ 1 ..........>|
+              +------ E (bottom) -----+
+```
+
+1. Bottom width: from `A (left side)` to `D (right side)`, just above `E (bottom)`
+2. Middle width: from `A (left side)` to `D (right side)`, halfway up their shared height
+3. Top width: from `A (left side)` to `D (right side)`, just below the `C (sloped top)-D (right side)` junction
+
+Reply with `1: 250, 2: 249.8, 3: 250.1`.
+
+Example point request:
+
+### Height measurement - start of slope
+
+Front view. All measurements in centimetres. Guide not to scale.
+
+```text
+B (top flat) --------+ B-C (slope starts)
+                      \\ C (sloped top)
+                      ^
+                      . 1
+                      ^
+E (bottom) -----------+-----------------
+```
+
+1. Start-of-slope height: from `E (bottom)` to the `B (top flat)-C (sloped top)` junction
+
+Reply with `1: 241`.
 
 Example design question:
 

@@ -20,6 +20,8 @@ scoring:
     - Every required response item is satisfied.
     - No forbidden response item occurs.
     - Every requested reading appears on its own numbered line and can be answered by item number and value.
+    - Every measurement group has a Width, Height, or Depth headline and a compact ASCII guide whose numbered paths match the requested readings.
+    - Every measurement line uses the form measurement description, colon, and where to measure, without a blank value field.
     - Every design question uses numbered choices or one numbered value line and can be answered by number.
     - Every client-facing edge letter is paired with its plain name in parentheses.
     - The final aikea.yaml semantically matches expected_aikea_yaml.
@@ -37,6 +39,9 @@ scoring:
     - Drop the edge labels after drawing the outline and ask for a measurement using ambiguous positions alone.
     - Use a bare edge letter in a client-facing question without its plain name in parentheses.
     - Request measurements in prose or unnumbered bullets instead of numbered lines.
+    - Ask for a measurement without a direction headline or matching ASCII guide.
+    - Mix width, height, and depth paths in one ASCII guide.
+    - Add underscores, blanks, or pretend value fields after a numbered measurement description.
     - Present design alternatives without numbered reply choices.
     - Request a repeated reading that reaches a different boundary or reveals no useful fit information merely to complete a standard count.
     - Ask whether the wardrobe front is enclosed; it remains open even when its finished face must align with a fixed line.

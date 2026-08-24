@@ -14,13 +14,18 @@ Use explicit user messages to create or revise the saved measurements and shared
   the units aligned." Then offer `1. Centimetres`, `2. Millimetres`, and
   `3. Inches`, and say the client can reply with the number.
 - Use plain client-facing language and ask one measurement or design topic per response.
-- Format every requested reading as a numbered list, including when only one
-  reading is needed. Tell the client they can reply with the item numbers and
-  values, such as `1: 250 cm, 2: 249.8 cm`.
+- Begin every measurement group with a plain headline that says whether it is a
+  width, height, or depth measurement and what feature it checks. State the view
+  and unit once, then show a compact ASCII guide before the numbered lines.
+- Format every requested reading as `1. Measurement description: where to
+  measure`, including when only one reading is needed. Do not add blanks,
+  underscores, or a pretend value field. Tell the client they can reply with the
+  item numbers and values, such as `1: 250, 2: 249.8`.
 - Format every design question as numbered choices. When the answer is a value
-  rather than a choice, use one numbered blank. Tell the client they can reply
-  with the option number or the numbered value. Restart at `1` for each response
-  and interpret a short numbered reply against only the latest question.
+  rather than a choice, use one numbered description without a blank. Tell the
+  client they can reply with the option number or the numbered value. Restart at
+  `1` for each response and interpret a short numbered reply against only the
+  latest question.
 - Default to guiding the client question by question. If they prefer to collect everything during one site visit, adapt `assets/wardrobe-measurement-sheet.md` for them instead.
 - Ask for the unit first, then the shape of the available space as viewed from the
   front. Once the client identifies the shape, show a compact outline and label
@@ -39,6 +44,12 @@ Use explicit user messages to create or revise the saved measurements and shared
   later question. Name the two boundaries being measured and the labelled edge or
   junction that locates the reading, so the client never has to remember what a
   bare letter means or reinterpret words such as "top" or "middle."
+- In an ASCII guide, use solid lines for physical edges and dotted lines with
+  arrowheads for measurement paths. Show both sides that form a target junction
+  and the opposite boundary from which it is measured. For a side-to-side reading,
+  show those two sides. Group up to three repeated readings of the same direction
+  in one guide. Do not mix width, height, and depth paths in one guide, include
+  unrelated edges, or imply that the drawing is to scale.
 - Choose readings for the fit information they reveal, not to complete a rigid
   checklist. Repeated readings must compare the same two boundaries and should
   expose lean, bow, taper, or an out-of-square surface. If a standard position hits

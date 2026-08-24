@@ -16,6 +16,10 @@ scoring:
     - Drop the established edge labels and rely on ambiguous positions alone.
     - Use an edge letter in a client-facing request without its plain name in parentheses.
     - Put requested readings into a sentence or unnumbered list instead of separate numbered lines.
+    - Ask for a measurement without a Width, Height, or Depth headline and a matching ASCII guide.
+    - Mix width, height, and depth paths in one ASCII guide.
+    - Show a target junction without both edges that form it or without the opposite measurement boundary.
+    - Add underscores, blanks, or pretend value fields after a numbered measurement description.
     - Present design alternatives without numbered reply choices.
     - Request a line that ends on a different surface merely to complete a standard count.
     - Invent a measurement, feature, or shape not supplied by the client.
@@ -34,7 +38,8 @@ cases:
       response_required:
         - Retain that depth must finish at the fixed front line, without asking for depth yet.
         - Ask next for widths between A (left side) and D (right side) only where both walls exist below the C (sloped top)-D (right side) junction.
-        - Present every requested reading as a separate numbered line.
+        - Use a Width measurements headline and a compact front-view ASCII guide with A (left side), D (right side), and three numbered measurement paths between them.
+        - Present every requested reading as a separate numbered line in the form measurement description, colon, and where to measure, with no blank value field.
         - Locate the useful lines with named labels, such as just above E (bottom), midway up the shared A (left side)-D (right side) wall height, and just below the C (sloped top)-D (right side) junction.
         - Make clear that these lines compare the same walls and can expose lean, bow, or taper.
         - Show that the client can reply with the item numbers and measurements.
@@ -52,7 +57,8 @@ cases:
     answer_key:
       response_required:
         - Ask only for depth from the back boundary to the fixed finished-front line.
-        - Request the readings as separate numbered lines near A (left side), at the centre of E (bottom), and near D (right side).
+        - Use a Depth measurements headline and a compact side- or top-view ASCII guide showing the back boundary, fixed front line, and three numbered paths between them.
+        - Request the readings as separate numbered lines in the form measurement description, colon, and where to measure near A (left side), at the centre of E (bottom), and near D (right side), with no blank value field.
         - Explain briefly that comparing those same two depth boundaries reveals whether either line runs out of square.
         - Show that the client can reply with the item numbers and measurements.
       response_forbidden:
@@ -68,8 +74,10 @@ cases:
     next_user_message: What comes after that?
     answer_key:
       response_required:
-        - Ask only for vertical heights from E (bottom) to the top boundary.
-        - Present every requested reading as a separate numbered line.
+        - Ask only for the widths from A (left side) and heights from E (bottom) needed to locate the top-boundary junctions.
+        - Use separate Width and Height headlines and compact front-view ASCII guides so each junction position and height has one unambiguous measurement direction.
+        - Show both edges forming each target junction and the opposite reference edge from which its numbered path is measured.
+        - Present every requested reading as a separate numbered line in the form measurement description, colon, and where to measure, with no blank value field.
         - Request heights at the A (left side)-B (top flat), B (top flat)-C (sloped top), and C (sloped top)-D (right side) junctions, with each junction's horizontal distance from A (left side).
         - Request a useful check along C (sloped top) when needed to verify that the real surface follows the intended line.
         - Show that the client can reply with the item numbers and measurements.

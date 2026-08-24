@@ -37,6 +37,15 @@ class TestLabelledMeasurementGuidanceEvalSet:
             assert "numbered" in required
             assert "(" in required and ")" in required
             assert "reply with the item numbers" in required
+            assert "headline" in required
+            assert "ASCII guide" in required
+            assert "colon, and where to measure" in required
+
+    def test_measurement_prompts_forbid_fake_value_fields(self) -> None:
+        forbidden = " ".join(self._load_eval_set()["scoring"]["always_forbidden"])
+
+        assert "pretend value fields" in forbidden
+        assert "Mix width, height, and depth" in forbidden
 
     def test_width_choice_case_requires_numbered_reply_options(self) -> None:
         width_choice = next(
