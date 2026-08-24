@@ -35,8 +35,10 @@ class TestOverallWardrobeEvalSet:
         assert "plain name in parentheses" in pass_rules
         assert "ASCII guide" in pass_rules
         assert "description, colon, and where to measure" in pass_rules
+        assert "one concrete question or reply action" in pass_rules
         assert "bare edge letter" in forbidden_rules
         assert "pretend value fields" in forbidden_rules
+        assert "ready when you are" in forbidden_rules
 
     def test_every_final_answer_matches_the_calculator(self) -> None:
         eval_set = self._load_eval_set()

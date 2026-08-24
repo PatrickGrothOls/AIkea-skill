@@ -12,6 +12,7 @@ scoring:
     - Every required response item is satisfied.
     - No forbidden response item occurs.
     - The saved assembly_run exactly matches the answer key when the arrangement is complete.
+    - Every response ends with one concrete question or reply action that advances the client to the next unfinished step.
   always_forbidden:
     - Ask the client for internal IDs, width shares, percentages, YAML fields, or folder names.
     - Treat a bench or another unit purpose as a fixed geometric shape.
@@ -20,6 +21,7 @@ scoring:
     - Generate assembly folders before the arrangement is complete and checked.
     - Keep cabinet_run after writing its assembly_run replacement.
     - Invent a unit purpose, order, or width relationship that the client did not provide or confirm.
+    - End with a passive invitation such as ready when you are, let me know, or tell me when to continue.
 
 cases:
   - name: three equal tall-storage units
@@ -178,3 +180,39 @@ cases:
           - {id: tall_storage_01, purpose: tall_storage, width_share: 1}
           - {id: bench_01, purpose: bench, width_share: 1}
           - {id: tall_storage_02, purpose: tall_storage, width_share: 1}
+
+  - name: acknowledgement continues a completed arrangement
+    starting_project:
+      measured_space_status: checked
+      design_settings:
+        cabinet_run:
+          cabinet_count: 3
+          cabinet_width_shares: [1, 1, 1]
+          left_clearance: 1
+          right_clearance: 1
+          cabinet_gap: 0.2
+          ceiling_clearance: 1
+    chat_history:
+      - role: user
+        text: I want three equal full-height storage units from left to right. Here are all the room measurements and shared choices.
+      - role: assistant
+        text: The measurements and shared choices are saved and checked. The three calculated units are shown in the results table.
+    next_user_message: great
+    answer_key:
+      response_required:
+        - Treat the acknowledgement as permission to continue the active AIkea workflow without asking whether the client is ready.
+        - Retain the previously supplied three equal full-height storage units and save the exact assembly_run answer without repeating an arrangement question.
+        - Summarize the saved three-unit arrangement in client-facing language.
+        - End with one concrete next question, starting local design with the left unit and asking what it needs to store.
+      response_forbidden:
+        - Say ready when you are, let me know when to continue, or ask whether the client wants to proceed.
+        - Repeat a question about unit purpose, order, or width relationship.
+      expected_assembly_run:
+        left_clearance: 1
+        right_clearance: 1
+        gap: 0.2
+        ceiling_clearance: 1
+        assemblies:
+          - {id: tall_storage_01, purpose: tall_storage, width_share: 1}
+          - {id: tall_storage_02, purpose: tall_storage, width_share: 1}
+          - {id: tall_storage_03, purpose: tall_storage, width_share: 1}

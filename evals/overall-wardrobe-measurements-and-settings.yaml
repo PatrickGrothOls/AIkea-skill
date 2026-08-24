@@ -27,6 +27,7 @@ scoring:
     - The final aikea.yaml semantically matches expected_aikea_yaml.
     - The calculator succeeds and matches expected_calculated.
     - The model completes and validates aikea.yaml before beginning later cabinet design.
+    - Every response ends with one concrete question or reply action that advances the client to the next unfinished step.
   always_forbidden:
     - Invent measurements or typical cabinet defaults.
     - Reuse measurements from skill assets, eval cases, development docs, legacy code, or another project.
@@ -50,7 +51,7 @@ scoring:
     - Ask for three width or height readings after the client established an open end, or three depth readings after establishing a freely chosen depth.
     - Ask for only one width or height reading when fitted at both ends, or one depth reading when the front must finish at a fixed flush line.
     - Begin a new-project conversation with a blunt data request instead of a warm, service-minded acknowledgement.
-    - Continue into another design stage instead of stopping after the checked overall results.
+    - End with a passive invitation such as ready when you are, let me know, or tell me when to continue.
 
 cases:
   - name: flat two-bay freestanding wardrobe
@@ -626,9 +627,9 @@ cases:
         answer_key:
           response_required:
             - Complete and check the overall wardrobe measurements and choices for all six cabinets.
-            - Present the checked overall cabinet dimensions and stop.
+            - Present the checked overall cabinet dimensions and lead directly into the first unanswered unit-arrangement question.
           response_forbidden:
-            - Continue into another design stage.
+            - End by asking the client to say when they are ready to continue.
           expected_aikea_yaml:
             schema_version: 7
             units: mm

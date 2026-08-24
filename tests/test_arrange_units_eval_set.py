@@ -13,13 +13,14 @@ class TestArrangeUnitsEvalSet:
     def test_cases_cover_complete_missing_and_revision_behaviour(self) -> None:
         cases = self._load_eval_set()["cases"]
 
-        assert len(cases) == 5
+        assert len(cases) == 6
         assert {case["name"] for case in cases} == {
             "three equal tall-storage units",
             "bench between matching tall-storage units",
             "mixed arrangement beneath a sloped room boundary",
             "ask only for the missing width relationship",
             "revise one width relationship without replacing stable IDs",
+            "acknowledgement continues a completed arrangement",
         }
 
     def test_complete_cases_have_exact_valid_assembly_runs(self) -> None:
@@ -29,7 +30,7 @@ class TestArrangeUnitsEvalSet:
             if "expected_assembly_run" in case["answer_key"]
         ]
 
-        assert len(complete_cases) == 4
+        assert len(complete_cases) == 5
         for case in complete_cases:
             assembly_run = case["answer_key"]["expected_assembly_run"]
             assemblies = assembly_run["assemblies"]
@@ -57,6 +58,7 @@ class TestArrangeUnitsEvalSet:
             "Cabineos",
             "assembly folders",
             "cabinet_run",
+            "ready when you are",
         ):
             assert required_phrase in forbidden
 
@@ -78,6 +80,20 @@ class TestArrangeUnitsEvalSet:
         ]
         assert [item["width_share"] for item in before["assemblies"]] == [1, 0.5, 1]
         assert [item["width_share"] for item in after["assemblies"]] == [1, 1, 1]
+
+    def test_acknowledgement_case_requires_an_actionable_handoff(self) -> None:
+        acknowledgement = next(
+            case
+            for case in self._load_eval_set()["cases"]
+            if case["name"] == "acknowledgement continues a completed arrangement"
+        )
+        required = " ".join(acknowledgement["answer_key"]["response_required"])
+        forbidden = " ".join(acknowledgement["answer_key"]["response_forbidden"])
+
+        assert "permission to continue" in required
+        assert "left unit" in required
+        assert "what it needs to store" in required
+        assert "ready when you are" in forbidden
 
     def _load_eval_set(self) -> dict:
         return yaml.safe_load(self._EVAL_PATH.read_text(encoding="utf-8"))
