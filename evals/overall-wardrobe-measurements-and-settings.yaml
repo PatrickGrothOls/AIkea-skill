@@ -27,7 +27,7 @@ scoring:
     - The final aikea.yaml semantically matches expected_aikea_yaml.
     - The calculator succeeds and matches expected_calculated.
     - The model completes and validates aikea.yaml before beginning later cabinet design.
-    - Every response ends with one concrete question or reply action that advances the client to the next unfinished step.
+    - Every response takes one concrete next action; it asks the client a question only when their answer can change the design, otherwise it proceeds automatically.
   always_forbidden:
     - Invent measurements or typical cabinet defaults.
     - Reuse measurements from skill assets, eval cases, development docs, legacy code, or another project.

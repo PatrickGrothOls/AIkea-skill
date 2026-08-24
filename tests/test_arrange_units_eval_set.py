@@ -56,6 +56,8 @@ class TestArrangeUnitsEvalSet:
             "width shares",
             "bench height",
             "Cabineos",
+            "what a unit will store",
+            "hanging clothes",
             "assembly folders",
             "cabinet_run",
             "ready when you are",
@@ -81,7 +83,7 @@ class TestArrangeUnitsEvalSet:
         assert [item["width_share"] for item in before["assemblies"]] == [1, 0.5, 1]
         assert [item["width_share"] for item in after["assemblies"]] == [1, 1, 1]
 
-    def test_acknowledgement_case_requires_an_actionable_handoff(self) -> None:
+    def test_acknowledgement_case_continues_without_internal_use_question(self) -> None:
         acknowledgement = next(
             case
             for case in self._load_eval_set()["cases"]
@@ -91,8 +93,9 @@ class TestArrangeUnitsEvalSet:
         forbidden = " ".join(acknowledgement["answer_key"]["response_forbidden"])
 
         assert "permission to continue" in required
-        assert "left unit" in required
-        assert "what it needs to store" in required
+        assert "automatic assembly generation" in required
+        assert "what the left unit should store" in forbidden
+        assert "hanging clothes" in forbidden
         assert "ready when you are" in forbidden
 
     def _load_eval_set(self) -> dict:

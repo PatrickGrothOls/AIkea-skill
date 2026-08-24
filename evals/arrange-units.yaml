@@ -12,11 +12,12 @@ scoring:
     - Every required response item is satisfied.
     - No forbidden response item occurs.
     - The saved assembly_run exactly matches the answer key when the arrangement is complete.
-    - Every response ends with one concrete question or reply action that advances the client to the next unfinished step.
+    - Every response takes one concrete next action; it asks the client a question only when their answer can change the design, otherwise it proceeds automatically.
   always_forbidden:
     - Ask the client for internal IDs, width shares, percentages, YAML fields, or folder names.
     - Treat a bench or another unit purpose as a fixed geometric shape.
     - Ask about bench height, shelves, doors, panels, supports, joints, Cabineos, miters, or manufacturing.
+    - Ask what a unit will store or ask the client to choose between hanging clothes, shelves, or a mixture of both.
     - Change measured-space values or unrelated shared settings.
     - Generate assembly folders before the arrangement is complete and checked.
     - Keep cabinet_run after writing its assembly_run replacement.
@@ -42,7 +43,7 @@ cases:
         - Recognize that purpose, order, and width relationships are complete.
         - Replace cabinet_run with the exact assembly_run answer while preserving all other project values.
         - Summarize three equal tall-storage units from left to right in client-facing language.
-        - Stop after confirming the saved arrangement.
+        - Continue directly into automatic assembly generation without asking an internal-use question.
       response_forbidden:
         - Ask another arrangement question.
       expected_assembly_run:
@@ -77,7 +78,7 @@ cases:
         - Retain the previously supplied purpose and left-to-right order.
         - Translate the relationship privately into the exact assembly_run answer.
         - Describe the two matching tall units and half-width bench without exposing width shares.
-        - Stop after confirming the saved arrangement.
+        - Continue directly into automatic assembly generation without asking an internal-use question.
       response_forbidden:
         - Ask for the bench height or construction.
       expected_assembly_run:
@@ -108,7 +109,7 @@ cases:
       response_required:
         - Recognize that purpose, order, and width relationships are complete.
         - Preserve the checked sloped room boundary without turning it into a unit shape choice.
-        - Write the exact assembly_run answer and stop before deciding local heights or parts.
+        - Write the exact assembly_run answer and continue into automatic assembly generation without asking about internal use.
         - Summarize the arrangement in client-facing language without exposing width shares.
       response_forbidden:
         - Change a width relationship because the room boundary slopes.
@@ -140,7 +141,7 @@ cases:
       response_required:
         - Retain the three purposes and their left-to-right order.
         - Ask only how the three widths should relate.
-        - Offer numbered client-facing choices for equal widths, matching tall units with a narrower or wider bench, or help choosing from intended use.
+        - Offer numbered client-facing choices for equal widths, matching tall units with a narrower or wider bench, or help choosing a balanced relationship from the available width.
         - Say the client can reply with the option number.
       response_forbidden:
         - Save assembly_run before the width relationship is known.
@@ -167,7 +168,7 @@ cases:
         - Preserve every existing ID, purpose, order, clearance, and gap.
         - Change only the bench width relationship and write the exact assembly_run answer.
         - Summarize three equal-width units without exposing the internal representation.
-        - Stop after confirming the revised arrangement.
+        - Continue directly into automatic assembly generation without asking an internal-use question.
       response_forbidden:
         - Renumber or rename any assembly.
         - Recreate unrelated project values.
@@ -203,10 +204,11 @@ cases:
         - Treat the acknowledgement as permission to continue the active AIkea workflow without asking whether the client is ready.
         - Retain the previously supplied three equal full-height storage units and save the exact assembly_run answer without repeating an arrangement question.
         - Summarize the saved three-unit arrangement in client-facing language.
-        - End with one concrete next question, starting local design with the left unit and asking what it needs to store.
+        - Continue directly into automatic assembly generation because no further client choice is required at this stage.
       response_forbidden:
         - Say ready when you are, let me know when to continue, or ask whether the client wants to proceed.
         - Repeat a question about unit purpose, order, or width relationship.
+        - Ask what the left unit should store or offer hanging clothes, shelves, or a mixture as choices.
       expected_assembly_run:
         left_clearance: 1
         right_clearance: 1
