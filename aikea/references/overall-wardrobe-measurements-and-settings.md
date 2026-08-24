@@ -6,6 +6,7 @@ Use this file when starting a cabinet run or changing measurements that affect m
 
 - Finish the global specification first
 - Guide the client in plain language
+- Format questions for short replies
 - Allowed project sources
 - Orientation and units
 - Plan useful measurements from the labelled outline
@@ -28,23 +29,66 @@ Remain in this step while any required value is missing, contradictory, or rejec
 
 Act like a carpenter helping a client plan a wardrobe, not like software asking someone to complete a data structure.
 
-1. Begin warmly. With no supplied details, say: "Great, let's build an awesome wardrobe. First thing is to get the units aligned. Are you using cm, mm, or inches?"
+1. Begin warmly: "Great, let's build an awesome wardrobe. First thing is to get
+   the units aligned." Then offer centimetres, millimetres, and inches as three
+   numbered choices.
 2. Default to one topic per response: unit; front-view shape; labelled-edge fit;
    whether depth has a required flush line; each measurement topic; then each
    wardrobe choice.
 3. If the client wants to gather everything at once, adapt `assets/wardrobe-measurement-sheet.md` and let them return the completed sheet. Ask only about missing or conflicting answers afterward.
 4. Establish the front-view shape before asking for dimensions. Draw its outline,
    label every edge clockwise from `A` at the left edge, and give each top flat,
-   slope, or step its own label.
-5. Ask one placement question after showing the labels: "Is the wardrobe fitted
-   against the room on every labelled edge? If not, which letters are not fitted?"
-   The wardrobe front is always open and is never part of this question.
-6. Ask one separate question: "Does the wardrobe front need to finish flush with
-   a wall or another fixed line?" A yes means the depth must fit between the back
-   and that front line; it does not mean the wardrobe front is enclosed.
-7. Then ask about the wardrobe itself: number of sections, whether they should be equal or which should be wider or narrower, fit at the walls and ceiling, base height, door spacing, and chosen material thicknesses.
+   slope, or step its own label and parenthesized plain name.
+5. Ask one placement question after showing the labels. Offer `1. Every labelled
+   edge is fitted` and `2. Some labelled edges are open`, with the named labels
+   repeated so a response such as `2: C (sloped top)` is sufficient. The wardrobe
+   front is always open and is never part of this question.
+6. Ask one separate flush-depth question with `1. Yes` and `2. No`. A yes means
+   the depth must fit between the back and that front line; it does not mean the
+   wardrobe front is enclosed.
+7. Then ask about the wardrobe itself: number of sections, whether they should be
+   equal or which should be wider or narrower, fit at the walls and ceiling, base
+   height, door spacing, and chosen material thicknesses. Format each topic as
+   numbered choices or one numbered value line.
 8. Translate the answers into the global specification privately. Do not expose filenames, schema fields, width shares, formulas, calculator commands, validation terminology, or the fitting allowance unless the client asks.
 9. Give the client calculated cabinet sizes and positions, not the internal values used to derive them.
+
+## Format questions for short replies
+
+Make the response easy to scan on a phone and easy to answer without copying the
+question.
+
+- Pair every edge letter with its plain name whenever it appears in client-facing
+  text: `A (left side)`, `B (top flat)`, `C (sloped top)`, `D (right side)`, and
+  `E (bottom)`. Do not later shorten these to bare letters.
+- Write a junction by naming both edges, for example
+  `B (top flat)-C (sloped top) junction`.
+- Put every requested reading on its own numbered line, even when the topic needs
+  only one reading. Keep one measurement topic per response.
+- End a measurement request by showing the reply form, such as
+  `Reply 1: 250 cm, 2: 249.8 cm, 3: 250.1 cm.`
+- Put every design decision into numbered choices. The client may answer with only
+  the option number. If the decision requires a value, use one numbered line such
+  as `1. Base height: ___` and invite `1: 100 mm`.
+- Restart numbering at `1` for each response. Interpret a short numbered reply
+  against the immediately preceding question only.
+- Offer only meaningful choices. Do not invent a typical value or silently turn a
+  missing answer into a default.
+
+Example measurement request:
+
+1. `A (left side)` to `D (right side)`, just above `E (bottom)`: ___
+2. `A (left side)` to `D (right side)`, halfway up their shared height: ___
+3. `A (left side)` to `D (right side)`, just below the
+   `C (sloped top)-D (right side)` junction: ___
+
+Example design question:
+
+1. All cabinet sections should be equal.
+2. One or more sections should be narrower or wider.
+3. Recommend a section arrangement after hearing what I need to store.
+
+Say that the client can reply with `1`, `2`, or `3`.
 
 ## Allowed project sources
 
@@ -56,9 +100,10 @@ Accept measurements only from the user's messages, a source the user identifies,
 - Interpret left and right as the user's left and right while facing the wardrobe.
 - Measure horizontal positions from the inside-left edge of the available space.
 - Measure ceiling heights upward from the finished floor.
-- Label front-outline edges clockwise, starting with `A` on the left vertical edge.
-  A rectangle therefore uses `A` left, `B` top, `C` right, and `D` floor. Insert
-  another letter for every additional top segment.
+- Label front-outline edges clockwise, starting with `A (left side)` on the left
+  vertical edge. A rectangle therefore uses `A (left side)`, `B (top)`,
+  `C (right side)`, and `D (bottom)`. Insert another letter and plain name for
+  every additional top segment.
 - Record one unit in `units`: `mm`, `cm`, or `in` for inches.
 - Preserve the unit the user supplied when all values use that unit. Let the calculator normalize calculations to millimetres.
 - Ask for clarification when the user mixes units ambiguously.
@@ -72,9 +117,9 @@ measurement question must name:
 - the labelled edge or edge junction that locates the reading;
 - the fit problem the repeated position helps reveal, when that is not obvious.
 
-Use junction names such as `B-C` for the point where edges `B` and `C` meet. Do
-not revert to an unqualified "top," "middle," "left," or "right" once labels
-exist.
+Use junction descriptions such as `B (top flat)-C (sloped top) junction`. Do not
+revert to a bare letter or an unqualified "top," "middle," "left," or "right"
+once labels exist.
 
 Choose lines that reveal the actual space:
 
@@ -91,18 +136,20 @@ Choose lines that reveal the actual space:
   tests the same surfaces. Briefly explain the change instead of forcing the
   standard position.
 
-For a rectangular outline `A` left, `B` top, `C` right, and `D` floor,
-describe width checks as between `A` and `C`, located just above `D`, midway
-up the shared wall height, and just below `B`. Describe height checks as
-vertical from `D` to `B`, beside `A`, midway between `A` and `C`, and
-beside `C`.
+For a rectangular outline `A (left side)`, `B (top)`, `C (right side)`, and
+`D (bottom)`, describe width checks as between `A (left side)` and
+`C (right side)`, located just above `D (bottom)`, midway up the shared wall
+height, and just below `B (top)`. Describe height checks as vertical from
+`D (bottom)` to `B (top)`, beside `A (left side)`, midway between
+`A (left side)` and `C (right side)`, and beside `C (right side)`.
 
-For an outline `A` left, `B` top flat, `C` slope, `D` right, and `E`
-floor, compare `A` and `D` only below the `C-D` junction where both side
-walls exist. Locate the top change at the `B-C` junction. Record vertical
-heights from `E` to the top boundary at the `A-B`, `B-C`, and `C-D`
-junctions, plus useful points along `C` when needed to represent or verify the
-slope.
+For an outline `A (left side)`, `B (top flat)`, `C (sloped top)`,
+`D (right side)`, and `E (bottom)`, compare `A (left side)` and
+`D (right side)` only below the `C (sloped top)-D (right side)` junction where
+both side walls exist. Locate the top change at the
+`B (top flat)-C (sloped top)` junction. Record vertical heights from
+`E (bottom)` to the top boundary at every named junction, plus useful points
+along `C (sloped top)` when needed to represent or verify the slope.
 
 For depth, locate readings from the front-view map as well. A freely chosen depth
 can be measured from the back to the intended front midway along the floor edge.
@@ -217,11 +264,15 @@ Store width relationships as shares, not calculated cabinet widths:
 
 Normalize the complete share list only during calculation. Do not ask the user to calculate final cabinet widths, and do not interpret a share as a percentage of the complete wardrobe unless the user explicitly supplied percentages.
 
-Never use the term `width shares` with the client. Ask natural questions such as:
+Never use the term `width shares` with the client. Ask one natural numbered
+question:
 
-- "Should all sections be the same width?"
-- "Should any section be narrower or wider than the others?"
-- "Roughly half-width, twenty percent wider, or another relationship?"
+1. All sections should be the same width.
+2. One or more sections should be narrower or wider.
+3. Help choose the widths from what the client needs to store.
+
+If the client chooses `2`, ask the narrower-or-wider relationship as the next
+single topic.
 
 Translate the answer to shares internally and present the resulting cabinet widths back to the client.
 

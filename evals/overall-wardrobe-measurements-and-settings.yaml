@@ -19,6 +19,9 @@ scoring:
   pass_when:
     - Every required response item is satisfied.
     - No forbidden response item occurs.
+    - Every requested reading appears on its own numbered line and can be answered by item number and value.
+    - Every design question uses numbered choices or one numbered value line and can be answered by number.
+    - Every client-facing edge letter is paired with its plain name in parentheses.
     - The final aikea.yaml semantically matches expected_aikea_yaml.
     - The calculator succeeds and matches expected_calculated.
     - The model completes and validates aikea.yaml before beginning later cabinet design.
@@ -32,6 +35,9 @@ scoring:
     - Ask how the wardrobe is fitted before establishing and labelling its front-view shape.
     - Split the labelled-edge fit question into separate questions about individual sides.
     - Drop the edge labels after drawing the outline and ask for a measurement using ambiguous positions alone.
+    - Use a bare edge letter in a client-facing question without its plain name in parentheses.
+    - Request measurements in prose or unnumbered bullets instead of numbered lines.
+    - Present design alternatives without numbered reply choices.
     - Request a repeated reading that reaches a different boundary or reveals no useful fit information merely to complete a standard count.
     - Ask whether the wardrobe front is enclosed; it remains open even when its finished face must align with a fixed line.
     - Subtract the fitting allowance from a dimension that is not fitted at both ends.

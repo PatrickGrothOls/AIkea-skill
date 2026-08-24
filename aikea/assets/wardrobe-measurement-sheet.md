@@ -6,23 +6,29 @@ Project:
 
 Date measured:
 
-Unit: mm / cm / inches
+Choose one unit:
+
+1. Centimetres
+2. Millimetres
+3. Inches
 
 ## Front-view shape
 
-Looking straight at the wardrobe space, circle the closest shape or draw your own:
+Looking straight at the wardrobe space, choose the closest shape or draw your own:
 
-- Rectangle
-- One sloping top
-- Flat top followed by a slope
-- Stepped or another shape
+1. Rectangle
+2. One sloping top
+3. Flat top followed by a slope
+4. Stepped or another shape
 
 Draw the outline here:
 
 
 
 Label every outside edge clockwise with `A`, `B`, `C`, and onward, starting with
-the left edge. Give each flat, slope, or step along the top its own letter.
+the left edge. Give each flat, slope, or step along the top its own letter. Always
+add a plain name in parentheses, such as `A (left side)`, `C (sloped top)`, or
+`E (bottom)`.
 
 Write those labels into every measurement instruction below before measuring.
 Each line should identify the two boundaries being measured and the edge or
@@ -31,11 +37,15 @@ intended surfaces, move it to a useful location and note why.
 
 ## How the wardrobe fits
 
-Is the wardrobe fitted against the room on every labelled edge? Yes / No
+Are all labelled edges fitted against the room?
 
-If no, which letters are not fitted?
+1. Yes, every labelled edge is fitted.
+2. No, these labelled edges are open: ___ (name), ___ (name)
 
-Must the wardrobe front finish flush with a wall or another fixed line? Yes / No
+Must the wardrobe front finish flush with a wall or another fixed line?
+
+1. Yes
+2. No
 
 ## Width
 
@@ -44,12 +54,12 @@ side edges and can reveal whether the walls lean, bow, or taper. If either side 
 open, take one reading from the fixed or intended starting edge to the intended
 wardrobe edge.
 
-| Labelled line and location | Measurement |
-| --- | ---: |
-| Single open-side line: ___ to ___ near ___ | |
-| Lowest useful line: ___ to ___ near ___ | |
-| Middle useful line: ___ to ___ near ___ | |
-| Highest useful line between the same surfaces: ___ to ___ near ___ | |
+| No. | Labelled line and location | Measurement |
+| ---: | --- | ---: |
+| 1 | Single open-side line: ___ (name) to ___ (name) near ___ (name) | |
+| 2 | Lowest useful line: ___ (name) to ___ (name) near ___ (name) | |
+| 3 | Middle useful line: ___ (name) to ___ (name) near ___ (name) | |
+| 4 | Highest useful line between the same surfaces: ___ (name) to ___ (name) near ___ (name) | |
 
 ## Depth
 
@@ -57,12 +67,12 @@ If the wardrobe front can stop at a freely chosen depth, take one intended-depth
 reading. If it must finish flush with a fixed line, measure from the back boundary
 to that line at the left, centre, and right.
 
-| Labelled location | Measurement |
-| --- | ---: |
-| Single intended depth midway along edge ___ | |
-| Flush depth near left edge ___ | |
-| Flush depth at the centre of floor edge ___ | |
-| Flush depth near right edge ___ | |
+| No. | Labelled location | Measurement |
+| ---: | --- | ---: |
+| 1 | Single intended depth midway along edge ___ (name) | |
+| 2 | Flush depth near left edge ___ (name) | |
+| 3 | Flush depth at the centre of floor edge ___ (name) | |
+| 4 | Flush depth near right edge ___ (name) | |
 
 ## Height
 
@@ -71,13 +81,13 @@ edge to the labelled top boundary at every junction where a flat, slope, or step
 begins or ends. Add useful checks along long surfaces. If it is open above, record
 one intended height at a labelled location.
 
-| Labelled vertical line or junction | Distance from left reference | Height |
-| --- | ---: | ---: |
-| Single intended height near ___ | | |
-| At junction ___ | | |
-| At junction ___ | | |
-| Useful check along edge ___ | | |
-| At junction ___ | | |
+| No. | Labelled vertical line or junction | Distance from left reference | Height |
+| ---: | --- | ---: | ---: |
+| 1 | Single intended height near ___ (name) | | |
+| 2 | At junction ___ (name)-___ (name) | | |
+| 3 | At junction ___ (name)-___ (name) | | |
+| 4 | Useful check along edge ___ (name) | | |
+| 5 | At junction ___ (name)-___ (name) | | |
 
 ## Notes
 

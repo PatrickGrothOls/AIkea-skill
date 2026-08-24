@@ -25,6 +25,16 @@ class TestOverallWardrobeEvalSet:
             assert final_answer["expected_aikea_yaml"]
             assert final_answer["expected_calculated"]
 
+    def test_scoring_requires_numbered_named_client_questions(self) -> None:
+        scoring = self._load_eval_set()["scoring"]
+        pass_rules = " ".join(scoring["pass_when"])
+        forbidden_rules = " ".join(scoring["always_forbidden"])
+
+        assert "numbered line" in pass_rules
+        assert "numbered choices" in pass_rules
+        assert "plain name in parentheses" in pass_rules
+        assert "bare edge letter" in forbidden_rules
+
     def test_every_final_answer_matches_the_calculator(self) -> None:
         eval_set = self._load_eval_set()
         for case in eval_set["cases"]:
