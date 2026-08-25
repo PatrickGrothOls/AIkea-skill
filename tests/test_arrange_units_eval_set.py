@@ -48,7 +48,7 @@ class TestArrangeUnitsEvalSet:
                 assert assembly["purpose"]
                 assert assembly["width_share"] > 0
 
-    def test_eval_forbids_internal_and_later_stage_questions(self) -> None:
+    def test_eval_requires_goal_led_progress(self) -> None:
         scoring = self._load_eval_set()["scoring"]
         forbidden = " ".join(scoring["always_forbidden"])
         pass_rules = " ".join(scoring["pass_when"])
@@ -56,20 +56,19 @@ class TestArrangeUnitsEvalSet:
         for required_phrase in (
             "internal IDs",
             "width shares",
-            "bench height",
-            "Cabineos",
-            "what a unit will store",
-            "hanging clothes",
+            "does not change the physical design",
             "assembly folders",
             "cabinet_run",
             "ready when you are",
             "AIkea skill or workflow",
             "canned example wording",
+            "not implemented",
         ):
             assert required_phrase in forbidden
 
         assert "physical-design task" in pass_rules
         assert "why its result matters" in pass_rules
+        assert "complete building specifications for every unit and part" in pass_rules
 
     def test_revision_preserves_stable_ids(self) -> None:
         revision = next(
@@ -90,7 +89,7 @@ class TestArrangeUnitsEvalSet:
         assert [item["width_share"] for item in before["assemblies"]] == [1, 0.5, 1]
         assert [item["width_share"] for item in after["assemblies"]] == [1, 1, 1]
 
-    def test_every_complete_case_continues_to_assembly_generation(self) -> None:
+    def test_every_complete_case_continues_to_building_specifications(self) -> None:
         complete_cases = [
             case
             for case in self._load_eval_set()["cases"]
@@ -99,9 +98,9 @@ class TestArrangeUnitsEvalSet:
 
         for case in complete_cases:
             required = " ".join(case["answer_key"]["response_required"])
-            assert "automatic assembly generation" in required
+            assert "complete building specifications" in required
 
-    def test_acknowledgement_case_continues_without_internal_use_question(self) -> None:
+    def test_acknowledgement_case_continues_without_permission_check(self) -> None:
         acknowledgement = next(
             case
             for case in self._load_eval_set()["cases"]
@@ -111,9 +110,7 @@ class TestArrangeUnitsEvalSet:
         forbidden = " ".join(acknowledgement["answer_key"]["response_forbidden"])
 
         assert "permission to continue" in required
-        assert "automatic assembly generation" in required
-        assert "what the left unit should store" in forbidden
-        assert "hanging clothes" in forbidden
+        assert "complete building specifications" in required
         assert "ready when you are" in forbidden
 
     def _load_eval_set(self) -> dict:
