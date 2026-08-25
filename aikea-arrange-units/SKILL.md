@@ -7,13 +7,16 @@ description: Arrange the physical units in a measured AIkea furniture project fr
 
 Settle one ordered furniture arrangement and save it in the global project specification. Speak like a carpenter helping a client; keep project-file fields and calculations private. End every response with the next concrete action. Ask the client only when their answer can change the design; otherwise continue automatically.
 
-## Speak about client value
+## Goal
 
-When work proceeds automatically, give one brief conversational update that says
-which physical part of the wardrobe is being worked out and why the result matters.
-Use the actual project facts. Do not announce an AIkea skill or workflow, restate
-instructions, or narrate saving, checking, calculation, file, or routing steps.
-Compose the update naturally rather than using a reusable sentence.
+Give every unit a confirmed place and proportion within the measured space, then
+continue the project toward complete building specifications for every unit and
+part. Briefly connect the current physical-design objective to the useful result
+it will give this wardrobe.
+
+The complete building result requires each unit's exact span and local boundary,
+one local specification and builder, specifications and builders for every part,
+one specification for its joints, and checks proving that the parts and joints fit.
 
 ## Establish the project state
 
@@ -38,19 +41,15 @@ Compose the update naturally rather than using a reusable sentence.
 3. Preserve the existing run-wide left clearance, right clearance, gap, and ceiling clearance. Rename `cabinet_gap` to `gap` when replacing a legacy `cabinet_run`.
 4. Replace `cabinet_run` only when the new arrangement is complete. Never keep both representations.
 5. Check that every ID is unique, every purpose is non-empty, every width share is positive, and list order matches the confirmed left-to-right order.
-6. Summarize the arrangement in client-facing language and connect it to the next
-   useful physical result, such as clear dimensions for the wardrobe's parts.
-7. Continue automatically into assembly generation. Do not ask what any unit will
-   store or ask the client to choose between hanging space, shelves, or a mixture.
-   The construction profile supplies a universal shelf-and-hanger hole pattern, so
-   no client decision is required for that capability.
+6. Summarize the arrangement in client-facing language and connect it to the clear
+   dimensions the wardrobe's units and parts will receive next.
+7. Continue toward the complete building result defined above.
 
-## Keep later design out
+## Responsibility boundary
 
-Do not decide local heights, doors, panels, supports, plinth construction, joint types, Cabineo placement, miters, machining, or manufacturing output. Do not create `assemblies/` folders in this stage. Hand the checked arrangement to the assembly-generation stage, which owns those calculations and the supplied universal interior hole pattern.
+This skill owns the ordered unit run. Pass the completed arrangement, measured
+space, and shared settings to the work that creates the local unit, part, builder,
+joint, and fit specifications. Keep each calculation in that later owner instead
+of duplicating it here.
 
-Never end with "ready when you are," "let me know," "tell me when to continue," or another passive availability statement.
-
-## Current implementation
-
-Guide, save, and review the ordered `assembly_run`, then continue into automatic assembly generation. Folder generation and construction remain later deterministic stages; they must not be replaced with an internal-use questionnaire.
+When no client answer is required, take the next project action in the same response.

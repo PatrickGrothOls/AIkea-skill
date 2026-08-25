@@ -6,17 +6,27 @@ This stage owns only the purposes, left-to-right order, and relative widths of t
 
 Local assembly specifications later own geometry that affects only one unit, such as bench height, supports, doors, and subparts. Joint specifications later own matching machining.
 
-## Universal interior hole pattern
+## Required result after arrangement
 
-Every relevant full-height unit receives the supplied universal shelf-and-hanger
-hole pattern. It supports both adjustable shelving and hanger hardware without a
-client choosing an internal use for each unit.
+The completed arrangement must lead to one folder per unit:
 
-The versioned construction profile owns the exact hole sizes, offsets, spacing,
-eligible panels, and supported hardware. The deterministic assembly-generation
-stage applies that profile to local part geometry. This arrangement stage must not
-invent those dimensions, ask what a unit will store, or ask the client to choose
-between hanging space, shelves, or a mixture.
+```text
+assemblies/<unit-id>/
+├── spec.py
+├── builder.py
+├── joints/spec.py
+└── parts/<part-id>/
+    ├── spec.py
+    └── builder.py
+```
+
+For every unit, the next work must:
+
+- calculate its exact global span and complete local boundary from the measured space;
+- keep all unit-to-part calculations in the unit's local specification;
+- give every manufactured part one exact specification and one builder;
+- define every physical joint once and derive the matching work on both parts;
+- check dimensions, placements, contacts, clearances, and matching joint geometry.
 
 ## Required starting state
 
@@ -91,8 +101,8 @@ Do not round away a confirmed relationship. When words such as “a little narro
 
 - **Missing:** Ask only for the missing purpose/order or width relationship.
 - **Contradictory:** State the exact conflict in client language and ask only for its correction.
-- **Complete:** Save the exact arrangement, summarize it, and continue directly into automatic assembly generation without an internal-use question.
+- **Complete:** Save the exact arrangement, summarize it, and continue toward complete building specifications for every unit and part.
 
-Every response must end with the next obvious action. Ask the exact next question and provide a numbered reply instruction only when the client's answer can change the design. Otherwise take the next automatic action. Never invent a client question to bridge stages or end with a passive statement that the system is available whenever the client chooses to continue. Treat an acknowledgement such as "great" as a continuation signal and take the next unfinished action immediately.
+Every response must end with the next obvious action. Ask the exact next question and provide a numbered reply instruction only when the client's answer can change the design. Otherwise take the next automatic action. Treat an acknowledgement such as "great" as a continuation signal and take the next unfinished action immediately.
 
 The room's flat, sloped, or stepped boundary does not select a unit shape. A later deterministic calculation clips that boundary to each assembly's allocated span. A local unit such as a bench may stop at its own chosen height; that local choice is not part of this arrangement.

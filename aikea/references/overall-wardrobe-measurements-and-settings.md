@@ -56,11 +56,9 @@ Act like a carpenter helping a client plan a wardrobe, not like software asking 
     question only when the client's answer can change the design; otherwise perform
     the next stage automatically. Never make the client send a separate message
     merely to authorize continuation.
-11. During automatic work, briefly describe the current physical design task and
-    the useful result it will give the client. Do not name the skill or workflow,
-    recite instructions, or expose saving, checking, calculation, file, or routing
-    steps. Compose the update from the active project instead of copying a stock
-    sentence.
+11. During automatic work, briefly connect the current physical-design objective
+    to the useful result it will give this wardrobe. Keep implementation details
+    internal and use the active project facts.
 
 ## Format questions for short replies
 
@@ -381,4 +379,4 @@ Run the bundled calculator only after the checklist is complete. Require all of 
 - the base and ceiling clearance leave positive cabinet height;
 - door and back thicknesses leave positive cabinet and inside depth.
 
-On success, summarize calculated cabinet widths, left/right positions, left/right heights, door widths, cabinet depth, and inside depth as the physical dimensions the next wardrobe work can rely on. Do not mention the file path, checking mechanism, or skill routing unless asked. Immediately load `$aikea-arrange-units` and take its next concrete action. If the arrangement was already fully supplied, let that skill save it and continue into automatic assembly generation without asking how the units will be used internally.
+On success, summarize calculated cabinet widths, left/right positions, left/right heights, door widths, cabinet depth, and inside depth as the physical dimensions the next wardrobe work can rely on. Keep implementation details internal. Immediately load `$aikea-arrange-units` and take its next concrete action. If the arrangement was already fully supplied, let that skill save it and continue toward complete building specifications for every unit and part.
