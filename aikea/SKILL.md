@@ -37,13 +37,9 @@ Use explicit user messages to create or revise the saved measurements and shared
   Give each flat, slope, or step along the top its own letter. Pair every letter
   with a plain name in parentheses, such as `A (left side)`, `C (sloped top)`, or
   `E (bottom)`.
-- Treat the confirmed outline as the geometry authority. A flat top stays level
-  and uses the lowest raw height reading across its span; measurement variation
-  alone does not create a tilt. Follow the measured height profile only when the
-  outline explicitly contains a slope, step, or other top-boundary change.
-- Use the smallest repeated fitted-width and fitted-depth readings as one constant
-  width and depth for the wardrobe structure. Measurement variation alone does not
-  taper unit or part geometry.
+- Treat the confirmed outline as the geometry authority. Record its real flats,
+  slopes, steps, and other changes together with every raw reading. Let the
+  deterministic calculator own all dimensions derived from those facts.
 - After showing the labelled outline, ask one placement question with numbered
   choices for all edges fitted or only some edges fitted. Repeat the named labels
   in the second choice so the client can reply, for example,
@@ -83,7 +79,9 @@ Use explicit user messages to create or revise the saved measurements and shared
   AIkea's implementation private unless the client asks for technical details or
   project files.
 - Never ask the client to provide width shares. Ask whether sections should be equal or whether any should be wider or narrower, then translate that relationship internally.
-- Keep every raw measurement unchanged. Apply the template's 2 mm fitting allowance only to a dimension fitted between fixed boundaries: between two side boundaries for width, between the floor and ceiling for height, or between the back and a required flush-front line for depth. A freely chosen edge receives no fitting allowance. Do not ask the client to choose the allowance.
+- Keep every raw measurement unchanged. Record which dimensions fit between fixed
+  boundaries and let the project template and calculator own fitting allowances
+  and derived dimensions. Do not ask the client to choose construction policy.
 - Present useful design results such as cabinet sizes, positions, and heights. Keep formulas and internal representations private unless requested.
 - End every client-facing response with the next concrete action. Ask the exact next
   question and give a numbered reply instruction only when the client's answer can

@@ -379,13 +379,11 @@ cases:
           door panels, and a 6 mm back.
         answer_key:
           response_required:
-            - Preserve every raw site reading and use the smallest width as one constant run width.
-            - Apply fitting room to height but not width or depth.
+            - Preserve every raw site reading and present the checked unit widths returned by the calculator.
+            - Preserve the client's confirmed installation arrangement.
             - Translate the relative cabinet widths into internal shares [1, 1, 0.5].
             - Run the overall wardrobe calculator privately and present the checked cabinet dimensions in client-facing language.
           response_forbidden:
-            - Average the uneven readings.
-            - Taper unit or part widths to follow the measured walls.
             - Ask the client to calculate each cabinet width.
           expected_aikea_yaml:
             schema_version: 8
@@ -575,11 +573,9 @@ cases:
         answer_key:
           response_required:
             - Correct only the final height reading and retain every other supplied value.
-            - Use the smallest flush-depth reading as one constant structural depth.
             - Run the overall wardrobe calculator privately and present the checked cabinet dimensions in client-facing language.
           response_forbidden:
             - Reduce or reorder the measured height readings.
-            - Twist or taper cabinet depth to follow the three site readings.
           expected_aikea_yaml:
             schema_version: 8
             units: mm
@@ -702,12 +698,10 @@ cases:
           a 10 cm base, 0.2 cm door gaps, 1.8 cm cabinet and door panels, and a 0.6 cm back.
         answer_key:
           response_required:
-            - Preserve all three raw height readings while treating the confirmed top as flat.
-            - Use the lowest height reading for one level wardrobe top across all three units.
-            - Present all six unit-edge heights as 228.4 cm and continue the project.
+            - Preserve all three raw height readings and the client's confirmed flat top.
+            - Present the calculator's 228.4 cm unit heights and continue the project.
           response_forbidden:
-            - Carry the small measurement variation into tilted unit or panel tops.
-            - Describe the top as sloped without explicit client confirmation.
+            - Explain the arithmetic used to resolve the final height.
           expected_aikea_yaml:
             schema_version: 8
             units: cm
