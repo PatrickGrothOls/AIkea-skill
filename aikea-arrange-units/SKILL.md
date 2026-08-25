@@ -43,13 +43,14 @@ one specification for its joints, and checks proving that the parts and joints f
 5. Check that every ID is unique, every purpose is non-empty, every width share is positive, and list order matches the confirmed left-to-right order.
 6. Summarize the arrangement in client-facing language and connect it to the clear
    dimensions the wardrobe's units and parts will receive next.
-7. Continue toward the complete building result defined above.
+7. Load `$aikea-build-units`, generate the local unit taxonomy, and continue from
+   its resolved build plans.
 
 ## Responsibility boundary
 
 This skill owns the ordered unit run. Pass the completed arrangement, measured
-space, and shared settings to the work that creates the local unit, part, builder,
-joint, and fit specifications. Keep each calculation in that later owner instead
-of duplicating it here.
+space, and shared settings to `$aikea-build-units`, which creates the local unit,
+part, builder, and joint specifications. Keep each calculation in that later owner
+instead of duplicating it here.
 
-When no client answer is required, take the next project action in the same response.
+When no client answer is required, load the build-units stage in the same response.

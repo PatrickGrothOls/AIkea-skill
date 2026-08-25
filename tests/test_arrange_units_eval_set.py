@@ -68,7 +68,7 @@ class TestArrangeUnitsEvalSet:
 
         assert "physical-design task" in pass_rules
         assert "why its result matters" in pass_rules
-        assert "complete building specifications for every unit and part" in pass_rules
+        assert "starts local unit taxonomy generation automatically" in pass_rules
 
     def test_revision_preserves_stable_ids(self) -> None:
         revision = next(
@@ -89,7 +89,7 @@ class TestArrangeUnitsEvalSet:
         assert [item["width_share"] for item in before["assemblies"]] == [1, 0.5, 1]
         assert [item["width_share"] for item in after["assemblies"]] == [1, 1, 1]
 
-    def test_every_complete_case_continues_to_building_specifications(self) -> None:
+    def test_every_complete_case_routes_to_unit_taxonomy_generation(self) -> None:
         complete_cases = [
             case
             for case in self._load_eval_set()["cases"]
@@ -97,8 +97,8 @@ class TestArrangeUnitsEvalSet:
         ]
 
         for case in complete_cases:
-            required = " ".join(case["answer_key"]["response_required"])
-            assert "complete building specifications" in required
+            answer_key = case["answer_key"]
+            assert answer_key["expected_next_stage"] == "aikea-build-units"
 
     def test_acknowledgement_case_continues_without_permission_check(self) -> None:
         acknowledgement = next(
@@ -110,7 +110,9 @@ class TestArrangeUnitsEvalSet:
         forbidden = " ".join(acknowledgement["answer_key"]["response_forbidden"])
 
         assert "permission to continue" in required
-        assert "complete building specifications" in required
+        assert acknowledgement["answer_key"]["expected_next_stage"] == (
+            "aikea-build-units"
+        )
         assert "ready when you are" in forbidden
 
     def _load_eval_set(self) -> dict:

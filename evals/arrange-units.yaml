@@ -14,7 +14,7 @@ scoring:
     - The saved assembly_run exactly matches the answer key when the arrangement is complete.
     - Every response ends with one concrete next action; it asks the client a question only when their answer can change the design, otherwise it proceeds automatically.
     - Progress updates describe the current physical-design task and why its result matters to the client, using natural wording grounded in the active project.
-    - A complete arrangement advances toward complete building specifications for every unit and part.
+    - A complete arrangement starts local unit taxonomy generation automatically.
   always_forbidden:
     - Ask the client for internal IDs, width shares, percentages, YAML fields, or folder names.
     - Treat a bench or another unit purpose as a fixed geometric shape.
@@ -47,7 +47,7 @@ cases:
         - Recognize that purpose, order, and width relationships are complete.
         - Replace cabinet_run with the exact assembly_run answer while preserving all other project values.
         - Summarize three equal tall-storage units from left to right in client-facing language.
-        - Continue toward complete building specifications for every unit and part.
+        - Begin generating the local unit taxonomy automatically.
       response_forbidden:
         - Ask another arrangement question.
       expected_assembly_run:
@@ -59,6 +59,7 @@ cases:
           - {id: tall_storage_01, purpose: tall_storage, width_share: 1}
           - {id: tall_storage_02, purpose: tall_storage, width_share: 1}
           - {id: tall_storage_03, purpose: tall_storage, width_share: 1}
+      expected_next_stage: aikea-build-units
 
   - name: bench between matching tall-storage units
     starting_project:
@@ -82,7 +83,7 @@ cases:
         - Retain the previously supplied purpose and left-to-right order.
         - Translate the relationship privately into the exact assembly_run answer.
         - Describe the two matching tall units and half-width bench without exposing width shares.
-        - Continue toward complete building specifications for every unit and part.
+        - Begin generating the local unit taxonomy automatically.
       response_forbidden:
         - Ask for the bench height or construction.
       expected_assembly_run:
@@ -94,6 +95,7 @@ cases:
           - {id: tall_storage_01, purpose: tall_storage, width_share: 1}
           - {id: bench_01, purpose: bench, width_share: 0.5}
           - {id: tall_storage_02, purpose: tall_storage, width_share: 1}
+      expected_next_stage: aikea-build-units
 
   - name: mixed arrangement beneath a sloped room boundary
     starting_project:
@@ -113,7 +115,7 @@ cases:
       response_required:
         - Recognize that purpose, order, and width relationships are complete.
         - Preserve the checked sloped room boundary without turning it into a unit shape choice.
-        - Write the exact assembly_run answer and continue toward complete building specifications for every unit and part.
+        - Write the exact assembly_run answer and begin generating the local unit taxonomy automatically.
         - Summarize the arrangement in client-facing language without exposing width shares.
       response_forbidden:
         - Change a width relationship because the room boundary slopes.
@@ -127,6 +129,7 @@ cases:
           - {id: tall_storage_01, purpose: tall_storage, width_share: 1}
           - {id: bench_01, purpose: bench, width_share: 0.5}
           - {id: tall_storage_02, purpose: tall_storage, width_share: 0.75}
+      expected_next_stage: aikea-build-units
 
   - name: ask only for the missing width relationship
     starting_project:
@@ -172,7 +175,7 @@ cases:
         - Preserve every existing ID, purpose, order, clearance, and gap.
         - Change only the bench width relationship and write the exact assembly_run answer.
         - Summarize three equal-width units without exposing the internal representation.
-        - Continue toward complete building specifications for every unit and part.
+        - Begin generating the local unit taxonomy automatically.
       response_forbidden:
         - Renumber or rename any assembly.
         - Recreate unrelated project values.
@@ -185,6 +188,7 @@ cases:
           - {id: tall_storage_01, purpose: tall_storage, width_share: 1}
           - {id: bench_01, purpose: bench, width_share: 1}
           - {id: tall_storage_02, purpose: tall_storage, width_share: 1}
+      expected_next_stage: aikea-build-units
 
   - name: acknowledgement continues a completed arrangement
     starting_project:
@@ -208,7 +212,7 @@ cases:
         - Treat the acknowledgement as permission to continue the active wardrobe design without asking whether the client is ready.
         - Retain the previously supplied three equal full-height storage units and save the exact assembly_run answer without repeating an arrangement question.
         - Summarize the saved three-unit arrangement in client-facing language.
-        - Continue toward complete building specifications for every unit and part because no further client choice is required at this stage.
+        - Begin generating the local unit taxonomy automatically because no further client choice is required at this stage.
       response_forbidden:
         - Say ready when you are, let me know when to continue, or ask whether the client wants to proceed.
         - Repeat a question about unit purpose, order, or width relationship.
@@ -221,3 +225,4 @@ cases:
           - {id: tall_storage_01, purpose: tall_storage, width_share: 1}
           - {id: tall_storage_02, purpose: tall_storage, width_share: 1}
           - {id: tall_storage_03, purpose: tall_storage, width_share: 1}
+      expected_next_stage: aikea-build-units

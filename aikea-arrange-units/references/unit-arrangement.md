@@ -101,8 +101,9 @@ Do not round away a confirmed relationship. When words such as “a little narro
 
 - **Missing:** Ask only for the missing purpose/order or width relationship.
 - **Contradictory:** State the exact conflict in client language and ask only for its correction.
-- **Complete:** Save the exact arrangement, summarize it, and continue toward complete building specifications for every unit and part.
+- **Complete:** Save the exact arrangement, summarize it, and immediately load
+  `$aikea-build-units` to generate the local unit taxonomy.
 
-Every response must end with the next obvious action. Ask the exact next question and provide a numbered reply instruction only when the client's answer can change the design. Otherwise take the next automatic action. Treat an acknowledgement such as "great" as a continuation signal and take the next unfinished action immediately.
+Every response must end with the next obvious action. Ask the exact next question and provide a numbered reply instruction only when the client's answer can change the design. Otherwise take the next automatic action. Treat an acknowledgement such as "great" as a continuation signal and generate the local units immediately when the arrangement is complete.
 
 The room's flat, sloped, or stepped boundary does not select a unit shape. A later deterministic calculation clips that boundary to each assembly's allocated span. A local unit such as a bench may stop at its own chosen height; that local choice is not part of this arrangement.
