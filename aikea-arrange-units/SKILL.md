@@ -7,6 +7,14 @@ description: Arrange the physical units in a measured AIkea furniture project fr
 
 Settle one ordered furniture arrangement and save it in the global project specification. Speak like a carpenter helping a client; keep project-file fields and calculations private. End every response with the next concrete action. Ask the client only when their answer can change the design; otherwise continue automatically.
 
+## Speak about client value
+
+When work proceeds automatically, give one brief conversational update that says
+which physical part of the wardrobe is being worked out and why the result matters.
+Use the actual project facts. Do not announce an AIkea skill or workflow, restate
+instructions, or narrate saving, checking, calculation, file, or routing steps.
+Compose the update naturally rather than using a reusable sentence.
+
 ## Establish the project state
 
 1. Resolve the active project folder from the user's request and current working directory.
@@ -30,7 +38,8 @@ Settle one ordered furniture arrangement and save it in the global project speci
 3. Preserve the existing run-wide left clearance, right clearance, gap, and ceiling clearance. Rename `cabinet_gap` to `gap` when replacing a legacy `cabinet_run`.
 4. Replace `cabinet_run` only when the new arrangement is complete. Never keep both representations.
 5. Check that every ID is unique, every purpose is non-empty, every width share is positive, and list order matches the confirmed left-to-right order.
-6. Summarize the saved arrangement in client-facing language.
+6. Summarize the arrangement in client-facing language and connect it to the next
+   useful physical result, such as clear dimensions for the wardrobe's parts.
 7. Continue automatically into assembly generation. Do not ask what any unit will
    store or ask the client to choose between hanging space, shelves, or a mixture.
    The construction profile supplies a universal shelf-and-hanger hole pattern, so

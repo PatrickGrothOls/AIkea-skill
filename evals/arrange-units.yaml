@@ -200,11 +200,11 @@ cases:
       - role: user
         text: I want three equal full-height storage units from left to right. Here are all the room measurements and shared choices.
       - role: assistant
-        text: The measurements and shared choices are saved and checked. The three calculated units are shown in the results table.
+        text: The available space gives three equal units; their dimensions are shown in the results table.
     next_user_message: great
     answer_key:
       response_required:
-        - Treat the acknowledgement as permission to continue the active AIkea workflow without asking whether the client is ready.
+        - Treat the acknowledgement as permission to continue the active wardrobe design without asking whether the client is ready.
         - Retain the previously supplied three equal full-height storage units and save the exact assembly_run answer without repeating an arrangement question.
         - Summarize the saved three-unit arrangement in client-facing language.
         - Continue directly into automatic assembly generation because no further client choice is required at this stage.

@@ -9,11 +9,17 @@ Use explicit user messages to create or revise the saved measurements and shared
 
 ## Speak like a carpenter helping a client
 
-- Open warmly and make the next step feel easy. For a new project with no supplied
-  details, begin: "Great, let's build an awesome wardrobe. First thing is to get
-  the units aligned." Then offer `1. Centimetres`, `2. Millimetres`, and
-  `3. Inches`, and say the client can reply with the number.
+- Open warmly and connect the next question to its practical value. For a new
+  project with no supplied details, explain naturally that agreeing on the units
+  keeps every later measurement consistent. Then offer `1. Centimetres`,
+  `2. Millimetres`, and `3. Inches`, and say the client can reply with the number.
+  Compose this from the active conversation instead of using a fixed opening.
 - Use plain client-facing language and ask one measurement or design topic per response.
+- When work continues without a client answer, give one brief conversational
+  update about the physical design result currently being worked out and why that
+  result is useful. Ground it in the active wardrobe. Do not announce a skill or
+  workflow, describe instructions, or narrate file writes, validation, calculators,
+  routing, or other internal operations. Do not use a stock progress sentence.
 - Begin every measurement group with a plain headline that says whether it is a
   width, height, or depth measurement and what feature it checks. State the view
   and unit once, then show a compact ASCII guide before the numbered lines.
@@ -68,7 +74,10 @@ Use explicit user messages to create or revise the saved measurements and shared
   freely chosen depth, ask for one intended depth. When the front must finish flush
   with a fixed line, ask for left, centre, and right readings from the back to that
   line.
-- Do not mention `aikea.yaml`, schemas, field names, width shares, calculators, validation, fitting allowance, or other internal machinery unless the user asks for technical details or project files.
+- Do not mention AIkea skills or workflows, `aikea.yaml`, schemas, field names,
+  width shares, calculators, validation, fitting allowance, stage routing, or
+  other internal machinery unless the user asks for technical details or project
+  files.
 - Never ask the client to provide width shares. Ask whether sections should be equal or whether any should be wider or narrower, then translate that relationship internally.
 - Keep every raw measurement unchanged. Apply the template's 2 mm fitting allowance only to a dimension fitted between fixed boundaries: between two side boundaries for width, between the floor and ceiling for height, or between the back and a required flush-front line for depth. A freely chosen edge receives no fitting allowance. Do not ask the client to choose the allowance.
 - Present useful design results such as cabinet sizes, positions, and heights. Keep formulas and internal representations private unless requested.
@@ -97,7 +106,10 @@ Use explicit user messages to create or revise the saved measurements and shared
 7. For contradictory inputs, remain in this phase, identify the exact conflict, and ask only for the correction needed. Never repair a measurement silently.
 8. For complete inputs, copy `assets/aikea.yaml` only when the project file does not exist, fill the exact schema, and run `python <skill-directory>/scripts/calculate_overall_wardrobe.py <project>/aikea.yaml`.
 9. If the calculator rejects the file, explain the specific problem in client-facing language and return to the missing or contradictory state.
-10. If the calculator accepts the file, tell the client that the measurements and shared choices are saved and checked, then present the calculated cabinet widths, positions, heights, and depths.
+10. If the calculator accepts the file, present the calculated cabinet widths,
+    positions, heights, and depths. Frame them as the clear physical dimensions
+    that the next wardrobe work can build from; keep the saving and checking
+    mechanics private.
 11. Immediately load `$aikea-arrange-units` and continue with its first unfinished action in the same response. Reuse any purpose, order, or width relationship the client already supplied; do not ask for it again.
 12. If the client later replies only with an acknowledgement such as "great," treat it as permission to continue the active workflow and perform the next unfinished action. Never answer an acknowledgement with another invitation to proceed.
 
