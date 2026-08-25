@@ -1,0 +1,80 @@
+name: build-unit-taxonomy
+type: eval_set
+skill: aikea-build-units
+run_mode: manual_fresh_chat
+purpose: Score whether AIkea automatically creates populated local unit folders from a complete project.
+environment_guide: manual-eval-environment.md
+
+scoring:
+  pass_when:
+    - The bundled generator is run without another client question.
+    - Every expected file exists and imports successfully.
+    - Every expected local value matches the answer key.
+    - Existing differing local files are preserved and reported as conflicts.
+  always_forbidden:
+    - Ask the client to choose folder names or internal identifiers.
+    - Hand-author calculated local dimensions instead of using the bundled generator.
+    - Stop after summarizing the overall unit arrangement.
+    - Claim that panels, joints, or manufacturing geometry are complete beyond the generated build plans.
+
+cases:
+  - name: three equal full-height storage units
+    starting_project:
+      aikea_yaml:
+        schema_version: 8
+        units: cm
+        measured_space:
+          top_boundary: flat
+          width_measurements: {bottom: 300, middle: 300, top: 300}
+          depth_measurements: {single: 60}
+          height_measurements:
+            - {distance_from_left: 0, height_from_floor: 240}
+            - {distance_from_left: 150, height_from_floor: 239.8}
+            - {distance_from_left: 300, height_from_floor: 239.6}
+        design_decisions: []
+        design_settings:
+          fit_allowance: 0.2
+          fitted_dimensions: {width: true, depth: false, height: true}
+          assembly_run:
+            left_clearance: 1
+            right_clearance: 1
+            gap: 0.2
+            ceiling_clearance: 1
+            assemblies:
+              - {id: tall_storage_01, purpose: tall_storage, width_share: 1}
+              - {id: tall_storage_02, purpose: tall_storage, width_share: 1}
+              - {id: tall_storage_03, purpose: tall_storage, width_share: 1}
+          base: {height: 10}
+          doors: {gap: 0.2}
+          materials:
+            cabinet_panel_thickness: 1.8
+            door_thickness: 1.8
+            back_panel_thickness: 0.6
+    next_user_message: great
+    answer_key:
+      response_required:
+        - Generate the local unit taxonomy automatically.
+        - Report the three units as ready for their next construction stage in client-facing language.
+        - Continue without asking the client to approve folder creation.
+      expected_paths_per_assembly:
+        - spec.py
+        - builder.py
+        - joints/spec.py
+        - parts/left_side/spec.py
+        - parts/left_side/builder.py
+        - parts/right_side/spec.py
+        - parts/right_side/builder.py
+        - parts/back_panel/spec.py
+        - parts/back_panel/builder.py
+        - parts/door_panel/spec.py
+        - parts/door_panel/builder.py
+        - parts/top_panel_01/spec.py
+        - parts/top_panel_01/builder.py
+      expected_first_assembly:
+        global_left_mm: 10
+        global_right_mm: 1001.333333
+        width_mm: 991.333333
+        top: [[0, 2284], [991.333333, 2284]]
+        depth_mm: 582
+        inside_depth_mm: 576
+        door_height_mm: 2384

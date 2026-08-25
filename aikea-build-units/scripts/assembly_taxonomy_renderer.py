@@ -1,0 +1,62 @@
+"""Scope: Compose every file required by a resolved assembly taxonomy."""
+
+from __future__ import annotations
+
+from pathlib import Path
+
+from assembly_module_renderer import AssemblyModuleRenderer
+from assembly_spec_renderer import AssemblySpecRenderer
+from assembly_taxonomy import LocalAssemblyTaxonomy, ProjectAssemblyTaxonomy
+
+
+class AssemblyTaxonomyRenderer:
+    """Render a complete project tree before any file is changed."""
+
+    def __init__(self, asset_root: Path) -> None:
+        self.asset_root = asset_root
+        self.modules = AssemblyModuleRenderer()
+        self.specs = AssemblySpecRenderer()
+
+    def render(self, taxonomy: ProjectAssemblyTaxonomy) -> dict[Path, str]:
+        files = {
+            Path("assemblies/__init__.py"): self.modules.package(
+                "Contain generated local furniture assemblies"
+            ),
+            Path("assemblies/specification.py"): (
+                self.asset_root / "specification.py"
+            ).read_text(encoding="utf-8"),
+        }
+        for assembly in taxonomy.assemblies:
+            files.update(self._assembly_files(assembly))
+        return files
+
+    def _assembly_files(
+        self, assembly: LocalAssemblyTaxonomy
+    ) -> dict[Path, str]:
+        root = Path("assemblies") / assembly.assembly_id
+        files = {
+            root / "__init__.py": self.modules.package(
+                f"Contain the {assembly.assembly_id} local assembly"
+            ),
+            root / "spec.py": self.specs.render(assembly),
+            root / "builder.py": self.modules.assembly_builder(assembly),
+            root / "joints/__init__.py": self.modules.package(
+                f"Contain joints owned by {assembly.assembly_id}"
+            ),
+            root / "joints/spec.py": self.modules.joints_spec(assembly.assembly_id),
+            root / "parts/__init__.py": self.modules.package(
+                f"Contain parts owned by {assembly.assembly_id}"
+            ),
+        }
+        for part in assembly.parts:
+            part_root = root / "parts" / part.part_id
+            files[part_root / "__init__.py"] = self.modules.package(
+                f"Contain the {part.part_id} manufactured part"
+            )
+            files[part_root / "spec.py"] = self.modules.part_spec(
+                assembly.assembly_id, part
+            )
+            files[part_root / "builder.py"] = self.modules.part_builder(
+                assembly.assembly_id, part
+            )
+        return files
