@@ -12,6 +12,7 @@ Use this file when starting a cabinet run or changing measurements that affect m
 - Plan useful measurements from the labelled outline
 - Record confirmed design decisions
 - Required measured space
+- Resolve limiting dimensions and the confirmed top boundary
 - Apply the fitting allowance
 - Required internal design values
 - Translate relative cabinet widths
@@ -243,16 +244,19 @@ record for that subject; do not retain conflicting decisions.
 Collect the raw readings without subtracting any allowance. The installation
 arrangement and labelled shape decide how many readings are useful:
 
-1. `width_measurements`: if both sides are fixed, normally record `bottom`,
+1. `top_boundary`: store `flat` when the confirmed outline has one level top and
+   `measured_profile` only when it explicitly contains a slope, step, or another
+   top-boundary change.
+2. `width_measurements`: if both sides are fixed, normally record `bottom`,
    `middle`, and `top` between the same side boundaries at three useful heights;
    otherwise record one `single` width from the fixed or intended left edge to the
    fixed or intended right edge. These internal names do not override the labelled
    measurement plan shown to the client.
-2. `depth_measurements`: when the depth is freely chosen, record one `single`
+3. `depth_measurements`: when the depth is freely chosen, record one `single`
    intended depth from the back to the wardrobe front. When the front must finish
    flush with a fixed line, record `left`, `middle`, and `right` readings from the
    back boundary to that required line.
-3. `height_measurements`: if the wardrobe reaches the ceiling, record the useful
+4. `height_measurements`: if the wardrobe reaches the ceiling, record the useful
    left-to-right positions that define and check the top boundary, including every
    place where a flat, slope, or step begins or ends. If it is open above, record
    one intended height.
@@ -264,12 +268,33 @@ Each height measurement contains:
 
 Translate ceiling descriptions directly when height is fitted:
 
-- A flat ceiling normally uses left, centre, and right readings; preserve small differences rather than flattening them.
+- A flat ceiling normally uses left, centre, and right readings. Preserve every
+  raw reading, then use the smallest as the one level structural height.
 - One continuous slope uses its labelled endpoints plus useful intermediate readings that can verify the real surface.
 - A flat section followed by a slope requires the exact labelled junction where the slope begins plus the other readings needed to define and check both sections.
 - Additional flats, slopes, or steps require a reading at every stated change.
 
 Require the first distance to be `0`, the final distance to cover the calculated usable width, and all distances to increase from left to right. Preserve every raw reading and measured change point. Never average readings, reorder points, extend a section, or infer a missing endpoint to make the outline pass.
+
+## Resolve limiting dimensions and the confirmed top boundary
+
+Repeated fitted measurements find the safe constant size of the wardrobe core:
+
+- Use the smallest width reading as one constant run width. Keep unit sides
+  vertical instead of tapering them to the measured walls.
+- Use the smallest flush-depth reading as one constant structural depth. Keep the
+  cabinet front and back planes consistent instead of twisting individual parts.
+- For `flat`, use the smallest height reading as one level top across the full
+  run. Do not interpolate a tilt between slightly different readings.
+
+Applied trims or scribes cover the remaining site variation at installation.
+For `measured_profile`, interpolate the ordered height readings so confirmed
+slopes and other real changes reach every unit boundary.
+
+The labelled outline, a direct client statement, or another identified source
+must establish `measured_profile`. Never infer it only because repeated height
+readings differ. There is no numeric tolerance that silently turns variation into
+a slope or taper.
 
 ## Apply the fitting allowance
 
@@ -351,6 +376,7 @@ Use `assets/aikea.yaml` as the exact schema.
 - Copy it only when `aikea.yaml` does not already exist.
 - Update an existing file in place and preserve values the user did not change.
 - Fill only user-supplied measured facts and confirmed shared design settings.
+- Store the confirmed top-boundary kind; do not derive it from measurement differences.
 - Preserve confirmed geometry interpretations under `design_decisions`, including
   the client's supporting statement and the effect AIkea may apply.
 - Keep height measurements in their measured left-to-right order.
@@ -374,6 +400,7 @@ Run the bundled calculator only after the checklist is complete. Require all of 
 - a flush depth has `left`, `middle`, and `right` readings, while a freely chosen
   depth has one `single` reading;
 - a fitted height has at least three measurements covering the usable width in increasing order, while an open height has at least one;
+- `top_boundary` is `flat` or `measured_profile` and agrees with the confirmed outline;
 - the 2 mm fitting allowance leaves every fitted dimension positive;
 - clearances and cabinet gaps leave positive cabinet width;
 - the base and ceiling clearance leave positive cabinet height;

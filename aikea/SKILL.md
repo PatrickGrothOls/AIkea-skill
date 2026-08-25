@@ -37,6 +37,13 @@ Use explicit user messages to create or revise the saved measurements and shared
   Give each flat, slope, or step along the top its own letter. Pair every letter
   with a plain name in parentheses, such as `A (left side)`, `C (sloped top)`, or
   `E (bottom)`.
+- Treat the confirmed outline as the geometry authority. A flat top stays level
+  and uses the lowest raw height reading across its span; measurement variation
+  alone does not create a tilt. Follow the measured height profile only when the
+  outline explicitly contains a slope, step, or other top-boundary change.
+- Use the smallest repeated fitted-width and fitted-depth readings as one constant
+  width and depth for the wardrobe structure. Measurement variation alone does not
+  taper unit or part geometry.
 - After showing the labelled outline, ask one placement question with numbered
   choices for all edges fitted or only some edges fitted. Repeat the named labels
   in the second choice so the client can reply, for example,
