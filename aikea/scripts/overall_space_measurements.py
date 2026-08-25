@@ -6,15 +6,15 @@ from dataclasses import dataclass
 from typing import Any
 
 from fitted_dimensions import FittedDimensions
-from height_measurements import HeightMeasurement, HeightMeasurementReader
 from horizontal_measurements import HorizontalMeasurementReader
+from top_boundary import TopBoundary, TopBoundaryReader
 
 
 @dataclass(frozen=True)
 class OverallSpaceMeasurements:
     width_measurements_mm: tuple[float, ...]
     depth_measurements_mm: tuple[float, ...]
-    height_measurements: tuple[HeightMeasurement, ...]
+    top_boundary: TopBoundary
 
     @property
     def minimum_width_mm(self) -> float:
@@ -23,6 +23,10 @@ class OverallSpaceMeasurements:
     @property
     def minimum_depth_mm(self) -> float:
         return min(self.depth_measurements_mm)
+
+    @property
+    def minimum_height_mm(self) -> float:
+        return self.top_boundary.minimum_height_mm
 
 
 class OverallSpaceMeasurementReader:
@@ -68,11 +72,11 @@ class OverallSpaceMeasurementReader:
             min(widths, default=0.0) - width_fitting_allowance_mm,
             0.0,
         )
-        heights = HeightMeasurementReader().read(
-            measured_space.get("height_measurements"),
+        top_boundary = TopBoundaryReader().read(
+            measured_space,
             usable_width,
             fitted_dimensions.height,
             scale,
             problems,
         )
-        return OverallSpaceMeasurements(widths, depths, heights)
+        return OverallSpaceMeasurements(widths, depths, top_boundary)

@@ -77,9 +77,10 @@ cases:
           response_forbidden:
             - Ask a follow-up measurement question.
           expected_aikea_yaml:
-            schema_version: 7
+            schema_version: 8
             units: cm
             measured_space:
+              top_boundary: flat
               width_measurements: {single: 240}
               depth_measurements: {single: 60}
               height_measurements:
@@ -241,9 +242,10 @@ cases:
             - Ask for a value supplied in an earlier turn.
             - Begin later cabinet or construction design.
           expected_aikea_yaml:
-            schema_version: 7
+            schema_version: 8
             units: mm
             measured_space:
+              top_boundary: flat
               width_measurements: {bottom: 2730, middle: 2730, top: 2730}
               depth_measurements: {single: 620}
               height_measurements:
@@ -319,9 +321,10 @@ cases:
           response_forbidden:
             - Replace an intentional zero with a typical clearance or gap.
           expected_aikea_yaml:
-            schema_version: 7
+            schema_version: 8
             units: mm
             measured_space:
+              top_boundary: flat
               width_measurements: {bottom: 3000, middle: 3000, top: 3000}
               depth_measurements: {single: 600}
               height_measurements:
@@ -376,17 +379,19 @@ cases:
           door panels, and a 6 mm back.
         answer_key:
           response_required:
-            - Preserve every raw site reading and use the smallest width for the safe design envelope.
+            - Preserve every raw site reading and use the smallest width as one constant run width.
             - Apply fitting room to height but not width or depth.
             - Translate the relative cabinet widths into internal shares [1, 1, 0.5].
             - Run the overall wardrobe calculator privately and present the checked cabinet dimensions in client-facing language.
           response_forbidden:
             - Average the uneven readings.
+            - Taper unit or part widths to follow the measured walls.
             - Ask the client to calculate each cabinet width.
           expected_aikea_yaml:
-            schema_version: 7
+            schema_version: 8
             units: mm
             measured_space:
+              top_boundary: flat
               width_measurements: {bottom: 2600, middle: 2597, top: 2595}
               depth_measurements: {single: 598}
               height_measurements:
@@ -442,9 +447,10 @@ cases:
           response_forbidden:
             - Replace the slope with an average or minimum height.
           expected_aikea_yaml:
-            schema_version: 7
+            schema_version: 8
             units: mm
             measured_space:
+              top_boundary: measured_profile
               width_measurements: {bottom: 3200, middle: 3200, top: 3200}
               depth_measurements: {single: 650}
               height_measurements:
@@ -502,9 +508,10 @@ cases:
           response_forbidden:
             - Reduce the ceiling to one generic slope.
           expected_aikea_yaml:
-            schema_version: 7
+            schema_version: 8
             units: mm
             measured_space:
+              top_boundary: measured_profile
               width_measurements: {bottom: 3000, middle: 3000, top: 3000}
               depth_measurements: {single: 600}
               height_measurements:
@@ -568,13 +575,16 @@ cases:
         answer_key:
           response_required:
             - Correct only the final height reading and retain every other supplied value.
+            - Use the smallest flush-depth reading as one constant structural depth.
             - Run the overall wardrobe calculator privately and present the checked cabinet dimensions in client-facing language.
           response_forbidden:
             - Reduce or reorder the measured height readings.
+            - Twist or taper cabinet depth to follow the three site readings.
           expected_aikea_yaml:
-            schema_version: 7
+            schema_version: 8
             units: mm
             measured_space:
+              top_boundary: measured_profile
               width_measurements: {bottom: 3600, middle: 3600, top: 3600}
               depth_measurements: {left: 700, middle: 699, right: 701}
               height_measurements:
@@ -634,9 +644,10 @@ cases:
           response_forbidden:
             - End by asking the client to say when they are ready to continue.
           expected_aikea_yaml:
-            schema_version: 7
+            schema_version: 8
             units: mm
             measured_space:
+              top_boundary: flat
               width_measurements: {bottom: 6000, middle: 6000, top: 6000}
               depth_measurements: {single: 650}
               height_measurements:
@@ -677,3 +688,65 @@ cases:
               - {cabinet_number: 4, left_position_mm: 2999, right_position_mm: 3998.666667, width_mm: 999.666667, left_height_mm: 2363, right_height_mm: 2363, door_width_mm: 997.666667}
               - {cabinet_number: 5, left_position_mm: 3998.666667, right_position_mm: 4998.333333, width_mm: 999.666667, left_height_mm: 2363, right_height_mm: 2363, door_width_mm: 997.666667}
               - {cabinet_number: 6, left_position_mm: 4998.333333, right_position_mm: 5998, width_mm: 999.666667, left_height_mm: 2363, right_height_mm: 2363, door_width_mm: 997.666667}
+
+  - name: flat fitted ceiling with small measurement variation
+    wardrobe_type: wall-to-wall, flat top, limiting-height calculation
+    turns:
+      - user: >-
+          Use centimetres. Viewed from the front, the available space is rectangular
+          and fitted between both side walls and between the finished floor and flat
+          ceiling. Width is 300 at the bottom, middle, and top. The intended depth is
+          60 with no required flush line. Floor-to-ceiling heights are 240 at 0 from
+          the left, 239.8 at 150, and 239.6 at 300. Build three equal full-height
+          storage units. Use 1 cm at each side wall, 0.2 cm between units, 1 cm above,
+          a 10 cm base, 0.2 cm door gaps, 1.8 cm cabinet and door panels, and a 0.6 cm back.
+        answer_key:
+          response_required:
+            - Preserve all three raw height readings while treating the confirmed top as flat.
+            - Use the lowest height reading for one level wardrobe top across all three units.
+            - Present all six unit-edge heights as 228.4 cm and continue the project.
+          response_forbidden:
+            - Carry the small measurement variation into tilted unit or panel tops.
+            - Describe the top as sloped without explicit client confirmation.
+          expected_aikea_yaml:
+            schema_version: 8
+            units: cm
+            measured_space:
+              top_boundary: flat
+              width_measurements: {bottom: 300, middle: 300, top: 300}
+              depth_measurements: {single: 60}
+              height_measurements:
+                - {distance_from_left: 0, height_from_floor: 240}
+                - {distance_from_left: 150, height_from_floor: 239.8}
+                - {distance_from_left: 300, height_from_floor: 239.6}
+            design_decisions: []
+            design_settings:
+              fit_allowance: 0.2
+              fitted_dimensions: {width: true, depth: false, height: true}
+              cabinet_run:
+                cabinet_count: 3
+                cabinet_width_shares: [1, 1, 1]
+                left_clearance: 1
+                right_clearance: 1
+                cabinet_gap: 0.2
+                ceiling_clearance: 1
+              base: {height: 10}
+              doors: {gap: 0.2}
+              materials:
+                cabinet_panel_thickness: 1.8
+                door_thickness: 1.8
+                back_panel_thickness: 0.6
+          expected_calculated:
+            minimum_measured_width_mm: 3000
+            minimum_measured_depth_mm: 600
+            width_fitting_allowance_mm: 2
+            depth_fitting_allowance_mm: 0
+            height_fitting_allowance_mm: 2
+            usable_width_mm: 2998
+            usable_depth_mm: 600
+            cabinet_depth_mm: 582
+            inside_depth_mm: 576
+            cabinets:
+              - {cabinet_number: 1, left_position_mm: 10, right_position_mm: 1001.333333, width_mm: 991.333333, left_height_mm: 2284, right_height_mm: 2284, door_width_mm: 989.333333}
+              - {cabinet_number: 2, left_position_mm: 1003.333333, right_position_mm: 1994.666667, width_mm: 991.333333, left_height_mm: 2284, right_height_mm: 2284, door_width_mm: 989.333333}
+              - {cabinet_number: 3, left_position_mm: 1996.666667, right_position_mm: 2988, width_mm: 991.333333, left_height_mm: 2284, right_height_mm: 2284, door_width_mm: 989.333333}

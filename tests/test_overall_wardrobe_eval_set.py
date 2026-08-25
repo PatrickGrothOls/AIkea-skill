@@ -19,7 +19,7 @@ class TestOverallWardrobeEvalSet:
     )
     def test_every_case_has_a_complete_final_answer(self) -> None:
         eval_set = self._load_eval_set()
-        assert len(eval_set["cases"]) == 8
+        assert len(eval_set["cases"]) == 9
         for case in eval_set["cases"]:
             final_answer = case["turns"][-1]["answer_key"]
             assert final_answer["expected_aikea_yaml"]
@@ -127,6 +127,24 @@ class TestOverallWardrobeEvalSet:
             assert set(final_yaml["measured_space"]["depth_measurements"]) == (
                 expected_positions
             )
+
+    def test_flat_variation_case_uses_one_limiting_height(self) -> None:
+        case = next(
+            case
+            for case in self._load_eval_set()["cases"]
+            if case["name"] == "flat fitted ceiling with small measurement variation"
+        )
+        answer = case["turns"][-1]["answer_key"]
+
+        assert answer["expected_aikea_yaml"]["measured_space"]["top_boundary"] == "flat"
+        assert {
+            cabinet["left_height_mm"]
+            for cabinet in answer["expected_calculated"]["cabinets"]
+        } == {2284}
+        assert {
+            cabinet["right_height_mm"]
+            for cabinet in answer["expected_calculated"]["cabinets"]
+        } == {2284}
 
     def _load_eval_set(self) -> dict:
         return yaml.safe_load(self._EVAL_PATH.read_text(encoding="utf-8"))

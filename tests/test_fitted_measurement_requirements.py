@@ -30,7 +30,7 @@ class TestFittedMeasurementRequirements:
 
         assert inputs.space.width_measurements_mm == (3000.0,)
         assert inputs.space.depth_measurements_mm == (600.0,)
-        assert len(inputs.space.height_measurements) == 1
+        assert len(inputs.space.top_boundary.measurements) == 1
 
     def test_fitted_width_requires_three_measurements(self) -> None:
         data = self.project.load_flat()

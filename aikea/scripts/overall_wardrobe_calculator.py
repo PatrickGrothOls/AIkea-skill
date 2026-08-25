@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-from height_measurements import HeightMeasurement
 from overall_wardrobe_inputs import OverallWardrobeInputError, OverallWardrobeInputs
 from overall_wardrobe_results import CabinetOverallSize, OverallWardrobeResult
 
@@ -119,9 +118,7 @@ class OverallWardrobeCalculator:
             )
             if settings.door_gap_mm >= narrowest_width:
                 problems.append("door gap must be smaller than every cabinet width")
-        minimum_height = min(
-            measurement.height_from_floor_mm for measurement in inputs.space.height_measurements
-        )
+        minimum_height = inputs.space.minimum_height_mm
         used_height = (
             height_fitting_allowance_mm
             + settings.base_height_mm
@@ -138,25 +135,10 @@ class OverallWardrobeCalculator:
         height_fitting_allowance_mm: float,
     ) -> float:
         settings = inputs.settings
-        measured_height = self._height_at(inputs.space.height_measurements, position_mm)
+        measured_height = inputs.space.top_boundary.height_at(position_mm)
         return (
             measured_height
             - height_fitting_allowance_mm
             - settings.base_height_mm
             - settings.ceiling_clearance_mm
-        )
-
-    def _height_at(
-        self, measurements: tuple[HeightMeasurement, ...], position_mm: float
-    ) -> float:
-        if len(measurements) == 1:
-            return measurements[0].height_from_floor_mm
-        for left, right in zip(measurements, measurements[1:]):
-            if left.distance_from_left_mm <= position_mm <= right.distance_from_left_mm:
-                run = right.distance_from_left_mm - left.distance_from_left_mm
-                fraction = (position_mm - left.distance_from_left_mm) / run
-                rise = right.height_from_floor_mm - left.height_from_floor_mm
-                return left.height_from_floor_mm + rise * fraction
-        raise OverallWardrobeInputError(
-            [f"no height measurement covers position {position_mm} mm"]
         )

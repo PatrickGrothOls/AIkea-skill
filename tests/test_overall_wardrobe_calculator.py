@@ -20,6 +20,7 @@ class TestOverallWardrobeCalculator:
 
     def test_piecewise_ceiling_is_sampled_at_cabinet_boundaries(self) -> None:
         data = self.project.load_flat()
+        data["measured_space"]["top_boundary"] = "measured_profile"
         data["measured_space"]["height_measurements"] = [
             {"distance_from_left": 0, "height_from_floor": 2400},
             {"distance_from_left": 1000, "height_from_floor": 2400},
@@ -80,7 +81,7 @@ class TestOverallWardrobeCalculator:
         assert result.height_fitting_allowance_mm == 2.0
         assert result.usable_width_mm == 2994.0
         assert result.usable_depth_mm == 598.0
-        assert result.cabinets[0].left_height_mm == pytest.approx(2297.9933)
+        assert result.cabinets[0].left_height_mm == 2294.0
 
     def test_only_fitted_dimensions_receive_fitting_room(self) -> None:
         data = self.project.load_flat()

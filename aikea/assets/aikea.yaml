@@ -1,7 +1,8 @@
-schema_version: 7
+schema_version: 8
 units: mm
 
 measured_space:
+  top_boundary: null
   width_measurements: {}
   depth_measurements: {}
   height_measurements: []

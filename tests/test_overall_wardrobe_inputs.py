@@ -38,6 +38,13 @@ class TestOverallWardrobeInputs:
         with pytest.raises(OverallWardrobeInputError, match="cover the usable width"):
             OverallWardrobeInputReader().read(data)
 
+    def test_top_boundary_kind_is_required(self) -> None:
+        data = self.project.load_flat()
+        del data["measured_space"]["top_boundary"]
+
+        with pytest.raises(OverallWardrobeInputError, match="top_boundary"):
+            OverallWardrobeInputReader().read(data)
+
     def test_each_fitted_dimension_must_be_confirmed(self) -> None:
         data = self.project.load_flat()
         data["design_settings"]["fitted_dimensions"]["width"] = None
@@ -77,7 +84,7 @@ class TestOverallWardrobeInputs:
 
         assert inputs.space.width_measurements_mm == (3000.0, 3000.0, 3000.0)
         assert inputs.space.depth_measurements_mm == (600.0,)
-        assert inputs.space.height_measurements[1].distance_from_left_mm == 1500.0
+        assert inputs.space.top_boundary.measurements[1].distance_from_left_mm == 1500.0
         assert inputs.settings.fit_allowance_mm == 2.0
 
     def test_client_statement_is_preserved_as_design_decision_evidence(self) -> None:
