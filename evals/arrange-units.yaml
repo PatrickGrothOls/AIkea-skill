@@ -13,6 +13,7 @@ scoring:
     - No forbidden response item occurs.
     - The saved assembly_run exactly matches the answer key when the arrangement is complete.
     - Every response ends with one concrete next action; it asks the client a question only when their answer can change the design, otherwise it proceeds automatically.
+    - Progress updates describe the current physical-design task and why its result matters to the client, using natural wording grounded in the active project.
   always_forbidden:
     - Ask the client for internal IDs, width shares, percentages, YAML fields, or folder names.
     - Treat a bench or another unit purpose as a fixed geometric shape.
@@ -22,6 +23,8 @@ scoring:
     - Generate assembly folders before the arrangement is complete and checked.
     - Keep cabinet_run after writing its assembly_run replacement.
     - Invent a unit purpose, order, or width relationship that the client did not provide or confirm.
+    - Announce that it is using an AIkea skill or workflow, quote or summarize its instructions, or narrate internal operations such as saving YAML, validating, loading a skill, or recording assembly_run.
+    - Reuse canned example wording instead of composing a project-specific update.
     - End with a passive invitation such as ready when you are, let me know, or tell me when to continue.
 
 cases:

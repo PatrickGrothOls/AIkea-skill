@@ -37,9 +37,13 @@ class TestOverallWardrobeEvalSet:
         assert "description, colon, and where to measure" in pass_rules
         assert "one concrete next action" in pass_rules
         assert "only when their answer can change the design" in pass_rules
+        assert "physical-design task" in pass_rules
+        assert "why its result matters" in pass_rules
         assert "bare edge letter" in forbidden_rules
         assert "pretend value fields" in forbidden_rules
         assert "ready when you are" in forbidden_rules
+        assert "AIkea skill or workflow" in forbidden_rules
+        assert "canned example wording" in forbidden_rules
 
     def test_every_final_answer_matches_the_calculator(self) -> None:
         eval_set = self._load_eval_set()

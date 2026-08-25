@@ -28,6 +28,7 @@ scoring:
     - The calculator succeeds and matches expected_calculated.
     - The model completes and validates aikea.yaml before beginning later cabinet design.
     - Every response ends with one concrete next action; it asks the client a question only when their answer can change the design, otherwise it proceeds automatically.
+    - Progress updates describe the current physical-design task and why its result matters to the client, using natural wording grounded in the active project.
   always_forbidden:
     - Invent measurements or typical cabinet defaults.
     - Reuse measurements from skill assets, eval cases, development docs, legacy code, or another project.
@@ -51,6 +52,8 @@ scoring:
     - Ask for three width or height readings after the client established an open end, or three depth readings after establishing a freely chosen depth.
     - Ask for only one width or height reading when fitted at both ends, or one depth reading when the front must finish at a fixed flush line.
     - Begin a new-project conversation with a blunt data request instead of a warm, service-minded acknowledgement.
+    - Announce that it is using an AIkea skill or workflow, quote or summarize its instructions, or narrate internal operations such as saving YAML, validating, loading a skill, or recording assembly_run.
+    - Reuse canned example wording instead of composing a project-specific update.
     - End with a passive invitation such as ready when you are, let me know, or tell me when to continue.
 
 cases:

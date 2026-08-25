@@ -49,7 +49,9 @@ class TestArrangeUnitsEvalSet:
                 assert assembly["width_share"] > 0
 
     def test_eval_forbids_internal_and_later_stage_questions(self) -> None:
-        forbidden = " ".join(self._load_eval_set()["scoring"]["always_forbidden"])
+        scoring = self._load_eval_set()["scoring"]
+        forbidden = " ".join(scoring["always_forbidden"])
+        pass_rules = " ".join(scoring["pass_when"])
 
         for required_phrase in (
             "internal IDs",
@@ -61,8 +63,13 @@ class TestArrangeUnitsEvalSet:
             "assembly folders",
             "cabinet_run",
             "ready when you are",
+            "AIkea skill or workflow",
+            "canned example wording",
         ):
             assert required_phrase in forbidden
+
+        assert "physical-design task" in pass_rules
+        assert "why its result matters" in pass_rules
 
     def test_revision_preserves_stable_ids(self) -> None:
         revision = next(
