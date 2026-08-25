@@ -83,6 +83,17 @@ class TestArrangeUnitsEvalSet:
         assert [item["width_share"] for item in before["assemblies"]] == [1, 0.5, 1]
         assert [item["width_share"] for item in after["assemblies"]] == [1, 1, 1]
 
+    def test_every_complete_case_continues_to_assembly_generation(self) -> None:
+        complete_cases = [
+            case
+            for case in self._load_eval_set()["cases"]
+            if "expected_assembly_run" in case["answer_key"]
+        ]
+
+        for case in complete_cases:
+            required = " ".join(case["answer_key"]["response_required"])
+            assert "automatic assembly generation" in required
+
     def test_acknowledgement_case_continues_without_internal_use_question(self) -> None:
         acknowledgement = next(
             case

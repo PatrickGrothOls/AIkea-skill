@@ -12,7 +12,7 @@ scoring:
     - Every required response item is satisfied.
     - No forbidden response item occurs.
     - The saved assembly_run exactly matches the answer key when the arrangement is complete.
-    - Every response takes one concrete next action; it asks the client a question only when their answer can change the design, otherwise it proceeds automatically.
+    - Every response ends with one concrete next action; it asks the client a question only when their answer can change the design, otherwise it proceeds automatically.
   always_forbidden:
     - Ask the client for internal IDs, width shares, percentages, YAML fields, or folder names.
     - Treat a bench or another unit purpose as a fixed geometric shape.

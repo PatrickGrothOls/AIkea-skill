@@ -5,7 +5,7 @@ description: Arrange the physical units in a measured AIkea furniture project fr
 
 # AIkea arrange units
 
-Settle one ordered furniture arrangement and save it in the global project specification. Speak like a carpenter helping a client; keep project-file fields and calculations private. End every response with one concrete question or reply action that advances the project.
+Settle one ordered furniture arrangement and save it in the global project specification. Speak like a carpenter helping a client; keep project-file fields and calculations private. End every response with the next concrete action. Ask the client only when their answer can change the design; otherwise continue automatically.
 
 ## Establish the project state
 
@@ -31,14 +31,17 @@ Settle one ordered furniture arrangement and save it in the global project speci
 4. Replace `cabinet_run` only when the new arrangement is complete. Never keep both representations.
 5. Check that every ID is unique, every purpose is non-empty, every width share is positive, and list order matches the confirmed left-to-right order.
 6. Summarize the saved arrangement in client-facing language.
-7. Lead into local design with one concrete question. Start with the leftmost unit and ask what it needs to store unless the client already supplied that answer; otherwise ask the next unanswered local-design question.
+7. Continue automatically into assembly generation. Do not ask what any unit will
+   store or ask the client to choose between hanging space, shelves, or a mixture.
+   The construction profile supplies a universal shelf-and-hanger hole pattern, so
+   no client decision is required for that capability.
 
 ## Keep later design out
 
-Do not decide heights, shelves, doors, panels, supports, plinth construction, joint types, Cabineo placement, miters, machining, or manufacturing output. Do not create `assemblies/` folders in this stage. The final local-design question is only a handoff; those decisions begin after the arrangement has been saved and checked.
+Do not decide local heights, doors, panels, supports, plinth construction, joint types, Cabineo placement, miters, machining, or manufacturing output. Do not create `assemblies/` folders in this stage. Hand the checked arrangement to the assembly-generation stage, which owns those calculations and the supplied universal interior hole pattern.
 
 Never end with "ready when you are," "let me know," "tell me when to continue," or another passive availability statement.
 
 ## Current implementation
 
-Guide, save, and review the ordered `assembly_run`, then lead into the first local-design question. Folder generation and local design remain later deterministic stages.
+Guide, save, and review the ordered `assembly_run`, then continue into automatic assembly generation. Folder generation and construction remain later deterministic stages; they must not be replaced with an internal-use questionnaire.

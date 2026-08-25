@@ -23,7 +23,7 @@ Use this file when starting a cabinet run or changing measurements that affect m
 
 `aikea.yaml` is the global specification. Questions and user answers are the means of completing it, not a replacement for it.
 
-Remain in this step while any required value is missing, contradictory, or rejected by the calculator. When the complete `aikea.yaml` passes, present the calculated overall dimensions and stop.
+Remain in this step while any required value is missing, contradictory, or rejected by the calculator. When the complete `aikea.yaml` passes, present the calculated overall dimensions and continue into the next required stage.
 
 ## Guide the client in plain language
 
@@ -52,7 +52,10 @@ Act like a carpenter helping a client plan a wardrobe, not like software asking 
    numbered choices or one numbered value line.
 8. Translate the answers into the global specification privately. Do not expose filenames, schema fields, width shares, formulas, calculator commands, validation terminology, or the fitting allowance unless the client asks.
 9. Give the client calculated cabinet sizes and positions, not the internal values used to derive them.
-10. Lead directly into the next unfinished design question after presenting results. Never make the client send a separate message merely to authorize continuation.
+10. Lead directly into the next unfinished stage after presenting results. Ask a
+    question only when the client's answer can change the design; otherwise perform
+    the next stage automatically. Never make the client send a separate message
+    merely to authorize continuation.
 
 ## Format questions for short replies
 
@@ -137,7 +140,7 @@ Example design question:
 
 1. All cabinet sections should be equal.
 2. One or more sections should be narrower or wider.
-3. Recommend a section arrangement after hearing what I need to store.
+3. Help me choose a balanced width arrangement.
 
 Say that the client can reply with `1`, `2`, or `3`.
 
@@ -320,7 +323,7 @@ question:
 
 1. All sections should be the same width.
 2. One or more sections should be narrower or wider.
-3. Help choose the widths from what the client needs to store.
+3. Help choose a balanced width arrangement from the available space.
 
 If the client chooses `2`, ask the narrower-or-wider relationship as the next
 single topic.
@@ -373,4 +376,4 @@ Run the bundled calculator only after the checklist is complete. Require all of 
 - the base and ceiling clearance leave positive cabinet height;
 - door and back thicknesses leave positive cabinet and inside depth.
 
-On success, tell the client that the measurements and shared choices are saved and checked, then summarize calculated cabinet widths, left/right positions, left/right heights, door widths, cabinet depth, and inside depth. Do not mention the file path or checking mechanism unless asked. Immediately load `$aikea-arrange-units` and end with its next concrete question or reply action. If the arrangement was already fully supplied, let that skill save it and lead into the first local-unit question instead of repeating it.
+On success, tell the client that the measurements and shared choices are saved and checked, then summarize calculated cabinet widths, left/right positions, left/right heights, door widths, cabinet depth, and inside depth. Do not mention the file path or checking mechanism unless asked. Immediately load `$aikea-arrange-units` and take its next concrete action. If the arrangement was already fully supplied, let that skill save it and continue into automatic assembly generation without asking how the units will be used internally.
