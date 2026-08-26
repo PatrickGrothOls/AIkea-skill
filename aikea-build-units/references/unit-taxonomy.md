@@ -28,8 +28,10 @@ assemblies/
 The unit `spec.py` is authoritative for its local boundary, resolved parts, and
 physical joint relationships. Each part `spec.py` exposes only its own finished
 part value from that unit specification. Each part builder returns its real
-CadQuery part in its canonical local frame. The assembly builder executes every
-owned part builder and returns those built parts with the unit's joint list.
+CadQuery part in its canonical local frame. The assembly builder resolves the
+machining implied by the unit's supported joints, gives each part builder only
+the work owned by that part, and returns the built parts with the unit's joint
+list and resolved cuts.
 
 The local top boundary begins at `0` and ends at the unit width. It preserves every
 confirmed project-boundary change that falls inside the unit instead of reducing
@@ -45,9 +47,9 @@ The current construction taxonomy produces:
 - one top panel for every segment of the local top boundary;
 - one authoritative list of the physical relationships between those parts.
 
-This taxonomy establishes ownership and exact resolved dimensions. Joinery and
-machining capabilities later enrich each physical relationship from one shared
-joint definition.
+This taxonomy establishes ownership and exact resolved dimensions. Supported
+construction is derived from one shared joint definition so mating features stay
+aligned when any upstream dimension changes.
 
 ## Safe regeneration
 

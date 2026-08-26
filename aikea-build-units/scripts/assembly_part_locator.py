@@ -1,19 +1,17 @@
-"""Scope: Locate one panel's canonical local frame inside its review assembly."""
+"""Scope: Locate one panel's canonical local frame inside its assembly."""
 
 from __future__ import annotations
 
-from math import cos, hypot, radians, sin
+from math import hypot
 from typing import Any
 
 import cadquery as cq
 
-from unit_mockup import UnitMockupInputError
+from part_construction_error import PartConstructionError
 
 
 class AssemblyPartLocator:
     """Calculate explicit local-to-assembly transforms for generated panel parts."""
-
-    _OPEN_DOOR_ANGLE_DEGREES = -90.0
 
     def __init__(self) -> None:
         self._part_locators = {
@@ -28,7 +26,9 @@ class AssemblyPartLocator:
         if locator is None and part.role == "top_panel":
             locator = self._top_panel
         if locator is None:
-            raise UnitMockupInputError([f"no assembly placement exists for {part.part_id}"])
+            raise PartConstructionError(
+                f"no assembly placement exists for {part.part_id}"
+            )
         return locator(part, assembly, base_height_mm)
 
     def _left_side(self, part: Any, assembly: Any, base_height_mm: float) -> cq.Location:
@@ -54,13 +54,10 @@ class AssemblyPartLocator:
 
     def _door_panel(self, part: Any, assembly: Any, base_height_mm: float) -> cq.Location:
         left_gap_mm = (float(assembly.width_mm) - float(assembly.door_width_mm)) / 2.0
-        angle = radians(self._OPEN_DOOR_ANGLE_DEGREES)
-        width_direction = (cos(angle), sin(angle), 0.0)
-        outside_direction = (sin(angle), -cos(angle), 0.0)
         return self._location(
             (left_gap_mm, 0.0, 0.0),
-            width_direction,
-            outside_direction,
+            (1.0, 0.0, 0.0),
+            (0.0, -1.0, 0.0),
         )
 
     def _top_panel(self, part: Any, assembly: Any, base_height_mm: float) -> cq.Location:

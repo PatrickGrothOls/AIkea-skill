@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from assembly_part_locator import AssemblyPartLocator
+from review_part_locator import ReviewPartLocator
 from unit_mockup import MockupPart, UnitMockupInputError
 
 
@@ -16,7 +16,7 @@ class UnitMockupGeometry:
     _DOOR = (0.91, 0.86, 0.77, 1.0)
 
     def __init__(self) -> None:
-        self.locator = AssemblyPartLocator()
+        self.locator = ReviewPartLocator()
 
     def build(self, built_assembly: Any) -> tuple[MockupPart, ...]:
         spec = built_assembly.spec

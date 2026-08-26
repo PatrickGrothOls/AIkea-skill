@@ -68,8 +68,8 @@ class TestAssemblyTaxonomyGenerator:
             unit / "parts" / "left_side" / "builder.py"
         ).read_text(encoding="utf-8")
         assembly_builder = (unit / "builder.py").read_text(encoding="utf-8")
-        assert "PartBlankBuilder().build(SPEC)" in part_builder
-        assert "LEFT_SIDE_BUILDER.build()" in assembly_builder
+        assert "SheetPartBuilder().build(SPEC, cuts)" in part_builder
+        assert "LEFT_SIDE_BUILDER.build(cuts.for_part('left_side'))" in assembly_builder
         assert "BuiltAssembly" in assembly_builder
 
     def test_local_boundary_preserves_a_change_inside_one_unit(self, tmp_path) -> None:

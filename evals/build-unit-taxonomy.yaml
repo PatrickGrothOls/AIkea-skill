@@ -10,13 +10,14 @@ scoring:
     - The bundled generator is run without another client question.
     - Every expected file exists and imports successfully.
     - Every expected local value matches the answer key.
+    - Every supported joint produces the matching work on all participating parts.
     - Existing differing local files are preserved and reported as conflicts.
     - The first cabinet is built and opened for visual review after generation.
   always_forbidden:
     - Ask the client to choose folder names or internal identifiers.
     - Hand-author calculated local dimensions instead of using the bundled generator.
     - Stop after summarizing the overall unit arrangement.
-    - Claim that manufacturing geometry is complete beyond the visual mock-up and generated build plans.
+    - Claim that unsupported joints or manufacturing stages are complete.
     - Produce the remaining cabinet GLBs before the first cabinet is visually approved.
 
 cases:
@@ -82,3 +83,13 @@ cases:
         depth_mm: 582
         inside_depth_mm: 576
         door_height_mm: 2384
+      expected_first_joint:
+        joint_id: left_side_to_top
+        joint_type: cabineo
+        source_part_id: left_side
+        target_part_id: top_panel_01
+        source_face: ">Z"
+        source_edge: ">Y"
+        connector_layout: two_quarter_points
+        connectors: 2
+        cuts_per_connector: 2

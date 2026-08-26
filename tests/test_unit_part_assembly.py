@@ -60,6 +60,19 @@ class TestUnitPartAssembly(unittest.TestCase):
         for part in parts:
             self.assert_bounds(part.placed_shape().BoundingBox(), expected[part.name])
 
+    def test_construction_location_keeps_the_door_in_its_closed_position(self) -> None:
+        from assembly_part_locator import AssemblyPartLocator
+
+        AssemblyTaxonomyGenerator().generate(self.project, self.project_root)
+        built = self.generator.loader.load_first(self.project_root, self.project)
+        door = next(part for part in built.parts if part.spec.part_id == "door_panel")
+        location = AssemblyPartLocator().locate(door.spec, built.spec, 100.0)
+
+        self.assert_bounds(
+            door.solid.val().located(location).BoundingBox(),
+            (1.0, 990.3333333333334, -18.0, 0.0, 0.0, 2384.0),
+        )
+
     def test_profile_unit_builds_every_top_segment_and_shaped_door_point(self) -> None:
         project = self.project
         project["measured_space"]["top_boundary"] = "measured_profile"

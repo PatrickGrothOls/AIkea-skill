@@ -1,6 +1,6 @@
 ---
 name: aikea-review-unit
-description: Build and open the first generated AIkea cabinet as a visually complete GLB mock-up for client approval. Use immediately after local unit folders are generated, or when repeating the first-unit visual review, before producing the remaining cabinets or manufacturing geometry.
+description: Build and open the first generated AIkea cabinet as a visually complete GLB mock-up for client approval. Use immediately after local unit folders are generated, or when repeating the first-unit visual review, before producing the remaining cabinets or downstream outputs.
 ---
 
 # AIkea review unit
@@ -32,4 +32,5 @@ and standard construction details inside the skill.
 
 This stage places and displays the parts returned by the generated assembly
 builder. It does not rebuild or alter their local geometry. The approved visible
-design becomes the reference for later machining and manufacturing stages.
+design becomes the reference for completing the remaining construction and
+manufacturing stages.

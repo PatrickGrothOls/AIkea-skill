@@ -29,7 +29,7 @@ class TestAssemblyTaxonomyUpgrade:
         specification = (
             tmp_path / "assemblies/specification.py"
         ).read_text(encoding="utf-8")
-        assert "PartBlankBuilder().build(SPEC)" in part_builder
+        assert "SheetPartBuilder().build(SPEC, cuts)" in part_builder
         assert "class BuiltPart" in specification
         assert "class PartBuildPlan" not in specification
 

@@ -14,25 +14,28 @@ class AssemblyModuleRenderer:
             for part in assembly.parts
         )
         builders = "\n".join(
-            f"                {self._constant(part.part_id)}_BUILDER.build(),"
+            f"                {self._constant(part.part_id)}_BUILDER.build(cuts.for_part({part.part_id!r})),"
             for part in assembly.parts
         )
         class_name = f"{self._class_name(assembly.assembly_id)}Builder"
         return (
             f'"""Scope: Build every local part owned by {assembly.assembly_id}."""\n\n'
-            "from assemblies.specification import BuiltAssembly\n\n"
+            "from assemblies.specification import BuiltAssembly\n"
+            "from assembly_joint_machining_builder import AssemblyJointMachiningBuilder\n\n"
             "from .joints.spec import JOINTS\n"
             f"{imports}\n"
             "from .spec import SPEC\n\n\n"
             f"class {class_name}:\n"
             "    \"\"\"Build the unit's local parts and retain its physical joints.\"\"\"\n\n"
             "    def build(self) -> BuiltAssembly:\n"
+            "        cuts = AssemblyJointMachiningBuilder().build(SPEC, JOINTS)\n"
             "        return BuiltAssembly(\n"
             "            spec=SPEC,\n"
             "            parts=(\n"
             f"{builders}\n"
             "            ),\n"
             "            joints=JOINTS,\n"
+            "            cuts=cuts.all,\n"
             "        )\n\n\n"
             f"BUILDER = {class_name}()\n"
         )
@@ -52,9 +55,9 @@ class AssemblyModuleRenderer:
             "from .spec import SPEC\n\n\n"
             f"class {class_name}:\n"
             f"    \"\"\"Construct the {part.role} in its local manufacturing frame.\"\"\"\n\n"
-            "    def build(self) -> BuiltPart:\n"
-            "        from part_blank_builder import PartBlankBuilder\n\n"
-            "        return BuiltPart(SPEC, PartBlankBuilder().build(SPEC))\n\n\n"
+            "    def build(self, cuts=()) -> BuiltPart:\n"
+            "        from sheet_part_builder import SheetPartBuilder\n\n"
+            "        return BuiltPart(SPEC, SheetPartBuilder().build(SPEC, cuts))\n\n\n"
             f"BUILDER = {class_name}()\n"
         )
 

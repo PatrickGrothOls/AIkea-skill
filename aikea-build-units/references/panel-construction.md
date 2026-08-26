@@ -36,6 +36,8 @@ workpiece = BlankSheetBuilder(
 
 The ordered points describe the finished outer shape of the blank's face; the
 builder closes that outline and extends its material thickness along positive Z.
-The generated local part builder owns this call and returns the real local
-CadQuery part. Machining continues from that same part. Assembly placement and
-manufacturing placement remain separate transformations.
+The generated local part builder owns this call, applies the cuts assigned by the
+assembly's joint definitions, and returns the real local CadQuery part. A joint
+defines its geometry once and transforms that same geometry into each
+participating part's local frame. Assembly placement and manufacturing placement
+remain separate transformations.

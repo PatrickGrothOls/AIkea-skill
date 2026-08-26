@@ -10,7 +10,7 @@ description: Generate populated local assembly, part, builder, and joint folders
 Turn the completed overall project and ordered unit run into self-contained,
 executable local assemblies. Every supported unit must receive its exact allocated
 boundary, owned parts, physical joint relationships, and builders that produce
-real local CadQuery parts from resolved project facts.
+real local CadQuery parts with the construction required by those relationships.
 
 ## Generate the local units
 
@@ -31,7 +31,10 @@ writer remain unchanged.
 ## Responsibility boundary
 
 This stage materializes local boundaries, part ownership, executable builders,
-and one joint list per unit. Each generated part builder owns its local part and
-calls reusable AIkea construction code. The assembly builder is the stable entry
-point that executes all owned part builders. `$aikea-review-unit` consumes that
-built result without reconstructing its geometry.
+and one joint list per unit. The assembly builder resolves each supported joint
+once, including the matching work required on every participating part. Each
+generated part builder owns its local part and applies the resolved work in that
+part's canonical frame through reusable AIkea construction code. The assembly
+builder is the stable entry point that executes all owned part builders.
+`$aikea-review-unit` consumes that built result without reconstructing its
+geometry.

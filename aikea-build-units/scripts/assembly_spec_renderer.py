@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from assembly_taxonomy import (
     BoundaryPoint,
+    CabineoJointTaxonomy,
     JointTaxonomy,
     LocalAssemblyTaxonomy,
     PartTaxonomy,
@@ -22,6 +23,7 @@ class AssemblySpecRenderer:
             "from assemblies.specification import (\n"
             "    AssemblySpec,\n"
             "    BoundaryPoint,\n"
+            "    CabineoJointSpec,\n"
             "    JointSpec,\n"
             "    PartSpec,\n"
             ")\n\n\n"
@@ -52,10 +54,23 @@ class AssemblySpecRenderer:
             f"            role={part.role!r},\n"
             f"            dimensions_mm={part.dimensions_mm!r},\n"
             f"            outline_mm={self._points(part.outline_mm)},\n"
+            f"            local_size_mm={part.local_size_mm!r},\n"
+            f"            inside_face={part.inside_face!r},\n"
             "        ),"
         )
 
-    def _joint(self, joint: JointTaxonomy) -> str:
+    def _joint(self, joint: JointTaxonomy | CabineoJointTaxonomy) -> str:
+        if isinstance(joint, CabineoJointTaxonomy):
+            return (
+                "        CabineoJointSpec(\n"
+                f"            joint_id={joint.joint_id!r},\n"
+                f"            source_part_id={joint.source_part_id!r},\n"
+                f"            target_part_id={joint.target_part_id!r},\n"
+                f"            source_face={joint.source_face!r},\n"
+                f"            source_edge={joint.source_edge!r},\n"
+                f"            connector_layout={joint.connector_layout!r},\n"
+                "        ),"
+            )
         return (
             "        JointSpec(\n"
             f"            joint_id={joint.joint_id!r},\n"

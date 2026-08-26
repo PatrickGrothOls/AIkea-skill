@@ -37,6 +37,18 @@ class TestBuildUnitTaxonomyEvalSet:
         assert first.inside_depth_mm == expected["inside_depth_mm"]
         door = next(part for part in first.parts if part.part_id == "door_panel")
         assert dict(door.dimensions_mm)["left_height"] == expected["door_height_mm"]
+        self._assert_first_joint(first, answer["expected_first_joint"])
         for assembly in result.assemblies:
             root = tmp_path / "assemblies" / assembly.assembly_id
             assert all((root / relative).is_file() for relative in answer["expected_paths_per_assembly"])
+
+    def _assert_first_joint(self, assembly, expected) -> None:
+        joint = next(
+            item for item in assembly.joints if item.joint_id == expected["joint_id"]
+        )
+        assert joint.joint_type == expected["joint_type"]
+        assert joint.source_part_id == expected["source_part_id"]
+        assert joint.target_part_id == expected["target_part_id"]
+        assert joint.source_face == expected["source_face"]
+        assert joint.source_edge == expected["source_edge"]
+        assert joint.connector_layout == expected["connector_layout"]

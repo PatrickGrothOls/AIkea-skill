@@ -4,7 +4,13 @@ from __future__ import annotations
 
 from math import hypot
 
-from assembly_taxonomy import BoundaryPoint, JointTaxonomy, PartTaxonomy
+from assembly_taxonomy import (
+    BoundaryPoint,
+    CabineoJointTaxonomy,
+    JointTaxonomy,
+    PartTaxonomy,
+)
+from tall_storage_joint_taxonomy import TallStorageJointTaxonomy
 from top_boundary_panel_outline_builder import TopBoundaryPanelOutlineBuilder
 
 
@@ -13,6 +19,7 @@ class TallStorageTaxonomy:
 
     def __init__(self) -> None:
         self.outline_builder = TopBoundaryPanelOutlineBuilder()
+        self.joint_taxonomy = TallStorageJointTaxonomy()
 
     def build_parts(
         self,
@@ -42,6 +49,8 @@ class TallStorageTaxonomy:
                     depth=depth_mm,
                     thickness=panel_thickness_mm,
                 ),
+                local_size_mm=(depth_mm, top[0].height_mm, panel_thickness_mm),
+                inside_face=">Z",
             ),
             PartTaxonomy(
                 "right_side",
@@ -51,12 +60,16 @@ class TallStorageTaxonomy:
                     depth=depth_mm,
                     thickness=panel_thickness_mm,
                 ),
+                local_size_mm=(depth_mm, top[-1].height_mm, panel_thickness_mm),
+                inside_face=">Z",
             ),
             PartTaxonomy(
                 "back_panel",
                 "back_panel",
                 self._dimensions(width=width_mm, thickness=back_thickness_mm),
                 back_outline,
+                (width_mm, max(point.height_mm for point in back_outline), back_thickness_mm),
+                ">Z",
             ),
             PartTaxonomy(
                 "door_panel",
@@ -68,6 +81,12 @@ class TallStorageTaxonomy:
                     thickness=door_thickness_mm,
                 ),
                 door_outline,
+                (
+                    door_width_mm,
+                    max(point.height_mm for point in door_outline),
+                    door_thickness_mm,
+                ),
+                "<Z",
             ),
         ]
         parts.extend(
@@ -76,32 +95,10 @@ class TallStorageTaxonomy:
         )
         return tuple(parts)
 
-    def build_joints(self, top_panel_count: int) -> tuple[JointTaxonomy, ...]:
-        top_ids = tuple(f"top_panel_{index:02d}" for index in range(1, top_panel_count + 1))
-        joints = [
-            JointTaxonomy("left_side_to_back_panel", ("left_side", "back_panel"), "structural_seam"),
-            JointTaxonomy("right_side_to_back_panel", ("right_side", "back_panel"), "structural_seam"),
-            JointTaxonomy("door_panel_to_left_side", ("door_panel", "left_side"), "door_hinge"),
-            JointTaxonomy("left_side_to_top", ("left_side", top_ids[0]), "structural_seam"),
-            JointTaxonomy("right_side_to_top", ("right_side", top_ids[-1]), "structural_seam"),
-        ]
-        joints.extend(
-            JointTaxonomy(
-                f"{top_id}_to_back_panel",
-                (top_id, "back_panel"),
-                "structural_seam",
-            )
-            for top_id in top_ids
-        )
-        joints.extend(
-            JointTaxonomy(
-                f"{left_id}_to_{right_id}",
-                (left_id, right_id),
-                "top_boundary_seam",
-            )
-            for left_id, right_id in zip(top_ids, top_ids[1:])
-        )
-        return tuple(joints)
+    def build_joints(
+        self, top_panel_count: int
+    ) -> tuple[JointTaxonomy | CabineoJointTaxonomy, ...]:
+        return self.joint_taxonomy.build(top_panel_count)
 
     def _top_panel(
         self,
@@ -123,6 +120,12 @@ class TallStorageTaxonomy:
                 depth=depth_mm,
                 thickness=thickness_mm,
             ),
+            local_size_mm=(
+                hypot(right.x_mm - left.x_mm, right.height_mm - left.height_mm),
+                depth_mm,
+                thickness_mm,
+            ),
+            inside_face="<Z",
         )
 
     def _dimensions(self, **values: float) -> tuple[tuple[str, float], ...]:
