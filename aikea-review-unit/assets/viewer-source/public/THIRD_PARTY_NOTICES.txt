@@ -6,3 +6,9 @@ https://github.com/facebook/react
 https://github.com/mrdoob/three.js
 https://github.com/pmndrs/react-three-fiber
 https://github.com/pmndrs/drei
+
+The bundled plywood PBR texture was created by Rob Tuytel and published by Poly
+Haven under CC0 1.0 Universal:
+
+https://polyhaven.com/a/plywood
+https://creativecommons.org/publicdomain/zero/1.0/

@@ -1,0 +1,15 @@
+Plywood PBR texture
+
+Author: Rob Tuytel
+Source: https://polyhaven.com/a/plywood
+License: CC0 1.0 Universal
+License text: https://creativecommons.org/publicdomain/zero/1.0/
+Downloaded: 2026-08-26
+
+Packaged 1K files:
+- plywood_diff_1k.jpg
+- plywood_nor_gl_1k.jpg
+- plywood_rough_1k.jpg
+
+The texture source represents a photographed 0.5 m-wide plywood surface. The
+asset is bundled locally; the viewer does not access Poly Haven at runtime.

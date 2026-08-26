@@ -2,26 +2,30 @@
 
 import { Suspense, useLayoutEffect } from "react";
 import { Canvas, useThree } from "@react-three/fiber";
-import { OrbitControls, useGLTF } from "@react-three/drei";
+import { OrbitControls, useGLTF, useTexture } from "@react-three/drei";
 import { Box3, Vector3 } from "three";
+
+import { PlywoodSurface } from "./PlywoodSurface";
 
 // A function component is the smallest React boundary for the GLB-loading hook.
 function ReviewModel() {
   const { scene } = useGLTF("/model.glb");
+  const [colorMap, normalMap, roughnessMap] = useTexture([
+    "/materials/plywood/plywood_diff_1k.jpg",
+    "/materials/plywood/plywood_nor_gl_1k.jpg",
+    "/materials/plywood/plywood_rough_1k.jpg",
+  ]);
   const camera = useThree((state) => state.camera);
   const controls = useThree((state) => state.controls);
 
   useLayoutEffect(() => {
+    const surface = new PlywoodSurface(colorMap, normalMap, roughnessMap);
     scene.rotation.x = -Math.PI / 2;
     scene.traverse((node) => {
       if (node.isMesh) {
         node.castShadow = true;
         node.receiveShadow = true;
-        for (const material of [node.material].flat()) {
-          material.metalness = 0;
-          material.roughness = 0.78;
-          material.needsUpdate = true;
-        }
+        surface.applyTo(node);
       }
     });
     scene.updateMatrixWorld(true);
@@ -45,7 +49,7 @@ function ReviewModel() {
       controls.target.copy(center);
       controls.update();
     }
-  }, [camera, controls, scene]);
+  }, [camera, colorMap, controls, normalMap, roughnessMap, scene]);
 
   return <primitive object={scene} />;
 }
@@ -55,12 +59,12 @@ export function AssemblyReviewViewer() {
   return (
     <main className="review-shell">
       <Canvas shadows camera={{ position: [150, 100, 150], fov: 50 }}>
-        <color attach="background" args={["#f4f0e8"]} />
-        <ambientLight intensity={0.95} />
-        <hemisphereLight args={["#ffffff", "#bba98e", 1.1]} />
+        <color attach="background" args={["#eee9df"]} />
+        <ambientLight intensity={0.5} />
+        <hemisphereLight args={["#fffaf0", "#8e806d", 0.8]} />
         <directionalLight
           castShadow
-          intensity={2}
+          intensity={1.7}
           position={[1200, 2600, 3200]}
           shadow-mapSize={[2048, 2048]}
         />
