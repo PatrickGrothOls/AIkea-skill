@@ -6,21 +6,23 @@ from pathlib import Path
 class TestReviewViewerInteraction:
     """Protect the interaction required to inspect joints and machining closely."""
 
-    def test_zoom_follows_the_detail_under_the_pointer(self) -> None:
+    def test_zoom_moves_straight_along_the_cabinet_rotation_axis(self) -> None:
         source = (
             Path(__file__).parents[1]
             / "aikea-review-unit/assets/viewer-source/src/CloseInspectionControls.jsx"
         ).read_text(encoding="utf-8")
 
-        assert "zoomToCursor" in source
+        assert "raycaster.set(camera.position, zoomDirection)" in source
+        assert "camera.position.addScaledVector(zoomDirection, travel)" in source
+        assert "camera.position.addScaledVector(raycaster.ray.direction" not in source
 
-    def test_close_zoom_moves_past_the_orbit_target_toward_the_surface(self) -> None:
+    def test_close_zoom_uses_surface_distance_instead_of_target_distance(self) -> None:
         source = (
             Path(__file__).parents[1]
             / "aikea-review-unit/assets/viewer-source/src/CloseInspectionControls.jsx"
         ).read_text(encoding="utf-8")
 
-        assert "PointerZoomTravel" in source
+        assert "CabinetSurfaceZoomTravel" in source
         assert "modelSpan" in source
         assert 'addEventListener("wheel"' in source
         assert "preventDefault" in source

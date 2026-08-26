@@ -80,7 +80,7 @@ export function AssemblyReviewViewer() {
       <section className="review-card">
         <p className="eyebrow">AIkea visual review</p>
         <h1>Your first cabinet</h1>
-        <p>Drag to rotate. Point at a detail, then scroll or pinch to zoom.</p>
+        <p>Drag to rotate a detail into view, then scroll or pinch to move closer.</p>
       </section>
     </main>
   );

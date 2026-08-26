@@ -1,10 +1,10 @@
-/** Scope: Calculate signed camera travel toward the cabinet surface under the pointer. */
+/** Scope: Calculate signed camera travel toward the cabinet surface on the rotation axis. */
 
 const ORBIT_ZOOM_BASE = 0.95;
 const WHEEL_DELTA_SCALE = 0.01;
 const MODEL_SPAN_PER_DETAIL_STEP = 500;
 
-export class PointerZoomTravel {
+export class CabinetSurfaceZoomTravel {
   constructor(modelSpan) {
     this.minimumTravel = modelSpan / MODEL_SPAN_PER_DETAIL_STEP;
   }

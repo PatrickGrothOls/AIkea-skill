@@ -1,31 +1,31 @@
-/** Scope: Verify pointer zoom keeps useful travel until the selected surface is reached. */
+/** Scope: Verify cabinet-centred zoom keeps useful travel until the surface is reached. */
 
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { PointerZoomTravel } from "./PointerZoomTravel.js";
+import { CabinetSurfaceZoomTravel } from "./CabinetSurfaceZoomTravel.js";
 
-test("uses proportional travel while the selected surface is far away", () => {
-  const zoomTravel = new PointerZoomTravel(2400);
+test("uses proportional travel while the cabinet surface is far away", () => {
+  const zoomTravel = new CabinetSurfaceZoomTravel(2400);
 
   assert.ok(Math.abs(zoomTravel.calculateForWheel(-100, 1000, 0.1) - 50) < 0.000001);
 });
 
-test("keeps a model-scale step near the selected surface", () => {
-  const zoomTravel = new PointerZoomTravel(2400);
+test("keeps a model-scale step near the cabinet surface", () => {
+  const zoomTravel = new CabinetSurfaceZoomTravel(2400);
 
   assert.ok(Math.abs(zoomTravel.calculateForWheel(-100, 20, 0.1) - 4.8) < 0.000001);
   assert.ok(Math.abs(zoomTravel.calculateForWheel(-100, 5, 0.1) - 4.8) < 0.000001);
 });
 
 test("stops before the camera clipping plane crosses the surface", () => {
-  const zoomTravel = new PointerZoomTravel(2400);
+  const zoomTravel = new CabinetSurfaceZoomTravel(2400);
 
   assert.ok(Math.abs(zoomTravel.calculateForWheel(-100, 1, 0.1) - 0.9) < 0.000001);
 });
 
 test("returns negative travel when zooming away from the surface", () => {
-  const zoomTravel = new PointerZoomTravel(2400);
+  const zoomTravel = new CabinetSurfaceZoomTravel(2400);
 
   assert.ok(zoomTravel.calculateForWheel(100, 20, 0.1) < 0);
 });

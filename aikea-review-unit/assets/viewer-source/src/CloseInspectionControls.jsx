@@ -1,11 +1,11 @@
-/** Scope: Orbit one cabinet around its center and zoom toward pointer-selected details. */
+/** Scope: Orbit one cabinet around its center and move straight closer for inspection. */
 
 import { useEffect, useRef } from "react";
 import { OrbitControls } from "@react-three/drei";
 import { useThree } from "@react-three/fiber";
-import { Raycaster, Vector2 } from "three";
+import { Raycaster, Vector3 } from "three";
 
-import { PointerZoomTravel } from "./PointerZoomTravel.js";
+import { CabinetSurfaceZoomTravel } from "./CabinetSurfaceZoomTravel.js";
 
 // A function component is the smallest React boundary for the control lifecycle hooks.
 export function CloseInspectionControls({ modelSpan }) {
@@ -17,19 +17,15 @@ export function CloseInspectionControls({ modelSpan }) {
   useEffect(() => {
     const controls = controlsRef.current;
     const raycaster = new Raycaster();
-    const pointer = new Vector2();
-    const zoomTravel = new PointerZoomTravel(modelSpan);
+    const zoomDirection = new Vector3();
+    const zoomTravel = new CabinetSurfaceZoomTravel(modelSpan);
     // One captured wheel boundary avoids target-limited dolly work on every frame.
-    const moveTowardPointer = (event) => {
+    const moveAlongCabinetAxis = (event) => {
       event.preventDefault();
       event.stopImmediatePropagation();
 
-      const bounds = gl.domElement.getBoundingClientRect();
-      pointer.set(
-        ((event.clientX - bounds.left) / bounds.width) * 2 - 1,
-        -((event.clientY - bounds.top) / bounds.height) * 2 + 1,
-      );
-      raycaster.setFromCamera(pointer, camera);
+      zoomDirection.copy(controls.target).sub(camera.position).normalize();
+      raycaster.set(camera.position, zoomDirection);
       const intersections = raycaster.intersectObjects(scene.children, true);
       const surfaceDistance = intersections.length
         ? intersections[0].distance
@@ -39,16 +35,16 @@ export function CloseInspectionControls({ modelSpan }) {
         surfaceDistance,
         camera.near,
       );
-      camera.position.addScaledVector(raycaster.ray.direction, travel);
+      camera.position.addScaledVector(zoomDirection, travel);
       camera.updateMatrixWorld();
     };
 
-    gl.domElement.addEventListener("wheel", moveTowardPointer, {
+    gl.domElement.addEventListener("wheel", moveAlongCabinetAxis, {
       capture: true,
       passive: false,
     });
     return () => {
-      gl.domElement.removeEventListener("wheel", moveTowardPointer, true);
+      gl.domElement.removeEventListener("wheel", moveAlongCabinetAxis, true);
     };
   }, [camera, gl, modelSpan, scene]);
 
@@ -60,7 +56,6 @@ export function CloseInspectionControls({ modelSpan }) {
       maxPolarAngle={Infinity}
       minPolarAngle={-Infinity}
       ref={controlsRef}
-      zoomToCursor
     />
   );
 }
