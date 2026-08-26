@@ -26,7 +26,15 @@ class TestReviewViewerInteraction:
         assert "preventDefault" in source
         assert "stopImmediatePropagation" in source
         assert "camera.position.addScaledVector" in source
-        assert "controls.target.addScaledVector" in source
+
+    def test_rotation_pivot_stays_at_the_cabinet_center_during_zoom(self) -> None:
+        source = (
+            Path(__file__).parents[1]
+            / "aikea-review-unit/assets/viewer-source/src/CloseInspectionControls.jsx"
+        ).read_text(encoding="utf-8")
+
+        assert "controls.target.addScaledVector" not in source
+        assert "enablePan={false}" in source
 
     def test_prebuilt_viewer_contains_the_close_zoom_controller(self) -> None:
         bundle = (

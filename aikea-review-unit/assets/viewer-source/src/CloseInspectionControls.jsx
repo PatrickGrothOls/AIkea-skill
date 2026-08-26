@@ -1,4 +1,4 @@
-/** Scope: Orbit one cabinet and keep pointer-directed wheel zoom useful up close. */
+/** Scope: Orbit one cabinet around its center and zoom toward pointer-selected details. */
 
 import { useEffect, useRef } from "react";
 import { OrbitControls } from "@react-three/drei";
@@ -40,9 +40,7 @@ export function CloseInspectionControls({ modelSpan }) {
         camera.near,
       );
       camera.position.addScaledVector(raycaster.ray.direction, travel);
-      controls.target.addScaledVector(raycaster.ray.direction, travel);
       camera.updateMatrixWorld();
-      controls.update();
     };
 
     gl.domElement.addEventListener("wheel", moveTowardPointer, {
@@ -57,6 +55,7 @@ export function CloseInspectionControls({ modelSpan }) {
   return (
     <OrbitControls
       enableDamping={false}
+      enablePan={false}
       makeDefault
       maxPolarAngle={Infinity}
       minPolarAngle={-Infinity}
