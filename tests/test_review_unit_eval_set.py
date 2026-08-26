@@ -26,7 +26,7 @@ class TestReviewUnitEvalSet:
             "top_panel_01",
         ]
         assert answer["expected_cadquery_bounds_mm"] == {
-            "minimum": [0, -18, 0],
+            "minimum": [-17, -989.333333, 0],
             "maximum": [991.333333, 582, 2384],
         }
         assert len(answer["expected_absent_glbs"]) == 2
@@ -37,6 +37,7 @@ class TestReviewUnitEvalSet:
         forbidden = " ".join(eval_set["scoring"]["always_forbidden"])
 
         assert "one concrete visual-review question" in pass_rules
+        assert "door is open" in pass_rules
         assert "Standard construction details remain internal" in pass_rules
         assert "remaining units before the first unit is visually approved" in forbidden
         assert "Cabineos" in forbidden

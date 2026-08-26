@@ -82,12 +82,15 @@ class TestUnitMockupGenerator(unittest.TestCase):
     def test_cadquery_solids_are_valid_and_match_the_calculated_unit(self) -> None:
         spec = self.generator.loader.load_first(self.project_root, self.project)
         parts = self.generator.geometry.build(spec)
-        bounds = [part.solid.val().BoundingBox() for part in parts]
+        bounds = [part.placed_shape().BoundingBox() for part in parts]
 
         self.assertEqual({part.name for part in parts}, self._PART_NAMES)
         self.assertTrue(all(part.solid.val().isValid() for part in parts))
-        self.assertAlmostEqual(min(bound.xmin for bound in bounds), 0.0)
-        self.assertAlmostEqual(min(bound.ymin for bound in bounds), -18.0)
+        self.assertAlmostEqual(min(bound.xmin for bound in bounds), -17.0)
+        self.assertAlmostEqual(
+            min(bound.ymin for bound in bounds),
+            -989.3333333333334,
+        )
         self.assertAlmostEqual(min(bound.zmin for bound in bounds), 0.0)
         self.assertAlmostEqual(max(bound.xmax for bound in bounds), 991.3333333333334)
         self.assertAlmostEqual(max(bound.ymax for bound in bounds), 582.0)

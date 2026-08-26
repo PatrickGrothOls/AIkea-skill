@@ -19,7 +19,12 @@ class UnitMockupInputError(ValueError):
 class MockupPart:
     name: str
     solid: Any
+    location: Any
     color: tuple[float, float, float, float]
+
+    def placed_shape(self) -> Any:
+        """Return this local part transformed into assembly coordinates."""
+        return self.solid.val().located(self.location)
 
 
 @dataclass(frozen=True)

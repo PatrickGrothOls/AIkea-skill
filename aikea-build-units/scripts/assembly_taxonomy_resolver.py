@@ -93,6 +93,7 @@ class AssemblyTaxonomyResolver:
             depth_mm,
             inside_depth_mm,
             size.door_width_mm,
+            settings.base_height_mm,
             parts,
             profile.build_joints(len(top) - 1),
         )

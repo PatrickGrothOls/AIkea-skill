@@ -5,10 +5,14 @@ from __future__ import annotations
 from math import hypot
 
 from assembly_taxonomy import BoundaryPoint, JointTaxonomy, PartTaxonomy
+from top_boundary_panel_outline_builder import TopBoundaryPanelOutlineBuilder
 
 
 class TallStorageTaxonomy:
     """Create the manufactured-part taxonomy for one full-height storage unit."""
+
+    def __init__(self) -> None:
+        self.outline_builder = TopBoundaryPanelOutlineBuilder()
 
     def build_parts(
         self,
@@ -21,6 +25,14 @@ class TallStorageTaxonomy:
         door_thickness_mm: float,
         back_thickness_mm: float,
     ) -> tuple[PartTaxonomy, ...]:
+        back_outline = self.outline_builder.build(top, 0.0, width_mm)
+        door_inset_mm = (width_mm - door_width_mm) / 2.0
+        door_outline = self.outline_builder.build(
+            top,
+            door_inset_mm,
+            width_mm - door_inset_mm,
+            base_height_mm,
+        )
         parts = [
             PartTaxonomy(
                 "left_side",
@@ -44,17 +56,18 @@ class TallStorageTaxonomy:
                 "back_panel",
                 "back_panel",
                 self._dimensions(width=width_mm, thickness=back_thickness_mm),
-                self._panel_outline(top, width_mm),
+                back_outline,
             ),
             PartTaxonomy(
                 "door_panel",
                 "door_panel",
                 self._dimensions(
                     width=door_width_mm,
-                    left_height=top[0].height_mm + base_height_mm,
-                    right_height=top[-1].height_mm + base_height_mm,
+                    left_height=door_outline[-1].height_mm,
+                    right_height=door_outline[2].height_mm,
                     thickness=door_thickness_mm,
                 ),
+                door_outline,
             ),
         ]
         parts.extend(
@@ -111,11 +124,6 @@ class TallStorageTaxonomy:
                 thickness=thickness_mm,
             ),
         )
-
-    def _panel_outline(
-        self, top: tuple[BoundaryPoint, ...], width_mm: float
-    ) -> tuple[BoundaryPoint, ...]:
-        return (BoundaryPoint(0, 0), BoundaryPoint(width_mm, 0), *reversed(top))
 
     def _dimensions(self, **values: float) -> tuple[tuple[str, float], ...]:
         return tuple((name, value) for name, value in values.items())

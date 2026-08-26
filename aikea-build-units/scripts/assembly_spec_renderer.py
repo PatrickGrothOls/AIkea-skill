@@ -35,6 +35,7 @@ class AssemblySpecRenderer:
             f"    depth_mm={assembly.depth_mm!r},\n"
             f"    inside_depth_mm={assembly.inside_depth_mm!r},\n"
             f"    door_width_mm={assembly.door_width_mm!r},\n"
+            f"    base_height_mm={assembly.base_height_mm!r},\n"
             "    parts=(\n"
             f"{parts}\n"
             "    ),\n"

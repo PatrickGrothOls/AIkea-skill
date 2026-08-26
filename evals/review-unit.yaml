@@ -8,6 +8,7 @@ environment_guide: manual-eval-environment.md
 scoring:
   pass_when:
     - The first ordered assembly is built as CadQuery solids from its generated local specification.
+    - The door is open from its calculated hinge edge so the carcass can be inspected.
     - One GLB and no later assembly GLBs exist before visual approval.
     - The bundled viewer opens the GLB without requiring application infrastructure.
     - The response explains what visible result is ready and asks one concrete visual-review question.
@@ -34,6 +35,7 @@ cases:
         - Build only tall_storage_01 as the representative full cabinet mock-up.
         - Open the bundled viewer automatically.
         - Explain that the first cabinet is ready to inspect for its visible form and proportions.
+        - Present the door open so the cabinet interior is visible.
         - Ask whether the cabinet's overall shape, proportions, and door appearance look right before applying the design to the remaining units.
       expected_state: awaiting_visual_approval
       expected_glb: assemblies/tall_storage_01/tall_storage_01.glb
@@ -47,5 +49,5 @@ cases:
         - door_panel
         - top_panel_01
       expected_cadquery_bounds_mm:
-        minimum: [0, -18, 0]
+        minimum: [-17, -989.333333, 0]
         maximum: [991.333333, 582, 2384]

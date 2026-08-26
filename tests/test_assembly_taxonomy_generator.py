@@ -63,6 +63,13 @@ class TestAssemblyTaxonomyGenerator:
         ]
         door = next(part.spec for part in plan.parts if part.spec.part_id == "door_panel")
         assert dict(door.dimensions_mm)["left_height"] == 2398
+        assert plan.assembly_spec.base_height_mm == 100
+        assert [(point.x_mm, point.height_mm) for point in door.outline_mm] == [
+            (0, 0),
+            (994, 0),
+            (994, 2398),
+            (0, 2398),
+        ]
         assert plan.joints
 
     def test_local_boundary_preserves_a_change_inside_one_unit(self, tmp_path) -> None:
@@ -81,6 +88,14 @@ class TestAssemblyTaxonomyGenerator:
             (0, 2298),
             (745, 2298),
             (996, pytest.approx(2231.066667)),
+        ]
+        door = next(part for part in first.parts if part.part_id == "door_panel")
+        assert [(point.x_mm, point.height_mm) for point in door.outline_mm] == [
+            (0, 0),
+            (994, 0),
+            (994, pytest.approx(2331.333333)),
+            (744, 2398),
+            (0, 2398),
         ]
         assert (tmp_path / "assemblies" / "tall_storage_01" / "parts" / "top_panel_02").is_dir()
 

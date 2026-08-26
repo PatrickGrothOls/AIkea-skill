@@ -37,6 +37,7 @@ class AssemblySpec:
     depth_mm: float
     inside_depth_mm: float
     door_width_mm: float
+    base_height_mm: float
     parts: tuple[PartSpec, ...]
     joints: tuple[JointSpec, ...]
 

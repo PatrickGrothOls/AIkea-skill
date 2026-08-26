@@ -24,6 +24,7 @@ class CadQueryGlbExporter:
                 part.solid,
                 name=part.name,
                 color=cq.Color(*part.color),
+                loc=part.location,
             )
         assembly.save(
             str(output),

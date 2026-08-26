@@ -9,10 +9,13 @@
 ## Review artifact
 
 Use the first assembly in the saved left-to-right run as the review cabinet. Build
-its panels as CadQuery solids from that assembly's generated local specification,
-combine them in one named CadQuery assembly, and use CadQuery's GLB exporter. The
-mock-up includes the visible carcass panels, back, top, and closed door with their
-calculated sizes and positions. It contains no machining or manufacturing features.
+every owned panel as a local CadQuery blank from that assembly's generated part
+specifications. Place those unchanged local blanks through explicit assembly
+locations, combine them in one named CadQuery assembly, and use CadQuery's GLB
+exporter. The mock-up includes every calculated carcass panel, complete shaped
+back and door outlines, every top-boundary segment, and the door opened from its
+calculated hinge edge so the cabinet interior can be inspected. It contains no
+machining or manufacturing features.
 
 The generator writes exactly one file:
 
