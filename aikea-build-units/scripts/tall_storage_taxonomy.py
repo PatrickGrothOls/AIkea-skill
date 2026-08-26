@@ -12,6 +12,7 @@ from assembly_taxonomy import (
 )
 from tall_storage_joint_taxonomy import TallStorageJointTaxonomy
 from top_boundary_panel_outline_builder import TopBoundaryPanelOutlineBuilder
+from top_panel_underside_boundary import TopPanelUndersideBoundary
 
 
 class TallStorageTaxonomy:
@@ -20,6 +21,7 @@ class TallStorageTaxonomy:
     def __init__(self) -> None:
         self.outline_builder = TopBoundaryPanelOutlineBuilder()
         self.joint_taxonomy = TallStorageJointTaxonomy()
+        self.underside_boundary = TopPanelUndersideBoundary()
 
     def build_parts(
         self,
@@ -32,7 +34,8 @@ class TallStorageTaxonomy:
         door_thickness_mm: float,
         back_thickness_mm: float,
     ) -> tuple[PartTaxonomy, ...]:
-        back_outline = self.outline_builder.build(top, 0.0, width_mm)
+        vertical_panel_top = self.underside_boundary.build(top, panel_thickness_mm)
+        back_outline = self.outline_builder.build(vertical_panel_top, 0.0, width_mm)
         door_inset_mm = (width_mm - door_width_mm) / 2.0
         door_outline = self.outline_builder.build(
             top,
@@ -45,22 +48,30 @@ class TallStorageTaxonomy:
                 "left_side",
                 "side_panel",
                 self._dimensions(
-                    height=top[0].height_mm,
+                    height=vertical_panel_top[0].height_mm,
                     depth=depth_mm,
                     thickness=panel_thickness_mm,
                 ),
-                local_size_mm=(depth_mm, top[0].height_mm, panel_thickness_mm),
+                local_size_mm=(
+                    depth_mm,
+                    vertical_panel_top[0].height_mm,
+                    panel_thickness_mm,
+                ),
                 inside_face=">Z",
             ),
             PartTaxonomy(
                 "right_side",
                 "side_panel",
                 self._dimensions(
-                    height=top[-1].height_mm,
+                    height=vertical_panel_top[-1].height_mm,
                     depth=depth_mm,
                     thickness=panel_thickness_mm,
                 ),
-                local_size_mm=(depth_mm, top[-1].height_mm, panel_thickness_mm),
+                local_size_mm=(
+                    depth_mm,
+                    vertical_panel_top[-1].height_mm,
+                    panel_thickness_mm,
+                ),
                 inside_face=">Z",
             ),
             PartTaxonomy(

@@ -21,6 +21,7 @@ class TestCabineoJointGeometry(unittest.TestCase):
 
     def setUp(self) -> None:
         from assembly_part_locator import AssemblyPartLocator
+        from part_blank_builder import PartBlankBuilder
         from unit_mockup_generator import UnitMockupGenerator
 
         self.temporary_directory = TemporaryDirectory()
@@ -34,6 +35,7 @@ class TestCabineoJointGeometry(unittest.TestCase):
             self.project,
         )
         self.locator = AssemblyPartLocator()
+        self.blank_builder = PartBlankBuilder()
 
     def tearDown(self) -> None:
         self.temporary_directory.cleanup()
@@ -74,8 +76,33 @@ class TestCabineoJointGeometry(unittest.TestCase):
 
         self.assertTrue(left.isValid())
         self.assertTrue(top.isValid())
-        self.assertLess(left.Volume(), 582.0 * 2284.0 * 18.0)
+        self.assertLess(left.Volume(), 582.0 * 2266.0 * 18.0)
         self.assertLess(top.Volume(), spec.width_mm * 582.0 * 18.0)
+
+    def test_receiver_is_blind_and_mating_panels_do_not_overlap(self) -> None:
+        """Prove the target receives a blind hole at a zero-volume contact seam."""
+        source_spec = self.built.spec.part("left_side")
+        target_spec = self.built.spec.part("top_panel_01")
+        source_blank = self.blank_builder.build(source_spec).val()
+        target_blank = self.blank_builder.build(target_spec).val()
+        source_location = self._location("left_side")
+        target_location = self._location("top_panel_01")
+        source_placed = source_blank.located(source_location)
+        target_placed = target_blank.located(target_location)
+
+        self.assertAlmostEqual(source_placed.intersect(target_placed).Volume(), 0.0)
+        self.assertAlmostEqual(source_placed.distance(target_placed), 0.0)
+
+        receiver_cut = next(
+            cut
+            for cut in self.built.cuts
+            if cut.joint_id == "left_side_to_top"
+            and cut.part_id == "top_panel_01"
+        )
+        receiver = target_blank.intersect(
+            receiver_cut.cutter.located(receiver_cut.location)
+        )
+        self.assertLess(receiver.BoundingBox().zlen, target_spec.local_size_mm[2])
 
     def _built_part(self, part_id: str):
         return next(part for part in self.built.parts if part.spec.part_id == part_id)

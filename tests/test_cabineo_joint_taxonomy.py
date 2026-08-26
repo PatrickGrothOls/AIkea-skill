@@ -30,7 +30,7 @@ class TestCabineoJointTaxonomy:
         left = next(part for part in assembly.parts if part.part_id == "left_side")
         joint = next(item for item in assembly.joints if item.joint_id == "left_side_to_top")
 
-        assert left.local_size_mm == (582, 2298, 18)
+        assert left.local_size_mm == (582, 2280, 18)
         assert left.inside_face == ">Z"
         assert joint.source_part_id == "left_side"
         assert joint.target_part_id == "top_panel_01"
