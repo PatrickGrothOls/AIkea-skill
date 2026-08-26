@@ -1,14 +1,15 @@
 /** Scope: Display one cabinet GLB with automatic framing and direct orbit controls. */
 
-import { Suspense, useLayoutEffect } from "react";
+import { Suspense, useLayoutEffect, useState } from "react";
 import { Canvas, useThree } from "@react-three/fiber";
-import { OrbitControls, useGLTF, useTexture } from "@react-three/drei";
+import { useGLTF, useTexture } from "@react-three/drei";
 import { Box3, Vector3 } from "three";
 
+import { CloseInspectionControls } from "./CloseInspectionControls";
 import { PlywoodSurface } from "./PlywoodSurface";
 
 // A function component is the smallest React boundary for the GLB-loading hook.
-function ReviewModel() {
+function ReviewModel({ onModelFramed }) {
   const { scene } = useGLTF("/model.glb");
   const [colorMap, normalMap, roughnessMap] = useTexture([
     "/materials/plywood/plywood_diff_1k.jpg",
@@ -32,6 +33,7 @@ function ReviewModel() {
     const bounds = new Box3().setFromObject(scene);
     const center = bounds.getCenter(new Vector3());
     const size = bounds.getSize(new Vector3());
+    onModelFramed(Math.max(size.x, size.y, size.z));
     const verticalFov = camera.fov * Math.PI / 180;
     const horizontalFov = 2 * Math.atan(Math.tan(verticalFov / 2) * camera.aspect);
     const distance = Math.max(
@@ -49,13 +51,15 @@ function ReviewModel() {
       controls.target.copy(center);
       controls.update();
     }
-  }, [camera, colorMap, controls, normalMap, roughnessMap, scene]);
+  }, [camera, colorMap, controls, normalMap, onModelFramed, roughnessMap, scene]);
 
   return <primitive object={scene} />;
 }
 
 // A function component keeps the viewer as a self-contained render-only asset.
 export function AssemblyReviewViewer() {
+  const [modelSpan, setModelSpan] = useState(1);
+
   return (
     <main className="review-shell">
       <Canvas shadows camera={{ position: [150, 100, 150], fov: 50 }}>
@@ -68,15 +72,9 @@ export function AssemblyReviewViewer() {
           position={[1200, 2600, 3200]}
           shadow-mapSize={[2048, 2048]}
         />
-        <OrbitControls
-          enableDamping={false}
-          makeDefault
-          maxPolarAngle={Infinity}
-          minPolarAngle={-Infinity}
-          zoomToCursor
-        />
+        <CloseInspectionControls modelSpan={modelSpan} />
         <Suspense fallback={null}>
-          <ReviewModel />
+          <ReviewModel onModelFramed={setModelSpan} />
         </Suspense>
       </Canvas>
       <section className="review-card">

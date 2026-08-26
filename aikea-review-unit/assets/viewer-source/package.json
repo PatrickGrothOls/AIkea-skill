@@ -4,7 +4,8 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "build": "vite build"
+    "build": "vite build",
+    "test": "node --test src/CloseInspectionZoomSpeed.test.js"
   },
   "dependencies": {
     "@react-three/drei": "10.7.7",
