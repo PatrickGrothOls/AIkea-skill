@@ -36,11 +36,11 @@ workpiece = BlankSheetBuilder(
 
 The ordered points describe the finished outer shape of the blank's face; the
 builder closes that outline and extends its material thickness along positive Z.
-An overall top boundary describes the cabinet's finished outside surface. Derive
-the matching underside from that boundary and the top-panel thickness, then end
-vertical carcass panels at the underside. Preserve the outside boundary for the
-top panel itself. This keeps flat, sloped, and changing top profiles physically
-closed without overlapping material.
+The default structural carcass preserves the outside top boundary on its full-height
+sides and back. A flat top fits between the side panels, while a confirmed angled
+boundary keeps the material needed for its equal-thickness miter. The deterministic
+top-panel taxonomy resolves these local blanks; generated builders do not recreate
+that boundary logic.
 
 The generated local part builder owns this call, applies the cuts assigned by the
 assembly's joint definitions, and returns the real local CadQuery part. A joint

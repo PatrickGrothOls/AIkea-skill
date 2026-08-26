@@ -32,11 +32,11 @@ class TestUnitPartAssembly(unittest.TestCase):
     def test_every_flat_part_is_built_in_its_own_sheet_frame(self) -> None:
         spec, parts = self._build(self.project)
         local_sizes = {
-            "left_side": (spec.depth_mm, 2266.0, 18.0),
-            "right_side": (spec.depth_mm, 2266.0, 18.0),
-            "back_panel": (spec.width_mm, 2266.0, 6.0),
+            "left_side": (spec.inside_depth_mm, 2284.0, 18.0),
+            "right_side": (spec.inside_depth_mm, 2284.0, 18.0),
+            "back_panel": (spec.width_mm, 2284.0, 18.0),
             "door_panel": (spec.door_width_mm, 2384.0, 18.0),
-            "top_panel_01": (spec.width_mm, spec.depth_mm, 18.0),
+            "top_panel_01": (spec.width_mm - 36.0, spec.inside_depth_mm, 18.0),
         }
 
         for part in parts:
@@ -50,11 +50,11 @@ class TestUnitPartAssembly(unittest.TestCase):
     def test_flat_part_placements_close_the_calculated_cabinet_bounds(self) -> None:
         spec, parts = self._build(self.project)
         expected = {
-            "left_side": (0.0, 18.0, 0.0, 582.0, 100.0, 2366.0),
-            "right_side": (spec.width_mm - 18.0, spec.width_mm, 0.0, 582.0, 100.0, 2366.0),
-            "back_panel": (0.0, spec.width_mm, 576.0, 582.0, 100.0, 2366.0),
+            "left_side": (0.0, 18.0, 0.0, 564.0, 100.0, 2384.0),
+            "right_side": (spec.width_mm - 18.0, spec.width_mm, 0.0, 564.0, 100.0, 2384.0),
+            "back_panel": (0.0, spec.width_mm, 564.0, 582.0, 100.0, 2384.0),
             "door_panel": (-17.0, 1.0, -spec.door_width_mm, 0.0, 0.0, 2384.0),
-            "top_panel_01": (0.0, spec.width_mm, 0.0, 582.0, 2366.0, 2384.0),
+            "top_panel_01": (18.0, spec.width_mm - 18.0, 0.0, 564.0, 2366.0, 2384.0),
         }
 
         for part in parts:

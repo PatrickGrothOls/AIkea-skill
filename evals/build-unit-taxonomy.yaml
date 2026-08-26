@@ -52,7 +52,7 @@ cases:
           materials:
             cabinet_panel_thickness: 1.8
             door_thickness: 1.8
-            back_panel_thickness: 0.6
+            back_panel_thickness: 1.8
     next_user_message: great
     answer_key:
       response_required:
@@ -81,15 +81,15 @@ cases:
         width_mm: 991.333333
         top: [[0, 2284], [991.333333, 2284]]
         depth_mm: 582
-        inside_depth_mm: 576
+        inside_depth_mm: 564
         door_height_mm: 2384
       expected_first_joint:
         joint_id: left_side_to_top
         joint_type: cabineo
-        source_part_id: left_side
-        target_part_id: top_panel_01
-        source_face: ">Z"
-        source_edge: ">Y"
+        source_part_id: top_panel_01
+        target_part_id: left_side
+        source_face: "<Z"
+        source_edge: "<X"
         connector_layout: two_quarter_points
         connectors: 2
         cuts_per_connector: 2

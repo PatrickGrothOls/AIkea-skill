@@ -2,54 +2,69 @@
 
 from __future__ import annotations
 
-from assembly_taxonomy import CabineoJointTaxonomy, JointTaxonomy
+from math import isclose
+
+from assembly_taxonomy import BoundaryPoint, CabineoJointTaxonomy, JointTaxonomy
 
 
 class TallStorageJointTaxonomy:
     """Describe how every generated tall-storage part connects."""
 
     def build(
-        self, top_panel_count: int
+        self,
+        top: tuple[BoundaryPoint, ...],
     ) -> tuple[JointTaxonomy | CabineoJointTaxonomy, ...]:
         top_ids = tuple(
             f"top_panel_{index:02d}"
-            for index in range(1, top_panel_count + 1)
+            for index in range(1, len(top))
         )
         joints = [
-            JointTaxonomy(
+            CabineoJointTaxonomy(
                 "left_side_to_back_panel",
-                ("left_side", "back_panel"),
-                "structural_seam",
+                "left_side",
+                "back_panel",
+                ">Z",
+                ">X",
+                "two_quarter_points",
             ),
-            JointTaxonomy(
+            CabineoJointTaxonomy(
                 "right_side_to_back_panel",
-                ("right_side", "back_panel"),
-                "structural_seam",
+                "right_side",
+                "back_panel",
+                ">Z",
+                "<X",
+                "two_quarter_points",
             ),
             JointTaxonomy(
                 "door_panel_to_left_side",
                 ("door_panel", "left_side"),
                 "door_hinge",
             ),
-            CabineoJointTaxonomy(
+            self._side_top_joint(
                 "left_side_to_top",
-                "left_side",
                 top_ids[0],
-                ">Z",
-                ">Y",
-                "two_quarter_points",
+                "left_side",
+                top[0],
+                top[1],
+                "<X",
             ),
-            JointTaxonomy(
+            self._side_top_joint(
                 "right_side_to_top",
-                ("right_side", top_ids[-1]),
-                "structural_seam",
+                top_ids[-1],
+                "right_side",
+                top[-2],
+                top[-1],
+                ">X",
             ),
         ]
         joints.extend(
-            JointTaxonomy(
+            CabineoJointTaxonomy(
                 f"{top_id}_to_back_panel",
-                (top_id, "back_panel"),
-                "structural_seam",
+                top_id,
+                "back_panel",
+                "<Z",
+                ">Y",
+                "two_quarter_points",
             )
             for top_id in top_ids
         )
@@ -62,6 +77,30 @@ class TallStorageJointTaxonomy:
             for left_id, right_id in zip(top_ids, top_ids[1:])
         )
         return tuple(joints)
+
+    def _side_top_joint(
+        self,
+        joint_id: str,
+        top_id: str,
+        side_id: str,
+        start: BoundaryPoint,
+        end: BoundaryPoint,
+        source_edge: str,
+    ) -> JointTaxonomy | CabineoJointTaxonomy:
+        if isclose(start.height_mm, end.height_mm):
+            return CabineoJointTaxonomy(
+                joint_id,
+                top_id,
+                side_id,
+                "<Z",
+                source_edge,
+                "two_quarter_points",
+            )
+        return JointTaxonomy(
+            joint_id,
+            (top_id, side_id),
+            "equal_thickness_miter",
+        )
 
 
 __all__ = ["TallStorageJointTaxonomy"]

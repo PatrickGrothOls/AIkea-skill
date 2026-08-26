@@ -46,8 +46,8 @@ class TestCabineoJointGeometry(unittest.TestCase):
             for cut in self.built.cuts
             if cut.joint_id == "left_side_to_top"
         ]
-        source_cuts = [cut for cut in cuts if cut.part_id == "left_side"]
-        target_cuts = [cut for cut in cuts if cut.part_id == "top_panel_01"]
+        source_cuts = [cut for cut in cuts if cut.part_id == "top_panel_01"]
+        target_cuts = [cut for cut in cuts if cut.part_id == "left_side"]
 
         self.assertEqual(len(source_cuts), self.expected_joint["connectors"])
         self.assertEqual(len(target_cuts), self.expected_joint["connectors"])
@@ -57,11 +57,11 @@ class TestCabineoJointGeometry(unittest.TestCase):
             * self.expected_joint["cuts_per_connector"],
         )
         self.assertEqual(
-            [self._x_center(cut.cutter) for cut in source_cuts],
-            [145.5, 436.5],
+            [self._y_center(cut.cutter) for cut in source_cuts],
+            [141.0, 423.0],
         )
-        source_location = self._location("left_side")
-        target_location = self._location("top_panel_01")
+        source_location = self._location("top_panel_01")
+        target_location = self._location("left_side")
         for source, target in zip(source_cuts, target_cuts):
             self.assertIs(source.cutter, target.cutter)
             self._assert_same_transform(
@@ -76,17 +76,19 @@ class TestCabineoJointGeometry(unittest.TestCase):
 
         self.assertTrue(left.isValid())
         self.assertTrue(top.isValid())
-        self.assertLess(left.Volume(), 582.0 * 2266.0 * 18.0)
-        self.assertLess(top.Volume(), spec.width_mm * 582.0 * 18.0)
+        left_size = spec.part("left_side").local_size_mm
+        top_size = spec.part("top_panel_01").local_size_mm
+        self.assertLess(left.Volume(), left_size[0] * left_size[1] * left_size[2])
+        self.assertLess(top.Volume(), top_size[0] * top_size[1] * top_size[2])
 
     def test_receiver_is_blind_and_mating_panels_do_not_overlap(self) -> None:
         """Prove the target receives a blind hole at a zero-volume contact seam."""
-        source_spec = self.built.spec.part("left_side")
-        target_spec = self.built.spec.part("top_panel_01")
+        source_spec = self.built.spec.part("top_panel_01")
+        target_spec = self.built.spec.part("left_side")
         source_blank = self.blank_builder.build(source_spec).val()
         target_blank = self.blank_builder.build(target_spec).val()
-        source_location = self._location("left_side")
-        target_location = self._location("top_panel_01")
+        source_location = self._location("top_panel_01")
+        target_location = self._location("left_side")
         source_placed = source_blank.located(source_location)
         target_placed = target_blank.located(target_location)
 
@@ -97,7 +99,7 @@ class TestCabineoJointGeometry(unittest.TestCase):
             cut
             for cut in self.built.cuts
             if cut.joint_id == "left_side_to_top"
-            and cut.part_id == "top_panel_01"
+            and cut.part_id == "left_side"
         )
         receiver = target_blank.intersect(
             receiver_cut.cutter.located(receiver_cut.location)
@@ -115,9 +117,9 @@ class TestCabineoJointGeometry(unittest.TestCase):
             float(self.built.spec.base_height_mm),
         )
 
-    def _x_center(self, shape) -> float:
+    def _y_center(self, shape) -> float:
         bounds = shape.BoundingBox()
-        return (bounds.xmin + bounds.xmax) / 2.0
+        return (bounds.ymin + bounds.ymax) / 2.0
 
     def _assert_same_transform(self, source, target) -> None:
         source_transform = source.wrapped.Transformation()

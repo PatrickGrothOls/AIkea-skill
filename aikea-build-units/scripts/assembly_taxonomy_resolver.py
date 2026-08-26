@@ -76,7 +76,7 @@ class AssemblyTaxonomyResolver:
         parts = profile.build_parts(
             top,
             size.width_mm,
-            depth_mm,
+            inside_depth_mm,
             size.door_width_mm,
             settings.base_height_mm,
             settings.cabinet_panel_thickness_mm,
@@ -95,7 +95,7 @@ class AssemblyTaxonomyResolver:
             size.door_width_mm,
             settings.base_height_mm,
             parts,
-            profile.build_joints(len(top) - 1),
+            profile.build_joints(top),
         )
 
     def _local_top(

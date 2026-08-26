@@ -40,7 +40,7 @@ class AssemblyPartLocator:
 
     def _right_side(self, part: Any, assembly: Any, base_height_mm: float) -> cq.Location:
         return self._location(
-            (float(assembly.width_mm), float(assembly.depth_mm), base_height_mm),
+            (float(assembly.width_mm), float(assembly.inside_depth_mm), base_height_mm),
             (0.0, -1.0, 0.0),
             (-1.0, 0.0, 0.0),
         )

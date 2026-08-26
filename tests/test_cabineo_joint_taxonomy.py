@@ -7,10 +7,11 @@ from overall_wardrobe_test_project import OverallWardrobeTestProject
 
 
 class TestCabineoJointTaxonomy:
-    """Keep face-and-edge choices in deterministic unit construction."""
+    """Keep Cabinet 2's proven face-and-edge choices deterministic."""
 
-    def test_left_side_to_top_has_one_complete_local_definition(self, tmp_path) -> None:
+    def test_flat_carcass_has_complete_cabineo_definitions(self, tmp_path) -> None:
         data = OverallWardrobeTestProject().load_flat()
+        data["design_settings"]["materials"]["back_panel_thickness"] = 18
         run = data["design_settings"].pop("cabinet_run")
         data["design_settings"]["assembly_run"] = {
             "left_clearance": run["left_clearance"],
@@ -28,11 +29,28 @@ class TestCabineoJointTaxonomy:
 
         assembly = AssemblyTaxonomyGenerator().generate(data, tmp_path).assemblies[0]
         left = next(part for part in assembly.parts if part.part_id == "left_side")
-        joint = next(item for item in assembly.joints if item.joint_id == "left_side_to_top")
+        joints = {
+            joint.joint_id: (
+                joint.source_part_id,
+                joint.target_part_id,
+                joint.source_face,
+                joint.source_edge,
+            )
+            for joint in assembly.joints
+            if joint.joint_type == "cabineo"
+        }
 
-        assert left.local_size_mm == (582, 2280, 18)
+        assert left.local_size_mm == (564, 2298, 18)
         assert left.inside_face == ">Z"
-        assert joint.source_part_id == "left_side"
-        assert joint.target_part_id == "top_panel_01"
-        assert (joint.source_face, joint.source_edge) == (">Z", ">Y")
-        assert joint.connector_layout == "two_quarter_points"
+        assert joints == {
+            "left_side_to_back_panel": ("left_side", "back_panel", ">Z", ">X"),
+            "right_side_to_back_panel": ("right_side", "back_panel", ">Z", "<X"),
+            "left_side_to_top": ("top_panel_01", "left_side", "<Z", "<X"),
+            "right_side_to_top": ("top_panel_01", "right_side", "<Z", ">X"),
+            "top_panel_01_to_back_panel": (
+                "top_panel_01",
+                "back_panel",
+                "<Z",
+                ">Y",
+            ),
+        }

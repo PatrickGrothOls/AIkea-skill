@@ -4,7 +4,12 @@ from __future__ import annotations
 
 from typing import Protocol
 
-from assembly_taxonomy import BoundaryPoint, JointTaxonomy, PartTaxonomy
+from assembly_taxonomy import (
+    BoundaryPoint,
+    CabineoJointTaxonomy,
+    JointTaxonomy,
+    PartTaxonomy,
+)
 from tall_storage_taxonomy import TallStorageTaxonomy
 
 
@@ -15,7 +20,7 @@ class AssemblyTaxonomyProfile(Protocol):
         self,
         top: tuple[BoundaryPoint, ...],
         width_mm: float,
-        depth_mm: float,
+        carcass_panel_depth_mm: float,
         door_width_mm: float,
         base_height_mm: float,
         panel_thickness_mm: float,
@@ -23,7 +28,10 @@ class AssemblyTaxonomyProfile(Protocol):
         back_thickness_mm: float,
     ) -> tuple[PartTaxonomy, ...]: ...
 
-    def build_joints(self, top_panel_count: int) -> tuple[JointTaxonomy, ...]: ...
+    def build_joints(
+        self,
+        top: tuple[BoundaryPoint, ...],
+    ) -> tuple[JointTaxonomy | CabineoJointTaxonomy, ...]: ...
 
 
 class AssemblyTaxonomyProfileRegistry:

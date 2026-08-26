@@ -8,6 +8,7 @@ import cadquery as cq
 
 from cabineo_connector_layout import CabineoConnectorLayout
 from cabineo_cutter import CabineoCutter
+from part_construction_error import PartConstructionError
 from part_cut import PartCut
 
 
@@ -26,6 +27,8 @@ class CabineoJoint:
         source_location: cq.Location,
         target_location: cq.Location,
     ) -> tuple[PartCut, ...]:
+        self._validate_sheet_thickness(source_part)
+        self._validate_sheet_thickness(target_part)
         source_to_target = target_location.inverse * source_location
         edge_position_mm = self.layout.edge_position(joint.source_edge, source_part)
         panel_thickness_mm = self.layout.panel_thickness(
@@ -63,6 +66,15 @@ class CabineoJoint:
                 )
             )
         return tuple(cuts)
+
+    def _validate_sheet_thickness(self, part: Any) -> None:
+        thickness_mm = float(part.local_size_mm[2])
+        required_mm = self.cutter.profile.minimum_sheet_thickness_mm
+        if thickness_mm < required_mm:
+            raise PartConstructionError(
+                f"{part.part_id} is {thickness_mm:g} mm thick; "
+                f"{self.cutter.profile.profile_id} requires at least {required_mm:g} mm"
+            )
 
 
 __all__ = ["CabineoJoint"]

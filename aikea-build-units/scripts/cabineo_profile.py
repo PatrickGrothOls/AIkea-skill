@@ -16,6 +16,7 @@ class CabineoProfile:
     face_inset_mm: float
     pocket_depth_mm: float
     extra_floor_mm: float
+    minimum_sheet_thickness_mm: float
 
 
 NON_BOTTOM_CABINEO = CabineoProfile(
@@ -26,6 +27,7 @@ NON_BOTTOM_CABINEO = CabineoProfile(
     face_inset_mm=9.5,
     pocket_depth_mm=10.5,
     extra_floor_mm=0.5,
+    minimum_sheet_thickness_mm=10.0,
 )
 
 

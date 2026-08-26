@@ -29,4 +29,4 @@ design_settings:
   materials:
     cabinet_panel_thickness: 1.8
     door_thickness: 1.8
-    back_panel_thickness: 0.6
+    back_panel_thickness: 1.8
