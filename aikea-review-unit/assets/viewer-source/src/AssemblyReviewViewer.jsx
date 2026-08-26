@@ -68,7 +68,13 @@ export function AssemblyReviewViewer() {
           position={[1200, 2600, 3200]}
           shadow-mapSize={[2048, 2048]}
         />
-        <OrbitControls enableDamping={false} makeDefault minPolarAngle={-Infinity} maxPolarAngle={Infinity} />
+        <OrbitControls
+          enableDamping={false}
+          makeDefault
+          maxPolarAngle={Infinity}
+          minPolarAngle={-Infinity}
+          zoomToCursor
+        />
         <Suspense fallback={null}>
           <ReviewModel />
         </Suspense>
@@ -76,7 +82,7 @@ export function AssemblyReviewViewer() {
       <section className="review-card">
         <p className="eyebrow">AIkea visual review</p>
         <h1>Your first cabinet</h1>
-        <p>Drag to rotate. Scroll or pinch to zoom.</p>
+        <p>Drag to rotate. Point at a detail, then scroll or pinch to zoom.</p>
       </section>
     </main>
   );

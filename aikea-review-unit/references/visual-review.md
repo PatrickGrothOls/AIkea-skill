@@ -32,9 +32,9 @@ server requires no application backend, package installation, database, Docker,
 or Node runtime. It serves only the bundled viewer and the chosen GLB, opens the
 browser automatically, and remains active until stopped.
 
-The client can drag to rotate and scroll or pinch to zoom. Keep the viewer open
-while asking for the visual decision; do not make the client locate files or run
-terminal commands.
+The client can drag to rotate and point at any visible detail before scrolling or
+pinching to zoom directly toward it. Keep the viewer open while asking for the
+visual decision; do not make the client locate files or run terminal commands.
 
 ## Completion state
 
