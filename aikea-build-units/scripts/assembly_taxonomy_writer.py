@@ -18,18 +18,25 @@ class AssemblyTaxonomyConflict(ValueError):
 class AssemblyTaxonomyWriter:
     """Check the complete write set before creating any missing files."""
 
-    def write(self, project_root: Path, files: dict[Path, str]) -> tuple[Path, ...]:
+    def write(
+        self,
+        project_root: Path,
+        files: dict[Path, str],
+        replaceable: dict[Path, str] | None = None,
+    ) -> tuple[Path, ...]:
+        replaceable = replaceable or {}
         conflicts = tuple(
             relative
             for relative, content in files.items()
             if self._differs(project_root / relative, content)
+            and not self._matches(project_root / relative, replaceable.get(relative))
         )
         if conflicts:
             raise AssemblyTaxonomyConflict(conflicts)
         written: list[Path] = []
         for relative, content in files.items():
             path = project_root / relative
-            if path.exists():
+            if path.is_file() and path.read_text(encoding="utf-8") == content:
                 continue
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_text(content, encoding="utf-8")
@@ -39,4 +46,11 @@ class AssemblyTaxonomyWriter:
     def _differs(self, path: Path, content: str) -> bool:
         return path.exists() and (
             not path.is_file() or path.read_text(encoding="utf-8") != content
+        )
+
+    def _matches(self, path: Path, content: str | None) -> bool:
+        return bool(
+            content is not None
+            and path.is_file()
+            and path.read_text(encoding="utf-8") == content
         )

@@ -80,10 +80,15 @@ class TestUnitMockupGenerator(unittest.TestCase):
         self.assertTrue(self._PART_NAMES.issubset(glb.node_names))
 
     def test_cadquery_solids_are_valid_and_match_the_calculated_unit(self) -> None:
-        spec = self.generator.loader.load_first(self.project_root, self.project)
-        parts = self.generator.geometry.build(spec)
+        built_assembly = self.generator.loader.load_first(self.project_root, self.project)
+        parts = self.generator.geometry.build(built_assembly)
         bounds = [part.placed_shape().BoundingBox() for part in parts]
 
+        self.assertEqual(
+            [part.spec.part_id for part in built_assembly.parts],
+            ["left_side", "right_side", "back_panel", "door_panel", "top_panel_01"],
+        )
+        self.assertTrue(all(part.solid.val().isValid() for part in built_assembly.parts))
         self.assertEqual({part.name for part in parts}, self._PART_NAMES)
         self.assertTrue(all(part.solid.val().isValid() for part in parts))
         self.assertAlmostEqual(min(bound.xmin for bound in bounds), -17.0)

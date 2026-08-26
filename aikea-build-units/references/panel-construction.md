@@ -1,9 +1,9 @@
-# First panel construction
+# Panel construction
 
 ## Goal
 
-Begin every panel as one calculated, reproducible sheet blank that later panel
-construction can shape and position.
+Begin every generated panel as one calculated, reproducible sheet blank that later
+construction capabilities can machine without changing its local frame.
 
 ## Build the blank
 
@@ -36,6 +36,6 @@ workpiece = BlankSheetBuilder(
 
 The ordered points describe the finished outer shape of the blank's face; the
 builder closes that outline and extends its material thickness along positive Z.
-Continue the panel's construction from the returned `workpiece`. Construction
-features, assembly placement, and manufacturing placement remain later
-responsibilities operating on that same part.
+The generated local part builder owns this call and returns the real local
+CadQuery part. Machining continues from that same part. Assembly placement and
+manufacturing placement remain separate transformations.

@@ -1,4 +1,4 @@
-"""Scope: Load one generated local assembly specification without module leakage."""
+"""Scope: Execute one generated local assembly builder without module leakage."""
 
 from __future__ import annotations
 
@@ -11,8 +11,8 @@ from typing import Any
 from unit_mockup import UnitMockupInputError
 
 
-class GeneratedAssemblySpecLoader:
-    """Resolve the first ordered assembly to its generated authoritative SPEC."""
+class GeneratedAssemblyBuilderLoader:
+    """Resolve the first ordered assembly and execute its generated builder."""
 
     _ID_PATTERN = re.compile(r"^[a-z][a-z0-9_]*_[0-9]{2}$")
 
@@ -30,9 +30,11 @@ class GeneratedAssemblySpecLoader:
         return self._load(project_root, assembly_id)
 
     def _load(self, project_root: Path, assembly_id: str) -> Any:
-        spec_path = project_root / "assemblies" / assembly_id / "spec.py"
-        if not spec_path.is_file():
-            raise UnitMockupInputError([f"missing generated local spec: {spec_path}"])
+        builder_path = project_root / "assemblies" / assembly_id / "builder.py"
+        if not builder_path.is_file():
+            raise UnitMockupInputError(
+                [f"missing generated local builder: {builder_path}"]
+            )
         previous = {
             name: module
             for name, module in sys.modules.items()
@@ -42,7 +44,8 @@ class GeneratedAssemblySpecLoader:
             sys.modules.pop(name)
         sys.path.insert(0, str(project_root))
         try:
-            return importlib.import_module(f"assemblies.{assembly_id}.spec").SPEC
+            module = importlib.import_module(f"assemblies.{assembly_id}.builder")
+            return module.BUILDER.build()
         finally:
             sys.path.remove(str(project_root))
             for name in tuple(sys.modules):

@@ -30,6 +30,25 @@ class AssemblyTaxonomyRenderer:
             files.update(self._assembly_files(assembly))
         return files
 
+    def render_metadata_scaffold(
+        self, taxonomy: ProjectAssemblyTaxonomy
+    ) -> dict[Path, str]:
+        files = {
+            Path("assemblies/specification.py"): (
+                self.asset_root / "metadata_plan_specification.py"
+            ).read_text(encoding="utf-8"),
+        }
+        for assembly in taxonomy.assemblies:
+            root = Path("assemblies") / assembly.assembly_id
+            files[root / "builder.py"] = self.modules.metadata_assembly_builder(
+                assembly
+            )
+            for part in assembly.parts:
+                files[
+                    root / "parts" / part.part_id / "builder.py"
+                ] = self.modules.metadata_part_builder(assembly.assembly_id, part)
+        return files
+
     def _assembly_files(
         self, assembly: LocalAssemblyTaxonomy
     ) -> dict[Path, str]:

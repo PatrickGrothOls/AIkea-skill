@@ -15,8 +15,7 @@ the remaining units.
 
 1. Resolve the active project and require its completed `aikea.yaml` and generated
    `assemblies/` folders.
-2. Read [references/visual-review.md](references/visual-review.md) and
-   [references/panel-construction.md](references/panel-construction.md) completely.
+2. Read [references/visual-review.md](references/visual-review.md) completely.
 3. Run `python <skill-directory>/scripts/generate_unit_mockup.py <project>/aikea.yaml`.
 4. Run `python <skill-directory>/scripts/serve_unit_review.py <generated-glb>` and
    leave the local viewer available while the client reviews the cabinet.
@@ -31,6 +30,6 @@ and standard construction details inside the skill.
 
 ## Responsibility boundary
 
-This stage proves only the visible cabinet mock-up. It does not claim construction
-or manufacturing readiness. The approved visible design becomes the reference for
-the later deterministic construction stages.
+This stage places and displays the parts returned by the generated assembly
+builder. It does not rebuild or alter their local geometry. The approved visible
+design becomes the reference for later machining and manufacturing stages.

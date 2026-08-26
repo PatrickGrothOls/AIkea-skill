@@ -1,4 +1,4 @@
-"""Scope: Build one rectangular sheet blank in canonical local coordinates."""
+"""Scope: Build one sheet blank in canonical local coordinates."""
 
 from __future__ import annotations
 

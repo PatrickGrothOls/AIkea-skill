@@ -9,7 +9,11 @@ import sys
 
 import yaml
 
+BUILD_SCRIPTS = Path(__file__).resolve().parents[2] / "aikea-build-units" / "scripts"
+sys.path.insert(0, str(BUILD_SCRIPTS))
+
 from cadquery_runtime import CadQueryRuntime, CadQueryRuntimeError
+from part_construction_error import PartConstructionError
 from unit_mockup import UnitMockupInputError
 
 
@@ -28,6 +32,8 @@ class GenerateUnitMockupCommand:
             return self._invalid([str(error)])
         except UnitMockupInputError as error:
             return self._invalid(list(error.problems))
+        except PartConstructionError as error:
+            return self._invalid([str(error)])
         print(
             json.dumps(
                 {

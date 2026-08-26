@@ -7,17 +7,18 @@ description: Generate populated local assembly, part, builder, and joint folders
 
 ## Goal
 
-Turn the completed overall project and ordered unit run into self-contained local
-building specifications. Every supported unit must receive its exact allocated
-boundary, owned parts, physical joint relationships, and importable build-plan
-entry points so later construction work starts from resolved project facts.
+Turn the completed overall project and ordered unit run into self-contained,
+executable local assemblies. Every supported unit must receive its exact allocated
+boundary, owned parts, physical joint relationships, and builders that produce
+real local CadQuery parts from resolved project facts.
 
 ## Generate the local units
 
 1. Resolve the active project folder and require its completed `aikea.yaml`.
-2. Read [references/unit-taxonomy.md](references/unit-taxonomy.md) completely.
+2. Read [references/unit-taxonomy.md](references/unit-taxonomy.md) and
+   [references/panel-construction.md](references/panel-construction.md) completely.
 3. Run `python <skill-directory>/scripts/generate_unit_taxonomy.py <project>/aikea.yaml`.
-4. Use only the generated local specifications and build plans for later work.
+4. Use only the generated local specifications and built results for later work.
 5. Describe the completed physical unit boundaries in client-facing language.
 6. Load `$aikea-review-unit`, build the first cabinet as a visual mock-up, open its
    viewer, and ask for the client's visual approval before producing other units.
@@ -29,8 +30,8 @@ writer remain unchanged.
 
 ## Responsibility boundary
 
-This stage materializes local boundaries, part ownership, build-plan entry points,
-and one joint list per unit. `$aikea-review-unit` consumes those plans only to show
-one visible cabinet. Later construction capabilities turn approved plans into
-machining features and manufacturing geometry. Keep each concern in its owner so
-generated unit files remain local, stable, and free of global imports.
+This stage materializes local boundaries, part ownership, executable builders,
+and one joint list per unit. Each generated part builder owns its local part and
+calls reusable AIkea construction code. The assembly builder is the stable entry
+point that executes all owned part builders. `$aikea-review-unit` consumes that
+built result without reconstructing its geometry.

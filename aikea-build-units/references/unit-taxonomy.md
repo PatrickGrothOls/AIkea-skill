@@ -27,8 +27,9 @@ assemblies/
 
 The unit `spec.py` is authoritative for its local boundary, resolved parts, and
 physical joint relationships. Each part `spec.py` exposes only its own finished
-part value from that unit specification. Each builder returns an immutable build
-plan for the next construction capability.
+part value from that unit specification. Each part builder returns its real
+CadQuery part in its canonical local frame. The assembly builder executes every
+owned part builder and returns those built parts with the unit's joint list.
 
 The local top boundary begins at `0` and ends at the unit width. It preserves every
 confirmed project-boundary change that falls inside the unit instead of reducing

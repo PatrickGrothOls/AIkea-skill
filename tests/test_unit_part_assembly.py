@@ -81,8 +81,8 @@ class TestUnitPartAssembly(unittest.TestCase):
 
     def _build(self, project: dict):
         AssemblyTaxonomyGenerator().generate(project, self.project_root)
-        spec = self.generator.loader.load_first(self.project_root, project)
-        return spec, self.generator.geometry.build(spec)
+        built_assembly = self.generator.loader.load_first(self.project_root, project)
+        return built_assembly.spec, self.generator.geometry.build(built_assembly)
 
     def assert_bounds(self, bounds, expected: tuple[float, ...]) -> None:
         actual = (bounds.xmin, bounds.xmax, bounds.ymin, bounds.ymax, bounds.zmin, bounds.zmax)

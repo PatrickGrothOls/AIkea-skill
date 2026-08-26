@@ -52,25 +52,25 @@ class TestAssemblyTaxonomyGenerator:
             expected_files.add(unit / "parts" / part_id / "builder.py")
         assert all(path.is_file() for path in expected_files)
 
-        plan = self._load_generated_plan(tmp_path, "tall_storage_01")
-        assert plan.assembly_spec.assembly_id == "tall_storage_01"
-        assert [part.spec.part_id for part in plan.parts] == [
-            "left_side",
-            "right_side",
-            "back_panel",
-            "door_panel",
-            "top_panel_01",
-        ]
-        door = next(part.spec for part in plan.parts if part.spec.part_id == "door_panel")
+        spec = self._load_generated_spec(tmp_path, "tall_storage_01")
+        assert spec.assembly_id == "tall_storage_01"
+        door = spec.part("door_panel")
         assert dict(door.dimensions_mm)["left_height"] == 2398
-        assert plan.assembly_spec.base_height_mm == 100
+        assert spec.base_height_mm == 100
         assert [(point.x_mm, point.height_mm) for point in door.outline_mm] == [
             (0, 0),
             (994, 0),
             (994, 2398),
             (0, 2398),
         ]
-        assert plan.joints
+        assert spec.joints
+        part_builder = (
+            unit / "parts" / "left_side" / "builder.py"
+        ).read_text(encoding="utf-8")
+        assembly_builder = (unit / "builder.py").read_text(encoding="utf-8")
+        assert "PartBlankBuilder().build(SPEC)" in part_builder
+        assert "LEFT_SIDE_BUILDER.build()" in assembly_builder
+        assert "BuiltAssembly" in assembly_builder
 
     def test_local_boundary_preserves_a_change_inside_one_unit(self, tmp_path) -> None:
         data = self._three_unit_project()
@@ -133,11 +133,11 @@ class TestAssemblyTaxonomyGenerator:
         }
         return data
 
-    def _load_generated_plan(self, project_root, assembly_id: str):
+    def _load_generated_spec(self, project_root, assembly_id: str):
         sys.path.insert(0, str(project_root))
         try:
-            module = importlib.import_module(f"assemblies.{assembly_id}.builder")
-            return module.BUILDER.build()
+            module = importlib.import_module(f"assemblies.{assembly_id}.spec")
+            return module.SPEC
         finally:
             sys.path.remove(str(project_root))
             for name in tuple(sys.modules):

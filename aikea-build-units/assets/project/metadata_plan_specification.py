@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any
 
 
 @dataclass(frozen=True)
@@ -47,13 +46,12 @@ class AssemblySpec:
 
 
 @dataclass(frozen=True)
-class BuiltPart:
+class PartBuildPlan:
     spec: PartSpec
-    solid: Any
 
 
 @dataclass(frozen=True)
-class BuiltAssembly:
-    spec: AssemblySpec
-    parts: tuple[BuiltPart, ...]
+class AssemblyBuildPlan:
+    assembly_spec: AssemblySpec
+    parts: tuple[PartBuildPlan, ...]
     joints: tuple[JointSpec, ...]

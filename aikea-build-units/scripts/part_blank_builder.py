@@ -1,14 +1,14 @@
-"""Scope: Build every review-unit part as one unmachined local sheet blank."""
+"""Scope: Build one generated panel specification as an unmachined local blank."""
 
 from __future__ import annotations
 
 from typing import Any
 
 from blank_sheet_builder import BlankSheetBuilder
-from unit_mockup import UnitMockupInputError
+from part_construction_error import PartConstructionError
 
 
-class UnitPartBlankBuilder:
+class PartBlankBuilder:
     """Turn one generated part specification into its canonical local solid."""
 
     def __init__(self) -> None:
@@ -22,7 +22,7 @@ class UnitPartBlankBuilder:
     def build(self, part: Any) -> Any:
         builder = self._role_builders.get(part.role)
         if builder is None:
-            raise UnitMockupInputError([f"unsupported visible part role: {part.role}"])
+            raise PartConstructionError(f"unsupported part role: {part.role}")
         return builder(part)
 
     def _build_side_panel(self, part: Any) -> Any:
@@ -68,4 +68,4 @@ class UnitPartBlankBuilder:
         )
 
 
-__all__ = ["UnitPartBlankBuilder"]
+__all__ = ["PartBlankBuilder", "PartConstructionError"]
