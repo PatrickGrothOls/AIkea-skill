@@ -22,6 +22,7 @@ class TestBuildUnitTaxonomyEvalSet:
         project = case["starting_project"]["aikea_yaml"]
 
         assert answer["expected_paths_per_assembly"]
+        assert answer["expected_next_stage"] == "aikea-review-unit"
         result = AssemblyTaxonomyGenerator().generate(project, tmp_path)
         expected = answer["expected_first_assembly"]
         first = result.assemblies[0]

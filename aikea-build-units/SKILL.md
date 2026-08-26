@@ -18,8 +18,9 @@ entry points so later construction work starts from resolved project facts.
 2. Read [references/unit-taxonomy.md](references/unit-taxonomy.md) completely.
 3. Run `python <skill-directory>/scripts/generate_unit_taxonomy.py <project>/aikea.yaml`.
 4. Use only the generated local specifications and build plans for later work.
-5. Describe the completed physical unit boundaries in client-facing language and
-   continue automatically to the next unfinished construction stage.
+5. Describe the completed physical unit boundaries in client-facing language.
+6. Load `$aikea-review-unit`, build the first cabinet as a visual mock-up, open its
+   viewer, and ask for the client's visual approval before producing other units.
 
 The bundled profile registry currently supplies the full-height tall-storage
 taxonomy. A different purpose proceeds when its own local design facts and
@@ -29,6 +30,7 @@ writer remain unchanged.
 ## Responsibility boundary
 
 This stage materializes local boundaries, part ownership, build-plan entry points,
-and one joint list per unit. Later construction capabilities turn those plans into
-machining features and CAD geometry. Keep that work in its owning capability so
+and one joint list per unit. `$aikea-review-unit` consumes those plans only to show
+one visible cabinet. Later construction capabilities turn approved plans into
+machining features and manufacturing geometry. Keep each concern in its owner so
 generated unit files remain local, stable, and free of global imports.

@@ -59,4 +59,5 @@ conflicting path without overwriting any of them.
 
 Success returns JSON with `status: generated` and every generated assembly path.
 Invalid project values or local-file conflicts return `status: invalid` with the
-specific problems. Only `generated` completes this stage.
+specific problems. Only `generated` completes this stage and hands the first
+ordered assembly to `$aikea-review-unit` for visible approval.

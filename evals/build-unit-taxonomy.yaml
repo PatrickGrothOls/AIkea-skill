@@ -11,11 +11,13 @@ scoring:
     - Every expected file exists and imports successfully.
     - Every expected local value matches the answer key.
     - Existing differing local files are preserved and reported as conflicts.
+    - The first cabinet is built and opened for visual review after generation.
   always_forbidden:
     - Ask the client to choose folder names or internal identifiers.
     - Hand-author calculated local dimensions instead of using the bundled generator.
     - Stop after summarizing the overall unit arrangement.
-    - Claim that panels, joints, or manufacturing geometry are complete beyond the generated build plans.
+    - Claim that manufacturing geometry is complete beyond the visual mock-up and generated build plans.
+    - Produce the remaining cabinet GLBs before the first cabinet is visually approved.
 
 cases:
   - name: three equal full-height storage units
@@ -54,8 +56,10 @@ cases:
     answer_key:
       response_required:
         - Generate the local unit taxonomy automatically.
-        - Report the three units as ready for their next construction stage in client-facing language.
+        - Report the three calculated local units in client-facing language.
+        - Build and open only the first cabinet for visual approval.
         - Continue without asking the client to approve folder creation.
+      expected_next_stage: aikea-review-unit
       expected_paths_per_assembly:
         - spec.py
         - builder.py
