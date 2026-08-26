@@ -6,22 +6,42 @@ from dataclasses import dataclass
 
 import cadquery as cq
 
+Point2D = tuple[float, float]
+
 
 @dataclass(frozen=True, slots=True)
 class BlankSheetBuilder:
-    """Create an unmachined sheet face in XY with thickness along positive Z."""
+    """Extrude one calculated flat outline through its material thickness."""
 
-    width_mm: float
-    height_mm: float
+    outline_mm: tuple[Point2D, ...]
     thickness_mm: float
 
+    @classmethod
+    def rectangle(
+        cls,
+        width_mm: float,
+        height_mm: float,
+        thickness_mm: float,
+    ) -> "BlankSheetBuilder":
+        """Describe a rectangular blank beginning at the local origin."""
+        return cls(
+            outline_mm=(
+                (0.0, 0.0),
+                (width_mm, 0.0),
+                (width_mm, height_mm),
+                (0.0, height_mm),
+            ),
+            thickness_mm=thickness_mm,
+        )
+
     def build(self) -> cq.Workplane:
-        """Return the rectangular CadQuery blank anchored at the local origin."""
+        """Return the outlined CadQuery blank with thickness along positive Z."""
         return (
             cq.Workplane("XY")
-            .rect(self.width_mm, self.height_mm, centered=False)
+            .polyline(self.outline_mm)
+            .close()
             .extrude(self.thickness_mm)
         )
 
 
-__all__ = ["BlankSheetBuilder"]
+__all__ = ["BlankSheetBuilder", "Point2D"]
