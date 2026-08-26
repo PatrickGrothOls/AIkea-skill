@@ -14,15 +14,19 @@ class TestReviewViewerInteraction:
 
         assert "zoomToCursor" in source
 
-    def test_close_zoom_uses_the_model_span_for_a_minimum_step(self) -> None:
+    def test_close_zoom_moves_past_the_orbit_target_toward_the_surface(self) -> None:
         source = (
             Path(__file__).parents[1]
             / "aikea-review-unit/assets/viewer-source/src/CloseInspectionControls.jsx"
         ).read_text(encoding="utf-8")
 
-        assert "CloseInspectionZoomSpeed" in source
+        assert "PointerZoomTravel" in source
         assert "modelSpan" in source
         assert 'addEventListener("wheel"' in source
+        assert "preventDefault" in source
+        assert "stopImmediatePropagation" in source
+        assert "camera.position.addScaledVector" in source
+        assert "controls.target.addScaledVector" in source
 
     def test_prebuilt_viewer_contains_the_close_zoom_controller(self) -> None:
         bundle = (
@@ -31,4 +35,4 @@ class TestReviewViewerInteraction:
         ).read_text(encoding="utf-8")
 
         assert "minimumTravel" in bundle
-        assert "queueMicrotask" in bundle
+        assert "stopImmediatePropagation" in bundle
