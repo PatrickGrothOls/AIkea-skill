@@ -36,8 +36,17 @@ workpiece = BlankSheetBuilder(
 
 The ordered points describe the finished outer shape of the blank's face; the
 builder closes that outline and extends its material thickness along positive Z.
+An overall top boundary describes the cabinet's finished outside surface. Derive
+the matching underside from that boundary and the top-panel thickness, then end
+vertical carcass panels at the underside. Preserve the outside boundary for the
+top panel itself. This keeps flat, sloped, and changing top profiles physically
+closed without overlapping material.
+
 The generated local part builder owns this call, applies the cuts assigned by the
 assembly's joint definitions, and returns the real local CadQuery part. A joint
 defines its geometry once and transforms that same geometry into each
-participating part's local frame. Assembly placement and manufacturing placement
-remain separate transformations.
+participating part's local frame. Before applying the joint, verify that the
+uncut participants meet with no material overlap. After applying it, verify that
+the shared feature aligns in assembly space and remains within its intended
+material depth. Assembly placement and manufacturing placement remain separate
+transformations.

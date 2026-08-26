@@ -11,6 +11,8 @@ Turn the completed overall project and ordered unit run into self-contained,
 executable local assemblies. Every supported unit must receive its exact allocated
 boundary, owned parts, physical joint relationships, and builders that produce
 real local CadQuery parts with the construction required by those relationships.
+The finished parts must meet without occupying the same material, and machining
+shared by a joint must fit both participants without unintended breakthrough.
 
 ## Generate the local units
 
