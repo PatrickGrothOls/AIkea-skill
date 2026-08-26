@@ -25,14 +25,16 @@ export function CloseInspectionControls({ modelSpan }) {
       event.stopImmediatePropagation();
 
       zoomDirection.copy(controls.target).sub(camera.position).normalize();
+      const targetDistance = camera.position.distanceTo(controls.target);
       raycaster.set(camera.position, zoomDirection);
       const intersections = raycaster.intersectObjects(scene.children, true);
       const surfaceDistance = intersections.length
         ? intersections[0].distance
-        : modelSpan;
+        : targetDistance;
       const travel = zoomTravel.calculateForWheel(
         event.deltaY,
         surfaceDistance,
+        targetDistance,
         camera.near,
       );
       camera.position.addScaledVector(zoomDirection, travel);
