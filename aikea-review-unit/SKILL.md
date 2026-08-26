@@ -15,7 +15,8 @@ the remaining units.
 
 1. Resolve the active project and require its completed `aikea.yaml` and generated
    `assemblies/` folders.
-2. Read [references/visual-review.md](references/visual-review.md) completely.
+2. Read [references/visual-review.md](references/visual-review.md) and
+   [references/panel-construction.md](references/panel-construction.md) completely.
 3. Run `python <skill-directory>/scripts/generate_unit_mockup.py <project>/aikea.yaml`.
 4. Run `python <skill-directory>/scripts/serve_unit_review.py <generated-glb>` and
    leave the local viewer available while the client reviews the cabinet.
