@@ -20,14 +20,19 @@ from unit_mockup import UnitMockupInputError
 class GenerateFullWardrobeReviewCommand:
     """Read one project and report its full-wardrobe review artifacts."""
 
-    def run(self, path: Path) -> int:
+    def run(self, path: Path, doors: str) -> int:
         try:
+            from door_review_pose import DoorReviewPose
             from full_wardrobe_review_generator import FullWardrobeReviewGenerator
 
             project = yaml.safe_load(path.read_text(encoding="utf-8"))
             if not isinstance(project, dict):
                 raise UnitMockupInputError(["aikea.yaml must contain an object"])
-            result = FullWardrobeReviewGenerator().generate(path.parent, project)
+            result = FullWardrobeReviewGenerator().generate(
+                path.parent,
+                project,
+                DoorReviewPose(doors),
+            )
         except (OSError, yaml.YAMLError) as error:
             return self._invalid([str(error)])
         except UnitMockupInputError as error:
@@ -41,6 +46,7 @@ class GenerateFullWardrobeReviewCommand:
                     "assemblies": list(result.assembly_ids),
                     "full_wardrobe_glb": str(result.glb_path),
                     "assembly_position_check": str(result.position_report_path),
+                    "doors": result.door_pose,
                 },
                 indent=2,
             )
@@ -65,7 +71,17 @@ def main() -> int:
         description="Generate the complete AIkea wardrobe review."
     )
     parser.add_argument("aikea_yaml", type=Path)
-    return GenerateFullWardrobeReviewCommand().run(parser.parse_args().aikea_yaml)
+    parser.add_argument(
+        "--doors",
+        choices=("closed", "open"),
+        default="closed",
+        help="Choose the door pose shown in the visual review.",
+    )
+    arguments = parser.parse_args()
+    return GenerateFullWardrobeReviewCommand().run(
+        arguments.aikea_yaml,
+        arguments.doors,
+    )
 
 
 if __name__ == "__main__":

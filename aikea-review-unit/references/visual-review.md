@@ -52,17 +52,22 @@ large enough to inspect without generating later cabinet models.
 After the first cabinet and its base relationship are approved, execute every
 generated cabinet builder and the complete base builder. Place each assembly from
 its saved local zero into the shared project coordinates. Show the cabinet doors
-closed so the client can judge the complete facade, gaps, lower line, and overall
-proportions. Keep each exported node associated with its source assembly and part.
+closed when the client is judging the complete facade, gaps, lower line, and
+overall proportions. When the client wants to inspect the inside or the
+relationship between neighbouring open doors, export an alternate view with
+every door open around its calculated hinge edge. Keep each exported node
+associated with its source assembly and part.
 
 Write both artifacts at the generated assembly root:
 
 ```text
 assemblies/full_wardrobe_review.glb
+assemblies/full_wardrobe_open_review.glb
 assemblies/full-wardrobe-position-check.json
 ```
 
-The report must pass before export. It proves that the base spans the complete
+The open file is produced only when requested. Both views use the same checked
+physical assembly. The report must pass before export. It proves that the base spans the complete
 run, every cabinet occupies its saved width, each carcass bears on the deck,
 cabinet gaps remain open, all doors reach their selected lower line, and the
 plinth front remains at its selected depth.

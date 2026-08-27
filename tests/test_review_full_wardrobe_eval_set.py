@@ -38,5 +38,21 @@ class TestReviewFullWardrobeEvalSet:
         assert "simplified cabinet boxes" in forbidden
         assert "guessed positions" in forbidden
 
+    def test_open_door_case_preserves_the_physical_position_report(self) -> None:
+        answer = self._load()["cases"][1]["answer_key"]
+
+        assert answer["expected_artifact"] == (
+            "assemblies/full_wardrobe_open_review.glb"
+        )
+        assert answer["expected_report"] == (
+            "assemblies/full-wardrobe-position-check.json"
+        )
+        assert answer["expected_door_pose"] == "open"
+        assert answer["expected_open_doors"] == [
+            "tall_storage_01__door_panel",
+            "tall_storage_02__door_panel",
+            "tall_storage_03__door_panel",
+        ]
+
     def _load(self) -> dict:
         return yaml.safe_load(self._EVAL.read_text(encoding="utf-8"))

@@ -41,6 +41,8 @@ class TestFullWardrobeReview(unittest.TestCase):
             result.assembly_ids,
             ("tall_storage_01", "tall_storage_02", "tall_storage_03"),
         )
+        self.assertEqual(result.door_pose, "closed")
+        self.assertEqual(result.glb_path.name, "full_wardrobe_review.glb")
         self.assertTrue(
             {
                 "base_01__deck_01",
@@ -69,9 +71,55 @@ class TestFullWardrobeReview(unittest.TestCase):
         self.assertEqual(door["assembly_bounds"]["minimum_mm"][1:], [-18.0, 82.0])
         self.assertTrue(all(check["passed"] for check in report["checks"]))
 
+    def test_exports_all_three_doors_open_without_changing_fit_evidence(self) -> None:
+        from door_review_pose import DoorReviewPose
+
+        result = self.generator.generate(
+            self.project_root,
+            self.project,
+            DoorReviewPose.OPEN,
+        )
+        report = json.loads(result.position_report_path.read_text(encoding="utf-8"))
+        nodes = GlbTestDocument(result.glb_path).node_names
+
+        self.assertEqual(result.door_pose, "open")
+        self.assertEqual(result.glb_path.name, "full_wardrobe_open_review.glb")
+        self.assertTrue(
+            {
+                "tall_storage_01__door_panel",
+                "tall_storage_02__door_panel",
+                "tall_storage_03__door_panel",
+            }.issubset(nodes)
+        )
+        self.assertEqual(report["status"], "valid")
+        physical_door = report["assemblies"]["tall_storage_01"]["part_positions"][
+            "door_panel"
+        ]
+        self.assertEqual(
+            physical_door["assembly_bounds"]["minimum_mm"][1:],
+            [-18.0, 82.0],
+        )
+
+        built = self.generator.loader.load_assembly(
+            self.project_root,
+            "tall_storage_01",
+        )
+        open_parts = self.generator.cabinet_geometry.build(built, DoorReviewPose.OPEN)
+        open_door = next(part for part in open_parts if part.name == "door_panel")
+        bounds = open_door.placed_shape().BoundingBox()
+        self.assertAlmostEqual(bounds.xmin, -17.0)
+        self.assertAlmostEqual(bounds.xmax, 1.0)
+        self.assertAlmostEqual(bounds.ymin, -989.3333333333334)
+        self.assertAlmostEqual(bounds.ymax, 0.0)
+
     def test_project_placement_closes_the_complete_run_bounds(self) -> None:
         built = self.generator.loader.load_assembly(self.project_root, "tall_storage_03")
-        local_parts = self.generator.cabinet_geometry.build(built)
+        from door_review_pose import DoorReviewPose
+
+        local_parts = self.generator.cabinet_geometry.build(
+            built,
+            DoorReviewPose.CLOSED,
+        )
         placed = self.generator.part_placer.place(
             built.spec.assembly_id,
             built.spec.global_left_mm,

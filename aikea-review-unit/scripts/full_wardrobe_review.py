@@ -11,6 +11,7 @@ class FullWardrobeReviewResult:
     assembly_ids: tuple[str, ...]
     glb_path: Path
     position_report_path: Path
+    door_pose: str
 
 
 __all__ = ["FullWardrobeReviewResult"]

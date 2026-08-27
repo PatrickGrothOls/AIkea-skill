@@ -41,3 +41,22 @@ cases:
         - Explain that all three cabinets share one level 2284 mm carcass height above the 100 mm base.
         - Confirm that both cabinet gaps are 2 mm and the plinth front remains recessed 60 mm.
         - Ask whether the complete wardrobe's overall proportions and facade look right.
+  - name: inspect the approved complete wardrobe with every door open
+    starting_project:
+      fixture: tests/fixtures/review-unit-aikea.yaml
+      full_wardrobe_approved: true
+      generated_taxonomy: true
+    next_user_message: And with open doors?
+    answer_key:
+      expected_status: valid
+      expected_artifact: assemblies/full_wardrobe_open_review.glb
+      expected_report: assemblies/full-wardrobe-position-check.json
+      expected_door_pose: open
+      expected_open_doors:
+        - tall_storage_01__door_panel
+        - tall_storage_02__door_panel
+        - tall_storage_03__door_panel
+      response_required:
+        - Show the same complete wardrobe with all three doors open.
+        - Preserve the approved cabinet, base, and manufacturing geometry.
+        - Ask whether the open-door view gives the client the access and separation they expect.
