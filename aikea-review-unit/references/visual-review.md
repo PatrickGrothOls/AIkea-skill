@@ -38,6 +38,7 @@ The base review generator writes:
 ```text
 assemblies/base_01/base_01.glb
 assemblies/base_01/<first-cabinet-id>_with_base.glb
+assemblies/base_01/assembly-position-check.json
 ```
 
 The first file contains the complete segmented base. The combined file contains

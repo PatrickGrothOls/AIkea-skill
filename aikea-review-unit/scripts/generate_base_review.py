@@ -40,6 +40,7 @@ class GenerateBaseReviewCommand:
                     "status": "generated",
                     "base_glb": str(result.base_glb_path),
                     "cabinet_with_base_glb": str(result.cabinet_with_base_glb_path),
+                    "assembly_position_check": str(result.position_report_path),
                 },
                 indent=2,
             )

@@ -26,8 +26,10 @@ checked before the design is repeated or manufacturing work continues.
 
 ## Present the structural base
 
-After the first cabinet is approved and the structural base folders exist, run
-`python <skill-directory>/scripts/generate_base_review.py <project>/aikea.yaml`.
+After the first cabinet is approved and the structural base folders exist, read
+[references/assembly-positioning.md](references/assembly-positioning.md), then run
+`python <skill-directory>/scripts/generate_base_review.py <project>/aikea.yaml` and
+require its generated position check to pass before presenting the result.
 Show the complete base by itself from the angles that explain its construction,
 then show the first cabinet seated on its matching base module. Keep the review
 focused on the physical result and the next decision the client can make.
