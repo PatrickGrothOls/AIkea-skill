@@ -52,7 +52,12 @@ cases:
       expected_relationships:
         base_top_z_mm: 100
         cabinet_side_bottom_z_mm: 100
-        open_door_review_bottom_z_mm: 0
+        door_bottom: plinth
+        door_bottom_z_mm: 82
+        plinth_front: recessed
+        plinth_recess_mm: 60
+        plinth_front_y_mm: 60
+        base_deck_bottom_z_mm: 82
         first_cabinet_right_x_global_mm: 1001.333333
         first_base_module_end_x_global_mm: 1002.333333
         first_base_module_projection_into_gap_mm: 1
@@ -78,5 +83,5 @@ cases:
         - Explain that the visible 18 mm protrusion was brace_02_01 from the neighbouring module and that the corrected review excludes it.
         - Explain that the remaining base edge is 1 mm into the 2 mm cabinet gap because the base module breaks at the gap centre.
         - Confirm that no part from the second base module appears in the corrected first-cabinet review.
-        - Explain that the open door reaches the floor as a presentation of the full-height door, while the carcass begins on the base.
+        - Explain that the door reaches the selected plinth line at 82 mm, while the carcass begins on the base at 100 mm.
         - Ask whether the verified cabinet-to-base silhouette looks right before continuing.

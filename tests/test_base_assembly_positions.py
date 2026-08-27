@@ -44,7 +44,11 @@ class TestBaseAssemblyPositions(BaseReviewTestCase):
         relationships = report["relationships"]
         self.assertEqual(relationships["base_top_z_mm"], 100.0)
         self.assertEqual(relationships["cabinet_side_bottom_z_mm"], 100.0)
-        self.assertEqual(relationships["open_door_review_bottom_z_mm"], 0.0)
+        self.assertEqual(relationships["door_bottom"], "plinth")
+        self.assertEqual(relationships["door_bottom_z_mm"], 82.0)
+        self.assertEqual(relationships["plinth_front"], "recessed")
+        self.assertEqual(relationships["plinth_recess_mm"], 60.0)
+        self.assertEqual(relationships["plinth_front_y_mm"], 60.0)
         self.assertAlmostEqual(
             relationships["first_base_module_projection_into_gap_mm"],
             1.0,

@@ -31,7 +31,9 @@ Once the first cabinet is approved, execute the generated `base_01` builder and
 place its deck, front and back rails, and braces from the base specification. The
 parts must close the complete base bounds without overlapping material. Rails and
 braces meet at their edges, braces bear the deck, and the cabinet sides begin on
-the deck's top face.
+the deck's top face. The review must show the selected door lower line and
+plinth-front position while keeping the structural deck beneath the complete
+cabinet footprint.
 
 The base review generator writes:
 

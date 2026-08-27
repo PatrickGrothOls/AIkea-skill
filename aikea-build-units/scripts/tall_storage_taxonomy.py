@@ -30,6 +30,7 @@ class TallStorageTaxonomy:
         carcass_panel_depth_mm: float,
         door_width_mm: float,
         base_height_mm: float,
+        door_bottom_mm: float,
         panel_thickness_mm: float,
         door_thickness_mm: float,
         back_thickness_mm: float,
@@ -40,7 +41,7 @@ class TallStorageTaxonomy:
             top,
             door_inset_mm,
             width_mm - door_inset_mm,
-            base_height_mm,
+            base_height_mm - door_bottom_mm,
         )
         left_side_height_mm = self.side_panel_height_resolver.resolve_left(
             top,

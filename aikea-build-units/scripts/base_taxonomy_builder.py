@@ -31,9 +31,11 @@ class BaseTaxonomyBuilder:
         depth_mm: float,
         height_mm: float,
         panel_thickness_mm: float,
+        plinth_front: str,
+        plinth_recess_mm: float,
     ) -> BaseAssemblyTaxonomy:
         support_height_mm = height_mm - panel_thickness_mm
-        clear_depth_mm = depth_mm - (2.0 * panel_thickness_mm)
+        clear_depth_mm = depth_mm - plinth_recess_mm - (2.0 * panel_thickness_mm)
         if support_height_mm <= 0 or clear_depth_mm <= 0:
             raise ValueError("base height and depth must exceed their panel allowances")
         modules = self.module_planner.plan(cabinet_spans_mm, depth_mm)
@@ -73,6 +75,8 @@ class BaseTaxonomyBuilder:
             width_mm=global_right_mm - global_left_mm,
             depth_mm=depth_mm,
             height_mm=height_mm,
+            plinth_front=plinth_front,
+            plinth_recess_mm=plinth_recess_mm,
             modules=modules,
             parts=tuple(parts),
             joints=tuple(joints),

@@ -5,6 +5,11 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any
 
+from door_and_plinth_settings import (
+    DoorAndPlinthSettingReader,
+    DoorBottom,
+    PlinthFront,
+)
 from fitted_dimensions import FittedDimensionReader, FittedDimensions
 
 
@@ -20,6 +25,9 @@ class OverallDesignSettings:
     ceiling_clearance_mm: float
     base_height_mm: float
     door_gap_mm: float
+    door_bottom: DoorBottom
+    plinth_front: PlinthFront
+    plinth_recess_mm: float
     cabinet_panel_thickness_mm: float
     door_thickness_mm: float
     back_panel_thickness_mm: float
@@ -50,6 +58,7 @@ class OverallDesignSettingReader:
         }
         cabinet_count = self._read_cabinet_count(data, problems)
         shares = self._read_width_shares(data, cabinet_count, problems)
+        lower_front = DoorAndPlinthSettingReader().read(data, scale, problems)
         return OverallDesignSettings(
             fit_allowance_mm=numbers["design_settings.fit_allowance"],
             fitted_dimensions=FittedDimensionReader().read(data, problems),
@@ -61,6 +70,9 @@ class OverallDesignSettingReader:
             ceiling_clearance_mm=numbers["design_settings.cabinet_run.ceiling_clearance"],
             base_height_mm=numbers["design_settings.base.height"],
             door_gap_mm=numbers["design_settings.doors.gap"],
+            door_bottom=lower_front.door_bottom,
+            plinth_front=lower_front.plinth_front,
+            plinth_recess_mm=lower_front.plinth_recess_mm,
             cabinet_panel_thickness_mm=numbers[
                 "design_settings.materials.cabinet_panel_thickness"
             ],

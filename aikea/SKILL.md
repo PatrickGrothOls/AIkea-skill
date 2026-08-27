@@ -79,6 +79,9 @@ Use explicit user messages to create or revise the saved measurements and shared
   AIkea's implementation private unless the client asks for technical details or
   project files.
 - Never ask the client to provide width shares. Ask whether sections should be equal or whether any should be wider or narrower, then translate that relationship internally.
+- Settle where the doors end and whether the plinth front is flush or recessed as
+  two separate visible design choices. Ask for a recess depth only when the client
+  chooses a recessed plinth.
 - Keep every raw measurement unchanged. Record which dimensions fit between fixed
   boundaries and let the project template and calculator own fitting allowances
   and derived dimensions. Do not ask the client to choose construction policy.
@@ -121,7 +124,9 @@ Never take project measurements from this skill's assets, examples, eval fixture
 
 ## Current implementation
 
-Collect, save, and check the measured space and shared wardrobe choices, present the calculated cabinet sizes and positions, then lead directly into unit arrangement.
+Collect, save, and check the measured space and shared wardrobe choices, including
+the selected door length and plinth front. Present the calculated cabinet sizes
+and positions, then lead directly into unit arrangement.
 
 ## Route the next stage
 

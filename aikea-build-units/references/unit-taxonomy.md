@@ -51,6 +51,11 @@ This taxonomy establishes ownership and exact resolved dimensions. Supported
 construction is derived from one shared joint definition so mating features stay
 aligned when any upstream dimension changes.
 
+The local specification also inherits the selected door lower line and its exact
+resolved height. Door geometry is calculated from that shared result rather than
+adjusted separately inside each assembly, so the same unit can use either a
+full-length door or a door ending at the plinth.
+
 The default structural carcass uses a load-bearing back and the lower support
 assembly as physical participants. On a flat unit, the top spans and bears directly
 on the side panels. Each square side/back, side/top, and top/back seam is a paired
@@ -67,6 +72,9 @@ specification owns the calculated base modules and each module's deck, front and
 back rail, and full-height braces. Overall base height includes the deck; the
 support frame fills the remaining height. Cross-brace length closes between the
 front and back rails, and the brace count follows the local construction spacing.
+The plinth-front choice positions the front rail and the front end of every brace.
+A recessed front shortens that support span while the deck retains the complete
+cabinet footprint. This choice is independent of the door lower line.
 
 Long bases divide at useful cabinet boundaries so every deck and rail fits the
 selected CNC working area. Each module begins and ends with a brace, and each seam

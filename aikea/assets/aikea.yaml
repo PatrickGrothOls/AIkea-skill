@@ -1,4 +1,4 @@
-schema_version: 8
+schema_version: 9
 units: mm
 
 measured_space:
@@ -25,9 +25,12 @@ design_settings:
 
   base:
     height: null
+    front: null
+    recess: null
 
   doors:
     gap: null
+    bottom: null
 
   materials:
     cabinet_panel_thickness: null

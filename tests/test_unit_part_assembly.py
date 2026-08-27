@@ -35,7 +35,7 @@ class TestUnitPartAssembly(unittest.TestCase):
             "left_side": (spec.inside_depth_mm, 2266.0, 18.0),
             "right_side": (spec.inside_depth_mm, 2266.0, 18.0),
             "back_panel": (spec.width_mm, 2284.0, 18.0),
-            "door_panel": (spec.door_width_mm, 2384.0, 18.0),
+            "door_panel": (spec.door_width_mm, 2302.0, 18.0),
             "top_panel_01": (spec.width_mm, spec.inside_depth_mm, 18.0),
         }
 
@@ -53,7 +53,7 @@ class TestUnitPartAssembly(unittest.TestCase):
             "left_side": (0.0, 18.0, 0.0, 564.0, 100.0, 2366.0),
             "right_side": (spec.width_mm - 18.0, spec.width_mm, 0.0, 564.0, 100.0, 2366.0),
             "back_panel": (0.0, spec.width_mm, 564.0, 582.0, 100.0, 2384.0),
-            "door_panel": (-17.0, 1.0, -spec.door_width_mm, 0.0, 0.0, 2384.0),
+            "door_panel": (-17.0, 1.0, -spec.door_width_mm, 0.0, 82.0, 2384.0),
             "top_panel_01": (0.0, spec.width_mm, 0.0, 564.0, 2366.0, 2384.0),
         }
 
@@ -70,7 +70,7 @@ class TestUnitPartAssembly(unittest.TestCase):
 
         self.assert_bounds(
             door.solid.val().located(location).BoundingBox(),
-            (1.0, 990.3333333333334, -18.0, 0.0, 0.0, 2384.0),
+            (1.0, 990.3333333333334, -18.0, 0.0, 82.0, 2384.0),
         )
 
     def test_profile_unit_builds_every_top_segment_and_shaped_door_point(self) -> None:

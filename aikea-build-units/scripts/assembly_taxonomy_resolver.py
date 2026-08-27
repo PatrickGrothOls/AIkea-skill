@@ -2,10 +2,10 @@
 
 from __future__ import annotations
 
-from copy import deepcopy
 from typing import Any
 
-from assembly_run import AssemblyRun, AssemblyRunItem, AssemblyRunReader
+from assembly_run import AssemblyRunItem, AssemblyRunReader
+from assembly_run_overall_project_adapter import AssemblyRunOverallProjectAdapter
 from assembly_taxonomy import (
     AssemblyTaxonomyInputError,
     BoundaryPoint,
@@ -14,6 +14,7 @@ from assembly_taxonomy import (
 )
 from assembly_taxonomy_profiles import AssemblyTaxonomyProfileRegistry
 from base_taxonomy_builder import BaseTaxonomyBuilder
+from door_bottom_height_resolver import DoorBottomHeightResolver
 from overall_wardrobe_calculator import OverallWardrobeCalculator
 from overall_wardrobe_inputs import OverallWardrobeInputs, OverallWardrobeInputReader
 from overall_wardrobe_results import CabinetOverallSize
@@ -26,10 +27,12 @@ class AssemblyTaxonomyResolver:
     def __init__(self) -> None:
         self.profiles = AssemblyTaxonomyProfileRegistry()
         self.base_taxonomy = BaseTaxonomyBuilder()
+        self.overall_project = AssemblyRunOverallProjectAdapter()
+        self.door_bottom_height = DoorBottomHeightResolver()
 
     def resolve(self, project: dict[str, Any]) -> ProjectAssemblyTaxonomy:
         run = AssemblyRunReader().read(project)
-        inputs = OverallWardrobeInputReader().read(self._overall_project(project, run))
+        inputs = OverallWardrobeInputReader().read(self.overall_project.adapt(project, run))
         result = OverallWardrobeCalculator().calculate(inputs)
         cabinets = tuple(
             self._resolve_assembly(item, size, inputs, result.inside_depth_mm)
@@ -43,24 +46,10 @@ class AssemblyTaxonomyResolver:
             self._depth_mm(inputs),
             inputs.settings.base_height_mm,
             inputs.settings.cabinet_panel_thickness_mm,
+            inputs.settings.plinth_front.value,
+            inputs.settings.plinth_recess_mm,
         )
         return ProjectAssemblyTaxonomy((*cabinets, base))
-
-    def _overall_project(
-        self, project: dict[str, Any], run: AssemblyRun
-    ) -> dict[str, Any]:
-        adapted = deepcopy(project)
-        settings = adapted["design_settings"]
-        settings.pop("assembly_run")
-        settings["cabinet_run"] = {
-            "cabinet_count": len(run.assemblies),
-            "cabinet_width_shares": [item.width_share for item in run.assemblies],
-            "left_clearance": run.left_clearance,
-            "right_clearance": run.right_clearance,
-            "cabinet_gap": run.gap,
-            "ceiling_clearance": run.ceiling_clearance,
-        }
-        return adapted
 
     def _resolve_assembly(
         self,
@@ -77,12 +66,18 @@ class AssemblyTaxonomyResolver:
         top = self._local_top(size, inputs)
         settings = inputs.settings
         depth_mm = self._depth_mm(inputs)
+        door_bottom_mm = self.door_bottom_height.resolve(
+            settings.door_bottom,
+            settings.base_height_mm,
+            settings.cabinet_panel_thickness_mm,
+        )
         parts = profile.build_parts(
             top,
             size.width_mm,
             inside_depth_mm,
             size.door_width_mm,
             settings.base_height_mm,
+            door_bottom_mm,
             settings.cabinet_panel_thickness_mm,
             settings.door_thickness_mm,
             settings.back_panel_thickness_mm,
@@ -98,6 +93,8 @@ class AssemblyTaxonomyResolver:
             inside_depth_mm,
             size.door_width_mm,
             settings.base_height_mm,
+            settings.door_bottom.value,
+            door_bottom_mm,
             parts,
             profile.build_joints(top),
         )

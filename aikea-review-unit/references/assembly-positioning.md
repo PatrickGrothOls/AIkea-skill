@@ -31,6 +31,7 @@ the built CadQuery parts. The report must state:
 - every part's local zero, its local axes in the assembly, and its global zero;
 - its measured bounds in both coordinate systems;
 - the contact height and footprint shared by the cabinet and base;
+- the built door lower line and plinth-front depth selected by the overall project;
 - the exact location and purpose of any module break that does not coincide with
   a cabinet edge;
 - the exact base-module parts included beside the selected cabinet, excluding

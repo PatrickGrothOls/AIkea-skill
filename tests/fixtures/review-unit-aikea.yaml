@@ -1,4 +1,4 @@
-schema_version: 8
+schema_version: 9
 units: cm
 
 measured_space:
@@ -24,8 +24,8 @@ design_settings:
       - {id: tall_storage_01, purpose: tall_storage, width_share: 1}
       - {id: tall_storage_02, purpose: tall_storage, width_share: 1}
       - {id: tall_storage_03, purpose: tall_storage, width_share: 1}
-  base: {height: 10}
-  doors: {gap: 0.2}
+  base: {height: 10, front: recessed, recess: 6}
+  doors: {gap: 0.2, bottom: plinth}
   materials:
     cabinet_panel_thickness: 1.8
     door_thickness: 1.8

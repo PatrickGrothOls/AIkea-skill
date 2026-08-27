@@ -6,6 +6,7 @@ from math import isclose
 from typing import Any
 
 from assembly_position_report import AssemblyPositionReport
+from door_and_plinth_position_checker import DoorAndPlinthPositionChecker
 from physical_part_position_reporter import PhysicalPartPositionReporter
 from placed_bounds import PlacedBounds
 
@@ -17,6 +18,7 @@ class CabinetBasePositionChecker:
 
     def __init__(self) -> None:
         self.part_positions = PhysicalPartPositionReporter()
+        self.door_and_plinth = DoorAndPlinthPositionChecker()
 
     def check(
         self,
@@ -41,8 +43,11 @@ class CabinetBasePositionChecker:
         side_local = PlacedBounds.from_parts(
             part for part in cabinet_parts if part.name in {"left_side", "right_side"}
         )
-        door_review_local = PlacedBounds.from_parts(
-            part for part in cabinet_parts if part.name == "door_panel"
+        lower_front = self.door_and_plinth.check(
+            built_base,
+            built_cabinet,
+            base_parts,
+            cabinet_parts,
         )
 
         base_zero = (float(base_spec.global_left_mm), 0.0, 0.0)
@@ -76,7 +81,6 @@ class CabinetBasePositionChecker:
             "base_top_z_mm": base_local.z_max_mm,
             "cabinet_carcass_bottom_z_mm": cabinet_local.z_min_mm,
             "cabinet_side_bottom_z_mm": side_local.z_min_mm,
-            "open_door_review_bottom_z_mm": door_review_local.z_min_mm,
             "first_base_module_end_x_global_mm": first_module_end_global_mm,
             "first_cabinet_right_x_global_mm": float(
                 cabinet_spec.global_right_mm
@@ -86,6 +90,7 @@ class CabinetBasePositionChecker:
                 base_zero[0] + review_base_local.x_max_mm
             ),
             "next_cabinet_gap_mm": next_gap_mm,
+            **lower_front.relationships,
         }
         checks = (
             AssemblyPositionReport.check(
@@ -130,6 +135,7 @@ class CabinetBasePositionChecker:
                     self._TOLERANCE_MM,
                 ),
             ),
+            *lower_front.checks,
         )
         return AssemblyPositionReport(assemblies, relationships, checks)
 

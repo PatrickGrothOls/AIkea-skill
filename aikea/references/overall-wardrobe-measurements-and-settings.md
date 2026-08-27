@@ -48,8 +48,10 @@ Act like a carpenter helping a client plan a wardrobe, not like software asking 
    wardrobe front is enclosed.
 7. Then ask about the wardrobe itself: number of sections, whether they should be
    equal or which should be wider or narrower, fit at the walls and ceiling, base
-   height, door spacing, and chosen material thicknesses. Format each topic as
-   numbered choices or one numbered value line.
+   height, door spacing, where the doors end, whether the plinth front is flush
+   or recessed, and chosen material thicknesses. Ask for the recess depth only
+   after a recessed plinth is chosen. Format each topic as numbered choices or
+   one numbered value line.
 8. Translate the answers into the global specification privately. Do not expose filenames, schema fields, width shares, formulas, calculator commands, validation terminology, or the fitting allowance unless the client asks.
 9. Give the client calculated cabinet sizes and positions, not the internal values used to derive them.
 10. Lead directly into the next unfinished stage after presenting results. Ask a
@@ -303,7 +305,9 @@ The template supplies `fit_allowance`. Collect the remaining internal values:
 - `cabinet_width_shares`, one positive number per cabinet from left to right;
 - `left_clearance`, `right_clearance`, `cabinet_gap`, and `ceiling_clearance`;
 - `base_height`;
-- `door_gap`;
+- `base.front` and `base.recess`, with zero recess for a flush front and a
+  positive depth for a recessed front;
+- `doors.gap` and `doors.bottom`;
 - `cabinet_panel_thickness`, `door_thickness`, and `back_panel_thickness`.
 
 Treat an explicit zero as a supplied value. Never replace a missing value with zero or a typical cabinet-making default.
@@ -358,6 +362,8 @@ Use `assets/aikea.yaml` as the exact schema.
   the separate flush-depth answer. Never infer a fitted dimension from one fixed
   edge alone or from the fact that a wardrobe front is open.
 - Preserve the template's 2 mm fitting allowance unless the user explicitly changes the project policy.
+- Record the door lower line and plinth-front position independently so either
+  door design can be combined with either plinth design.
 - Do not add calculated cabinet dimensions to `aikea.yaml`.
 - Do not add fields that are absent from the template.
 
@@ -376,6 +382,8 @@ Run the bundled calculator only after the checklist is complete. Require all of 
 - the 2 mm fitting allowance leaves every fitted dimension positive;
 - clearances and cabinet gaps leave positive cabinet width;
 - the base and ceiling clearance leave positive cabinet height;
+- a flush plinth has no recess, while a recessed plinth has a positive recess
+  that leaves space for its structural frame;
 - door and back thicknesses leave positive cabinet and inside depth.
 
 On success, summarize calculated cabinet widths, left/right positions, left/right heights, door widths, cabinet depth, and inside depth as the physical dimensions the next wardrobe work can rely on. Keep implementation details internal. Immediately load `$aikea-arrange-units` and take its next concrete action. If the arrangement was already fully supplied, let that skill save it and continue toward complete building specifications for every unit and part.

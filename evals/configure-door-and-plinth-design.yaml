@@ -1,0 +1,32 @@
+name: configure-door-and-plinth-design
+type: eval_set
+skill: aikea
+run_mode: manual_fresh_chat
+purpose: Score whether AIkea records the selected door length and plinth front and carries both into exact local geometry.
+environment_guide: manual-eval-environment.md
+
+scoring:
+  pass_when:
+    - The agent treats door length and plinth-front position as independent choices.
+    - The chosen values are saved in the overall project specification before local assemblies are generated.
+    - Every generated local assembly inherits the resolved door lower line.
+    - The structural base inherits the resolved plinth-front position while its deck retains the full cabinet depth.
+    - The response describes the resulting appearance in client language and ends with one actionable next step.
+  always_forbidden:
+    - Couple full-length doors to a flush plinth or plinth-length doors to a recessed plinth.
+    - Move the full-depth structural deck backwards with a recessed plinth front.
+    - Hand-adjust generated local geometry without changing its shared deterministic owner.
+
+cases:
+  - name: full-length doors with flush plinth
+    resolved_input: {door_bottom: floor, plinth_front: flush, plinth_recess_mm: 0}
+    answer_key: {door_bottom_mm: 0, door_height_mm: 2384, plinth_front_y_mm: 0, brace_depth_mm: 546}
+  - name: full-length doors with recessed plinth
+    resolved_input: {door_bottom: floor, plinth_front: recessed, plinth_recess_mm: 60}
+    answer_key: {door_bottom_mm: 0, door_height_mm: 2384, plinth_front_y_mm: 60, brace_depth_mm: 486}
+  - name: doors ending at the plinth with flush plinth
+    resolved_input: {door_bottom: plinth, plinth_front: flush, plinth_recess_mm: 0}
+    answer_key: {door_bottom_mm: 82, door_height_mm: 2302, plinth_front_y_mm: 0, brace_depth_mm: 546}
+  - name: doors ending at the plinth with recessed plinth
+    resolved_input: {door_bottom: plinth, plinth_front: recessed, plinth_recess_mm: 60}
+    answer_key: {door_bottom_mm: 82, door_height_mm: 2302, plinth_front_y_mm: 60, brace_depth_mm: 486}

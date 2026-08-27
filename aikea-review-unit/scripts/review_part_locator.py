@@ -27,7 +27,7 @@ class ReviewPartLocator:
         ) / 2.0
         return cq.Location(
             cq.Plane(
-                origin=(left_gap_mm, 0.0, 0.0),
+                origin=(left_gap_mm, 0.0, float(assembly.door_bottom_mm)),
                 xDir=(cos(angle), sin(angle), 0.0),
                 normal=(sin(angle), -cos(angle), 0.0),
             )

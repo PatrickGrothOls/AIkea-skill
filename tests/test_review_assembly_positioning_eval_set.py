@@ -31,7 +31,12 @@ class TestReviewAssemblyPositioningEvalSet:
         assert answer["expected_relationships"] == {
             "base_top_z_mm": 100,
             "cabinet_side_bottom_z_mm": 100,
-            "open_door_review_bottom_z_mm": 0,
+            "door_bottom": "plinth",
+            "door_bottom_z_mm": 82,
+            "plinth_front": "recessed",
+            "plinth_recess_mm": 60,
+            "plinth_front_y_mm": 60,
+            "base_deck_bottom_z_mm": 82,
             "first_cabinet_right_x_global_mm": 1001.333333,
             "first_base_module_end_x_global_mm": 1002.333333,
             "first_base_module_projection_into_gap_mm": 1,

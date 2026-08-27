@@ -96,7 +96,7 @@ class TestUnitMockupGenerator(unittest.TestCase):
             min(bound.ymin for bound in bounds),
             -989.3333333333334,
         )
-        self.assertAlmostEqual(min(bound.zmin for bound in bounds), 0.0)
+        self.assertAlmostEqual(min(bound.zmin for bound in bounds), 82.0)
         self.assertAlmostEqual(max(bound.xmax for bound in bounds), 991.3333333333334)
         self.assertAlmostEqual(max(bound.ymax for bound in bounds), 582.0)
         self.assertAlmostEqual(max(bound.zmax for bound in bounds), 2384.0)

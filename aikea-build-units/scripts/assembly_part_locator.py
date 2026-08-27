@@ -55,7 +55,7 @@ class AssemblyPartLocator:
     def _door_panel(self, part: Any, assembly: Any, base_height_mm: float) -> cq.Location:
         left_gap_mm = (float(assembly.width_mm) - float(assembly.door_width_mm)) / 2.0
         return self._location(
-            (left_gap_mm, 0.0, 0.0),
+            (left_gap_mm, 0.0, float(assembly.door_bottom_mm)),
             (1.0, 0.0, 0.0),
             (0.0, -1.0, 0.0),
         )

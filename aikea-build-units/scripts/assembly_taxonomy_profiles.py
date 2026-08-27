@@ -23,6 +23,7 @@ class AssemblyTaxonomyProfile(Protocol):
         carcass_panel_depth_mm: float,
         door_width_mm: float,
         base_height_mm: float,
+        door_bottom_mm: float,
         panel_thickness_mm: float,
         door_thickness_mm: float,
         back_thickness_mm: float,

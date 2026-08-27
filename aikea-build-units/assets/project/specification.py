@@ -58,6 +58,8 @@ class AssemblySpec:
     inside_depth_mm: float
     door_width_mm: float
     base_height_mm: float
+    door_bottom: str
+    door_bottom_mm: float
     parts: tuple[PartSpec, ...]
     joints: tuple[JointSpec | CabineoJointSpec, ...]
 
@@ -81,6 +83,8 @@ class BaseAssemblySpec:
     width_mm: float
     depth_mm: float
     height_mm: float
+    plinth_front: str
+    plinth_recess_mm: float
     modules: tuple[BaseModuleSpec, ...]
     parts: tuple[PartSpec, ...]
     joints: tuple[JointSpec | CabineoJointSpec, ...]

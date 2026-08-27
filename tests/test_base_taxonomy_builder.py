@@ -17,6 +17,8 @@ class TestBaseTaxonomyBuilder:
             depth_mm=582.0,
             height_mm=100.0,
             panel_thickness_mm=18.0,
+            plinth_front="flush",
+            plinth_recess_mm=0.0,
         )
 
     def test_base_splits_at_a_cabinet_gap(self) -> None:

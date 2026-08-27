@@ -22,6 +22,8 @@ class TestBuildStructuralBaseEvalSet:
                 inputs["depth_mm"],
                 inputs["height_mm"],
                 inputs["panel_thickness_mm"],
+                "flush",
+                0.0,
             )
             assert base.width_mm == answer["width_mm"]
             self._assert_modules(base, answer["modules"])
