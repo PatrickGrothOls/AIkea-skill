@@ -25,10 +25,14 @@ class TestUniversalSidePanelHolePattern(unittest.TestCase):
         self.assertEqual(shorter_rows[1] - shorter_rows[0], 64.0)
         self.assertLessEqual(shorter_rows[-1], 2011.0 - 100.0)
 
-    def test_columns_preserve_the_proven_quarter_depth_layout(self) -> None:
+    def test_columns_use_fixed_system_32_setbacks_at_every_depth(self) -> None:
         self.assertEqual(
             self.pattern.column_positions_mm(356.0),
-            (89.0, 267.0),
+            (37.0, 319.0),
+        )
+        self.assertEqual(
+            self.pattern.column_positions_mm(564.0),
+            (37.0, 527.0),
         )
 
     @unittest.skipUnless(find_spec("cadquery"), "requires the project's CadQuery environment")

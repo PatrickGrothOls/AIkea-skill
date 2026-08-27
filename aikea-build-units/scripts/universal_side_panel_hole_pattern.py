@@ -16,6 +16,7 @@ class UniversalSidePanelHoleProfile:
     spacing_mm: float = 64.0
     top_clearance_mm: float = 100.0
     bottom_clearance_mm: float = 100.0
+    front_rear_setback_mm: float = 37.0
     depth_mm: float = 13.0
 
 
@@ -35,8 +36,12 @@ class UniversalSidePanelHolePattern:
         return tuple(row_heights)
 
     def column_positions_mm(self, panel_depth_mm: float) -> tuple[float, float]:
-        edge_distance_mm = panel_depth_mm / 4.0
-        return edge_distance_mm, panel_depth_mm - edge_distance_mm
+        setback_mm = self.profile.front_rear_setback_mm
+        if panel_depth_mm <= 2.0 * setback_mm:
+            raise PartConstructionError(
+                "universal side-panel holes require separate front and rear columns"
+            )
+        return setback_mm, panel_depth_mm - setback_mm
 
     def apply(self, part: Any, workpiece: Any) -> Any:
         import cadquery as cq

@@ -94,6 +94,7 @@ cases:
         shelf_count: 3
         shelf_width_mm: 955.333333
         shelf_support_rows_mm: [612, 1124, 1636]
+        side_hole_columns_mm: [37, 527]
       expected_first_joint:
         joint_id: left_side_to_top
         joint_type: cabineo

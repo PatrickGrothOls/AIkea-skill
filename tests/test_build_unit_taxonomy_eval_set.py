@@ -6,6 +6,7 @@ import pytest
 import yaml
 
 from assembly_taxonomy_generator import AssemblyTaxonomyGenerator
+from universal_side_panel_hole_pattern import UniversalSidePanelHolePattern
 
 
 class TestBuildUnitTaxonomyEvalSet:
@@ -53,6 +54,9 @@ class TestBuildUnitTaxonomyEvalSet:
         assert [
             dict(shelf.dimensions_mm)["support_row_height"] for shelf in shelves
         ] == expected["shelf_support_rows_mm"]
+        assert list(
+            UniversalSidePanelHolePattern().column_positions_mm(first.inside_depth_mm)
+        ) == expected["side_hole_columns_mm"]
         self._assert_first_joint(first, answer["expected_first_joint"])
         for assembly in result.assemblies[:-1]:
             root = tmp_path / "assemblies" / assembly.assembly_id

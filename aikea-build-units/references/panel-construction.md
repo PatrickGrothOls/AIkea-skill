@@ -86,9 +86,15 @@ not a client choice or a project-wide geometry setting. It uses the panel's own
 depth, height, thickness, and named inside face.
 
 Rows share one bottom reference so holes remain level across side panels with
-different top heights. The two proven depth columns adapt to the panel depth, and
-every hole is blind from the inside face. A panel too thin to preserve its outside
-face must fail construction instead of receiving a through hole.
+different top heights. Place the front and rear columns 37 mm from their respective
+panel edges. This gives shelves a broad support footprint and keeps the front row
+on the shared System 32 hardware reference. Every hole is blind from the inside
+face. A panel too thin to preserve its outside face must fail construction instead
+of receiving a through hole.
+
+The front row can provide the reference used by compatible drawer fittings, but it
+does not define a complete drawer installation. A selected rail profile must still
+own its exact mounting holes, vertical position, clearances, and receiving work.
 
 ## Build adjustable shelves
 
