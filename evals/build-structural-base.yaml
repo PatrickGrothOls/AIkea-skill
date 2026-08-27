@@ -12,6 +12,7 @@ scoring:
     - Preferred module breaks use cabinet gaps when they satisfy the machine limit.
     - Support height plus deck thickness equals the chosen overall base height.
     - Brace lengths close between the front and back rails.
+    - Every brace-to-rail seam produces paired Cabineo machining on both participants.
     - Every module seam remains an explicit assembly relationship.
   always_forbidden:
     - Store CNC travel or cutter diameter as wardrobe measurements.
@@ -46,6 +47,9 @@ cases:
       deck_count: 2
       rail_count: 4
       brace_count: 13
+      brace_to_rail_joint_count: 26
+      connector_positions_mm: [20.5, 61.5]
+      cuts_per_connector: 2
       module_seam_count: 1
 
   - name: six-metre cabinet run
@@ -67,4 +71,8 @@ cases:
         - {id: base_module_03, start_x_mm: 4003, end_x_mm: 6004}
       deck_count: 3
       rail_count: 6
+      brace_count: 24
+      brace_to_rail_joint_count: 48
+      connector_positions_mm: [25.5, 76.5]
+      cuts_per_connector: 2
       module_seam_count: 2

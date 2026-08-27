@@ -35,11 +35,9 @@ class CabineoJoint:
             joint.source_face,
             source_part,
         )
+        connector_positions_mm = self.layout.positions(joint, source_part)
         cuts: list[PartCut] = []
-        for index, position_mm in enumerate(
-            self.layout.positions(joint, source_part),
-            start=1,
-        ):
+        for index, position_mm in enumerate(connector_positions_mm, start=1):
             source_cutter = self.cutter.cutout(
                 joint.source_face,
                 joint.source_edge,
@@ -47,6 +45,7 @@ class CabineoJoint:
                 panel_thickness_mm,
                 edge_position_mm,
             )
+            self._validate_source_bounds(joint, source_part, source_cutter)
             cuts.extend(
                 (
                     PartCut(
@@ -74,6 +73,28 @@ class CabineoJoint:
             raise PartConstructionError(
                 f"{part.part_id} is {thickness_mm:g} mm thick; "
                 f"{self.cutter.profile.profile_id} requires at least {required_mm:g} mm"
+            )
+
+    def _validate_source_bounds(
+        self,
+        joint: Any,
+        source_part: Any,
+        source_cutter: cq.Shape,
+    ) -> None:
+        slide_axis = self.layout.slide_axis(joint.source_face, joint.source_edge)
+        source_length_mm = self.layout.slide_length(
+            joint.source_face,
+            joint.source_edge,
+            source_part,
+        )
+        bounds = source_cutter.BoundingBox()
+        minimum_mm = getattr(bounds, f"{slide_axis.lower()}min")
+        maximum_mm = getattr(bounds, f"{slide_axis.lower()}max")
+        tolerance_mm = 1e-6
+        if minimum_mm < -tolerance_mm or maximum_mm > source_length_mm + tolerance_mm:
+            raise PartConstructionError(
+                f"{source_part.part_id} is too short for "
+                f"{self.cutter.profile.profile_id} connector layout"
             )
 
 

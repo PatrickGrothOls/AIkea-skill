@@ -22,8 +22,11 @@ class CabineoConnectorLayout:
             raise PartConstructionError(
                 f"unsupported Cabineo connector layout: {joint.connector_layout}"
             )
-        slide_axis = self.slide_axis(joint.source_face, joint.source_edge)
-        length_mm = float(source_part.local_size_mm[self._AXIS_INDEX[slide_axis]])
+        length_mm = self.slide_length(
+            joint.source_face,
+            joint.source_edge,
+            source_part,
+        )
         edge_distance_mm = min(self._MAX_EDGE_DISTANCE_MM, length_mm / 4.0)
         connector_span_mm = length_mm - (2.0 * edge_distance_mm)
         connector_count = max(
@@ -49,6 +52,10 @@ class CabineoConnectorLayout:
 
     def slide_axis(self, face: str, edge: str) -> str:
         return ({"X", "Y", "Z"} - {face[-1], edge[-1]}).pop()
+
+    def slide_length(self, face: str, edge: str, source_part: Any) -> float:
+        slide_axis = self.slide_axis(face, edge)
+        return float(source_part.local_size_mm[self._AXIS_INDEX[slide_axis]])
 
 
 __all__ = ["CabineoConnectorLayout"]

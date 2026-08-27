@@ -30,9 +30,10 @@ preserving any local file that the client has changed since its last generation.
 The bundled construction now supplies full-height tall storage and the structural
 base beneath the complete run. The base inherits the cabinet footprint, divides
 long panels into CNC-sized modules, and owns its decks, rails, braces, and module
-relationships. A different furniture purpose proceeds when its own local design
-facts and construction taxonomy are available; the shared boundary calculation
-and folder writer remain unchanged.
+relationships. Each brace-to-rail relationship resolves the brace pockets and
+matching blind rail receivers together. A different furniture purpose proceeds
+when its own local design facts and construction taxonomy are available; the
+shared boundary calculation and folder writer remain unchanged.
 
 ## Responsibility boundary
 

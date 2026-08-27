@@ -67,6 +67,29 @@ class TestBaseTaxonomyBuilder:
                 right - left for left, right in zip(positions, positions[1:])
             ) <= 320.0
 
+    def test_every_brace_has_paired_cabineo_joints_to_both_rails(self) -> None:
+        corners = [
+            joint for joint in self.base.joints if joint.purpose == "base_frame_corner"
+        ]
+
+        assert len(corners) == 26
+        assert all(joint.joint_type == "cabineo" for joint in corners)
+        assert all(joint.source_part_id.startswith("brace_") for joint in corners)
+        assert all(joint.source_face == ">Z" for joint in corners)
+        assert all(joint.connector_layout == "bounded_spacing" for joint in corners)
+        assert {
+            (joint.target_part_id.split("_")[0], joint.source_edge)
+            for joint in corners
+        } == {("front", "<X"), ("back", ">X")}
+        for brace in {
+            joint.source_part_id for joint in corners
+        }:
+            assert {
+                joint.target_part_id.split("_")[0]
+                for joint in corners
+                if joint.source_part_id == brace
+            } == {"front", "back"}
+
     def test_module_seam_is_an_explicit_assembly_relationship(self) -> None:
         seams = [
             joint for joint in self.base.joints if joint.purpose == "base_module_seam"

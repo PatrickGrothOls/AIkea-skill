@@ -84,10 +84,12 @@ cabinet footprint. This choice is independent of the door lower line.
 
 Long bases divide at useful cabinet boundaries so every deck and rail fits the
 selected CNC working area. Each module begins and ends with a brace, and each seam
-between modules remains visible in the joint specification. The generated parts
-are real local CadQuery blanks. Physical seam machining, cabinet-to-base receiving
-features, assembly placement, and visual approval are later construction checks
-and must not be claimed merely because the folders exist.
+between modules remains visible in the joint specification. Every brace owns one
+paired Cabineo joint to the front rail and one to the back rail. Each joint derives
+the brace pockets and matching blind rail receivers from the same geometry. Module
+seam machining, cabinet-to-base receiving features, assembly placement, and visual
+approval remain later construction checks and must not be claimed merely because
+the folders exist.
 
 ## Safe regeneration
 

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from assembly_taxonomy import JointTaxonomy
+from assembly_taxonomy import CabineoJointTaxonomy, JointTaxonomy
 
 
 class BaseJointTaxonomy:
@@ -12,12 +12,12 @@ class BaseJointTaxonomy:
         self,
         module_index: int,
         brace_count: int,
-    ) -> tuple[JointTaxonomy, ...]:
+    ) -> tuple[JointTaxonomy | CabineoJointTaxonomy, ...]:
         suffix = f"{module_index:02d}"
         deck_id = f"deck_{suffix}"
         front_id = f"front_rail_{suffix}"
         back_id = f"back_rail_{suffix}"
-        joints = [
+        joints: list[JointTaxonomy | CabineoJointTaxonomy] = [
             JointTaxonomy(
                 f"{deck_id}_to_front_rail",
                 (deck_id, front_id),
@@ -33,15 +33,23 @@ class BaseJointTaxonomy:
             brace_id = f"brace_{suffix}_{brace_index:02d}"
             joints.extend(
                 (
-                    JointTaxonomy(
-                        f"{brace_id}_to_front_rail",
-                        (brace_id, front_id),
-                        "base_frame_corner",
+                    CabineoJointTaxonomy(
+                        joint_id=f"{brace_id}_to_front_rail",
+                        source_part_id=brace_id,
+                        target_part_id=front_id,
+                        source_face=">Z",
+                        source_edge="<X",
+                        connector_layout="bounded_spacing",
+                        purpose="base_frame_corner",
                     ),
-                    JointTaxonomy(
-                        f"{brace_id}_to_back_rail",
-                        (brace_id, back_id),
-                        "base_frame_corner",
+                    CabineoJointTaxonomy(
+                        joint_id=f"{brace_id}_to_back_rail",
+                        source_part_id=brace_id,
+                        target_part_id=back_id,
+                        source_face=">Z",
+                        source_edge=">X",
+                        connector_layout="bounded_spacing",
+                        purpose="base_frame_corner",
                     ),
                     JointTaxonomy(
                         f"{deck_id}_to_{brace_id}",

@@ -7,6 +7,7 @@ from typing import Any
 
 import cadquery as cq
 
+from base_part_locator import BasePartLocator
 from part_construction_error import PartConstructionError
 
 
@@ -14,6 +15,7 @@ class AssemblyPartLocator:
     """Calculate explicit local-to-assembly transforms for generated panel parts."""
 
     def __init__(self) -> None:
+        self.base_locator = BasePartLocator()
         self._part_locators = {
             "left_side": self._left_side,
             "right_side": self._right_side,
@@ -26,6 +28,8 @@ class AssemblyPartLocator:
         }
 
     def locate(self, part: Any, assembly: Any, base_height_mm: float) -> cq.Location:
+        if part.role in self.base_locator.ROLES:
+            return self.base_locator.locate(part, assembly)
         locator = self._part_locators.get(part.part_id)
         locator = locator or self._role_locators.get(part.role)
         if locator is None:

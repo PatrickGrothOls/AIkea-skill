@@ -1,4 +1,4 @@
-"""Scope: Place generated base parts in one physical base assembly."""
+"""Scope: Locate one structural-base part inside its owning base assembly."""
 
 from __future__ import annotations
 
@@ -6,11 +6,13 @@ from typing import Any
 
 import cadquery as cq
 
-from unit_mockup import UnitMockupInputError
+from part_construction_error import PartConstructionError
 
 
 class BasePartLocator:
     """Place decks, front and back rails, and braces from their local specs."""
+
+    ROLES = frozenset({"base_deck", "base_rail", "base_brace"})
 
     def locate(self, part: Any, base: Any) -> cq.Location:
         module = self._module(part, base)
@@ -22,7 +24,7 @@ class BasePartLocator:
         }
         locator = locations.get(part.role)
         if locator is None:
-            raise UnitMockupInputError([f"unsupported base part role: {part.role}"])
+            raise PartConstructionError(f"unsupported base part role: {part.role}")
         return locator(part, base, module, dimensions)
 
     def _deck_location(self, _part, base, module, dimensions) -> cq.Location:

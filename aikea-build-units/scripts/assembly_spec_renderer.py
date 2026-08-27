@@ -116,6 +116,7 @@ class AssemblySpecRenderer:
                 f"            source_face={joint.source_face!r},\n"
                 f"            source_edge={joint.source_edge!r},\n"
                 f"            connector_layout={joint.connector_layout!r},\n"
+                f"            purpose={joint.purpose!r},\n"
                 "        ),"
             )
         return (
