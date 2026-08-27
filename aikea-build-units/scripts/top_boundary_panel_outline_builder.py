@@ -8,6 +8,8 @@ from assembly_taxonomy import BoundaryPoint
 class TopBoundaryPanelOutlineBuilder:
     """Create a bottom-closed panel outline over any horizontal boundary span."""
 
+    _TOLERANCE_MM = 1e-6
+
     def build(
         self,
         top: tuple[BoundaryPoint, ...],
@@ -23,7 +25,11 @@ class TopBoundaryPanelOutlineBuilder:
                     point.height_mm + height_offset_mm,
                 )
                 for point in top
-                if left_x_mm < point.x_mm < right_x_mm
+                if (
+                    left_x_mm + self._TOLERANCE_MM
+                    < point.x_mm
+                    < right_x_mm - self._TOLERANCE_MM
+                )
             ),
             BoundaryPoint(
                 right_x_mm - left_x_mm,
@@ -44,7 +50,11 @@ class TopBoundaryPanelOutlineBuilder:
         left, right = next(
             (left, right)
             for left, right in zip(top, top[1:])
-            if left.x_mm - 1e-6 <= x_mm <= right.x_mm + 1e-6
+            if (
+                left.x_mm - self._TOLERANCE_MM
+                <= x_mm
+                <= right.x_mm + self._TOLERANCE_MM
+            )
         )
         span_mm = right.x_mm - left.x_mm
         progress = 0.0 if span_mm == 0 else (x_mm - left.x_mm) / span_mm
