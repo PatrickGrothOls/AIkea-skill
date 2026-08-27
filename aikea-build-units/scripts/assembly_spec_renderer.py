@@ -123,6 +123,7 @@ class AssemblySpecRenderer:
             f"            joint_id={joint.joint_id!r},\n"
             f"            participant_ids={joint.participant_ids!r},\n"
             f"            purpose={joint.purpose!r},\n"
+            f"            joint_type={joint.joint_type!r},\n"
             "        ),"
         )
 

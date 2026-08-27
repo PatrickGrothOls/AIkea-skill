@@ -39,17 +39,18 @@ builder closes that outline and extends its material thickness along positive Z.
 The default structural carcass preserves the outside top boundary on its back and
 top panels. A flat top spans the complete assembly width and bears directly on side
 panels that stop at its underside. A confirmed angled end keeps the material needed
-for its equal-thickness miter. The deterministic panel taxonomy resolves these local
-blanks; generated builders do not recreate that boundary logic.
+for its equal-thickness miter. Every changing-angle seam derives one shared miter
+plane in the assembled frame and returns complementary cuts to the two local panel
+frames. The deterministic panel taxonomy resolves these local blanks; generated
+builders do not recreate that boundary logic.
 
 The generated local part builder owns this call, applies the cuts assigned by the
 assembly's joint definitions, and returns the real local CadQuery part. A joint
 defines its geometry once and transforms that same geometry into each
-participating part's local frame. Before applying the joint, verify that the
-uncut participants meet with no material overlap. After applying it, verify that
-the shared feature aligns in assembly space and remains within its intended
-material depth. Assembly placement and manufacturing placement remain separate
-transformations.
+participating part's local frame. Verify the finished participants meet with no
+gap or unintended material overlap, and that any blind feature remains within its
+intended material depth. Assembly placement and manufacturing placement remain
+separate transformations.
 
 ## Keep every panel inside the CNC working area
 

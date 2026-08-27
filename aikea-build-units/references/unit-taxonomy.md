@@ -67,9 +67,9 @@ assembly as physical participants. On a flat unit, the top spans and bears direc
 on the side panels. Each square side/back, side/top, and top/back seam is a paired
 Cabineo joint; the side/top connector is machined from the side's inside face toward
 its top edge so the matching receiver enters the top from below. Angled
-equal-thickness top seams remain miter relationships. A back that is too thin for
-the selected connector profile must fail construction instead of producing a
-through-cut receiver.
+equal-thickness top seams use one paired miter cut shared by both panels. A back that
+is too thin for the selected connector profile must fail construction instead of
+producing a through-cut receiver.
 
 ## Structural base
 

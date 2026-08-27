@@ -71,6 +71,7 @@ class TallStorageJointTaxonomy:
                 f"{left_id}_to_{right_id}",
                 (left_id, right_id),
                 "top_boundary_seam",
+                "equal_thickness_miter",
             )
             for left_id, right_id in zip(top_ids, top_ids[1:])
         )
@@ -96,6 +97,7 @@ class TallStorageJointTaxonomy:
         return JointTaxonomy(
             joint_id,
             (top_id, side_id),
+            "angled_panel_seam",
             "equal_thickness_miter",
         )
 

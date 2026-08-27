@@ -6,6 +6,7 @@ from typing import Any
 
 from assembly_part_locator import AssemblyPartLocator
 from cabineo_joint import CabineoJoint
+from equal_thickness_miter_joint import EqualThicknessMiterJoint
 from part_cut import AssemblyCuts
 
 
@@ -14,7 +15,10 @@ class AssemblyJointMachiningBuilder:
 
     def __init__(self) -> None:
         self.locator = AssemblyPartLocator()
-        self._joint_builders = {"cabineo": self._build_cabineo}
+        self._joint_builders = {
+            "cabineo": self._build_cabineo,
+            "equal_thickness_miter": self._build_equal_thickness_miter,
+        }
 
     def build(self, assembly: Any, joints: tuple[Any, ...]) -> AssemblyCuts:
         cuts = []
@@ -43,6 +47,22 @@ class AssemblyJointMachiningBuilder:
             target,
             source_location,
             target_location,
+        )
+
+    def _build_equal_thickness_miter(
+        self, assembly: Any, joint: Any
+    ) -> tuple[Any, ...]:
+        part_a = assembly.part(joint.participant_ids[0])
+        part_b = assembly.part(joint.participant_ids[1])
+        base_height_mm = float(assembly.base_height_mm)
+        location_a = self.locator.locate(part_a, assembly, base_height_mm)
+        location_b = self.locator.locate(part_b, assembly, base_height_mm)
+        return EqualThicknessMiterJoint().build(
+            joint,
+            part_a,
+            part_b,
+            location_a,
+            location_b,
         )
 
 
