@@ -13,22 +13,57 @@ export class PlywoodSurface {
     this.colorMap = colorMap;
     this.normalMap = normalMap;
     this.roughnessMap = roughnessMap;
+    this.materialsBySource = new WeakMap();
     this.#prepareMaps(anisotropy);
   }
 
   applyTo(mesh) {
     this.#addLocalTextureCoordinates(mesh.geometry);
-    for (const material of [mesh.material].flat()) {
-      material.color.set("#ffffff");
-      material.map = this.colorMap;
-      material.normalMap = this.normalMap;
-      material.normalScale.set(0.52, 0.52);
-      material.roughnessMap = this.roughnessMap;
-      material.envMapIntensity = 0.58;
-      material.metalness = 0;
-      material.roughness = 0.78;
-      material.needsUpdate = true;
+    const useFaceMaterial = isPlywoodFace(mesh.geometry);
+    const replacementMaterials = [mesh.material]
+      .flat()
+      .map((material) => this.#getMaterial(material, useFaceMaterial));
+    mesh.material = Array.isArray(mesh.material)
+      ? replacementMaterials
+      : replacementMaterials[0];
+  }
+
+  #getMaterial(sourceMaterial, useFaceMaterial) {
+    if (!this.materialsBySource.has(sourceMaterial)) {
+      this.materialsBySource.set(sourceMaterial, {
+        edge: this.#createEdgeMaterial(sourceMaterial),
+        face: this.#createFaceMaterial(sourceMaterial),
+      });
     }
+    const materials = this.materialsBySource.get(sourceMaterial);
+    return useFaceMaterial ? materials.face : materials.edge;
+  }
+
+  #createFaceMaterial(sourceMaterial) {
+    const material = sourceMaterial.clone();
+    material.color.set("#ffffff");
+    material.map = this.colorMap;
+    material.normalMap = this.normalMap;
+    material.normalScale.set(0.24, 0.24);
+    material.roughnessMap = this.roughnessMap;
+    material.envMapIntensity = 1;
+    material.metalness = 0;
+    material.roughness = 0.92;
+    material.needsUpdate = true;
+    return material;
+  }
+
+  #createEdgeMaterial(sourceMaterial) {
+    const material = sourceMaterial.clone();
+    material.color.set("#cfb27f");
+    material.map = this.colorMap;
+    material.normalMap = null;
+    material.roughnessMap = null;
+    material.envMapIntensity = 0.7;
+    material.metalness = 0;
+    material.roughness = 0.88;
+    material.needsUpdate = true;
+    return material;
   }
 
   #prepareMaps(anisotropy) {
@@ -73,4 +108,13 @@ export class PlywoodSurface {
 
     geometry.setAttribute("uv", new Float32BufferAttribute(coordinates, 2));
   }
+}
+
+export function isPlywoodFace(geometry) {
+  const normals = geometry.getAttribute("normal");
+  let normalZTotal = 0;
+  for (let index = 0; index < normals.count; index += 1) {
+    normalZTotal += Math.abs(normals.getZ(index));
+  }
+  return normalZTotal / normals.count >= 0.8;
 }

@@ -3,17 +3,20 @@
 export class ReviewView {
   static fromSearch(search) {
     const query = new URLSearchParams(search);
+    const view = query.get("view") ?? "perspective";
     return new ReviewView(
-      query.get("view") ?? "perspective",
+      view,
       query.get("title") ?? "Your first cabinet",
+      query.get("render") ?? (view === "perspective" ? "photo" : "interactive"),
     );
   }
 
-  constructor(view, title) {
+  constructor(view, title, renderMode) {
     this.view = ["top", "bottom", "structure"].includes(view)
       ? view
       : "perspective";
     this.title = title;
+    this.renderMode = renderMode === "photo" ? "photo" : "interactive";
   }
 
   cameraDirection() {
@@ -35,8 +38,12 @@ export class ReviewView {
       : [0, 0, -1];
   }
 
-  showsFloor() {
+  showsStudioFloor() {
     return this.view === "perspective";
+  }
+
+  usesPhotoRenderer() {
+    return this.renderMode === "photo";
   }
 
   frameDimensions(size) {
@@ -60,6 +67,9 @@ export class ReviewView {
   }
 
   guidance() {
+    if (this.usesPhotoRenderer()) {
+      return "Set the angle, then leave it still for a moment while the image sharpens.";
+    }
     return {
       top: "Looking down through the deck across both CNC-sized base modules.",
       bottom: "Looking up at the rails, braces, and the join between the modules.",

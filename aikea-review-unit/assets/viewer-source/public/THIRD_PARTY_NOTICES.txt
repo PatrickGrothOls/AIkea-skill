@@ -1,14 +1,27 @@
 The AIkea unit review viewer bundles React, React DOM, Three.js,
-@react-three/fiber, and @react-three/drei. These projects are distributed under
-their respective MIT licenses. Source and license information:
+@react-three/fiber, @react-three/drei, @react-three/postprocessing,
+@react-three/gpu-pathtracer, postprocessing, n8ao, and three-gpu-pathtracer.
+These projects are distributed under their respective MIT licenses. Source and
+license information:
 
 https://github.com/facebook/react
 https://github.com/mrdoob/three.js
 https://github.com/pmndrs/react-three-fiber
 https://github.com/pmndrs/drei
+https://github.com/pmndrs/react-postprocessing
+https://github.com/pmndrs/react-three-gpu-pathtracer
+https://github.com/pmndrs/postprocessing
+https://github.com/N8python/n8ao
+https://github.com/gkjohnson/three-gpu-pathtracer
 
 The bundled plywood PBR texture was created by Rob Tuytel and published by Poly
 Haven under CC0 1.0 Universal:
 
 https://polyhaven.com/a/plywood
+https://creativecommons.org/publicdomain/zero/1.0/
+
+The bundled Studio Small 08 HDRI was created by Sergej Majboroda and published
+by Poly Haven under CC0 1.0 Universal:
+
+https://polyhaven.com/a/studio_small_08
 https://creativecommons.org/publicdomain/zero/1.0/

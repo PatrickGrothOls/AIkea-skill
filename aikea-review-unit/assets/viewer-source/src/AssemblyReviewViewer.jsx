@@ -1,6 +1,6 @@
 /** Scope: Display one generated assembly GLB with realistic materials, automatic framing, and direct orbit controls. */
 
-import { Suspense, useLayoutEffect, useState } from "react";
+import { lazy, Suspense, useLayoutEffect, useState } from "react";
 import { Canvas, useThree } from "@react-three/fiber";
 import { useGLTF, useTexture } from "@react-three/drei";
 import {
@@ -10,16 +10,20 @@ import {
   Vector3,
 } from "three";
 
-import { AssemblyReviewFloor } from "./AssemblyReviewFloor";
-import { AssemblyReviewLighting } from "./AssemblyReviewLighting";
+import { AssemblyContactShading } from "./AssemblyContactShading";
+import { AssemblyStudioFloor } from "./AssemblyStudioFloor";
+import { AssemblyStudioEnvironment } from "./AssemblyStudioEnvironment";
+import { AssemblyStudioLights } from "./AssemblyStudioLights";
 import { CloseInspectionControls } from "./CloseInspectionControls";
 import { PlywoodSurface } from "./PlywoodSurface";
 import { ReviewView } from "./ReviewView";
 
+const AssemblyPhotoRenderer = lazy(() => import("./AssemblyPhotoRenderer"));
+
 function configureReviewRenderer({ gl }) {
   gl.outputColorSpace = SRGBColorSpace;
   gl.toneMapping = AgXToneMapping;
-  gl.toneMappingExposure = 0.9;
+  gl.toneMappingExposure = 1.15;
 }
 
 // A function component is the smallest React boundary for the GLB-loading hook.
@@ -85,6 +89,18 @@ export function AssemblyReviewViewer() {
     span: 1,
   });
   const [reviewView] = useState(() => ReviewView.fromSearch(window.location.search));
+  const assemblyScene = (
+    <>
+      {reviewView.showsStudioFloor() && (
+        <AssemblyStudioFloor modelBounds={modelBounds} />
+      )}
+      <Suspense fallback={null}>
+        <AssemblyStudioEnvironment />
+        <AssemblyStudioLights modelBounds={modelBounds} />
+        <ReviewModel onModelMeasured={setModelBounds} reviewView={reviewView} />
+      </Suspense>
+    </>
+  );
 
   return (
     <main className="review-shell">
@@ -93,17 +109,19 @@ export function AssemblyReviewViewer() {
         dpr={[1, 2]}
         gl={{ antialias: true, powerPreference: "high-performance" }}
         onCreated={configureReviewRenderer}
-        shadows="variance"
       >
         <color attach="background" args={["#d8d5ce"]} />
-        <AssemblyReviewLighting modelBounds={modelBounds} />
-        {reviewView.showsFloor() && (
-          <AssemblyReviewFloor modelBounds={modelBounds} />
-        )}
         <CloseInspectionControls modelSpan={modelBounds.span} />
-        <Suspense fallback={null}>
-          <ReviewModel onModelMeasured={setModelBounds} reviewView={reviewView} />
-        </Suspense>
+        {reviewView.usesPhotoRenderer() ? (
+          <Suspense fallback={assemblyScene}>
+            <AssemblyPhotoRenderer key={`photo-${modelBounds.span}`}>
+              {assemblyScene}
+            </AssemblyPhotoRenderer>
+          </Suspense>
+        ) : (
+          assemblyScene
+        )}
+        {!reviewView.usesPhotoRenderer() && <AssemblyContactShading />}
       </Canvas>
       <section className="review-card">
         <p className="eyebrow">AIkea visual review</p>

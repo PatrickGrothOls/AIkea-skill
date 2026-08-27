@@ -41,8 +41,24 @@ test("perspective distance contains the complete three-dimensional bounds", () =
 });
 
 test("only a perspective review shows the studio floor", () => {
-  assert.equal(ReviewView.fromSearch("").showsFloor(), true);
-  assert.equal(ReviewView.fromSearch("?view=top").showsFloor(), false);
-  assert.equal(ReviewView.fromSearch("?view=bottom").showsFloor(), false);
-  assert.equal(ReviewView.fromSearch("?view=structure").showsFloor(), false);
+  assert.equal(ReviewView.fromSearch("").showsStudioFloor(), true);
+  assert.equal(ReviewView.fromSearch("?view=top").showsStudioFloor(), false);
+  assert.equal(ReviewView.fromSearch("?view=bottom").showsStudioFloor(), false);
+  assert.equal(ReviewView.fromSearch("?view=structure").showsStudioFloor(), false);
+});
+
+test("perspective reviews default to photo rendering", () => {
+  assert.equal(ReviewView.fromSearch("").usesPhotoRenderer(), true);
+  assert.equal(
+    ReviewView.fromSearch("?render=interactive").usesPhotoRenderer(),
+    false,
+  );
+});
+
+test("fixed construction views stay interactive unless photo rendering is requested", () => {
+  assert.equal(ReviewView.fromSearch("?view=top").usesPhotoRenderer(), false);
+  assert.equal(
+    ReviewView.fromSearch("?view=top&render=photo").usesPhotoRenderer(),
+    true,
+  );
 });

@@ -1,6 +1,6 @@
-/** Scope: Ground a perspective assembly review on a neutral shadow-catching floor. */
+/** Scope: Ground a perspective assembly review on one neutral studio floor. */
 
-export function AssemblyReviewFloor({ modelBounds }) {
+export function AssemblyStudioFloor({ modelBounds }) {
   const { center, size, span } = modelBounds;
   const floorHeight = center[1] - size[1] / 2 - Math.max(span * 0.0001, 0.2);
 
@@ -11,7 +11,12 @@ export function AssemblyReviewFloor({ modelBounds }) {
       rotation={[-Math.PI / 2, 0, 0]}
     >
       <planeGeometry args={[span * 30, span * 30]} />
-      <shadowMaterial color="#4e4438" opacity={0.14} transparent />
+      <meshStandardMaterial
+        color="#c9c5bd"
+        envMapIntensity={0.75}
+        metalness={0}
+        roughness={0.95}
+      />
     </mesh>
   );
 }

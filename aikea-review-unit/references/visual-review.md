@@ -85,6 +85,11 @@ detail into view, and then scroll or pinch to move straight closer without
 changing the viewing direction. Keep the viewer open while asking for the visual
 decision; do not make the client locate files or run terminal commands.
 
+Perspective review should make the generated cabinet easy to judge as a finished
+physical object. Use the packaged photographic lighting and material presentation,
+allow the image to refine after the client settles on an angle, and keep the fast
+interactive view available for movement and close construction inspection.
+
 The same viewer accepts `view=top`, `view=bottom`, or `view=structure` in its URL
 when a fixed base angle explains the result more clearly than an interactive
 perspective. `title` supplies the short client-facing label shown with that view.
