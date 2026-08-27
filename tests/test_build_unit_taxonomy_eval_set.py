@@ -43,6 +43,16 @@ class TestBuildUnitTaxonomyEvalSet:
         assert dict(top_panel.dimensions_mm)["length"] == pytest.approx(
             expected["top_panel_width_mm"]
         )
+        shelves = [part for part in first.parts if part.role == "shelf_panel"]
+        assert len(shelves) == expected["shelf_count"]
+        assert all(
+            dict(shelf.dimensions_mm)["width"]
+            == pytest.approx(expected["shelf_width_mm"])
+            for shelf in shelves
+        )
+        assert [
+            dict(shelf.dimensions_mm)["support_row_height"] for shelf in shelves
+        ] == expected["shelf_support_rows_mm"]
         self._assert_first_joint(first, answer["expected_first_joint"])
         for assembly in result.assemblies[:-1]:
             root = tmp_path / "assemblies" / assembly.assembly_id

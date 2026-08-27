@@ -23,6 +23,9 @@ class TestReviewUnitEvalSet:
             "right_side",
             "back_panel",
             "door_panel",
+            "shelf_01",
+            "shelf_02",
+            "shelf_03",
             "top_panel_01",
         ]
         assert answer["expected_cadquery_bounds_mm"] == {

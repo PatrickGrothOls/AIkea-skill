@@ -47,6 +47,9 @@ cases:
         - right_side
         - back_panel
         - door_panel
+        - shelf_01
+        - shelf_02
+        - shelf_03
         - top_panel_01
       expected_cadquery_bounds_mm:
         minimum: [-17, -989.333333, 0]

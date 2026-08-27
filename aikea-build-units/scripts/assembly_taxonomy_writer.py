@@ -22,7 +22,7 @@ class AssemblyTaxonomyWriter:
         self,
         project_root: Path,
         files: dict[Path, str],
-        replaceable: dict[Path, str] | None = None,
+        replaceable: dict[Path, tuple[str, ...]] | None = None,
     ) -> tuple[Path, ...]:
         replaceable = replaceable or {}
         conflicts = tuple(
@@ -48,9 +48,9 @@ class AssemblyTaxonomyWriter:
             not path.is_file() or path.read_text(encoding="utf-8") != content
         )
 
-    def _matches(self, path: Path, content: str | None) -> bool:
+    def _matches(self, path: Path, contents: tuple[str, ...] | None) -> bool:
         return bool(
-            content is not None
+            contents
             and path.is_file()
-            and path.read_text(encoding="utf-8") == content
+            and path.read_text(encoding="utf-8") in contents
         )

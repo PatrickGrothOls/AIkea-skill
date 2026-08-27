@@ -17,6 +17,7 @@ class PartBlankBuilder:
             "back_panel": self._build_back_panel,
             "door_panel": self._build_door_panel,
             "top_panel": self._build_top_panel,
+            "shelf_panel": self._build_local_rectangle,
             "base_deck": self._build_local_rectangle,
             "base_rail": self._build_local_rectangle,
             "base_brace": self._build_local_rectangle,

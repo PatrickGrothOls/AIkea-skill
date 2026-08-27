@@ -13,7 +13,8 @@ Execute its generated assembly builder, place the returned local CadQuery parts
 through explicit assembly locations, combine them in one named CadQuery assembly,
 and use CadQuery's GLB exporter. The mock-up includes every calculated carcass
 panel, complete shaped back and door outlines, every top-boundary segment, and
-the door opened from its calculated hinge edge so the cabinet can be inspected.
+the supplied removable shelves. Open the door from its calculated hinge edge so
+the cabinet and the shelf spacing can be inspected.
 It preserves any construction already produced by the generated assembly builder;
 the review stage itself neither adds nor approximates missing manufacturing work.
 

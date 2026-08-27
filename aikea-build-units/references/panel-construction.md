@@ -89,3 +89,13 @@ Rows share one bottom reference so holes remain level across side panels with
 different top heights. The two proven depth columns adapt to the panel depth, and
 every hole is blind from the inside face. A panel too thin to preserve its outside
 face must fail construction instead of receiving a through hole.
+
+## Build adjustable shelves
+
+Treat each supplied shelf as a real local part rather than viewer-only geometry.
+Its blank spans the clear width between the side panels and the clear depth to the
+front face of the back panel. Select its support row from the bottom-aligned rows
+present on both sides, then preserve that row and the shelf's assembled height in
+the local assembly specification. This keeps an unequal or sloped top from giving
+the two sides mismatched supports while allowing the shelf count and placement to
+change locally without changing the measured-space specification.

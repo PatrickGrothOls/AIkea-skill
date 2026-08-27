@@ -19,8 +19,8 @@ checked before the design is repeated or manufacturing work continues.
 3. Run `python <skill-directory>/scripts/generate_unit_mockup.py <project>/aikea.yaml`.
 4. Run `python <skill-directory>/scripts/serve_unit_review.py <generated-glb>` and
    leave the local viewer available while the client reviews the cabinet.
-5. Briefly explain the visible result and ask one concrete question about whether
-   its overall shape, proportions, and door appearance look right.
+5. Briefly explain the visible result and ask one concrete question about the
+   physical feature currently being reviewed.
 6. Stop with the project awaiting that visual decision. Do not produce the other
    cabinets until the client approves this one.
 

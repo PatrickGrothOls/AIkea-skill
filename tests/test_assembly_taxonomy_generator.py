@@ -47,6 +47,9 @@ class TestAssemblyTaxonomyGenerator:
             "right_side",
             "back_panel",
             "door_panel",
+            "shelf_01",
+            "shelf_02",
+            "shelf_03",
             "top_panel_01",
         ):
             expected_files.add(unit / "parts" / part_id / "spec.py")

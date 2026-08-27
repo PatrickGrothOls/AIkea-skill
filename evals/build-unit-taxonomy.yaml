@@ -73,6 +73,12 @@ cases:
         - parts/back_panel/builder.py
         - parts/door_panel/spec.py
         - parts/door_panel/builder.py
+        - parts/shelf_01/spec.py
+        - parts/shelf_01/builder.py
+        - parts/shelf_02/spec.py
+        - parts/shelf_02/builder.py
+        - parts/shelf_03/spec.py
+        - parts/shelf_03/builder.py
         - parts/top_panel_01/spec.py
         - parts/top_panel_01/builder.py
       expected_first_assembly:
@@ -85,6 +91,9 @@ cases:
         door_height_mm: 2384
         side_panel_height_mm: 2266
         top_panel_width_mm: 991.333333
+        shelf_count: 3
+        shelf_width_mm: 955.333333
+        shelf_support_rows_mm: [612, 1124, 1636]
       expected_first_joint:
         joint_id: left_side_to_top
         joint_type: cabineo

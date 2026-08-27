@@ -25,6 +25,6 @@ class AssemblyTaxonomyGenerator:
     ) -> ProjectAssemblyTaxonomy:
         taxonomy = self.resolver.resolve(project)
         files = self.renderer.render(taxonomy)
-        replaceable = self.renderer.render_metadata_scaffold(taxonomy)
+        replaceable = self.renderer.render_known_previous_files(taxonomy)
         self.writer.write(project_root, files, replaceable)
         return taxonomy

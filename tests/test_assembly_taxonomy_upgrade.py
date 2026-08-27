@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from pathlib import Path
+
 from assembly_taxonomy_generator import AssemblyTaxonomyGenerator
 from overall_wardrobe_test_project import OverallWardrobeTestProject
 
@@ -32,6 +34,32 @@ class TestAssemblyTaxonomyUpgrade:
         assert "SheetPartBuilder().build(SPEC, cuts)" in part_builder
         assert "class BuiltPart" in specification
         assert "class PartBuildPlan" not in specification
+
+    def test_untouched_pre_shelf_taxonomy_receives_generated_shelf_parts(
+        self, tmp_path
+    ) -> None:
+        data = self._one_unit_project()
+        taxonomy = self.generator.resolver.resolve(data)
+        previous_files = self.generator.renderer.render_without_adjustable_shelves(
+            taxonomy
+        )
+        self._write(tmp_path, previous_files)
+
+        self.generator.generate(data, tmp_path)
+
+        spec = (tmp_path / "assemblies/tall_storage_01/spec.py").read_text(
+            encoding="utf-8"
+        )
+        assert "part_id='shelf_01'" in spec
+        assert (
+            tmp_path / "assemblies/tall_storage_01/parts/shelf_03/builder.py"
+        ).is_file()
+
+    def _write(self, root: Path, files: dict[Path, str]) -> None:
+        for relative, content in files.items():
+            path = root / relative
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text(content, encoding="utf-8")
 
     def _one_unit_project(self) -> dict:
         data = self.project.load_flat()

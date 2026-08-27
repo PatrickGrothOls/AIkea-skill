@@ -43,6 +43,9 @@ class TestUnitMockupGenerator(unittest.TestCase):
         "right_side",
         "back_panel",
         "door_panel",
+        "shelf_01",
+        "shelf_02",
+        "shelf_03",
         "top_panel_01",
     }
 
@@ -86,7 +89,16 @@ class TestUnitMockupGenerator(unittest.TestCase):
 
         self.assertEqual(
             [part.spec.part_id for part in built_assembly.parts],
-            ["left_side", "right_side", "back_panel", "door_panel", "top_panel_01"],
+            [
+                "left_side",
+                "right_side",
+                "back_panel",
+                "door_panel",
+                "shelf_01",
+                "shelf_02",
+                "shelf_03",
+                "top_panel_01",
+            ],
         )
         self.assertTrue(all(part.solid.val().isValid() for part in built_assembly.parts))
         self.assertEqual({part.name for part in parts}, self._PART_NAMES)

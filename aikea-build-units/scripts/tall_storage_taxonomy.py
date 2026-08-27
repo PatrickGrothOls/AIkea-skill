@@ -8,6 +8,7 @@ from assembly_taxonomy import (
     JointTaxonomy,
     PartTaxonomy,
 )
+from adjustable_shelf_taxonomy_builder import AdjustableShelfTaxonomyBuilder
 from side_panel_height_resolver import SidePanelHeightResolver
 from tall_storage_joint_taxonomy import TallStorageJointTaxonomy
 from top_panel_taxonomy_builder import TopPanelTaxonomyBuilder
@@ -21,6 +22,7 @@ class TallStorageTaxonomy:
         self.outline_builder = TopBoundaryPanelOutlineBuilder()
         self.joint_taxonomy = TallStorageJointTaxonomy()
         self.side_panel_height_resolver = SidePanelHeightResolver()
+        self.shelf_builder = AdjustableShelfTaxonomyBuilder()
         self.top_panel_builder = TopPanelTaxonomyBuilder()
 
     def build_parts(
@@ -108,6 +110,15 @@ class TallStorageTaxonomy:
                 "<Z",
             ),
         ]
+        parts.extend(
+            self.shelf_builder.build(
+                width_mm,
+                carcass_panel_depth_mm,
+                left_side_height_mm,
+                right_side_height_mm,
+                panel_thickness_mm,
+            )
+        )
         parts.extend(
             self.top_panel_builder.build(
                 top,

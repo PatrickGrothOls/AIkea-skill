@@ -20,11 +20,14 @@ class AssemblyPartLocator:
             "back_panel": self._back_panel,
             "door_panel": self._door_panel,
         }
+        self._role_locators = {
+            "shelf_panel": self._shelf_panel,
+            "top_panel": self._top_panel,
+        }
 
     def locate(self, part: Any, assembly: Any, base_height_mm: float) -> cq.Location:
         locator = self._part_locators.get(part.part_id)
-        if locator is None and part.role == "top_panel":
-            locator = self._top_panel
+        locator = locator or self._role_locators.get(part.role)
         if locator is None:
             raise PartConstructionError(
                 f"no assembly placement exists for {part.part_id}"
@@ -58,6 +61,18 @@ class AssemblyPartLocator:
             (left_gap_mm, 0.0, float(assembly.door_bottom_mm)),
             (1.0, 0.0, 0.0),
             (0.0, -1.0, 0.0),
+        )
+
+    def _shelf_panel(self, part: Any, assembly: Any, base_height_mm: float) -> cq.Location:
+        dimensions = self._dimensions(part)
+        return self._location(
+            (
+                dimensions["assembly_x"],
+                dimensions["assembly_y"],
+                base_height_mm + dimensions["bottom_height"],
+            ),
+            (1.0, 0.0, 0.0),
+            (0.0, 0.0, 1.0),
         )
 
     def _top_panel(self, part: Any, assembly: Any, base_height_mm: float) -> cq.Location:

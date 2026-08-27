@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from dataclasses import replace
 from pathlib import Path
 
 from assembly_module_renderer import AssemblyModuleRenderer
@@ -52,6 +53,35 @@ class AssemblyTaxonomyRenderer:
                     root / "parts" / part.part_id / "builder.py"
                 ] = self.modules.metadata_part_builder(assembly.assembly_id, part)
         return files
+
+    def render_known_previous_files(
+        self, taxonomy: ProjectAssemblyTaxonomy
+    ) -> dict[Path, tuple[str, ...]]:
+        previous_sets = (
+            self.render_metadata_scaffold(taxonomy),
+            self.render_without_adjustable_shelves(taxonomy),
+        )
+        paths = {path for files in previous_sets for path in files}
+        return {
+            path: tuple(files[path] for files in previous_sets if path in files)
+            for path in paths
+        }
+
+    def render_without_adjustable_shelves(
+        self, taxonomy: ProjectAssemblyTaxonomy
+    ) -> dict[Path, str]:
+        assemblies = tuple(
+            replace(
+                assembly,
+                parts=tuple(
+                    part for part in assembly.parts if part.role != "shelf_panel"
+                ),
+            )
+            if isinstance(assembly, LocalAssemblyTaxonomy)
+            else assembly
+            for assembly in taxonomy.assemblies
+        )
+        return self.render(ProjectAssemblyTaxonomy(assemblies))
 
     def _assembly_files(
         self, assembly: LocalAssemblyTaxonomy | BaseAssemblyTaxonomy

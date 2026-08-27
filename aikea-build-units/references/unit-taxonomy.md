@@ -44,6 +44,7 @@ The current construction taxonomy produces:
 - left and right side panels;
 - one back panel retaining the complete local outline;
 - one door panel;
+- three removable shelf panels whose supports use rows shared by both sides;
 - one top panel for every segment of the local top boundary;
 - one authoritative list of the physical relationships between those parts.
 
@@ -55,6 +56,11 @@ The local specification also inherits the selected door lower line and its exact
 resolved height. Door geometry is calculated from that shared result rather than
 adjusted separately inside each assembly, so the same unit can use either a
 full-length door or a door ending at the plinth.
+
+Shelf count, dimensions, and support rows are owned by the local assembly. Each
+shelf closes the clear opening between the side panels and stops at the front face
+of the structural back. Its support row must exist in both side-panel hole patterns,
+including when a confirmed top profile gives the two sides different heights.
 
 The default structural carcass uses a load-bearing back and the lower support
 assembly as physical participants. On a flat unit, the top spans and bears directly
