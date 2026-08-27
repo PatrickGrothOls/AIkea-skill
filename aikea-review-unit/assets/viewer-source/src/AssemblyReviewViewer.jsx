@@ -7,9 +7,10 @@ import { Box3, Vector3 } from "three";
 
 import { CloseInspectionControls } from "./CloseInspectionControls";
 import { PlywoodSurface } from "./PlywoodSurface";
+import { ReviewView } from "./ReviewView";
 
 // A function component is the smallest React boundary for the GLB-loading hook.
-function ReviewModel({ onModelFramed }) {
+function ReviewModel({ onModelFramed, reviewView }) {
   const { scene } = useGLTF("/model.glb");
   const [colorMap, normalMap, roughnessMap] = useTexture([
     "/materials/plywood/plywood_diff_1k.jpg",
@@ -36,12 +37,9 @@ function ReviewModel({ onModelFramed }) {
     onModelFramed(Math.max(size.x, size.y, size.z));
     const verticalFov = camera.fov * Math.PI / 180;
     const horizontalFov = 2 * Math.atan(Math.tan(verticalFov / 2) * camera.aspect);
-    const distance = Math.max(
-      size.y / (2 * Math.tan(verticalFov / 2)),
-      size.x / (2 * Math.tan(horizontalFov / 2)),
-      size.z,
-    ) * 1.35;
-    const viewDirection = new Vector3(1, 0.45, 1).normalize();
+    const distance = reviewView.cameraDistance(size, verticalFov, horizontalFov);
+    const viewDirection = new Vector3(...reviewView.cameraDirection()).normalize();
+    camera.up.set(...reviewView.cameraUp());
     camera.position.copy(center).addScaledVector(viewDirection, distance);
     camera.near = Math.max(distance / 1000, 0.1);
     camera.far = distance * 100;
@@ -51,7 +49,7 @@ function ReviewModel({ onModelFramed }) {
       controls.target.copy(center);
       controls.update();
     }
-  }, [camera, colorMap, controls, normalMap, onModelFramed, roughnessMap, scene]);
+  }, [camera, colorMap, controls, normalMap, onModelFramed, reviewView, roughnessMap, scene]);
 
   return <primitive object={scene} />;
 }
@@ -59,6 +57,7 @@ function ReviewModel({ onModelFramed }) {
 // A function component keeps the viewer as a self-contained render-only asset.
 export function AssemblyReviewViewer() {
   const [modelSpan, setModelSpan] = useState(1);
+  const [reviewView] = useState(() => ReviewView.fromSearch(window.location.search));
 
   return (
     <main className="review-shell">
@@ -72,15 +71,16 @@ export function AssemblyReviewViewer() {
           position={[1200, 2600, 3200]}
           shadow-mapSize={[2048, 2048]}
         />
+        <directionalLight intensity={0.7} position={[-1000, -1600, 1800]} />
         <CloseInspectionControls modelSpan={modelSpan} />
         <Suspense fallback={null}>
-          <ReviewModel onModelFramed={setModelSpan} />
+          <ReviewModel onModelFramed={setModelSpan} reviewView={reviewView} />
         </Suspense>
       </Canvas>
       <section className="review-card">
         <p className="eyebrow">AIkea visual review</p>
-        <h1>Your first cabinet</h1>
-        <p>Drag to rotate a detail into view, then scroll or pinch to move closer.</p>
+        <h1>{reviewView.title}</h1>
+        <p>{reviewView.guidance()}</p>
       </section>
     </main>
   );

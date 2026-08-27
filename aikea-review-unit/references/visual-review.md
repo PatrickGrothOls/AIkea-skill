@@ -25,6 +25,25 @@ assemblies/<first-assembly-id>/<first-assembly-id>.glb
 
 Do not create GLBs for later assemblies before approval.
 
+## Structural base review
+
+Once the first cabinet is approved, execute the generated `base_01` builder and
+place its deck, front and back rails, and braces from the base specification. The
+parts must close the complete base bounds without overlapping material. Rails and
+braces meet at their edges, braces bear the deck, and the cabinet sides begin on
+the deck's top face.
+
+The base review generator writes:
+
+```text
+assemblies/base_01/base_01.glb
+assemblies/base_01/<first-cabinet-id>_with_base.glb
+```
+
+The first file contains the complete segmented base. The combined file contains
+the first cabinet and the base module directly beneath it, keeping their contact
+large enough to inspect without generating later cabinet models.
+
 ## Viewer
 
 The skill bundles a prebuilt browser viewer and a loopback-only Python server. The
@@ -36,6 +55,10 @@ The client can drag to rotate the cabinet around its center, bring a visible
 detail into view, and then scroll or pinch to move straight closer without
 changing the viewing direction. Keep the viewer open while asking for the visual
 decision; do not make the client locate files or run terminal commands.
+
+The same viewer accepts `view=top`, `view=bottom`, or `view=structure` in its URL
+when a fixed base angle explains the result more clearly than an interactive
+perspective. `title` supplies the short client-facing label shown with that view.
 
 ## Completion state
 

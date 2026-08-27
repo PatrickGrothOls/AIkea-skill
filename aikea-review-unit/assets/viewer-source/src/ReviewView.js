@@ -1,0 +1,65 @@
+/** Scope: Resolve the requested review title, camera direction, and framing axes. */
+
+export class ReviewView {
+  static fromSearch(search) {
+    const query = new URLSearchParams(search);
+    return new ReviewView(
+      query.get("view") ?? "perspective",
+      query.get("title") ?? "Your first cabinet",
+    );
+  }
+
+  constructor(view, title) {
+    this.view = ["top", "bottom", "structure"].includes(view)
+      ? view
+      : "perspective";
+    this.title = title;
+  }
+
+  cameraDirection() {
+    if (this.view === "top") {
+      return [0, 1, 0];
+    }
+    if (this.view === "bottom") {
+      return [0, -1, 0];
+    }
+    if (this.view === "structure") {
+      return [1, -0.35, 1];
+    }
+    return [1, 0.45, 1];
+  }
+
+  cameraUp() {
+    return ["perspective", "structure"].includes(this.view)
+      ? [0, 1, 0]
+      : [0, 0, -1];
+  }
+
+  frameDimensions(size) {
+    if (["perspective", "structure"].includes(this.view)) {
+      return { horizontal: size.x, vertical: size.y, depth: size.z };
+    }
+    return { horizontal: size.x, vertical: size.z, depth: size.y };
+  }
+
+  cameraDistance(size, verticalFov, horizontalFov) {
+    if (this.view === "perspective") {
+      const radius = Math.hypot(size.x, size.y, size.z) / 2;
+      return radius / Math.sin(Math.min(verticalFov, horizontalFov) / 2) * 1.08;
+    }
+    const frame = this.frameDimensions(size);
+    return Math.max(
+      frame.vertical / (2 * Math.tan(verticalFov / 2)),
+      frame.horizontal / (2 * Math.tan(horizontalFov / 2)),
+      frame.depth,
+    ) * 1.35;
+  }
+
+  guidance() {
+    return {
+      top: "Looking down through the deck across both CNC-sized base modules.",
+      bottom: "Looking up at the rails, braces, and the join between the modules.",
+      structure: "The deck, front and back rails, braces, and both CNC-sized modules.",
+    }[this.view] ?? "Drag to rotate a detail into view, then scroll or pinch to move closer.";
+  }
+}

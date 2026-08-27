@@ -39,10 +39,13 @@ class TestReviewViewerInteraction:
         assert "enablePan={false}" in source
 
     def test_prebuilt_viewer_contains_the_close_zoom_controller(self) -> None:
-        bundle = (
+        asset_root = (
             Path(__file__).parents[1]
-            / "aikea-review-unit/assets/viewer/assets/index-CWHFNJWm.js"
-        ).read_text(encoding="utf-8")
+            / "aikea-review-unit/assets/viewer/assets"
+        )
+        bundles = tuple(asset_root.glob("index-*.js"))
+        assert len(bundles) == 1
+        bundle = bundles[0].read_text(encoding="utf-8")
 
         assert "minimumTravel" in bundle
         assert "stopImmediatePropagation" in bundle

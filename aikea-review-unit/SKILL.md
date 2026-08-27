@@ -1,15 +1,15 @@
 ---
 name: aikea-review-unit
-description: Build and open the first generated AIkea cabinet as a visually complete GLB mock-up for client approval. Use immediately after local unit folders are generated, or when repeating the first-unit visual review, before producing the remaining cabinets or downstream outputs.
+description: Build and show a generated AIkea cabinet or structural base as real CadQuery GLB assemblies for visual approval. Use after local unit folders are generated or when reviewing how approved assemblies meet.
 ---
 
 # AIkea review unit
 
 ## Goal
 
-Give the client one complete-looking cabinet they can rotate and inspect, so its
-visible form and proportions are approved before the design is repeated across
-the remaining units.
+Give the client a clear view of the real generated parts as physical assemblies,
+so visible form, proportions, and contact between approved assemblies can be
+checked before the design is repeated or manufacturing work continues.
 
 ## Present the first cabinet
 
@@ -24,13 +24,22 @@ the remaining units.
 6. Stop with the project awaiting that visual decision. Do not produce the other
    cabinets until the client approves this one.
 
+## Present the structural base
+
+After the first cabinet is approved and the structural base folders exist, run
+`python <skill-directory>/scripts/generate_base_review.py <project>/aikea.yaml`.
+Show the complete base by itself from the angles that explain its construction,
+then show the first cabinet seated on its matching base module. Keep the review
+focused on the physical result and the next decision the client can make.
+
 Communicate as a carpenter guiding a client through the physical result. Say what
 the current work gives them and why it matters; keep implementation instructions
 and standard construction details inside the skill.
 
 ## Responsibility boundary
 
-This stage places and displays the parts returned by the generated assembly
-builder. It does not rebuild or alter their local geometry. The approved visible
-design becomes the reference for completing the remaining construction and
-manufacturing stages.
+This stage places and displays the parts returned by generated assembly builders.
+It does not rebuild or alter their local geometry. Base review may isolate one
+module beneath the first cabinet to make their contact legible, while the complete
+base remains the authority for the full run. Approved visible results become the
+reference for completing construction and manufacturing stages.

@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "vite build",
-    "test": "node --test src/CabinetSurfaceZoomTravel.test.js"
+    "test": "node --test src/*.test.js"
   },
   "dependencies": {
     "@react-three/drei": "10.7.7",

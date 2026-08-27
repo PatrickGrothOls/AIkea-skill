@@ -27,9 +27,11 @@ class GeneratedAssemblyBuilderLoader:
         assembly_id = assemblies[0].get("id")
         if not isinstance(assembly_id, str) or not self._ID_PATTERN.fullmatch(assembly_id):
             raise UnitMockupInputError(["the first assembly must have a stable id"])
-        return self._load(project_root, assembly_id)
+        return self.load_assembly(project_root, assembly_id)
 
-    def _load(self, project_root: Path, assembly_id: str) -> Any:
+    def load_assembly(self, project_root: Path, assembly_id: str) -> Any:
+        if not self._ID_PATTERN.fullmatch(assembly_id):
+            raise UnitMockupInputError(["the assembly must have a stable id"])
         builder_path = project_root / "assemblies" / assembly_id / "builder.py"
         if not builder_path.is_file():
             raise UnitMockupInputError(
