@@ -83,10 +83,11 @@ server requires no application backend, package installation, database, Docker,
 or Node runtime. It serves only the bundled viewer and the chosen GLB, opens the
 browser automatically, and remains active until stopped.
 
-The client can drag to rotate the cabinet around its center, bring a visible
-detail into view, and then scroll or pinch to move straight closer without
-changing the viewing direction. Keep the viewer open while asking for the visual
-decision; do not make the client locate files or run terminal commands.
+The client can point at a visible detail and scroll to bring that exact area
+closer without losing it beneath the pointer. Dragging rotates the cabinet around
+the measured center of the complete model, including after an off-center close-up.
+Keep the viewer open while asking for the visual decision; do not make the client
+locate files or run terminal commands.
 
 Perspective review should make the generated cabinet easy to judge as a finished
 physical object. Use the packaged photographic lighting and material presentation,

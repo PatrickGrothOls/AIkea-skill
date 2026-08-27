@@ -59,6 +59,7 @@ function ReviewModel({ onModelMeasured, reviewView }) {
     const size = bounds.getSize(new Vector3());
     onModelMeasured({
       center: center.toArray(),
+      modelRoot: scene,
       size: size.toArray(),
       span: Math.max(size.x, size.y, size.z),
     });
@@ -73,7 +74,7 @@ function ReviewModel({ onModelMeasured, reviewView }) {
     camera.lookAt(center);
     camera.updateProjectionMatrix();
     if (controls) {
-      controls.target.copy(center);
+      controls.rotationCenter.copy(center);
       controls.update();
     }
   }, [camera, colorMap, controls, normalMap, onModelMeasured, renderer, reviewView, roughnessMap, scene]);
@@ -85,6 +86,7 @@ function ReviewModel({ onModelMeasured, reviewView }) {
 export function AssemblyReviewViewer() {
   const [modelBounds, setModelBounds] = useState({
     center: [0, 0, 0],
+    modelRoot: null,
     size: [1, 1, 1],
     span: 1,
   });
@@ -111,7 +113,10 @@ export function AssemblyReviewViewer() {
         onCreated={configureReviewRenderer}
       >
         <color attach="background" args={["#d8d5ce"]} />
-        <CloseInspectionControls modelSpan={modelBounds.span} />
+        <CloseInspectionControls
+          modelRoot={modelBounds.modelRoot}
+          modelSpan={modelBounds.span}
+        />
         {reviewView.usesPhotoRenderer() ? (
           <Suspense fallback={assemblyScene}>
             <AssemblyPhotoRenderer key={`photo-${modelBounds.span}`}>

@@ -6,37 +6,52 @@ from pathlib import Path
 class TestReviewViewerInteraction:
     """Protect the interaction required to inspect joints and machining closely."""
 
-    def test_zoom_moves_straight_along_the_cabinet_rotation_axis(self) -> None:
-        source = (
+    def test_zoom_moves_toward_the_pointed_cabinet_detail(self) -> None:
+        controls_source = (
             Path(__file__).parents[1]
-            / "aikea-review-unit/assets/viewer-source/src/CloseInspectionControls.jsx"
+            / "aikea-review-unit/assets/viewer-source/src/FixedPivotCameraControls.js"
         ).read_text(encoding="utf-8")
 
-        assert "raycaster.set(camera.position, zoomDirection)" in source
-        assert "camera.position.addScaledVector(zoomDirection, travel)" in source
-        assert "camera.position.addScaledVector(raycaster.ray.direction" not in source
+        assert "raycaster.setFromCamera(pointer, this.camera)" in controls_source
+        assert (
+            "camera.position.addScaledVector(this.raycaster.ray.direction, travel)"
+            in controls_source
+        )
 
     def test_close_zoom_uses_surface_distance_instead_of_target_distance(self) -> None:
-        source = (
+        binding_source = (
             Path(__file__).parents[1]
             / "aikea-review-unit/assets/viewer-source/src/CloseInspectionControls.jsx"
         ).read_text(encoding="utf-8")
+        controls_source = (
+            Path(__file__).parents[1]
+            / "aikea-review-unit/assets/viewer-source/src/FixedPivotCameraControls.js"
+        ).read_text(encoding="utf-8")
+        viewer_source = (
+            Path(__file__).parents[1]
+            / "aikea-review-unit/assets/viewer-source/src/AssemblyReviewViewer.jsx"
+        ).read_text(encoding="utf-8")
 
-        assert "CabinetSurfaceZoomTravel" in source
-        assert "modelSpan" in source
-        assert 'addEventListener("wheel"' in source
-        assert "preventDefault" in source
-        assert "stopImmediatePropagation" in source
-        assert "camera.position.addScaledVector" in source
+        assert "CabinetSurfaceZoomTravel" in controls_source
+        assert "intersectObject(this.modelRoot, true)" in controls_source
+        assert "modelRoot: scene" in viewer_source
+        assert "scene.children" not in controls_source
+        assert 'addEventListener("wheel"' in binding_source
+        assert "preventDefault" in binding_source
+        assert "stopImmediatePropagation" in binding_source
 
     def test_rotation_pivot_stays_at_the_cabinet_center_during_zoom(self) -> None:
         source = (
             Path(__file__).parents[1]
-            / "aikea-review-unit/assets/viewer-source/src/CloseInspectionControls.jsx"
+            / "aikea-review-unit/assets/viewer-source/src/FixedPivotCameraControls.js"
         ).read_text(encoding="utf-8")
 
-        assert "controls.target.addScaledVector" not in source
-        assert "enablePan={false}" in source
+        assert "this.rotationCenter.addScaledVector" not in source
+        assert (
+            "this.camera.position.copy(this.rotationCenter).add(this.orbitOffset)"
+            in source
+        )
+        assert "this.camera.quaternion.premultiply(this.orbitRotation)" in source
 
     def test_photo_sampling_keeps_a_clean_interactive_preview(self) -> None:
         source = (

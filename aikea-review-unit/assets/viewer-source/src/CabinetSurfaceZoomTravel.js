@@ -9,11 +9,19 @@ export class CabinetSurfaceZoomTravel {
     this.minimumTravel = modelSpan / MODEL_SPAN_PER_DETAIL_STEP;
   }
 
-  calculateForWheel(deltaY, surfaceDistance, targetDistance, nearDistance) {
+  calculateForWheel(
+    deltaY,
+    surfaceDistance,
+    rotationCenterDistance,
+    nearDistance,
+  ) {
     const normalizedDelta = Math.abs(deltaY * WHEEL_DELTA_SCALE);
     const orbitScale = Math.pow(ORBIT_ZOOM_BASE, normalizedDelta);
     const minimumTravel = this.minimumTravel * normalizedDelta;
-    const limitingDistance = Math.min(surfaceDistance, targetDistance);
+    const limitingDistance = Math.min(
+      surfaceDistance,
+      rotationCenterDistance,
+    );
 
     if (deltaY < 0) {
       const proportionalTravel = limitingDistance * (1 - orbitScale);
