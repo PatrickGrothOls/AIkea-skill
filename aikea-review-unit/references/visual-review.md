@@ -90,8 +90,9 @@ decision; do not make the client locate files or run terminal commands.
 
 Perspective review should make the generated cabinet easy to judge as a finished
 physical object. Use the packaged photographic lighting and material presentation,
-allow the image to refine after the client settles on an angle, and keep the fast
-interactive view available for movement and close construction inspection.
+keep a clean interactive image visible while the client moves or while photographic
+samples are still gathering, then fade into the refined image after the client
+settles on an angle.
 
 The same viewer accepts `view=top`, `view=bottom`, or `view=structure` in its URL
 when a fixed base angle explains the result more clearly than an interactive

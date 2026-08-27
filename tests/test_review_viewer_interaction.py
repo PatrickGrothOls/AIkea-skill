@@ -38,6 +38,16 @@ class TestReviewViewerInteraction:
         assert "controls.target.addScaledVector" not in source
         assert "enablePan={false}" in source
 
+    def test_photo_sampling_keeps_a_clean_interactive_preview(self) -> None:
+        source = (
+            Path(__file__).parents[1]
+            / "aikea-review-unit/assets/viewer-source/src/AssemblyPhotoRenderer.jsx"
+        ).read_text(encoding="utf-8")
+
+        assert "dynamicLowRes={false}" in source
+        assert "rasterizeScene" in source
+        assert "renderDelay={350}" in source
+
     def test_prebuilt_viewer_contains_the_close_zoom_controller(self) -> None:
         asset_root = (
             Path(__file__).parents[1]
@@ -49,3 +59,16 @@ class TestReviewViewerInteraction:
 
         assert "minimumTravel" in bundle
         assert "stopImmediatePropagation" in bundle
+
+    def test_prebuilt_viewer_contains_the_clean_photo_handoff(self) -> None:
+        asset_root = (
+            Path(__file__).parents[1]
+            / "aikea-review-unit/assets/viewer/assets"
+        )
+        bundles = tuple(asset_root.glob("AssemblyPhotoRenderer-*.js"))
+        assert len(bundles) == 1
+        bundle = bundles[0].read_text(encoding="utf-8")
+
+        assert "dynamicLowRes:!1" in bundle
+        assert "rasterizeScene:!0" in bundle
+        assert "renderDelay:350" in bundle
