@@ -68,12 +68,14 @@ export class ReviewView {
 
   guidance() {
     if (this.usesPhotoRenderer()) {
-      return "Set the angle, then leave it still for a moment while the image sharpens.";
+      return "Drag to rotate, scroll to inspect, or hold Shift while scrolling or dragging to pan. "
+        + "Leave it still for a moment while the image sharpens.";
     }
     return {
       top: "Looking down through the deck across both CNC-sized base modules.",
       bottom: "Looking up at the rails, braces, and the join between the modules.",
       structure: "The deck, front and back rails, braces, and both CNC-sized modules.",
-    }[this.view] ?? "Drag to rotate a detail into view, then scroll or pinch to move closer.";
+    }[this.view]
+      ?? "Drag to rotate, scroll to inspect, or hold Shift while scrolling or dragging to pan.";
   }
 }

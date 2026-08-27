@@ -10,6 +10,7 @@ import {
 import { CabinetSurfaceZoomTravel } from "./CabinetSurfaceZoomTravel.js";
 
 const FULL_TURN_RADIANS = Math.PI * 2;
+const DEGREES_TO_HALF_RADIANS = Math.PI / 360;
 const MINIMUM_FORWARD_ALIGNMENT = 0.000001;
 
 export class FixedPivotCameraControls extends EventDispatcher {
@@ -20,6 +21,9 @@ export class FixedPivotCameraControls extends EventDispatcher {
     this.modelRoot = null;
     this.raycaster = new Raycaster();
     this.cameraForward = new Vector3();
+    this.cameraRight = new Vector3();
+    this.cameraScreenUp = new Vector3();
+    this.centerOffset = new Vector3();
     this.orbitAxis = new Vector3();
     this.orbitOffset = new Vector3();
     this.orbitRotation = new Quaternion();
@@ -81,6 +85,38 @@ export class FixedPivotCameraControls extends EventDispatcher {
     this.applyWorldRotation(this.camera.up, -deltaX * radiansPerPixel);
     this.orbitAxis.set(1, 0, 0).applyQuaternion(this.camera.quaternion);
     this.applyWorldRotation(this.orbitAxis, -deltaY * radiansPerPixel);
+    this.update();
+    return true;
+  }
+
+  panCameraByPixels(rightPixels, upPixels, viewportHeight) {
+    if ((rightPixels === 0 && upPixels === 0) || viewportHeight <= 0) {
+      return false;
+    }
+
+    this.camera.getWorldDirection(this.cameraForward);
+    this.centerOffset.copy(this.rotationCenter).sub(this.camera.position);
+    const rotationCenterDepth = this.centerOffset.dot(this.cameraForward);
+    if (rotationCenterDepth <= 0) {
+      return false;
+    }
+
+    const worldUnitsPerPixel = (
+      2
+      * rotationCenterDepth
+      * Math.tan(this.camera.fov * DEGREES_TO_HALF_RADIANS)
+      / viewportHeight
+    );
+    this.cameraRight.set(1, 0, 0).applyQuaternion(this.camera.quaternion);
+    this.cameraScreenUp.set(0, 1, 0).applyQuaternion(this.camera.quaternion);
+    this.camera.position.addScaledVector(
+      this.cameraRight,
+      rightPixels * worldUnitsPerPixel,
+    );
+    this.camera.position.addScaledVector(
+      this.cameraScreenUp,
+      upPixels * worldUnitsPerPixel,
+    );
     this.update();
     return true;
   }

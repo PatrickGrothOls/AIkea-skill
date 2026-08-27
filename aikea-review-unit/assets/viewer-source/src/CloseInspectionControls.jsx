@@ -1,4 +1,4 @@
-/** Scope: Bind pointer gestures to cabinet-detail zoom and model-centre rotation. */
+/** Scope: Bind pointer gestures to cabinet-detail zoom, camera panning, and model-centre rotation. */
 
 import { useEffect, useLayoutEffect, useMemo } from "react";
 import { useThree } from "@react-three/fiber";
@@ -51,13 +51,21 @@ export function CloseInspectionControls({ modelRoot, modelSpan }) {
       return pointer;
     };
 
-    const zoomAtPointer = (event) => {
+    const moveCameraWithWheel = (event) => {
       event.preventDefault();
       event.stopImmediatePropagation();
+      if (event.shiftKey) {
+        controls.panCameraByPixels(
+          event.deltaX,
+          -event.deltaY,
+          element.clientHeight,
+        );
+        return;
+      }
       controls.zoomTowardPointer(pointerFromEvent(event), event.deltaY);
     };
 
-    const beginOrbit = (event) => {
+    const beginCameraDrag = (event) => {
       if (event.button !== 0 || drag.pointerId !== null) {
         return;
       }
@@ -69,7 +77,7 @@ export function CloseInspectionControls({ modelRoot, modelSpan }) {
       controls.dispatchEvent({ type: "start" });
     };
 
-    const orbit = (event) => {
+    const moveCameraFromDrag = (event) => {
       if (event.pointerId !== drag.pointerId) {
         return;
       }
@@ -78,10 +86,14 @@ export function CloseInspectionControls({ modelRoot, modelSpan }) {
       const deltaY = event.clientY - drag.y;
       drag.x = event.clientX;
       drag.y = event.clientY;
-      controls.orbitByPointerDelta(deltaX, deltaY, element.clientHeight);
+      if (event.shiftKey) {
+        controls.panCameraByPixels(-deltaX, deltaY, element.clientHeight);
+      } else {
+        controls.orbitByPointerDelta(deltaX, deltaY, element.clientHeight);
+      }
     };
 
-    const endOrbit = (event) => {
+    const endCameraDrag = (event) => {
       if (event.pointerId !== drag.pointerId) {
         return;
       }
@@ -92,21 +104,21 @@ export function CloseInspectionControls({ modelRoot, modelSpan }) {
       controls.dispatchEvent({ type: "end" });
     };
 
-    element.addEventListener("wheel", zoomAtPointer, {
+    element.addEventListener("wheel", moveCameraWithWheel, {
       capture: true,
       passive: false,
     });
-    element.addEventListener("pointerdown", beginOrbit, true);
-    element.addEventListener("pointermove", orbit, true);
-    element.addEventListener("pointerup", endOrbit, true);
-    element.addEventListener("pointercancel", endOrbit, true);
+    element.addEventListener("pointerdown", beginCameraDrag, true);
+    element.addEventListener("pointermove", moveCameraFromDrag, true);
+    element.addEventListener("pointerup", endCameraDrag, true);
+    element.addEventListener("pointercancel", endCameraDrag, true);
     return () => {
       element.style.touchAction = previousTouchAction;
-      element.removeEventListener("wheel", zoomAtPointer, true);
-      element.removeEventListener("pointerdown", beginOrbit, true);
-      element.removeEventListener("pointermove", orbit, true);
-      element.removeEventListener("pointerup", endOrbit, true);
-      element.removeEventListener("pointercancel", endOrbit, true);
+      element.removeEventListener("wheel", moveCameraWithWheel, true);
+      element.removeEventListener("pointerdown", beginCameraDrag, true);
+      element.removeEventListener("pointermove", moveCameraFromDrag, true);
+      element.removeEventListener("pointerup", endCameraDrag, true);
+      element.removeEventListener("pointercancel", endCameraDrag, true);
     };
   }, [controls, gl]);
 

@@ -86,6 +86,9 @@ browser automatically, and remains active until stopped.
 The client can point at a visible detail and scroll to bring that exact area
 closer without losing it beneath the pointer. Dragging rotates the cabinet around
 the measured center of the complete model, including after an off-center close-up.
+Holding Shift while scrolling pans along the supplied wheel or trackpad direction;
+holding Shift while dragging gives free two-dimensional panning. Panning changes
+only the camera position, leaving the furniture and its rotation center unchanged.
 Keep the viewer open while asking for the visual decision; do not make the client
 locate files or run terminal commands.
 

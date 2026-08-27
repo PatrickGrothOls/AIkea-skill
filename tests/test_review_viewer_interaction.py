@@ -53,6 +53,22 @@ class TestReviewViewerInteraction:
         )
         assert "this.camera.quaternion.premultiply(this.orbitRotation)" in source
 
+    def test_shift_gestures_pan_the_camera_in_its_viewing_plane(self) -> None:
+        binding_source = (
+            Path(__file__).parents[1]
+            / "aikea-review-unit/assets/viewer-source/src/CloseInspectionControls.jsx"
+        ).read_text(encoding="utf-8")
+        controls_source = (
+            Path(__file__).parents[1]
+            / "aikea-review-unit/assets/viewer-source/src/FixedPivotCameraControls.js"
+        ).read_text(encoding="utf-8")
+
+        assert "panCameraByPixels" in controls_source
+        assert "if (event.shiftKey)" in binding_source
+        assert "event.deltaX" in binding_source
+        assert "-event.deltaY" in binding_source
+        assert "panCameraByPixels(-deltaX, deltaY" in binding_source
+
     def test_photo_sampling_keeps_a_clean_interactive_preview(self) -> None:
         source = (
             Path(__file__).parents[1]

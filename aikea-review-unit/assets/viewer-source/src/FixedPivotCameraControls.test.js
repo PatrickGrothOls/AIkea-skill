@@ -94,3 +94,41 @@ test("orbits the camera pose around the unchanged model centre", () => {
   assert.ok(Math.abs(pivotScreenAfter.y - pivotScreenBefore.y) < TOLERANCE);
   assert.ok(controls.rotationCenter.distanceTo(pivotBefore) < TOLERANCE);
 });
+
+test("pans only the camera across its viewing plane", () => {
+  const camera = createCamera();
+  const controls = new FixedPivotCameraControls(camera, 100);
+  const model = createModel();
+  controls.rotationCenter.set(0, 0, 0);
+  controls.setModelRoot(model);
+  const cameraPositionBefore = camera.position.clone();
+  const cameraOrientationBefore = camera.quaternion.clone();
+  const modelPositionBefore = model.position.clone();
+  const rotationCenterBefore = controls.rotationCenter.clone();
+  const rotationCenterScreenBefore = rotationCenterBefore.clone().project(camera);
+
+  const changed = controls.panCameraByPixels(-80, 40, 800);
+
+  const rotationCenterScreenAfter = rotationCenterBefore.clone().project(camera);
+  assert.equal(changed, true);
+  assert.ok(camera.position.distanceTo(cameraPositionBefore) > 0);
+  assert.ok(camera.quaternion.angleTo(cameraOrientationBefore) < TOLERANCE);
+  assert.ok(model.position.distanceTo(modelPositionBefore) < TOLERANCE);
+  assert.ok(controls.rotationCenter.distanceTo(rotationCenterBefore) < TOLERANCE);
+  assert.ok(rotationCenterScreenAfter.x > rotationCenterScreenBefore.x);
+  assert.ok(rotationCenterScreenAfter.y < rotationCenterScreenBefore.y);
+
+  controls.orbitByPointerDelta(80, -40, 800);
+  const rotationCenterScreenAfterOrbit = rotationCenterBefore
+    .clone()
+    .project(camera);
+  assert.ok(
+    Math.abs(rotationCenterScreenAfterOrbit.x - rotationCenterScreenAfter.x)
+      < TOLERANCE,
+  );
+  assert.ok(
+    Math.abs(rotationCenterScreenAfterOrbit.y - rotationCenterScreenAfter.y)
+      < TOLERANCE,
+  );
+  assert.ok(model.position.distanceTo(modelPositionBefore) < TOLERANCE);
+});
