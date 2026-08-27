@@ -2,13 +2,13 @@ schema_version: 9
 units: cm
 
 measured_space:
-  top_boundary: flat
+  top_boundary: measured_profile
   width_measurements: {bottom: 300, middle: 300, top: 300}
   depth_measurements: {single: 60}
   height_measurements:
     - {distance_from_left: 0, height_from_floor: 240}
-    - {distance_from_left: 150, height_from_floor: 239.8}
-    - {distance_from_left: 300, height_from_floor: 239.6}
+    - {distance_from_left: 120, height_from_floor: 240}
+    - {distance_from_left: 300, height_from_floor: 190}
 
 design_decisions: []
 
