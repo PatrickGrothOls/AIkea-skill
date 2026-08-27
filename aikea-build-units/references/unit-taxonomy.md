@@ -52,10 +52,12 @@ construction is derived from one shared joint definition so mating features stay
 aligned when any upstream dimension changes.
 
 The default structural carcass uses a load-bearing back and the lower support
-assembly as physical participants. On a flat unit, the top fits between the full-height
-sides. Each square side/back, side/top, and top/back seam is a paired Cabineo joint;
-angled equal-thickness top seams remain miter relationships. A back that is too thin
-for the selected connector profile must fail construction instead of producing a
+assembly as physical participants. On a flat unit, the top spans and bears directly
+on the side panels. Each square side/back, side/top, and top/back seam is a paired
+Cabineo joint; the side/top connector is machined from the side's inside face toward
+its top edge so the matching receiver enters the top from below. Angled
+equal-thickness top seams remain miter relationships. A back that is too thin for
+the selected connector profile must fail construction instead of producing a
 through-cut receiver.
 
 ## Safe regeneration

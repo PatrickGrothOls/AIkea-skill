@@ -8,6 +8,7 @@ from assembly_taxonomy import (
     JointTaxonomy,
     PartTaxonomy,
 )
+from side_panel_height_resolver import SidePanelHeightResolver
 from tall_storage_joint_taxonomy import TallStorageJointTaxonomy
 from top_panel_taxonomy_builder import TopPanelTaxonomyBuilder
 from top_boundary_panel_outline_builder import TopBoundaryPanelOutlineBuilder
@@ -19,6 +20,7 @@ class TallStorageTaxonomy:
     def __init__(self) -> None:
         self.outline_builder = TopBoundaryPanelOutlineBuilder()
         self.joint_taxonomy = TallStorageJointTaxonomy()
+        self.side_panel_height_resolver = SidePanelHeightResolver()
         self.top_panel_builder = TopPanelTaxonomyBuilder()
 
     def build_parts(
@@ -40,18 +42,26 @@ class TallStorageTaxonomy:
             width_mm - door_inset_mm,
             base_height_mm,
         )
+        left_side_height_mm = self.side_panel_height_resolver.resolve_left(
+            top,
+            panel_thickness_mm,
+        )
+        right_side_height_mm = self.side_panel_height_resolver.resolve_right(
+            top,
+            panel_thickness_mm,
+        )
         parts = [
             PartTaxonomy(
                 "left_side",
                 "side_panel",
                 self._dimensions(
-                    height=top[0].height_mm,
+                    height=left_side_height_mm,
                     depth=carcass_panel_depth_mm,
                     thickness=panel_thickness_mm,
                 ),
                 local_size_mm=(
                     carcass_panel_depth_mm,
-                    top[0].height_mm,
+                    left_side_height_mm,
                     panel_thickness_mm,
                 ),
                 inside_face=">Z",
@@ -60,13 +70,13 @@ class TallStorageTaxonomy:
                 "right_side",
                 "side_panel",
                 self._dimensions(
-                    height=top[-1].height_mm,
+                    height=right_side_height_mm,
                     depth=carcass_panel_depth_mm,
                     thickness=panel_thickness_mm,
                 ),
                 local_size_mm=(
                     carcass_panel_depth_mm,
-                    top[-1].height_mm,
+                    right_side_height_mm,
                     panel_thickness_mm,
                 ),
                 inside_face=">Z",

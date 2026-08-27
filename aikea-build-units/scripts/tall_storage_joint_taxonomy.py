@@ -46,7 +46,6 @@ class TallStorageJointTaxonomy:
                 "left_side",
                 top[0],
                 top[1],
-                "<X",
             ),
             self._side_top_joint(
                 "right_side_to_top",
@@ -54,7 +53,6 @@ class TallStorageJointTaxonomy:
                 "right_side",
                 top[-2],
                 top[-1],
-                ">X",
             ),
         ]
         joints.extend(
@@ -85,15 +83,14 @@ class TallStorageJointTaxonomy:
         side_id: str,
         start: BoundaryPoint,
         end: BoundaryPoint,
-        source_edge: str,
     ) -> JointTaxonomy | CabineoJointTaxonomy:
         if isclose(start.height_mm, end.height_mm):
             return CabineoJointTaxonomy(
                 joint_id,
-                top_id,
                 side_id,
-                "<Z",
-                source_edge,
+                top_id,
+                ">Z",
+                ">Y",
                 "bounded_spacing",
             )
         return JointTaxonomy(

@@ -36,7 +36,13 @@ class TestBuildUnitTaxonomyEvalSet:
         assert first.depth_mm == expected["depth_mm"]
         assert first.inside_depth_mm == expected["inside_depth_mm"]
         door = next(part for part in first.parts if part.part_id == "door_panel")
+        left_side = next(part for part in first.parts if part.part_id == "left_side")
+        top_panel = next(part for part in first.parts if part.part_id == "top_panel_01")
         assert dict(door.dimensions_mm)["left_height"] == expected["door_height_mm"]
+        assert dict(left_side.dimensions_mm)["height"] == expected["side_panel_height_mm"]
+        assert dict(top_panel.dimensions_mm)["length"] == pytest.approx(
+            expected["top_panel_width_mm"]
+        )
         self._assert_first_joint(first, answer["expected_first_joint"])
         for assembly in result.assemblies:
             root = tmp_path / "assemblies" / assembly.assembly_id

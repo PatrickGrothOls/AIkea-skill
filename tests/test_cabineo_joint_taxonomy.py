@@ -43,13 +43,13 @@ class TestCabineoJointTaxonomy:
             if joint.joint_type == "cabineo"
         }
 
-        assert left.local_size_mm == (564, 2298, 18)
+        assert left.local_size_mm == (564, 2280, 18)
         assert left.inside_face == ">Z"
         assert joints == {
             "left_side_to_back_panel": ("left_side", "back_panel", ">Z", ">X"),
             "right_side_to_back_panel": ("right_side", "back_panel", ">Z", "<X"),
-            "left_side_to_top": ("top_panel_01", "left_side", "<Z", "<X"),
-            "right_side_to_top": ("top_panel_01", "right_side", "<Z", ">X"),
+            "left_side_to_top": ("left_side", "top_panel_01", ">Z", ">Y"),
+            "right_side_to_top": ("right_side", "top_panel_01", ">Z", ">Y"),
             "top_panel_01_to_back_panel": (
                 "top_panel_01",
                 "back_panel",

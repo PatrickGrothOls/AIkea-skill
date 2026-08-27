@@ -83,13 +83,15 @@ cases:
         depth_mm: 582
         inside_depth_mm: 564
         door_height_mm: 2384
+        side_panel_height_mm: 2266
+        top_panel_width_mm: 991.333333
       expected_first_joint:
         joint_id: left_side_to_top
         joint_type: cabineo
-        source_part_id: top_panel_01
-        target_part_id: left_side
-        source_face: "<Z"
-        source_edge: "<X"
+        source_part_id: left_side
+        target_part_id: top_panel_01
+        source_face: ">Z"
+        source_edge: ">Y"
         connector_layout: bounded_spacing
         connectors: 2
         cuts_per_connector: 2

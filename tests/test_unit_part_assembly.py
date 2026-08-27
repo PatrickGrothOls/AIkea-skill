@@ -32,11 +32,11 @@ class TestUnitPartAssembly(unittest.TestCase):
     def test_every_flat_part_is_built_in_its_own_sheet_frame(self) -> None:
         spec, parts = self._build(self.project)
         local_sizes = {
-            "left_side": (spec.inside_depth_mm, 2284.0, 18.0),
-            "right_side": (spec.inside_depth_mm, 2284.0, 18.0),
+            "left_side": (spec.inside_depth_mm, 2266.0, 18.0),
+            "right_side": (spec.inside_depth_mm, 2266.0, 18.0),
             "back_panel": (spec.width_mm, 2284.0, 18.0),
             "door_panel": (spec.door_width_mm, 2384.0, 18.0),
-            "top_panel_01": (spec.width_mm - 36.0, spec.inside_depth_mm, 18.0),
+            "top_panel_01": (spec.width_mm, spec.inside_depth_mm, 18.0),
         }
 
         for part in parts:
@@ -50,11 +50,11 @@ class TestUnitPartAssembly(unittest.TestCase):
     def test_flat_part_placements_close_the_calculated_cabinet_bounds(self) -> None:
         spec, parts = self._build(self.project)
         expected = {
-            "left_side": (0.0, 18.0, 0.0, 564.0, 100.0, 2384.0),
-            "right_side": (spec.width_mm - 18.0, spec.width_mm, 0.0, 564.0, 100.0, 2384.0),
+            "left_side": (0.0, 18.0, 0.0, 564.0, 100.0, 2366.0),
+            "right_side": (spec.width_mm - 18.0, spec.width_mm, 0.0, 564.0, 100.0, 2366.0),
             "back_panel": (0.0, spec.width_mm, 564.0, 582.0, 100.0, 2384.0),
             "door_panel": (-17.0, 1.0, -spec.door_width_mm, 0.0, 0.0, 2384.0),
-            "top_panel_01": (18.0, spec.width_mm - 18.0, 0.0, 564.0, 2366.0, 2384.0),
+            "top_panel_01": (0.0, spec.width_mm, 0.0, 564.0, 2366.0, 2384.0),
         }
 
         for part in parts:
@@ -83,6 +83,10 @@ class TestUnitPartAssembly(unittest.TestCase):
         ]
         spec, parts = self._build(project)
         door = spec.part("door_panel")
+        left_side = spec.part("left_side")
+        right_side = spec.part("right_side")
+        first_top = spec.part("top_panel_01")
+        last_top = spec.part("top_panel_02")
 
         self.assertEqual(
             [part.name for part in parts],
@@ -90,6 +94,14 @@ class TestUnitPartAssembly(unittest.TestCase):
         )
         self.assertEqual(len(door.outline_mm), 5)
         self.assertAlmostEqual(door.outline_mm[3].x_mm, 739.0)
+        self.assertAlmostEqual(
+            dict(left_side.dimensions_mm)["height"],
+            dict(first_top.dimensions_mm)["start_height"] - 18.0,
+        )
+        self.assertAlmostEqual(
+            dict(right_side.dimensions_mm)["height"],
+            dict(last_top.dimensions_mm)["end_height"],
+        )
         self.assertTrue(all(part.solid.val().isValid() for part in parts))
 
     def _build(self, project: dict):

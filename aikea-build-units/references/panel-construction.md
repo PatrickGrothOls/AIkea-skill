@@ -36,11 +36,11 @@ workpiece = BlankSheetBuilder(
 
 The ordered points describe the finished outer shape of the blank's face; the
 builder closes that outline and extends its material thickness along positive Z.
-The default structural carcass preserves the outside top boundary on its full-height
-sides and back. A flat top fits between the side panels, while a confirmed angled
-boundary keeps the material needed for its equal-thickness miter. The deterministic
-top-panel taxonomy resolves these local blanks; generated builders do not recreate
-that boundary logic.
+The default structural carcass preserves the outside top boundary on its back and
+top panels. A flat top spans the complete assembly width and bears directly on side
+panels that stop at its underside. A confirmed angled end keeps the material needed
+for its equal-thickness miter. The deterministic panel taxonomy resolves these local
+blanks; generated builders do not recreate that boundary logic.
 
 The generated local part builder owns this call, applies the cuts assigned by the
 assembly's joint definitions, and returns the real local CadQuery part. A joint
