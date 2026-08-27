@@ -90,6 +90,6 @@ cases:
         target_part_id: left_side
         source_face: "<Z"
         source_edge: "<X"
-        connector_layout: two_quarter_points
+        connector_layout: bounded_spacing
         connectors: 2
         cuts_per_connector: 2

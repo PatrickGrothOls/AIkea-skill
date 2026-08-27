@@ -25,7 +25,7 @@ class TallStorageJointTaxonomy:
                 "back_panel",
                 ">Z",
                 ">X",
-                "two_quarter_points",
+                "bounded_spacing",
             ),
             CabineoJointTaxonomy(
                 "right_side_to_back_panel",
@@ -33,7 +33,7 @@ class TallStorageJointTaxonomy:
                 "back_panel",
                 ">Z",
                 "<X",
-                "two_quarter_points",
+                "bounded_spacing",
             ),
             JointTaxonomy(
                 "door_panel_to_left_side",
@@ -64,7 +64,7 @@ class TallStorageJointTaxonomy:
                 "back_panel",
                 "<Z",
                 ">Y",
-                "two_quarter_points",
+                "bounded_spacing",
             )
             for top_id in top_ids
         )
@@ -94,7 +94,7 @@ class TallStorageJointTaxonomy:
                 side_id,
                 "<Z",
                 source_edge,
-                "two_quarter_points",
+                "bounded_spacing",
             )
         return JointTaxonomy(
             joint_id,

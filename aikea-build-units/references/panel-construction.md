@@ -51,6 +51,18 @@ the shared feature aligns in assembly space and remains within its intended
 material depth. Assembly placement and manufacturing placement remain separate
 transformations.
 
+## Distribute structural connectors
+
+Every Cabineo seam calculates its connector count from the finished joint-edge
+length. Adjacent connectors may be no more than 300 mm apart, and the first and
+last connector may be no more than 200 mm from their edge. Even a short seam uses
+at least two connectors so the sheet cannot rotate around a single fixing.
+
+Use the smallest connector count that satisfies those limits, then distribute
+the connectors evenly between the two end positions. The one calculated position
+set drives both participating panels, so increasing the count cannot separate a
+source pocket from its matching receiver cut.
+
 ## Machine universal side-panel holes
 
 Every generated side panel receives the reusable shelf-and-hanger hardware

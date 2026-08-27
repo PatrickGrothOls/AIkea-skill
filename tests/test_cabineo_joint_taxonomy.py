@@ -2,7 +2,10 @@
 
 from __future__ import annotations
 
+from types import SimpleNamespace
+
 from assembly_taxonomy_generator import AssemblyTaxonomyGenerator
+from cabineo_connector_layout import CabineoConnectorLayout
 from overall_wardrobe_test_project import OverallWardrobeTestProject
 
 
@@ -54,3 +57,40 @@ class TestCabineoJointTaxonomy:
                 ">Y",
             ),
         }
+
+
+class TestCabineoConnectorLayout:
+    """Keep every connector run within the agreed structural distances."""
+
+    def setup_method(self) -> None:
+        self.layout = CabineoConnectorLayout()
+        self.joint = SimpleNamespace(
+            connector_layout="bounded_spacing",
+            source_face=">Z",
+            source_edge=">X",
+        )
+
+    def test_long_edge_uses_the_minimum_count_that_meets_every_limit(self) -> None:
+        positions = self._positions(2284.0)
+
+        assert len(positions) == 8
+        assert positions[0] <= 200.0
+        assert 2284.0 - positions[-1] <= 200.0
+        assert max(right - left for left, right in zip(positions, positions[1:])) <= 300.0
+
+    def test_short_edge_still_uses_two_connectors(self) -> None:
+        assert self._positions(356.0) == (89.0, 267.0)
+
+    def test_existing_generated_layout_receives_the_same_safe_distribution(self) -> None:
+        legacy_joint = SimpleNamespace(
+            connector_layout="two_quarter_points",
+            source_face=">Z",
+            source_edge=">X",
+        )
+        part = SimpleNamespace(local_size_mm=(18.0, 2284.0, 18.0))
+
+        assert self.layout.positions(legacy_joint, part) == self._positions(2284.0)
+
+    def _positions(self, length_mm: float) -> tuple[float, ...]:
+        part = SimpleNamespace(local_size_mm=(18.0, length_mm, 18.0))
+        return self.layout.positions(self.joint, part)

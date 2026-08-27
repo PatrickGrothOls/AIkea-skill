@@ -27,6 +27,7 @@ class TestFlatCarcassJointGeometry(unittest.TestCase):
 
     def setUp(self) -> None:
         from assembly_part_locator import AssemblyPartLocator
+        from cabineo_connector_layout import CabineoConnectorLayout
         from part_blank_builder import PartBlankBuilder
         from unit_mockup_generator import UnitMockupGenerator
 
@@ -39,17 +40,21 @@ class TestFlatCarcassJointGeometry(unittest.TestCase):
             self.project,
         )
         self.locator = AssemblyPartLocator()
+        self.layout = CabineoConnectorLayout()
         self.blank_builder = PartBlankBuilder()
 
     def tearDown(self) -> None:
         self.temporary_directory.cleanup()
 
-    def test_every_square_seam_has_two_connectors_cut_into_both_parts(self) -> None:
+    def test_every_square_seam_applies_its_complete_layout_to_both_parts(self) -> None:
         for joint_id in self._JOINT_IDS:
             with self.subTest(joint_id=joint_id):
                 joint = next(joint for joint in self.built.joints if joint.joint_id == joint_id)
                 cuts = [cut for cut in self.built.cuts if cut.joint_id == joint_id]
-                self.assertEqual(len(cuts), 4)
+                source = self.built.spec.part(joint.source_part_id)
+                connector_count = len(self.layout.positions(joint, source))
+                self.assertGreaterEqual(connector_count, 2)
+                self.assertEqual(len(cuts), connector_count * 2)
                 self.assertEqual(
                     {cut.part_id for cut in cuts},
                     {joint.source_part_id, joint.target_part_id},
