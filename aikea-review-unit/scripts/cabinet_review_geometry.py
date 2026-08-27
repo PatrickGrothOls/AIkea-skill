@@ -6,13 +6,13 @@ from typing import Any
 
 from assembly_part_locator import AssemblyPartLocator
 from cabinet_assembly_geometry import CabinetAssemblyGeometry
-from door_review_pose import DoorReviewPose
+from door_review_state import DoorReviewState
 from review_part_locator import ReviewPartLocator
 from unit_mockup import MockupPart
 
 
 class CabinetReviewGeometry:
-    """Choose physical or open-door placement for one built cabinet."""
+    """Choose closed, open, or door-removed presentation for one cabinet."""
 
     def __init__(self) -> None:
         self.closed_geometry = CabinetAssemblyGeometry(AssemblyPartLocator())
@@ -21,12 +21,18 @@ class CabinetReviewGeometry:
     def build(
         self,
         built_assembly: Any,
-        door_pose: DoorReviewPose,
+        door_state: DoorReviewState,
     ) -> tuple[MockupPart, ...]:
+        if door_state is DoorReviewState.REMOVED:
+            return tuple(
+                part
+                for part in self.closed_geometry.build(built_assembly)
+                if part.name != "door_panel"
+            )
         geometry = {
-            DoorReviewPose.CLOSED: self.closed_geometry,
-            DoorReviewPose.OPEN: self.open_geometry,
-        }[door_pose]
+            DoorReviewState.CLOSED: self.closed_geometry,
+            DoorReviewState.OPEN: self.open_geometry,
+        }[door_state]
         return geometry.build(built_assembly)
 
 

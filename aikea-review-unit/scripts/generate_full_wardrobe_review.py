@@ -13,6 +13,8 @@ BUILD_SCRIPTS = Path(__file__).resolve().parents[2] / "aikea-build-units" / "scr
 sys.path.insert(0, str(BUILD_SCRIPTS))
 
 from cadquery_runtime import CadQueryRuntime, CadQueryRuntimeError
+from door_review_state import DoorReviewState
+from full_wardrobe_door_plan import DoorReviewPlanError, FullWardrobeDoorPlan
 from part_construction_error import PartConstructionError
 from unit_mockup import UnitMockupInputError
 
@@ -20,24 +22,34 @@ from unit_mockup import UnitMockupInputError
 class GenerateFullWardrobeReviewCommand:
     """Read one project and report its full-wardrobe review artifacts."""
 
-    def run(self, path: Path, doors: str) -> int:
+    def run(
+        self,
+        path: Path,
+        doors: str,
+        door_assignments: tuple[str, ...] = (),
+    ) -> int:
         try:
-            from door_review_pose import DoorReviewPose
             from full_wardrobe_review_generator import FullWardrobeReviewGenerator
 
             project = yaml.safe_load(path.read_text(encoding="utf-8"))
             if not isinstance(project, dict):
                 raise UnitMockupInputError(["aikea.yaml must contain an object"])
+            door_plan = FullWardrobeDoorPlan.from_assignments(
+                DoorReviewState(doors),
+                door_assignments,
+            )
             result = FullWardrobeReviewGenerator().generate(
                 path.parent,
                 project,
-                DoorReviewPose(doors),
+                door_plan,
             )
         except (OSError, yaml.YAMLError) as error:
             return self._invalid([str(error)])
         except UnitMockupInputError as error:
             return self._invalid(list(error.problems))
         except PartConstructionError as error:
+            return self._invalid([str(error)])
+        except DoorReviewPlanError as error:
             return self._invalid([str(error)])
         print(
             json.dumps(
@@ -46,7 +58,7 @@ class GenerateFullWardrobeReviewCommand:
                     "assemblies": list(result.assembly_ids),
                     "full_wardrobe_glb": str(result.glb_path),
                     "assembly_position_check": str(result.position_report_path),
-                    "doors": result.door_pose,
+                    "doors": dict(result.door_states),
                 },
                 indent=2,
             )
@@ -73,14 +85,22 @@ def main() -> int:
     parser.add_argument("aikea_yaml", type=Path)
     parser.add_argument(
         "--doors",
-        choices=("closed", "open"),
+        choices=("closed", "open", "removed"),
         default="closed",
-        help="Choose the door pose shown in the visual review.",
+        help="Choose the default door state shown in the visual review.",
+    )
+    parser.add_argument(
+        "--door",
+        action="append",
+        default=[],
+        metavar="ASSEMBLY=STATE",
+        help="Override one cabinet door with closed, open, or removed.",
     )
     arguments = parser.parse_args()
     return GenerateFullWardrobeReviewCommand().run(
         arguments.aikea_yaml,
         arguments.doors,
+        tuple(arguments.door),
     )
 
 

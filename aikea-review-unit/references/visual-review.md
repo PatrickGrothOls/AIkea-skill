@@ -55,8 +55,9 @@ generated cabinet builder and the complete base builder. Place each assembly fro
 its saved local zero into the shared project coordinates. Show the cabinet doors
 closed when the client is judging the complete facade, gaps, lower line, and
 overall proportions. When the client wants to inspect the inside or the
-relationship between neighbouring open doors, export an alternate view with
-every door open around its calculated hinge edge. Keep each exported node
+relationship between neighbouring doors, choose each cabinet door independently:
+closed in its physical position, open around its calculated hinge edge, or absent
+from the review so it cannot hide another feature. Keep each exported node
 associated with its source assembly and part.
 
 Write both artifacts at the generated assembly root:
@@ -64,11 +65,13 @@ Write both artifacts at the generated assembly root:
 ```text
 assemblies/full_wardrobe_review.glb
 assemblies/full_wardrobe_open_review.glb
+assemblies/full_wardrobe_door_states_review.glb
 assemblies/full-wardrobe-position-check.json
 ```
 
-The open file is produced only when requested. Both views use the same checked
-physical assembly. The report must pass before export. It proves that the base spans the complete
+Alternate door files are produced only when requested. Every view uses the same
+checked physical assembly, and omitted doors remain represented in the position
+report. The report must pass before export. It proves that the base spans the complete
 run, every cabinet occupies its saved width, each carcass bears on the deck,
 cabinet gaps remain open, all doors reach their selected lower line, and the
 plinth front remains at its selected depth.

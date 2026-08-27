@@ -47,11 +47,26 @@ class TestReviewFullWardrobeEvalSet:
         assert answer["expected_report"] == (
             "assemblies/full-wardrobe-position-check.json"
         )
-        assert answer["expected_door_pose"] == "open"
+        assert answer["expected_door_state"] == "open"
         assert answer["expected_open_doors"] == [
             "tall_storage_01__door_panel",
             "tall_storage_02__door_panel",
             "tall_storage_03__door_panel",
+        ]
+
+    def test_independent_door_case_has_exact_module_states(self) -> None:
+        answer = self._load()["cases"][2]["answer_key"]
+
+        assert answer["expected_artifact"] == (
+            "assemblies/full_wardrobe_door_states_review.glb"
+        )
+        assert answer["expected_door_states"] == {
+            "tall_storage_01": "open",
+            "tall_storage_02": "removed",
+            "tall_storage_03": "removed",
+        }
+        assert answer["expected_visible_doors"] == [
+            "tall_storage_01__door_panel"
         ]
 
     def _load(self) -> dict:

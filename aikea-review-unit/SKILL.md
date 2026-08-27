@@ -44,10 +44,12 @@ so the client can judge the finished facade, spacing, and overall proportions.
 Ask whether that complete visible result looks right before moving into the next
 construction or manufacturing stage.
 
-When the client wants to inspect the complete run with the doors open, generate
-the same approved wardrobe with `--doors open`. This is an alternate view of the
-unchanged parts and physical positions, so the verified closed assembly remains
-the fit and manufacturing reference.
+When the client wants to inspect the complete run differently, treat every
+cabinet door as an independent review module. Generate the same approved wardrobe
+with each requested door closed, open, or removed from view. Use `--doors open`
+for a uniform open review, or repeat `--door <assembly-id>=<state>` for specific
+cabinets. These are alternate views of unchanged parts and physical positions,
+so the verified closed assembly remains the fit and manufacturing reference.
 
 Communicate as a carpenter guiding a client through the physical result. Say what
 the current work gives them and why it matters; keep implementation instructions
