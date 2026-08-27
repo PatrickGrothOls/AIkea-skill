@@ -50,3 +50,15 @@ uncut participants meet with no material overlap. After applying it, verify that
 the shared feature aligns in assembly space and remains within its intended
 material depth. Assembly placement and manufacturing placement remain separate
 transformations.
+
+## Machine universal side-panel holes
+
+Every generated side panel receives the reusable shelf-and-hanger hardware
+pattern before its joint cuts are applied. The pattern is construction knowledge,
+not a client choice or a project-wide geometry setting. It uses the panel's own
+depth, height, thickness, and named inside face.
+
+Rows share one bottom reference so holes remain level across side panels with
+different top heights. The two proven depth columns adapt to the panel depth, and
+every hole is blind from the inside face. A panel too thin to preserve its outside
+face must fail construction instead of receiving a through hole.
