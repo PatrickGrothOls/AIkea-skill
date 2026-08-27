@@ -39,3 +39,10 @@ test("perspective distance contains the complete three-dimensional bounds", () =
 
   assert.ok(view.cameraDistance(size, fieldOfView, fieldOfView) > 5000);
 });
+
+test("only a perspective review shows the studio floor", () => {
+  assert.equal(ReviewView.fromSearch("").showsFloor(), true);
+  assert.equal(ReviewView.fromSearch("?view=top").showsFloor(), false);
+  assert.equal(ReviewView.fromSearch("?view=bottom").showsFloor(), false);
+  assert.equal(ReviewView.fromSearch("?view=structure").showsFloor(), false);
+});

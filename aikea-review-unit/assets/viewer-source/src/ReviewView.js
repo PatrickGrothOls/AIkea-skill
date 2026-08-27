@@ -35,6 +35,10 @@ export class ReviewView {
       : [0, 0, -1];
   }
 
+  showsFloor() {
+    return this.view === "perspective";
+  }
+
   frameDimensions(size) {
     if (["perspective", "structure"].includes(this.view)) {
       return { horizontal: size.x, vertical: size.y, depth: size.z };

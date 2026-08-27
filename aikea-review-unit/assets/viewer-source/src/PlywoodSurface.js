@@ -9,11 +9,11 @@ import {
 const TEXTURE_SCALE_MM = 500;
 
 export class PlywoodSurface {
-  constructor(colorMap, normalMap, roughnessMap) {
+  constructor(colorMap, normalMap, roughnessMap, anisotropy) {
     this.colorMap = colorMap;
     this.normalMap = normalMap;
     this.roughnessMap = roughnessMap;
-    this.#prepareMaps();
+    this.#prepareMaps(anisotropy);
   }
 
   applyTo(mesh) {
@@ -22,21 +22,23 @@ export class PlywoodSurface {
       material.color.set("#ffffff");
       material.map = this.colorMap;
       material.normalMap = this.normalMap;
-      material.normalScale.set(0.35, 0.35);
+      material.normalScale.set(0.52, 0.52);
       material.roughnessMap = this.roughnessMap;
+      material.envMapIntensity = 0.58;
       material.metalness = 0;
-      material.roughness = 0.96;
+      material.roughness = 0.78;
       material.needsUpdate = true;
     }
   }
 
-  #prepareMaps() {
+  #prepareMaps(anisotropy) {
     this.colorMap.colorSpace = SRGBColorSpace;
     for (const texture of [
       this.colorMap,
       this.normalMap,
       this.roughnessMap,
     ]) {
+      texture.anisotropy = anisotropy;
       texture.wrapS = RepeatWrapping;
       texture.wrapT = RepeatWrapping;
       texture.needsUpdate = true;
