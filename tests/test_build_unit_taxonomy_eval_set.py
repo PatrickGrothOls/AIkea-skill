@@ -21,7 +21,7 @@ class TestBuildUnitTaxonomyEvalSet:
         answer = case["answer_key"]
         project = case["starting_project"]["aikea_yaml"]
 
-        assert answer["expected_paths_per_assembly"]
+        assert answer["expected_paths_per_storage_assembly"]
         assert answer["expected_next_stage"] == "aikea-review-unit"
         result = AssemblyTaxonomyGenerator().generate(project, tmp_path)
         expected = answer["expected_first_assembly"]
@@ -44,9 +44,36 @@ class TestBuildUnitTaxonomyEvalSet:
             expected["top_panel_width_mm"]
         )
         self._assert_first_joint(first, answer["expected_first_joint"])
-        for assembly in result.assemblies:
+        for assembly in result.assemblies[:-1]:
             root = tmp_path / "assemblies" / assembly.assembly_id
-            assert all((root / relative).is_file() for relative in answer["expected_paths_per_assembly"])
+            assert all(
+                (root / relative).is_file()
+                for relative in answer["expected_paths_per_storage_assembly"]
+            )
+        self._assert_base(result.assemblies[-1], answer["expected_base"], tmp_path)
+
+    def _assert_base(self, base, expected, project_root) -> None:
+        assert base.assembly_id == expected["assembly_id"]
+        assert base.width_mm == expected["width_mm"]
+        assert base.depth_mm == expected["depth_mm"]
+        assert base.height_mm == expected["height_mm"]
+        assert [
+            (module.start_x_mm, module.end_x_mm) for module in base.modules
+        ] == [
+            (pytest.approx(start), pytest.approx(end))
+            for start, end in expected["module_spans_mm"]
+        ]
+        roles = [part.role for part in base.parts]
+        assert roles.count("base_deck") == expected["deck_count"]
+        assert roles.count("base_rail") == expected["rail_count"]
+        assert roles.count("base_brace") == expected["brace_count"]
+        root = project_root / "assemblies" / base.assembly_id
+        assert all((root / relative).is_file() for relative in expected["paths"])
+        assert all(
+            (root / "parts" / part.part_id / "spec.py").is_file()
+            and (root / "parts" / part.part_id / "builder.py").is_file()
+            for part in base.parts
+        )
 
     def _assert_first_joint(self, assembly, expected) -> None:
         joint = next(

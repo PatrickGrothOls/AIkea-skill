@@ -61,7 +61,7 @@ cases:
         - Build and open only the first cabinet for visual approval.
         - Continue without asking the client to approve folder creation.
       expected_next_stage: aikea-review-unit
-      expected_paths_per_assembly:
+      expected_paths_per_storage_assembly:
         - spec.py
         - builder.py
         - joints/spec.py
@@ -95,3 +95,18 @@ cases:
         connector_layout: bounded_spacing
         connectors: 2
         cuts_per_connector: 2
+      expected_base:
+        assembly_id: base_01
+        width_mm: 2978
+        depth_mm: 582
+        height_mm: 100
+        module_spans_mm:
+          - [0, 992.333333]
+          - [992.333333, 2978]
+        deck_count: 2
+        rail_count: 4
+        brace_count: 13
+        paths:
+          - spec.py
+          - builder.py
+          - joints/spec.py

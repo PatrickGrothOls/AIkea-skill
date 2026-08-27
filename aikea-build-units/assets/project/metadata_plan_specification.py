@@ -46,12 +46,36 @@ class AssemblySpec:
 
 
 @dataclass(frozen=True)
+class BaseModuleSpec:
+    module_id: str
+    start_x_mm: float
+    end_x_mm: float
+
+
+@dataclass(frozen=True)
+class BaseAssemblySpec:
+    assembly_id: str
+    purpose: str
+    global_left_mm: float
+    global_right_mm: float
+    width_mm: float
+    depth_mm: float
+    height_mm: float
+    modules: tuple[BaseModuleSpec, ...]
+    parts: tuple[PartSpec, ...]
+    joints: tuple[JointSpec, ...]
+
+    def part(self, part_id: str) -> PartSpec:
+        return next(part for part in self.parts if part.part_id == part_id)
+
+
+@dataclass(frozen=True)
 class PartBuildPlan:
     spec: PartSpec
 
 
 @dataclass(frozen=True)
 class AssemblyBuildPlan:
-    assembly_spec: AssemblySpec
+    assembly_spec: AssemblySpec | BaseAssemblySpec
     parts: tuple[PartBuildPlan, ...]
     joints: tuple[JointSpec, ...]

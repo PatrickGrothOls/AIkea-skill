@@ -13,6 +13,7 @@ from assembly_taxonomy import (
     ProjectAssemblyTaxonomy,
 )
 from assembly_taxonomy_profiles import AssemblyTaxonomyProfileRegistry
+from base_taxonomy_builder import BaseTaxonomyBuilder
 from overall_wardrobe_calculator import OverallWardrobeCalculator
 from overall_wardrobe_inputs import OverallWardrobeInputs, OverallWardrobeInputReader
 from overall_wardrobe_results import CabinetOverallSize
@@ -24,16 +25,26 @@ class AssemblyTaxonomyResolver:
 
     def __init__(self) -> None:
         self.profiles = AssemblyTaxonomyProfileRegistry()
+        self.base_taxonomy = BaseTaxonomyBuilder()
 
     def resolve(self, project: dict[str, Any]) -> ProjectAssemblyTaxonomy:
         run = AssemblyRunReader().read(project)
         inputs = OverallWardrobeInputReader().read(self._overall_project(project, run))
         result = OverallWardrobeCalculator().calculate(inputs)
-        assemblies = tuple(
+        cabinets = tuple(
             self._resolve_assembly(item, size, inputs, result.inside_depth_mm)
             for item, size in zip(run.assemblies, result.cabinets)
         )
-        return ProjectAssemblyTaxonomy(assemblies)
+        base = self.base_taxonomy.build(
+            tuple(
+                (size.left_position_mm, size.right_position_mm)
+                for size in result.cabinets
+            ),
+            self._depth_mm(inputs),
+            inputs.settings.base_height_mm,
+            inputs.settings.cabinet_panel_thickness_mm,
+        )
+        return ProjectAssemblyTaxonomy((*cabinets, base))
 
     def _overall_project(
         self, project: dict[str, Any], run: AssemblyRun
@@ -65,14 +76,7 @@ class AssemblyTaxonomyResolver:
             )
         top = self._local_top(size, inputs)
         settings = inputs.settings
-        allowances = settings.fitted_dimensions.resolve_fitting_allowances(
-            settings.fit_allowance_mm
-        )
-        depth_mm = (
-            inputs.space.minimum_depth_mm
-            - allowances.depth_mm
-            - settings.door_thickness_mm
-        )
+        depth_mm = self._depth_mm(inputs)
         parts = profile.build_parts(
             top,
             size.width_mm,
@@ -96,6 +100,17 @@ class AssemblyTaxonomyResolver:
             settings.base_height_mm,
             parts,
             profile.build_joints(top),
+        )
+
+    def _depth_mm(self, inputs: OverallWardrobeInputs) -> float:
+        settings = inputs.settings
+        allowances = settings.fitted_dimensions.resolve_fitting_allowances(
+            settings.fit_allowance_mm
+        )
+        return (
+            inputs.space.minimum_depth_mm
+            - allowances.depth_mm
+            - settings.door_thickness_mm
         )
 
     def _local_top(

@@ -26,6 +26,7 @@ class TestAssemblyTaxonomyGenerator:
             "tall_storage_01",
             "tall_storage_02",
             "tall_storage_03",
+            "base_01",
         ]
         assert result.assemblies[0].global_left_mm == 5
         assert result.assemblies[0].global_right_mm == 1001
@@ -71,6 +72,18 @@ class TestAssemblyTaxonomyGenerator:
         assert "SheetPartBuilder().build(SPEC, cuts)" in part_builder
         assert "LEFT_SIDE_BUILDER.build(cuts.for_part('left_side'))" in assembly_builder
         assert "BuiltAssembly" in assembly_builder
+
+        base = result.assemblies[-1]
+        assert base.width_mm == 2988
+        assert len(base.modules) == 2
+        base_root = tmp_path / "assemblies" / "base_01"
+        assert (base_root / "spec.py").is_file()
+        assert (base_root / "builder.py").is_file()
+        assert all(
+            (base_root / "parts" / part.part_id / "spec.py").is_file()
+            and (base_root / "parts" / part.part_id / "builder.py").is_file()
+            for part in base.parts
+        )
 
     def test_local_boundary_preserves_a_change_inside_one_unit(self, tmp_path) -> None:
         data = self._three_unit_project()

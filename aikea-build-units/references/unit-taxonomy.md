@@ -60,6 +60,21 @@ equal-thickness top seams remain miter relationships. A back that is too thin fo
 the selected connector profile must fail construction instead of producing a
 through-cut receiver.
 
+## Structural base
+
+The base is one generated assembly beneath the complete cabinet run. Its local
+specification owns the calculated base modules and each module's deck, front and
+back rail, and full-height braces. Overall base height includes the deck; the
+support frame fills the remaining height. Cross-brace length closes between the
+front and back rails, and the brace count follows the local construction spacing.
+
+Long bases divide at useful cabinet boundaries so every deck and rail fits the
+selected CNC working area. Each module begins and ends with a brace, and each seam
+between modules remains visible in the joint specification. The generated parts
+are real local CadQuery blanks. Physical seam machining, cabinet-to-base receiving
+features, assembly placement, and visual approval are later construction checks
+and must not be claimed merely because the folders exist.
+
 ## Safe regeneration
 
 The generator renders and checks the complete write set before changing the

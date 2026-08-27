@@ -17,6 +17,9 @@ class PartBlankBuilder:
             "back_panel": self._build_back_panel,
             "door_panel": self._build_door_panel,
             "top_panel": self._build_top_panel,
+            "base_deck": self._build_local_rectangle,
+            "base_rail": self._build_local_rectangle,
+            "base_brace": self._build_local_rectangle,
         }
 
     def build(self, part: Any) -> Any:
@@ -57,6 +60,9 @@ class PartBlankBuilder:
             dimensions["depth"],
             dimensions["thickness"],
         ).build()
+
+    def _build_local_rectangle(self, part: Any) -> Any:
+        return BlankSheetBuilder.rectangle(*part.local_size_mm).build()
 
     def _dimensions(self, part: Any) -> dict[str, float]:
         return {name: float(value) for name, value in part.dimensions_mm}

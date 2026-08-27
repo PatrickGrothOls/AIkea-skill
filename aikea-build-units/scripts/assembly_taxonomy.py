@@ -70,5 +70,30 @@ class LocalAssemblyTaxonomy:
 
 
 @dataclass(frozen=True)
+class BaseModuleTaxonomy:
+    module_id: str
+    start_x_mm: float
+    end_x_mm: float
+
+    @property
+    def width_mm(self) -> float:
+        return self.end_x_mm - self.start_x_mm
+
+
+@dataclass(frozen=True)
+class BaseAssemblyTaxonomy:
+    assembly_id: str
+    purpose: str
+    global_left_mm: float
+    global_right_mm: float
+    width_mm: float
+    depth_mm: float
+    height_mm: float
+    modules: tuple[BaseModuleTaxonomy, ...]
+    parts: tuple[PartTaxonomy, ...]
+    joints: tuple[JointTaxonomy | CabineoJointTaxonomy, ...]
+
+
+@dataclass(frozen=True)
 class ProjectAssemblyTaxonomy:
-    assemblies: tuple[LocalAssemblyTaxonomy, ...]
+    assemblies: tuple[LocalAssemblyTaxonomy | BaseAssemblyTaxonomy, ...]

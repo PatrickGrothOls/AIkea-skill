@@ -2,13 +2,16 @@
 
 from __future__ import annotations
 
-from assembly_taxonomy import LocalAssemblyTaxonomy, PartTaxonomy
+from assembly_taxonomy import BaseAssemblyTaxonomy, LocalAssemblyTaxonomy, PartTaxonomy
+
+
+AssemblyTaxonomy = LocalAssemblyTaxonomy | BaseAssemblyTaxonomy
 
 
 class AssemblyModuleRenderer:
     """Create importable entry points around one authoritative local spec."""
 
-    def assembly_builder(self, assembly: LocalAssemblyTaxonomy) -> str:
+    def assembly_builder(self, assembly: AssemblyTaxonomy) -> str:
         imports = "\n".join(
             f"from .parts.{part.part_id}.builder import BUILDER as {self._constant(part.part_id)}_BUILDER"
             for part in assembly.parts
@@ -68,7 +71,7 @@ class AssemblyModuleRenderer:
             "JOINTS = ASSEMBLY_SPEC.joints\n"
         )
 
-    def metadata_assembly_builder(self, assembly: LocalAssemblyTaxonomy) -> str:
+    def metadata_assembly_builder(self, assembly: AssemblyTaxonomy) -> str:
         imports = "\n".join(
             f"from .parts.{part.part_id}.builder import BUILDER as {self._constant(part.part_id)}_BUILDER"
             for part in assembly.parts

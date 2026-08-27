@@ -25,10 +25,12 @@ shared by a joint must fit both participants without unintended breakthrough.
 6. Load `$aikea-review-unit`, build the first cabinet as a visual mock-up, open its
    viewer, and ask for the client's visual approval before producing other units.
 
-The bundled profile registry currently supplies the full-height tall-storage
-taxonomy. A different purpose proceeds when its own local design facts and
-construction taxonomy are available; the shared boundary calculation and folder
-writer remain unchanged.
+The bundled construction now supplies full-height tall storage and the structural
+base beneath the complete run. The base inherits the cabinet footprint, divides
+long panels into CNC-sized modules, and owns its decks, rails, braces, and module
+relationships. A different furniture purpose proceeds when its own local design
+facts and construction taxonomy are available; the shared boundary calculation
+and folder writer remain unchanged.
 
 ## Responsibility boundary
 

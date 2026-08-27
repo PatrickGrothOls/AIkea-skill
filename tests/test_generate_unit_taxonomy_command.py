@@ -29,6 +29,7 @@ class TestGenerateUnitTaxonomyCommand:
             "assemblies": [
                 {"id": f"tall_storage_{index:02d}", "path": f"assemblies/tall_storage_{index:02d}"}
                 for index in range(1, 4)
-            ],
+            ] + [{"id": "base_01", "path": "assemblies/base_01"}],
         }
         assert (tmp_path / "assemblies" / "tall_storage_03" / "builder.py").is_file()
+        assert (tmp_path / "assemblies" / "base_01" / "builder.py").is_file()

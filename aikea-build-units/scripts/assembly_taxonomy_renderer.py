@@ -6,7 +6,11 @@ from pathlib import Path
 
 from assembly_module_renderer import AssemblyModuleRenderer
 from assembly_spec_renderer import AssemblySpecRenderer
-from assembly_taxonomy import LocalAssemblyTaxonomy, ProjectAssemblyTaxonomy
+from assembly_taxonomy import (
+    BaseAssemblyTaxonomy,
+    LocalAssemblyTaxonomy,
+    ProjectAssemblyTaxonomy,
+)
 
 
 class AssemblyTaxonomyRenderer:
@@ -50,7 +54,7 @@ class AssemblyTaxonomyRenderer:
         return files
 
     def _assembly_files(
-        self, assembly: LocalAssemblyTaxonomy
+        self, assembly: LocalAssemblyTaxonomy | BaseAssemblyTaxonomy
     ) -> dict[Path, str]:
         root = Path("assemblies") / assembly.assembly_id
         files = {

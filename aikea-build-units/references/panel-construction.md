@@ -51,6 +51,21 @@ the shared feature aligns in assembly space and remains within its intended
 material depth. Assembly placement and manufacturing placement remain separate
 transformations.
 
+## Keep every panel inside the CNC working area
+
+Resolve manufacturability before creating a panel blank. The manufacturing
+profile owns the machine travel and cutter diameter; these are shop capabilities,
+not wardrobe measurements. Its usable rectangle subtracts the cutter radius from
+each travel axis and permits rotating a panel when that makes it fit.
+
+If a required span exceeds the usable rectangle, divide it into the fewest
+manufacturable segments. Prefer breaks at structural boundaries such as a cabinet
+gap, retain every break as an explicit assembly relationship, and give every
+segment its own local part specification and builder. The packaged
+`PanelSegmentPlanner` performs this calculation; construction-specific planners
+decide which preferred boundaries and joining method make the segments one stable
+assembly.
+
 ## Distribute structural connectors
 
 Every Cabineo seam calculates its connector count from the finished joint-edge
