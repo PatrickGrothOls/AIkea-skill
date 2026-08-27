@@ -9,6 +9,7 @@ from assembly_taxonomy import ProjectAssemblyTaxonomy
 from assembly_taxonomy_renderer import AssemblyTaxonomyRenderer
 from assembly_taxonomy_resolver import AssemblyTaxonomyResolver
 from assembly_taxonomy_writer import AssemblyTaxonomyWriter
+from generated_file_record import GeneratedFileRecord
 
 
 class AssemblyTaxonomyGenerator:
@@ -26,5 +27,7 @@ class AssemblyTaxonomyGenerator:
         taxonomy = self.resolver.resolve(project)
         files = self.renderer.render(taxonomy)
         replaceable = self.renderer.render_known_previous_files(taxonomy)
-        self.writer.write(project_root, files, replaceable)
+        recorded = GeneratedFileRecord.load(project_root)
+        self.writer.write(project_root, files, replaceable, recorded)
+        GeneratedFileRecord.from_rendered(files).save(project_root)
         return taxonomy

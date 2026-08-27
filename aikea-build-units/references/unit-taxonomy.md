@@ -92,9 +92,12 @@ and must not be claimed merely because the folders exist.
 ## Safe regeneration
 
 The generator renders and checks the complete write set before changing the
-project. Missing files are created. Existing identical generated files are left
-unchanged. If an existing local file differs, generation stops and reports every
-conflicting path without overwriting any of them.
+project. `assemblies/generated-files.json` records the exact content produced by
+the last successful run. Missing files are created, identical files are left
+unchanged, and recorded files are refreshed when an overall or local input changes.
+If a local file no longer matches its generated record, generation stops and
+reports every conflicting path without overwriting any of them. The record is
+updated only after the complete checked write succeeds.
 
 ## Command result
 

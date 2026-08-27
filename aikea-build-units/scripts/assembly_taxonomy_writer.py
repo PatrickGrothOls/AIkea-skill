@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from generated_file_record import GeneratedFileRecord
+
 
 class AssemblyTaxonomyConflict(ValueError):
     """Report generated paths that contain differing existing content."""
@@ -23,6 +25,7 @@ class AssemblyTaxonomyWriter:
         project_root: Path,
         files: dict[Path, str],
         replaceable: dict[Path, tuple[str, ...]] | None = None,
+        recorded: GeneratedFileRecord | None = None,
     ) -> tuple[Path, ...]:
         replaceable = replaceable or {}
         conflicts = tuple(
@@ -30,6 +33,10 @@ class AssemblyTaxonomyWriter:
             for relative, content in files.items()
             if self._differs(project_root / relative, content)
             and not self._matches(project_root / relative, replaceable.get(relative))
+            and not (
+                recorded
+                and recorded.matches(relative, project_root / relative)
+            )
         )
         if conflicts:
             raise AssemblyTaxonomyConflict(conflicts)

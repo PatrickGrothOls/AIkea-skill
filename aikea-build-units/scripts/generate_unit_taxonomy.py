@@ -15,6 +15,7 @@ sys.path.insert(0, str(AIKEA_SCRIPTS))
 from assembly_taxonomy import AssemblyTaxonomyInputError  # noqa: E402
 from assembly_taxonomy_generator import AssemblyTaxonomyGenerator  # noqa: E402
 from assembly_taxonomy_writer import AssemblyTaxonomyConflict  # noqa: E402
+from generated_file_record import GeneratedFileRecordError  # noqa: E402
 from overall_wardrobe_inputs import OverallWardrobeInputError  # noqa: E402
 
 
@@ -32,6 +33,8 @@ class UnitTaxonomyCommand:
         except (AssemblyTaxonomyInputError, OverallWardrobeInputError) as error:
             return self._invalid(list(error.problems))
         except AssemblyTaxonomyConflict as error:
+            return self._invalid([str(error)])
+        except GeneratedFileRecordError as error:
             return self._invalid([str(error)])
         print(
             json.dumps(

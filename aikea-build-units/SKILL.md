@@ -13,6 +13,8 @@ boundary, owned parts, physical joint relationships, and builders that produce
 real local CadQuery parts with the construction required by those relationships.
 The finished parts must meet without occupying the same material, and machining
 shared by a joint must fit both participants without unintended breakthrough.
+When the overall project changes, regenerate every affected local result while
+preserving any local file that the client has changed since its last generation.
 
 ## Generate the local units
 
