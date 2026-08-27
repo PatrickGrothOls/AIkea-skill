@@ -47,6 +47,26 @@ The first file contains the complete segmented base. The combined file contains
 the first cabinet and the base module directly beneath it, keeping their contact
 large enough to inspect without generating later cabinet models.
 
+## Full wardrobe review
+
+After the first cabinet and its base relationship are approved, execute every
+generated cabinet builder and the complete base builder. Place each assembly from
+its saved local zero into the shared project coordinates. Show the cabinet doors
+closed so the client can judge the complete facade, gaps, lower line, and overall
+proportions. Keep each exported node associated with its source assembly and part.
+
+Write both artifacts at the generated assembly root:
+
+```text
+assemblies/full_wardrobe_review.glb
+assemblies/full-wardrobe-position-check.json
+```
+
+The report must pass before export. It proves that the base spans the complete
+run, every cabinet occupies its saved width, each carcass bears on the deck,
+cabinet gaps remain open, all doors reach their selected lower line, and the
+plinth front remains at its selected depth.
+
 ## Viewer
 
 The skill bundles a prebuilt browser viewer and a loopback-only Python server. The
