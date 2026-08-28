@@ -9,6 +9,7 @@ from assembly_taxonomy_writer import AssemblyTaxonomyWriter
 from cabinet_assembly_spec_loader import CabinetAssemblySpecLoader
 from cabinet_drawer_module_renderer import CabinetDrawerModuleRenderer
 from cabinet_drawer_plan import CabinetDrawerPlan, CabinetDrawerPlanner, DrawerLayout
+from drawer_generated_file_record import DrawerGeneratedFileRecord
 
 
 @dataclass(frozen=True, slots=True)
@@ -36,7 +37,13 @@ class CabinetDrawerGenerator:
     ) -> CabinetDrawerGenerationResult:
         cabinet = self.spec_loader.load(project_root, parent_assembly_id)
         plan = self.planner.plan(cabinet, layout)
-        written = self.writer.write(project_root, self.renderer.render(plan))
+        files = self.renderer.render(plan)
+        recorded = DrawerGeneratedFileRecord.load(project_root, parent_assembly_id)
+        written = self.writer.write(project_root, files, recorded=recorded)
+        DrawerGeneratedFileRecord.from_rendered(
+            parent_assembly_id,
+            files,
+        ).save(project_root)
         return CabinetDrawerGenerationResult(plan, written)
 
 
