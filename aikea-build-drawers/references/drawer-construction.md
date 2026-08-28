@@ -44,16 +44,20 @@ geometry.
 1. Read the cabinet's clear width, inside depth, panel thicknesses, shelves, and
    top boundary from its generated local specification.
 2. Select the longest registered runner whose complete required depth fits.
-3. Convert the sourced runner profile into generic box-sizing values.
-4. Build every wooden sheet through `BlankSheetBuilder` in its canonical part
+3. Resolve the complete hardware set owned by that exact runner profile. Verify
+   both handed runner files and both matching locking devices in their unchanged
+   manufacturer frames before producing drawer files.
+4. Convert the sourced runner profile into generic box-sizing values.
+5. Build every wooden sheet through `BlankSheetBuilder` in its canonical part
    frame and place it through `DrawerPartLocator`.
-5. Save the drawer child and its explicit cabinet-local placement.
-6. Build the composed cabinet, check the closed drawer, and write the position
+6. Save the drawer child, its explicit cabinet-local placement, and the honest
+   `source_cad_verified_unplaced` hardware state.
+7. Build the composed cabinet, check the closed drawer, and write the position
    report before applying an open review pose.
-7. Move only drawer-owned review geometry along the drawer's local opening axis.
+8. Move only drawer-owned review geometry along the drawer's local opening axis.
    Cabinet-owned runner hardware remains fixed, while drawer-owned locking
    devices move with the box when their verified CAD is added.
-8. When the box is removed for inspection before exact runner CAD is available,
+9. When the box is removed before a hardware installation transform is proven,
    show only distinct review mounting zones derived from the registered runner
    relationship. Keep those guides outside manufacturing and collision evidence.
 
@@ -62,7 +66,9 @@ geometry.
 The drawer proof is valid when the chosen runner depth fits, the complete closed
 box remains inside the cabinet opening, no drawer sheet occupies cabinet material,
 all three saved child axes form the frame used by CadQuery, and the same composed
-cabinet appears in both close-up and full-run exports.
+cabinet appears in both close-up and full-run exports. The generation gate must
+also prove the exact selected source-CAD set before any project drawer file is
+written.
 
 Purchased hardware uses the manifest in `assets/blum/movento/`. A verified local
 STEP is imported without scaling, recentering, mirroring, or changing its native

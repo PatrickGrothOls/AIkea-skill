@@ -9,15 +9,16 @@ description: Add a calculated wooden drawer subassembly to an existing generated
 
 Turn a drawer design inside an existing generated cabinet into a project-owned
 child assembly. Resolve its wooden parts from the cabinet's real clear opening,
-select the longest registered runner that fits, preserve every local-to-parent
-frame, and prove the closed drawer fits before showing an open review.
+select the longest registered runner that fits, verify the complete exact
+runner and locking-device CAD set, preserve every local-to-parent frame, and
+prove the closed drawer fits before showing an open review.
 
 Use the supplied implementation as the construction authority. The model chooses
 the intended cabinet and drawer arrangement, runs the deterministic builders,
 and discusses the physical result with the client. It does not recreate drawer
 geometry from prose.
 
-## Build one verified drawer
+## Build one drawer mock-up from verified source CAD
 
 1. Resolve the active AIkea project and require its completed `aikea.yaml` and
    generated `assemblies/` folders.
@@ -27,9 +28,10 @@ geometry from prose.
 3. Identify the existing cabinet that will own the drawer. Use a client-supplied
    position when one is part of the design; otherwise make one practical visual
    proposal inside that cabinet and let the client judge it in the model.
-4. Run:
+4. Obtain the exact source STEP files named by the selected MOVENTO profile and
+   keep them together in one local hardware directory. Run:
 
-   `python <skill-directory>/scripts/generate_cabinet_drawer.py <project>/aikea.yaml --assembly <cabinet-id> --drawer <drawer-id> --bottom-height-mm <height-above-carcass-bottom>`
+   `python <skill-directory>/scripts/generate_cabinet_drawer.py <project>/aikea.yaml --assembly <cabinet-id> --drawer <drawer-id> --bottom-height-mm <height-above-carcass-bottom> --hardware-directory <download-directory>`
 
 5. Treat the generated cabinet-local files as the source for this drawer. The
    composed cabinet builder must load the original cabinet builder and its saved
@@ -55,9 +57,11 @@ cabinet, records the selected MOVENTO runner and locking-device identities, save
 the cabinet-to-drawer frame, checks clearances and material collisions, and
 exports closed, open, and removed review geometry. The exact handed 500 mm runner
 pair and both locking-device files are registered as verified user-supplied CAD,
-without packaging vendor bytes. Their cabinet placement, drawer mating, and
+without packaging vendor bytes. Generation imports and verifies all four exact
+files before writing the drawer and records their state as
+`source_cad_verified_unplaced`. Their cabinet placement, drawer mating, and
 mounting cuts remain unresolved, so the removed review still shows identified
-mounting zones rather than unplaced hardware. Drawer-box joinery and
+mounting zones rather than source CAD in an invented position. Drawer-box joinery and
 manufacturing toolpaths remain later construction gates.
 
 ## Responsibility boundary

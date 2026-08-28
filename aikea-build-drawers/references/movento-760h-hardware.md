@@ -25,8 +25,9 @@ the 500 runner; the 550 runner would require 568 mm and therefore does not fit.
 ## Local CAD boundary
 
 The package stores product identity, source links, checksums, and observed native
-bounds. It does not store Blum STEP bytes. Resolve a file supplied by the user,
-then verify it through `HardwareAssetResolver` before importing it.
+bounds. It does not store Blum STEP bytes. The local resolver accepts either the
+normalised AIkea filename or the unchanged official download filename. When both
+exist, it admits only checksum-matching bytes and prefers the normalised name.
 
 `HardwareStepImporter` preserves the STEP file exactly in its manufacturer frame:
 
@@ -39,6 +40,12 @@ then verify it through `HardwareAssetResolver` before importing it.
 
 The consistent imported wrapper is the normalised representation. Placement into
 a drawer or cabinet is a later explicit rigid transform, not part of import.
+
+`DrawerHardwareSetVerifier` admits a drawer generation only after the selected
+profile's left and right runners and matching left and right locking devices all
+prove build-ready state, identity, handedness, checksum, solid count, and native
+bounds. Passing this gate means source CAD is verified but unplaced; it does not
+prove installation, mating, or machining.
 
 ## Registered 500 mm pair
 
@@ -61,6 +68,8 @@ a drawer or cabinet is a later explicit rigid transform, not part of import.
   identified.
 - The 550 candidate must never stand in for the 500 runner and must never be
   shortened or scaled.
+- If cabinet depth selects the 550 mm profile, generation stops until its own
+  complete handed hardware set is registered. It does not fall back to 500 mm.
 
 Official sources:
 
