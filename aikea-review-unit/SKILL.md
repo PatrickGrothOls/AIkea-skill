@@ -66,6 +66,18 @@ fit authority and the open drawer as its presentation state. Use the removed
 state to inspect cabinet-owned runner locations; while exact hardware CAD is
 unresolved, present its mounting zones as review guides rather than rail geometry.
 
+## Inspect drawer locking devices
+
+When the client needs to inspect the moving locking devices before their mounting
+transform is resolved, export the verified native CAD separately:
+
+`python <skill-directory>/scripts/generate_locking_device_review.py <output.glb> --hardware-directory <directory-containing-the-downloaded-STEP-files>`
+
+This shows the verified handed T51.7601 parts in their vendor coordinate frames.
+It is an inspection view only: do not place it on the drawer or represent it as
+an installed rail relationship until the hardware-specific mounting transform is
+also verified.
+
 ## Responsibility boundary
 
 This stage places and displays the parts returned by generated assembly builders.
