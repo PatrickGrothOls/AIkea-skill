@@ -69,11 +69,7 @@ class CabinetDrawerModuleRenderer:
         return yaml.safe_dump(data, sort_keys=False)
 
     def _installation(self, plan: CabinetDrawerPlan) -> str:
-        runner_assets = plan.runner.runner_asset_pair
-        if runner_assets is None:
-            raise ValueError(
-                f"{plan.runner.product_code} has no complete handed CAD pair"
-            )
+        hardware = plan.runner.require_hardware_asset_set()
         x_mm, y_mm, z_mm = plan.origin_in_parent_mm
         return (
             f'"""Scope: Place drawer children owned by {plan.parent_assembly_id}."""\n\n'
@@ -96,12 +92,12 @@ class CabinetDrawerModuleRenderer:
             "CHILD_ASSEMBLIES = (DRAWER_CHILD,)\n"
             "FIXED_RUNNERS = (\n"
             "    PurchasedHardwareSpec(\n"
-            f"        'runner_left', 'Blum', {plan.runner.product_code!r},\n"
-            f"        {runner_assets.left_asset_id!r}, None,\n"
+            f"        'runner_left', 'Blum', {hardware.runner_left.product_code!r},\n"
+            f"        {hardware.runner_left.asset_id!r}, None,\n"
             "    ),\n"
             "    PurchasedHardwareSpec(\n"
-            f"        'runner_right', 'Blum', {plan.runner.product_code!r},\n"
-            f"        {runner_assets.right_asset_id!r}, None,\n"
+            f"        'runner_right', 'Blum', {hardware.runner_right.product_code!r},\n"
+            f"        {hardware.runner_right.asset_id!r}, None,\n"
             "    ),\n"
             ")\n"
         )

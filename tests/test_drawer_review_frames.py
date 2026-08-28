@@ -30,7 +30,7 @@ class TestDrawerReviewFrames(unittest.TestCase):
             "drawer",
             "760H5000S",
             "05083446",
-            "omitted_until_verified",
+            "source_cad_verification_required",
             box,
         )
         child = SimpleNamespace(

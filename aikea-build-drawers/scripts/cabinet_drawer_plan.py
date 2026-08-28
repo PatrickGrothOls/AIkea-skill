@@ -88,7 +88,7 @@ class CabinetDrawerPlanner:
             purpose="drawer",
             runner_product_code=runner.product_code,
             runner_item_number=runner.item_number,
-            hardware_geometry_state="omitted_until_verified",
+            hardware_geometry_state="source_cad_verification_required",
             box=box,
         )
         return CabinetDrawerPlan(

@@ -13,6 +13,10 @@ import yaml
 from assembly_taxonomy_generator import AssemblyTaxonomyGenerator
 from cabinet_drawer_generator import CabinetDrawerGenerator
 from cabinet_drawer_plan import DrawerLayout
+from drawer_hardware_test_support import (
+    DrawerHardwareSetVerifierFactoryTestDouble,
+    TEST_HARDWARE_DIRECTORY,
+)
 from drawer_review_state import DrawerReviewState
 from test_unit_mockup_generator import GlbTestDocument
 
@@ -30,10 +34,13 @@ class TestDrawerWardrobeReview(unittest.TestCase):
         self.project_root = Path(self.temporary_directory.name)
         self.project = yaml.safe_load(self._FIXTURE.read_text(encoding="utf-8"))
         AssemblyTaxonomyGenerator().generate(self.project, self.project_root)
-        CabinetDrawerGenerator().generate(
+        CabinetDrawerGenerator(
+            DrawerHardwareSetVerifierFactoryTestDouble()
+        ).generate(
             self.project_root,
             "tall_storage_01",
             DrawerLayout("drawer_01", bottom_height_mm=356.0),
+            hardware_directory=TEST_HARDWARE_DIRECTORY,
         )
         self.generator = DrawerWardrobeReviewGenerator()
 
@@ -75,9 +82,9 @@ class TestDrawerWardrobeReview(unittest.TestCase):
             self.assertEqual(
                 results[state].runner_review_representation,
                 (
-                    "mounting_zones_only_exact_hardware_geometry_unresolved"
+                    "mounting_zones_only_source_cad_verified_unplaced"
                     if state is DrawerReviewState.REMOVED
-                    else "exact_hardware_geometry_omitted"
+                    else "source_cad_verified_unplaced"
                 ),
             )
         self.assertEqual(
@@ -110,7 +117,7 @@ class TestDrawerWardrobeReview(unittest.TestCase):
         self.assertEqual(relationships["runner_required_depth_mm"], 518.0)
         self.assertEqual(
             relationships["hardware_geometry"],
-            "omitted_until_verified",
+            "source_cad_verified_unplaced",
         )
         self.assertEqual(
             relationships["closed_clearances_mm"],

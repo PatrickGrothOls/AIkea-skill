@@ -13,6 +13,10 @@ import yaml
 from assembly_taxonomy_generator import AssemblyTaxonomyGenerator
 from cabinet_drawer_generator import CabinetDrawerGenerator
 from cabinet_drawer_plan import DrawerLayout
+from drawer_hardware_test_support import (
+    DrawerHardwareSetVerifierFactoryTestDouble,
+    TEST_HARDWARE_DIRECTORY,
+)
 from hardware_asset_manifest import HardwareAssetManifest
 
 
@@ -30,10 +34,13 @@ class TestDrawerHardwareOwnership(unittest.TestCase):
         self.project_root = Path(self.temporary_directory.name)
         project = yaml.safe_load(self._FIXTURE.read_text(encoding="utf-8"))
         AssemblyTaxonomyGenerator().generate(project, self.project_root)
-        CabinetDrawerGenerator().generate(
+        CabinetDrawerGenerator(
+            DrawerHardwareSetVerifierFactoryTestDouble()
+        ).generate(
             self.project_root,
             "tall_storage_01",
             DrawerLayout("drawer_01", bottom_height_mm=356.0),
+            hardware_directory=TEST_HARDWARE_DIRECTORY,
         )
         self._remove_generated_modules()
         sys.path.insert(0, str(self.project_root))

@@ -39,18 +39,41 @@ class HardwareAssetResolver:
         record: HardwareAssetRecord,
         explicit_path: Path | None = None,
     ) -> ResolvedHardwareAsset:
-        path = (explicit_path or self.asset_root / record.local_filename).resolve()
-        if not path.is_file():
-            raise HardwareAssetError(f"local hardware STEP file is missing: {path}")
-        if path.suffix.lower() not in {".step", ".stp"}:
-            raise HardwareAssetError(f"hardware asset is not a STEP file: {path}")
-
-        actual_sha256 = sha256(path.read_bytes()).hexdigest()
-        if record.expected_sha256 and actual_sha256 != record.expected_sha256:
+        candidates = self._candidate_paths(record, explicit_path)
+        existing = tuple(candidate for candidate in candidates if candidate.is_file())
+        for path in existing:
+            if path.suffix.lower() not in {".step", ".stp"}:
+                continue
+            actual_sha256 = sha256(path.read_bytes()).hexdigest()
+            if record.expected_sha256 and actual_sha256 != record.expected_sha256:
+                continue
+            return ResolvedHardwareAsset(record, path, actual_sha256)
+        if not existing:
+            searched = ", ".join(str(candidate) for candidate in candidates)
+            raise HardwareAssetError(
+                f"local hardware STEP file is missing; searched: {searched}"
+            )
+        if all(path.suffix.lower() not in {".step", ".stp"} for path in existing):
+            raise HardwareAssetError(f"hardware asset is not a STEP file: {existing[0]}")
+        if record.expected_sha256:
             raise HardwareAssetError(
                 f"hardware asset checksum does not match {record.asset_id}"
             )
-        return ResolvedHardwareAsset(record, path, actual_sha256)
+        raise HardwareAssetError(f"hardware asset is not a STEP file: {existing[0]}")
+
+    def _candidate_paths(
+        self,
+        record: HardwareAssetRecord,
+        explicit_path: Path | None,
+    ) -> tuple[Path, ...]:
+        if explicit_path is not None:
+            return (explicit_path.resolve(),)
+        filenames = (record.local_filename, record.download_filename)
+        return tuple(
+            (self.asset_root / filename).resolve()
+            for filename in filenames
+            if filename
+        )
 
 
 __all__ = ["HardwareAssetError", "HardwareAssetResolver", "ResolvedHardwareAsset"]

@@ -13,6 +13,10 @@ from assembly_taxonomy_writer import AssemblyTaxonomyConflict
 from cabinet_drawer_generator import CabinetDrawerGenerator
 from cabinet_drawer_plan import DrawerLayout
 from drawer_generated_file_record import DrawerGeneratedFileRecord
+from drawer_hardware_test_support import (
+    DrawerHardwareSetVerifierFactoryTestDouble,
+    TEST_HARDWARE_DIRECTORY,
+)
 
 
 class TestDrawerGeneratedFileRevision(unittest.TestCase):
@@ -31,7 +35,9 @@ class TestDrawerGeneratedFileRevision(unittest.TestCase):
         self.original_taxonomy_record = self.taxonomy_record.read_text(
             encoding="utf-8"
         )
-        self.generator = CabinetDrawerGenerator()
+        self.generator = CabinetDrawerGenerator(
+            DrawerHardwareSetVerifierFactoryTestDouble()
+        )
 
     def test_changed_bottom_height_revises_unchanged_generated_files(self) -> None:
         self._generate(bottom_height_mm=356.0)
@@ -90,6 +96,7 @@ class TestDrawerGeneratedFileRevision(unittest.TestCase):
             self.project_root,
             "tall_storage_01",
             DrawerLayout("drawer_01", bottom_height_mm=bottom_height_mm),
+            hardware_directory=TEST_HARDWARE_DIRECTORY,
         )
 
 

@@ -4,7 +4,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from movento_runner_profile import MoventoRunnerAssetPair, MoventoRunnerProfile
+from movento_runner_profile import (
+    MoventoHardwareAssetIdentity,
+    MoventoHardwareAssetSet,
+    MoventoRunnerProfile,
+)
 
 
 class MoventoRunnerSelectionError(ValueError):
@@ -16,9 +20,35 @@ MOVENTO_760H5000S = MoventoRunnerProfile(
     item_number="05083446",
     nominal_length_mm=500.0,
     maximum_load_kg=40.0,
-    runner_asset_pair=MoventoRunnerAssetPair(
-        left_asset_id="movento-760h5000s-runner-left",
-        right_asset_id="movento-760h5000s-runner-right",
+    hardware_asset_set=MoventoHardwareAssetSet(
+        runner_left=MoventoHardwareAssetIdentity(
+            "movento-760h5000s-runner-left",
+            "runner-left",
+            "760H5000S",
+            "05083446",
+            "left",
+        ),
+        runner_right=MoventoHardwareAssetIdentity(
+            "movento-760h5000s-runner-right",
+            "runner-right",
+            "760H5000S",
+            "05083446",
+            "right",
+        ),
+        locking_device_left=MoventoHardwareAssetIdentity(
+            "t51-7601-left-locking-device",
+            "locking-device-left",
+            "T51.7601 L",
+            "01311197",
+            "left",
+        ),
+        locking_device_right=MoventoHardwareAssetIdentity(
+            "t51-7601-right-locking-device",
+            "locking-device-right",
+            "T51.7601 R",
+            "06247277",
+            "right",
+        ),
     ),
     mounting_width_mm=21.0,
     runner_bearing_height_mm=28.5,
@@ -30,7 +60,7 @@ MOVENTO_760H5500S = MoventoRunnerProfile(
     item_number="07086828",
     nominal_length_mm=550.0,
     maximum_load_kg=40.0,
-    runner_asset_pair=None,
+    hardware_asset_set=None,
 )
 
 

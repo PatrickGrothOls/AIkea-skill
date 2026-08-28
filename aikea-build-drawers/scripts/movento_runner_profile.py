@@ -14,11 +14,32 @@ class DrawerInsideWidthLimits:
 
 
 @dataclass(frozen=True, slots=True)
-class MoventoRunnerAssetPair:
-    """Name the verified left and right CAD assets for one runner pair."""
+class MoventoHardwareAssetIdentity:
+    """Name one exact handed component in a depth-matched hardware set."""
 
-    left_asset_id: str
-    right_asset_id: str
+    asset_id: str
+    component_type: str
+    product_code: str
+    item_number: str
+    handedness: str
+
+
+@dataclass(frozen=True, slots=True)
+class MoventoHardwareAssetSet:
+    """Keep the fixed runners and moving locking devices matched together."""
+
+    runner_left: MoventoHardwareAssetIdentity
+    runner_right: MoventoHardwareAssetIdentity
+    locking_device_left: MoventoHardwareAssetIdentity
+    locking_device_right: MoventoHardwareAssetIdentity
+
+    def identities(self) -> tuple[MoventoHardwareAssetIdentity, ...]:
+        return (
+            self.runner_left,
+            self.runner_right,
+            self.locking_device_left,
+            self.locking_device_right,
+        )
 
 
 @dataclass(frozen=True, slots=True)
@@ -29,7 +50,7 @@ class MoventoRunnerProfile:
     item_number: str
     nominal_length_mm: float
     maximum_load_kg: float
-    runner_asset_pair: MoventoRunnerAssetPair | None
+    hardware_asset_set: MoventoHardwareAssetSet | None
     drawer_inside_width_deduction_mm: float = 42.0
     drawer_inside_width_negative_tolerance_mm: float = 1.5
     drawer_side_length_deduction_mm: float = 10.0
@@ -80,9 +101,17 @@ class MoventoRunnerProfile:
             + self.cabinet_depth_clearance_mm
         )
 
+    def require_hardware_asset_set(self) -> MoventoHardwareAssetSet:
+        if self.hardware_asset_set is None:
+            raise ValueError(
+                f"selected runner {self.product_code} has no complete hardware CAD set"
+            )
+        return self.hardware_asset_set
+
 
 __all__ = [
     "DrawerInsideWidthLimits",
-    "MoventoRunnerAssetPair",
+    "MoventoHardwareAssetIdentity",
+    "MoventoHardwareAssetSet",
     "MoventoRunnerProfile",
 ]

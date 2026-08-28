@@ -22,6 +22,7 @@ class DrawerChildModuleRenderer:
 
     def _spec(self, plan: CabinetDrawerPlan) -> str:
         box = pformat(plan.drawer.box, width=88, sort_dicts=False)
+        hardware = plan.runner.require_hardware_asset_set()
         return (
             f'"""Scope: Own the resolved {plan.drawer.assembly_id} dimensions."""\n\n'
             "from assemblies.specification import PurchasedHardwareSpec\n"
@@ -32,12 +33,14 @@ class DrawerChildModuleRenderer:
             f"BOX_SPEC = {box}\n\n"
             "LOCKING_DEVICES = (\n"
             "    PurchasedHardwareSpec(\n"
-            "        'locking_device_left', 'Blum', 'T51.7601 L',\n"
-            "        't51-7601-left-locking-device', None,\n"
+            f"        'locking_device_left', 'Blum', "
+            f"{hardware.locking_device_left.product_code!r},\n"
+            f"        {hardware.locking_device_left.asset_id!r}, None,\n"
             "    ),\n"
             "    PurchasedHardwareSpec(\n"
-            "        'locking_device_right', 'Blum', 'T51.7601 R',\n"
-            "        't51-7601-right-locking-device', None,\n"
+            f"        'locking_device_right', 'Blum', "
+            f"{hardware.locking_device_right.product_code!r},\n"
+            f"        {hardware.locking_device_right.asset_id!r}, None,\n"
             "    ),\n"
             ")\n\n"
             "SPEC = DrawerAssemblySpec(\n"

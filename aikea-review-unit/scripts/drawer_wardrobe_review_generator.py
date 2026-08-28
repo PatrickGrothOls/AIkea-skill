@@ -124,9 +124,9 @@ class DrawerWardrobeReviewGenerator:
             drawer_state=drawer_state.value,
             runner_product_code=child.assembly.spec.runner_product_code,
             runner_review_representation=(
-                "mounting_zones_only_exact_hardware_geometry_unresolved"
+                "mounting_zones_only_source_cad_verified_unplaced"
                 if drawer_state is DrawerReviewState.REMOVED
-                else "exact_hardware_geometry_omitted"
+                else "source_cad_verified_unplaced"
             ),
             closeup_glb_path=closeup_path,
             full_wardrobe_glb_path=full_result.glb_path,

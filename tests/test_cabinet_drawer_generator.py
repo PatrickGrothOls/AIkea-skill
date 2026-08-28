@@ -11,6 +11,11 @@ import yaml
 from assembly_taxonomy_generator import AssemblyTaxonomyGenerator
 from cabinet_drawer_generator import CabinetDrawerGenerator
 from cabinet_drawer_plan import DrawerLayout
+from drawer_hardware_test_support import (
+    DrawerHardwareSetVerifierFactoryTestDouble,
+    TEST_HARDWARE_DIRECTORY,
+)
+from hardware_asset_resolver import HardwareAssetError
 
 
 class TestCabinetDrawerGenerator(unittest.TestCase):
@@ -28,10 +33,13 @@ class TestCabinetDrawerGenerator(unittest.TestCase):
         original_source = source.read_text(encoding="utf-8")
         AssemblyTaxonomyGenerator().generate(project, project_root)
 
-        result = CabinetDrawerGenerator().generate(
+        result = CabinetDrawerGenerator(
+            DrawerHardwareSetVerifierFactoryTestDouble()
+        ).generate(
             project_root,
             "tall_storage_01",
             DrawerLayout("drawer_01", bottom_height_mm=356.0),
+            hardware_directory=TEST_HARDWARE_DIRECTORY,
         )
 
         parent = project_root / "assemblies/tall_storage_01"
@@ -47,7 +55,10 @@ class TestCabinetDrawerGenerator(unittest.TestCase):
         layout = yaml.safe_load((parent / "drawer-layout.yaml").read_text())
         drawer = layout["drawers"][0]
         self.assertEqual(drawer["runner"]["product_code"], "760H5000S")
-        self.assertEqual(drawer["runner"]["geometry"], "omitted_until_verified")
+        self.assertEqual(
+            drawer["runner"]["geometry"],
+            "source_cad_verified_unplaced",
+        )
         self.assertEqual(
             drawer["local_frame"]["origin_in_parent_mm"],
             {"x": 24.0, "y": 18.0, "z": 456.0},
@@ -67,6 +78,27 @@ class TestCabinetDrawerGenerator(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, "stable lowercase"):
                     DrawerLayout(drawer_id, bottom_height_mm=356.0)
 
+    def test_missing_source_cad_stops_before_any_drawer_file_is_written(self) -> None:
+        temporary_directory = TemporaryDirectory()
+        self.addCleanup(temporary_directory.cleanup)
+        project_root = Path(temporary_directory.name)
+        project = yaml.safe_load(self._FIXTURE.read_text(encoding="utf-8"))
+        AssemblyTaxonomyGenerator().generate(project, project_root)
+        hardware_directory = project_root / "empty-hardware"
+        hardware_directory.mkdir()
+
+        with self.assertRaisesRegex(HardwareAssetError, "STEP file is missing"):
+            CabinetDrawerGenerator().generate(
+                project_root,
+                "tall_storage_01",
+                DrawerLayout("drawer_01", bottom_height_mm=356.0),
+                hardware_directory=hardware_directory,
+            )
+
+        parent = project_root / "assemblies/tall_storage_01"
+        self.assertFalse((parent / "drawer-layout.yaml").exists())
+        self.assertFalse((parent / "drawers").exists())
+
     def test_rejects_traversal_before_rendering_outside_the_drawers_root(self) -> None:
         temporary_directory = TemporaryDirectory()
         self.addCleanup(temporary_directory.cleanup)
@@ -75,10 +107,13 @@ class TestCabinetDrawerGenerator(unittest.TestCase):
         AssemblyTaxonomyGenerator().generate(project, project_root)
 
         with self.assertRaisesRegex(ValueError, "stable lowercase"):
-            CabinetDrawerGenerator().generate(
+            CabinetDrawerGenerator(
+                DrawerHardwareSetVerifierFactoryTestDouble()
+            ).generate(
                 project_root,
                 "tall_storage_01",
                 DrawerLayout("../escaped_01", bottom_height_mm=356.0),
+                hardware_directory=TEST_HARDWARE_DIRECTORY,
             )
 
         parent = project_root / "assemblies/tall_storage_01"

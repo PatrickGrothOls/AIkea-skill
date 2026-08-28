@@ -2,13 +2,14 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path
 
 from assembly_taxonomy_writer import AssemblyTaxonomyWriter
 from cabinet_assembly_spec_loader import CabinetAssemblySpecLoader
 from cabinet_drawer_module_renderer import CabinetDrawerModuleRenderer
 from cabinet_drawer_plan import CabinetDrawerPlan, CabinetDrawerPlanner, DrawerLayout
+from drawer_hardware_set_verifier import DrawerHardwareSetVerifierFactory
 from drawer_generated_file_record import DrawerGeneratedFileRecord
 
 
@@ -23,20 +24,38 @@ class CabinetDrawerGenerationResult:
 class CabinetDrawerGenerator:
     """Add one drawer child without changing the overall aikea.yaml."""
 
-    def __init__(self) -> None:
+    def __init__(
+        self,
+        hardware_verifier_factory: DrawerHardwareSetVerifierFactory | None = None,
+    ) -> None:
         self.spec_loader = CabinetAssemblySpecLoader()
         self.planner = CabinetDrawerPlanner()
         self.renderer = CabinetDrawerModuleRenderer()
         self.writer = AssemblyTaxonomyWriter()
+        self.hardware_verifier_factory = (
+            hardware_verifier_factory or DrawerHardwareSetVerifierFactory()
+        )
 
     def generate(
         self,
         project_root: Path,
         parent_assembly_id: str,
         layout: DrawerLayout,
+        *,
+        hardware_directory: Path,
     ) -> CabinetDrawerGenerationResult:
         cabinet = self.spec_loader.load(project_root, parent_assembly_id)
         plan = self.planner.plan(cabinet, layout)
+        hardware = self.hardware_verifier_factory.create(hardware_directory).verify(
+            plan.runner
+        )
+        plan = replace(
+            plan,
+            drawer=replace(
+                plan.drawer,
+                hardware_geometry_state=hardware.geometry_state,
+            ),
+        )
         files = self.renderer.render(plan)
         recorded = DrawerGeneratedFileRecord.load(project_root, parent_assembly_id)
         written = self.writer.write(project_root, files, recorded=recorded)

@@ -87,6 +87,53 @@ class TestHardwareAssetResolver:
         with pytest.raises(HardwareAssetError, match="checksum"):
             HardwareAssetResolver(tmp_path).resolve(record)
 
+    def test_accepts_the_official_download_filename_without_renaming(
+        self,
+        tmp_path: Path,
+    ) -> None:
+        record = replace(
+            self._test_record(b"official download"),
+            download_filename="official-download.step",
+        )
+        downloaded = tmp_path / record.download_filename
+        downloaded.write_bytes(b"official download")
+
+        resolved = HardwareAssetResolver(tmp_path).resolve(record)
+
+        assert resolved.path == downloaded.resolve()
+
+    def test_skips_a_stale_alias_when_the_official_download_matches(
+        self,
+        tmp_path: Path,
+    ) -> None:
+        record = replace(
+            self._test_record(b"official download"),
+            download_filename="official-download.step",
+        )
+        (tmp_path / record.local_filename).write_bytes(b"stale alias")
+        downloaded = tmp_path / record.download_filename
+        downloaded.write_bytes(b"official download")
+
+        resolved = HardwareAssetResolver(tmp_path).resolve(record)
+
+        assert resolved.path == downloaded.resolve()
+
+    def test_prefers_the_normalised_alias_when_both_files_match(
+        self,
+        tmp_path: Path,
+    ) -> None:
+        record = replace(
+            self._test_record(b"matching bytes"),
+            download_filename="official-download.step",
+        )
+        alias = tmp_path / record.local_filename
+        alias.write_bytes(b"matching bytes")
+        (tmp_path / record.download_filename).write_bytes(b"matching bytes")
+
+        resolved = HardwareAssetResolver(tmp_path).resolve(record)
+
+        assert resolved.path == alias.resolve()
+
     def _test_record(self, contents: bytes):
         manifest = HardwareAssetManifest.load(self._MANIFEST_PATH)
         lock = manifest.asset("t51-7601-left-locking-device")
