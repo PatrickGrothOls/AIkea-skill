@@ -64,6 +64,8 @@ class HardwareAssetRecord:
     expected_sha256: str | None
     state: HardwareAssetState
     embedded_product_codes: tuple[str, ...]
+    handedness: str | None
+    handedness_basis: str | None
     unresolved_reason: str | None
     native_step_observation: NativeStepObservation | None
 
@@ -80,6 +82,8 @@ class HardwareAssetRecord:
             expected_sha256=values.get("expected_sha256"),
             state=HardwareAssetState(values["state"]),
             embedded_product_codes=tuple(values.get("embedded_product_codes", ())),
+            handedness=values.get("handedness"),
+            handedness_basis=values.get("handedness_basis"),
             unresolved_reason=values.get("unresolved_reason"),
             native_step_observation=(
                 NativeStepObservation.from_mapping(observation)

@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "vendor": "Blum",
   "source_urls": [
     "https://www.blum.com/us/en/services/e-services/productdatabase/",
@@ -7,17 +7,60 @@
   ],
   "assets": [
     {
-      "asset_id": "movento-760h5000s-runner-set",
-      "component_type": "runner-set",
+      "asset_id": "movento-760h5000s-runner-left",
+      "component_type": "runner-left",
       "product_code": "760H5000S",
       "catalog_item_number": "05083446",
-      "local_filename": "blum-movento-760h5000s-runner-set.step",
-      "download_filename": null,
-      "expected_sha256": null,
-      "state": "requires-user-download",
-      "embedded_product_codes": [],
-      "unresolved_reason": "The 500 mm runner CAD has not been downloaded and its native file contents have not been verified.",
-      "native_step_observation": null
+      "local_filename": "blum-movento-760h5000s-runner-left.step",
+      "download_filename": "cad48346342_runner_1_cad_bau_$sall_$acadstp_$v1.step",
+      "expected_sha256": "4f2ff807bb1d8f77fba163059b4861ce2c32189cccd128b0cabd81d6c63eebe5",
+      "state": "ready",
+      "embedded_product_codes": [
+        "760H5001S_L",
+        "T75S746M00_L"
+      ],
+      "handedness": "left",
+      "handedness_basis": "embedded-left-product-code-and-positive-x-native-frame",
+      "unresolved_reason": null,
+      "native_step_observation": {
+        "solid_count": 2,
+        "bounds_mm": {
+          "xmin": -0.00000010000000018533116,
+          "xmax": 67.27500009999706,
+          "ymin": -38.1,
+          "ymax": 12.824999999999996,
+          "zmin": -465.495,
+          "zmax": 35.00000000000001
+        }
+      }
+    },
+    {
+      "asset_id": "movento-760h5000s-runner-right",
+      "component_type": "runner-right",
+      "product_code": "760H5000S",
+      "catalog_item_number": "05083446",
+      "local_filename": "blum-movento-760h5000s-runner-right.step",
+      "download_filename": "cad49027541_runner_1_cad_bau_$sall_$acadstp_$v1.step",
+      "expected_sha256": "fa5ffe6879c15d02fad183989e16152db77211b2fb633f7dba1e1872ff43d4f7",
+      "state": "ready",
+      "embedded_product_codes": [
+        "760H5001S",
+        "T75S746M00"
+      ],
+      "handedness": "right",
+      "handedness_basis": "paired-download-and-negative-x-native-frame-inference",
+      "unresolved_reason": null,
+      "native_step_observation": {
+        "solid_count": 2,
+        "bounds_mm": {
+          "xmin": -67.27500009999706,
+          "xmax": 0.00000010000000018533116,
+          "ymin": -38.1,
+          "ymax": 12.824999999999996,
+          "zmin": -465.495,
+          "zmax": 35.00000000000001
+        }
+      }
     },
     {
       "asset_id": "movento-760h5500s-runner-candidate",
@@ -32,6 +75,8 @@
         "760H5501S",
         "T75S746M00"
       ],
+      "handedness": null,
+      "handedness_basis": "one-handed-download-without-formal-side-designation",
       "unresolved_reason": "The downloaded set request contains a one-handed 760H5501S runner representation; the matching handed runner is unresolved.",
       "native_step_observation": {
         "solid_count": 2,
@@ -57,6 +102,8 @@
       "embedded_product_codes": [
         "46166126"
       ],
+      "handedness": "left",
+      "handedness_basis": "catalog-product-code-and-positive-x-native-frame",
       "unresolved_reason": null,
       "native_step_observation": {
         "solid_count": 1,
@@ -82,6 +129,8 @@
       "embedded_product_codes": [
         "43107713"
       ],
+      "handedness": "right",
+      "handedness_basis": "catalog-product-code-and-negative-x-native-frame",
       "unresolved_reason": null,
       "native_step_observation": {
         "solid_count": 1,

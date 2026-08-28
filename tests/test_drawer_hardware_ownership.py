@@ -58,11 +58,12 @@ class TestDrawerHardwareOwnership(unittest.TestCase):
             ["runner_left", "runner_right"],
         )
         self.assertTrue(all(runner.product_code == "760H5000S" for runner in runners))
-        self.assertTrue(
-            all(
-                runner.hardware_asset_id == "movento-760h5000s-runner-set"
-                for runner in runners
-            )
+        self.assertEqual(
+            [runner.hardware_asset_id for runner in runners],
+            [
+                "movento-760h5000s-runner-left",
+                "movento-760h5000s-runner-right",
+            ],
         )
         self.assertTrue(all(runner.local_to_parent is None for runner in runners))
 

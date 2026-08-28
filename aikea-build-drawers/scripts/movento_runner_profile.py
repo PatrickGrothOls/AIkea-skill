@@ -1,4 +1,4 @@
-"""Scope: Define sourced planning values for one MOVENTO runner set."""
+"""Scope: Define sourced planning values and CAD ownership for one MOVENTO pair."""
 
 from __future__ import annotations
 
@@ -14,6 +14,14 @@ class DrawerInsideWidthLimits:
 
 
 @dataclass(frozen=True, slots=True)
+class MoventoRunnerAssetPair:
+    """Name the verified left and right CAD assets for one runner pair."""
+
+    left_asset_id: str
+    right_asset_id: str
+
+
+@dataclass(frozen=True, slots=True)
 class MoventoRunnerProfile:
     """Keep one official runner product's planning values together."""
 
@@ -21,7 +29,7 @@ class MoventoRunnerProfile:
     item_number: str
     nominal_length_mm: float
     maximum_load_kg: float
-    runner_asset_id: str
+    runner_asset_pair: MoventoRunnerAssetPair | None
     drawer_inside_width_deduction_mm: float = 42.0
     drawer_inside_width_negative_tolerance_mm: float = 1.5
     drawer_side_length_deduction_mm: float = 10.0
@@ -73,4 +81,8 @@ class MoventoRunnerProfile:
         )
 
 
-__all__ = ["DrawerInsideWidthLimits", "MoventoRunnerProfile"]
+__all__ = [
+    "DrawerInsideWidthLimits",
+    "MoventoRunnerAssetPair",
+    "MoventoRunnerProfile",
+]

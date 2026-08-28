@@ -21,22 +21,32 @@ class TestDrawerHardwareAssetManifest:
     def test_manifest_registers_both_runner_lengths_and_locking_devices(self) -> None:
         manifest = HardwareAssetManifest.load(self._MANIFEST_PATH)
 
-        assert manifest.schema_version == 1
+        assert manifest.schema_version == 2
         assert manifest.vendor == "Blum"
         assert {asset.asset_id for asset in manifest.assets} == {
-            "movento-760h5000s-runner-set",
+            "movento-760h5000s-runner-left",
+            "movento-760h5000s-runner-right",
             "movento-760h5500s-runner-candidate",
             "t51-7601-left-locking-device",
             "t51-7601-right-locking-device",
         }
 
-    def test_unresolved_runner_cad_cannot_be_treated_as_build_ready(self) -> None:
+    def test_500_runner_pair_records_verified_handed_assets(self) -> None:
         manifest = HardwareAssetManifest.load(self._MANIFEST_PATH)
-        runner_500 = manifest.asset("movento-760h5000s-runner-set")
+        left = manifest.asset("movento-760h5000s-runner-left")
+        right = manifest.asset("movento-760h5000s-runner-right")
+
+        assert left.state is HardwareAssetState.READY
+        assert right.state is HardwareAssetState.READY
+        assert left.handedness == "left"
+        assert right.handedness == "right"
+        assert "embedded-left-product-code" in left.handedness_basis
+        assert "inference" in right.handedness_basis
+
+    def test_incomplete_550_runner_cad_remains_inspection_only(self) -> None:
+        manifest = HardwareAssetManifest.load(self._MANIFEST_PATH)
         runner_550 = manifest.asset("movento-760h5500s-runner-candidate")
 
-        assert runner_500.state is HardwareAssetState.REQUIRES_USER_DOWNLOAD
-        assert runner_500.expected_sha256 is None
         assert runner_550.state is HardwareAssetState.INSPECTION_ONLY
         assert "760H5501S" in runner_550.embedded_product_codes
         assert "one-handed" in runner_550.unresolved_reason

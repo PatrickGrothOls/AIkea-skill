@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from movento_runner_profile import MoventoRunnerProfile
+from movento_runner_profile import MoventoRunnerAssetPair, MoventoRunnerProfile
 
 
 class MoventoRunnerSelectionError(ValueError):
@@ -16,7 +16,10 @@ MOVENTO_760H5000S = MoventoRunnerProfile(
     item_number="05083446",
     nominal_length_mm=500.0,
     maximum_load_kg=40.0,
-    runner_asset_id="movento-760h5000s-runner-set",
+    runner_asset_pair=MoventoRunnerAssetPair(
+        left_asset_id="movento-760h5000s-runner-left",
+        right_asset_id="movento-760h5000s-runner-right",
+    ),
     mounting_width_mm=21.0,
     runner_bearing_height_mm=28.5,
     cabinet_profile_width_mm=40.9,
@@ -27,7 +30,7 @@ MOVENTO_760H5500S = MoventoRunnerProfile(
     item_number="07086828",
     nominal_length_mm=550.0,
     maximum_load_kg=40.0,
-    runner_asset_id="movento-760h5500s-runner-candidate",
+    runner_asset_pair=None,
 )
 
 

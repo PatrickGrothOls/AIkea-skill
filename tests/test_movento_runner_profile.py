@@ -23,6 +23,15 @@ class TestMoventoRunnerProfile:
         assert profile.mounting_width_mm == 21.0
         assert profile.runner_bearing_height_mm == 28.5
         assert profile.cabinet_profile_width_mm == 40.9
+        assert profile.runner_asset_pair.left_asset_id == (
+            "movento-760h5000s-runner-left"
+        )
+        assert profile.runner_asset_pair.right_asset_id == (
+            "movento-760h5000s-runner-right"
+        )
+
+    def test_550_profile_does_not_invent_a_complete_handed_pair(self) -> None:
+        assert MOVENTO_760H5500S.runner_asset_pair is None
 
     def test_drawer_dimensions_remain_hardware_owned(self) -> None:
         limits = MOVENTO_760H5000S.drawer_inside_width_limits(707.0)
