@@ -40,9 +40,22 @@ then verify it through `HardwareAssetResolver` before importing it.
 The consistent imported wrapper is the normalised representation. Placement into
 a drawer or cabinet is a later explicit rigid transform, not part of import.
 
+## Registered 500 mm pair
+
+- The official 500 mm product download resolves to two verified local STEP
+  files. Each file contains two solids and remains outside the public skill.
+- The left asset embeds `760H5001S_L` and `T75S746M00_L`; its positive-X
+  native frame also matches the verified `T51.7601 L` frame convention.
+- The paired file embeds `760H5001S` and `T75S746M00` without an `R` suffix.
+  Its right-handed ownership is therefore an explicit inference from the paired
+  official download and its negative-X frame matching the verified
+  `T51.7601 R` convention.
+- Registration proves exact bytes, product identity, native bounds, and handed
+  asset ownership. Cabinet placement, drawer mating, and mounting machining are
+  separate unresolved gates.
+
 ## Unresolved CAD
 
-- The 500 mm runner STEP has not yet been obtained or verified.
 - The downloaded 550 set candidate embeds `760H5501S` and represents only one
   handed runner. It is inspection-only until the matching handed component is
   identified.

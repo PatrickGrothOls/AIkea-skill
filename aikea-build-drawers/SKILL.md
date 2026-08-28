@@ -53,11 +53,12 @@ geometry from prose.
 The implemented slice builds one five-panel wooden drawer in one existing
 cabinet, records the selected MOVENTO runner and locking-device identities, saves
 the cabinet-to-drawer frame, checks clearances and material collisions, and
-exports closed, open, and removed review geometry. While exact runner CAD is
-unresolved, the removed view shows clearly identified mounting zones rather than
-invented hardware solids. Exact hardware CAD, mounting cuts,
-drawer-box joinery, and manufacturing toolpaths remain later construction gates
-and are reported separately from this visual box-and-placement proof.
+exports closed, open, and removed review geometry. The exact handed 500 mm runner
+pair and both locking-device files are registered as verified user-supplied CAD,
+without packaging vendor bytes. Their cabinet placement, drawer mating, and
+mounting cuts remain unresolved, so the removed review still shows identified
+mounting zones rather than unplaced hardware. Drawer-box joinery and
+manufacturing toolpaths remain later construction gates.
 
 ## Responsibility boundary
 
