@@ -1,0 +1,95 @@
+"""Scope: Reject nested assemblies and hardware that differ from saved specs."""
+
+from __future__ import annotations
+
+import pytest
+
+from assembly_composition_test_case import AssemblyCompositionTestCase
+
+
+class TestAssemblyCompositionRejections(AssemblyCompositionTestCase):
+    """Keep built composition synchronized with its owning specification."""
+
+    def test_built_child_rejects_a_different_declared_placement(
+        self, generated_values
+    ) -> None:
+        values, _ = generated_values
+        identity = values.IDENTITY_LOCAL_TO_PARENT
+        drawer_spec = self.fixture_assembly_spec("drawer_01", "drawer", (), ())
+        built_drawer = values.BuiltAssembly(drawer_spec, (), ())
+        declared = values.ChildAssemblySpec("drawer_01", "drawer", identity)
+        shifted = values.ChildAssemblySpec(
+            "drawer_01",
+            "drawer",
+            values.LocalToParentPlacement(
+                values.Point3D(10.0, 0.0, 0.0),
+                identity.axis_basis,
+            ),
+        )
+        built_child = values.BuiltChildAssembly(shifted, built_drawer)
+        cabinet_spec = self.fixture_assembly_spec(
+            "cabinet_01", "storage", (declared,), ()
+        )
+
+        with pytest.raises(
+            values.AssemblyCompositionError,
+            match="declared placements",
+        ):
+            values.BuiltAssembly(
+                cabinet_spec,
+                (),
+                (),
+                child_assemblies=(built_child,),
+            )
+
+    def test_built_child_rejects_a_different_identity(self, generated_values) -> None:
+        values, _ = generated_values
+        drawer_spec = self.fixture_assembly_spec("drawer_02", "drawer", (), ())
+        built_drawer = values.BuiltAssembly(drawer_spec, (), ())
+        declared = values.ChildAssemblySpec(
+            "drawer_01", "drawer", values.IDENTITY_LOCAL_TO_PARENT
+        )
+
+        with pytest.raises(
+            values.AssemblyCompositionError,
+            match="child identity",
+        ):
+            values.BuiltChildAssembly(declared, built_drawer)
+
+    def test_built_hardware_rejects_a_different_declared_instance(
+        self, generated_values
+    ) -> None:
+        values, _ = generated_values
+        declared = values.PurchasedHardwareSpec(
+            "runner_left",
+            "Blum",
+            "760H5500S-left",
+            "hardware/blum/760H5500S-left.step",
+            values.IDENTITY_LOCAL_TO_PARENT,
+        )
+        different = values.PurchasedHardwareSpec(
+            "runner_left",
+            "Blum",
+            "760H5500S-left",
+            "hardware/blum/760H5500S-left.step",
+            values.LocalToParentPlacement(
+                values.Point3D(1.0, 0.0, 0.0),
+                values.IDENTITY_AXIS_BASIS,
+            ),
+        )
+        drawer_spec = self.fixture_assembly_spec(
+            "drawer_01", "drawer", (), (declared,)
+        )
+
+        with pytest.raises(
+            values.AssemblyCompositionError,
+            match="purchased hardware",
+        ):
+            values.BuiltAssembly(
+                drawer_spec,
+                (),
+                (),
+                purchased_hardware=(
+                    values.BuiltPurchasedHardware(different, object()),
+                ),
+            )

@@ -5,6 +5,23 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any
 
+from .assembly_composition import (
+    AssemblyCompositionError,
+    AssemblySpecification,
+    BuiltChildAssembly,
+    BuiltPurchasedHardware,
+    ChildAssemblySpec,
+    PurchasedHardwareSpec,
+)
+from .assembly_placement import (
+    AxisBasis,
+    AxisDirection,
+    IDENTITY_AXIS_BASIS,
+    IDENTITY_LOCAL_TO_PARENT,
+    LocalToParentPlacement,
+    Point3D,
+)
+
 
 @dataclass(frozen=True)
 class BoundaryPoint:
@@ -62,6 +79,8 @@ class AssemblySpec:
     door_bottom_mm: float
     parts: tuple[PartSpec, ...]
     joints: tuple[JointSpec | CabineoJointSpec, ...]
+    child_assemblies: tuple[ChildAssemblySpec, ...] = ()
+    purchased_hardware: tuple[PurchasedHardwareSpec, ...] = ()
 
     def part(self, part_id: str) -> PartSpec:
         return next(part for part in self.parts if part.part_id == part_id)
@@ -88,6 +107,8 @@ class BaseAssemblySpec:
     modules: tuple[BaseModuleSpec, ...]
     parts: tuple[PartSpec, ...]
     joints: tuple[JointSpec | CabineoJointSpec, ...]
+    child_assemblies: tuple[ChildAssemblySpec, ...] = ()
+    purchased_hardware: tuple[PurchasedHardwareSpec, ...] = ()
 
     @property
     def base_height_mm(self) -> float:
@@ -105,7 +126,21 @@ class BuiltPart:
 
 @dataclass(frozen=True)
 class BuiltAssembly:
-    spec: AssemblySpec | BaseAssemblySpec
+    spec: AssemblySpecification
     parts: tuple[BuiltPart, ...]
     joints: tuple[JointSpec | CabineoJointSpec, ...]
     cuts: tuple[Any, ...] = ()
+    child_assemblies: tuple[BuiltChildAssembly, ...] = ()
+    purchased_hardware: tuple[BuiltPurchasedHardware, ...] = ()
+
+    def __post_init__(self) -> None:
+        built_child_specs = tuple(child.spec for child in self.child_assemblies)
+        if built_child_specs != self.spec.child_assemblies:
+            raise AssemblyCompositionError(
+                "built child assemblies do not match their declared placements"
+            )
+        built_hardware_specs = tuple(item.spec for item in self.purchased_hardware)
+        if built_hardware_specs != self.spec.purchased_hardware:
+            raise AssemblyCompositionError(
+                "built purchased hardware does not match its declared placements"
+            )

@@ -17,6 +17,12 @@ from assembly_taxonomy import (
 class AssemblyTaxonomyRenderer:
     """Render a complete project tree before any file is changed."""
 
+    _PROJECT_CONTRACT_FILES = (
+        "assembly_composition.py",
+        "assembly_placement.py",
+        "specification.py",
+    )
+
     def __init__(self, asset_root: Path) -> None:
         self.asset_root = asset_root
         self.modules = AssemblyModuleRenderer()
@@ -27,10 +33,8 @@ class AssemblyTaxonomyRenderer:
             Path("assemblies/__init__.py"): self.modules.package(
                 "Contain generated local furniture assemblies"
             ),
-            Path("assemblies/specification.py"): (
-                self.asset_root / "specification.py"
-            ).read_text(encoding="utf-8"),
         }
+        files.update(self._project_contract_files())
         for assembly in taxonomy.assemblies:
             files.update(self._assembly_files(assembly))
         return files
@@ -113,3 +117,11 @@ class AssemblyTaxonomyRenderer:
                 assembly.assembly_id, part
             )
         return files
+
+    def _project_contract_files(self) -> dict[Path, str]:
+        return {
+            Path("assemblies") / filename: (
+                self.asset_root / filename
+            ).read_text(encoding="utf-8")
+            for filename in self._PROJECT_CONTRACT_FILES
+        }
