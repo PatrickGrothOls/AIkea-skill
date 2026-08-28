@@ -9,6 +9,7 @@ from movento_runner_profile import (
     MoventoHardwareAssetSet,
     MoventoRunnerProfile,
 )
+from movento_mounting_profile import MOVENTO_760H5000S_MOUNTING
 
 
 class MoventoRunnerSelectionError(ValueError):
@@ -50,6 +51,7 @@ MOVENTO_760H5000S = MoventoRunnerProfile(
             "right",
         ),
     ),
+    mounting_profile=MOVENTO_760H5000S_MOUNTING,
     mounting_width_mm=21.0,
     runner_bearing_height_mm=28.5,
     cabinet_profile_width_mm=40.9,

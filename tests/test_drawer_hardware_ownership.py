@@ -21,7 +21,7 @@ from hardware_asset_manifest import HardwareAssetManifest
 
 
 class TestDrawerHardwareOwnership(unittest.TestCase):
-    """Protect hardware identity without inventing unresolved CAD geometry."""
+    """Protect hardware identity, ownership, and saved mounting frames."""
 
     _FIXTURE = Path(__file__).parent / "fixtures/four-unit-review-aikea.yaml"
     _MANIFEST = (
@@ -72,7 +72,11 @@ class TestDrawerHardwareOwnership(unittest.TestCase):
                 "movento-760h5000s-runner-right",
             ],
         )
-        self.assertTrue(all(runner.local_to_parent is None for runner in runners))
+        self.assertEqual(
+            [self._origin(runner) for runner in runners],
+            [(18.0, 55.0, 465.575), (725.0, 55.0, 465.575)],
+        )
+        self.assertTrue(all(self._axes(runner) == self._hardware_axes() for runner in runners))
 
     def test_locking_devices_belong_to_the_moving_drawer(self) -> None:
         locks = self.drawer_spec.purchased_hardware
@@ -88,7 +92,11 @@ class TestDrawerHardwareOwnership(unittest.TestCase):
                 "t51-7601-right-locking-device",
             ],
         )
-        self.assertTrue(all(lock.local_to_parent is None for lock in locks))
+        self.assertEqual(
+            [self._origin(lock) for lock in locks],
+            [(-6.0, 37.0, 9.575), (701.0, 37.0, 9.575)],
+        )
+        self.assertTrue(all(self._axes(lock) == self._hardware_axes() for lock in locks))
 
     def test_every_identity_resolves_through_the_manifest_without_geometry(self) -> None:
         manifest = HardwareAssetManifest.load(self._MANIFEST)
@@ -106,6 +114,28 @@ class TestDrawerHardwareOwnership(unittest.TestCase):
         for name in tuple(sys.modules):
             if name == "assemblies" or name.startswith("assemblies."):
                 sys.modules.pop(name)
+
+    def _origin(self, hardware) -> tuple[float, float, float]:
+        origin = hardware.local_to_parent.origin_in_parent
+        return origin.x_mm, origin.y_mm, origin.z_mm
+
+    def _axes(self, hardware) -> tuple[tuple[float, float, float], ...]:
+        basis = hardware.local_to_parent.axis_basis
+        return tuple(
+            (axis.x, axis.y, axis.z)
+            for axis in (
+                basis.local_x_in_parent,
+                basis.local_y_in_parent,
+                basis.local_z_in_parent,
+            )
+        )
+
+    def _hardware_axes(self) -> tuple[tuple[float, float, float], ...]:
+        return (
+            (1.0, 0.0, 0.0),
+            (0.0, 0.0, 1.0),
+            (0.0, -1.0, 0.0),
+        )
 
 
 if __name__ == "__main__":

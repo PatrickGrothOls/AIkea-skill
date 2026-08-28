@@ -7,7 +7,7 @@ from pathlib import Path
 
 from assembly_taxonomy_writer import AssemblyTaxonomyWriter
 from cabinet_assembly_spec_loader import CabinetAssemblySpecLoader
-from cabinet_drawer_module_renderer import CabinetDrawerModuleRenderer
+from cabinet_drawer_file_set_renderer import CabinetDrawerFileSetRenderer
 from cabinet_drawer_plan import CabinetDrawerPlan, CabinetDrawerPlanner, DrawerLayout
 from drawer_hardware_set_verifier import DrawerHardwareSetVerifierFactory
 from drawer_generated_file_record import DrawerGeneratedFileRecord
@@ -30,7 +30,7 @@ class CabinetDrawerGenerator:
     ) -> None:
         self.spec_loader = CabinetAssemblySpecLoader()
         self.planner = CabinetDrawerPlanner()
-        self.renderer = CabinetDrawerModuleRenderer()
+        self.renderer = CabinetDrawerFileSetRenderer()
         self.writer = AssemblyTaxonomyWriter()
         self.hardware_verifier_factory = (
             hardware_verifier_factory or DrawerHardwareSetVerifierFactory()
@@ -53,7 +53,7 @@ class CabinetDrawerGenerator:
             plan,
             drawer=replace(
                 plan.drawer,
-                hardware_geometry_state=hardware.geometry_state,
+                hardware_geometry_state=plan.hardware_mounting.geometry_state,
             ),
         )
         files = self.renderer.render(plan)

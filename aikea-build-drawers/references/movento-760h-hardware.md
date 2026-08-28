@@ -47,6 +47,36 @@ prove build-ready state, identity, handedness, checksum, solid count, and native
 bounds. Passing this gate means source CAD is verified but unplaced; it does not
 prove installation, mating, or machining.
 
+## Verified 500 mm mounting frame
+
+The official attachment graphic and the native STEP features resolve one shared
+manufacturer frame for both hands:
+
+- native X maps to owner X;
+- native Y maps to owner Z;
+- native Z maps to negative owner Y;
+- the manufacturer origin is 37 mm behind the wooden drawer front and 9.575 mm
+  above the drawer side's lower edge;
+- native X zero is the relevant inside cabinet-wall plane.
+
+For a 15 mm drawer side, the `LW - 42` relationship leaves 6 mm between the
+drawer outside and each cabinet wall. The left locking-device frame is therefore
+6 mm left of the drawer zero; the right frame is 6 mm right of the drawer's
+outside width. After the drawer frame is composed into the cabinet, each locking
+device and its runner share the same manufacturer origin and axes.
+
+The runner STEP contains the catalogue-matching system-screw axes at native Z
+`0` and `-256`. They become fixing depths 37 and 293 mm from the wooden drawer
+front. The 9.575 mm vertical translation places the T51 mounting pads on the
+drawer's lower edge; adding another 0.2 mm causes material interference.
+
+The resolved transform does not complete machining. The unmachined drawer back
+still occupies the runner's required rear hook/notch space, and the official
+rear preparation must be applied before manufacture. The manufacturer runner
+and lock solids also overlap in their apparent closed engagement; do not move
+one component merely to remove that vendor-CAD overlap without an installation
+datum proving the change.
+
 ## Registered 500 mm pair
 
 - The official 500 mm product download resolves to two verified local STEP
@@ -58,8 +88,8 @@ prove installation, mating, or machining.
   official download and its negative-X frame matching the verified
   `T51.7601 R` convention.
 - Registration proves exact bytes, product identity, native bounds, and handed
-  asset ownership. Cabinet placement, drawer mating, and mounting machining are
-  separate unresolved gates.
+  asset ownership. The mounting profile separately owns placement; rear drawer
+  preparation and mounting machining remain unresolved gates.
 
 ## Unresolved CAD
 
@@ -75,3 +105,4 @@ Official sources:
 
 - [Blum Product Database](https://www.blum.com/us/en/services/e-services/productdatabase/)
 - [MOVENTO catalogue page](https://publications.blum.com/2024/catalogue/en/504/)
+- [MOVENTO planning and attachment brochure](https://d2.blum.com/services/BEC003/me17392873_ep_dok_bau_%24sen-id_%24aof_%24v2.pdf)

@@ -6,10 +6,14 @@ from pathlib import Path
 from pprint import pformat
 
 from cabinet_drawer_plan import CabinetDrawerPlan
+from hardware_placement_renderer import HardwarePlacementRenderer
 
 
 class DrawerChildModuleRenderer:
     """Create one importable drawer child without parent-cabinet concerns."""
+
+    def __init__(self) -> None:
+        self.placement_renderer = HardwarePlacementRenderer()
 
     def render(self, root: Path, plan: CabinetDrawerPlan) -> dict[Path, str]:
         return {
@@ -23,9 +27,13 @@ class DrawerChildModuleRenderer:
     def _spec(self, plan: CabinetDrawerPlan) -> str:
         box = pformat(plan.drawer.box, width=88, sort_dicts=False)
         hardware = plan.runner.require_hardware_asset_set()
+        mounting = plan.hardware_mounting
         return (
             f'"""Scope: Own the resolved {plan.drawer.assembly_id} dimensions."""\n\n'
-            "from assemblies.specification import PurchasedHardwareSpec\n"
+            "from assemblies.specification import (\n"
+            "    AxisBasis, AxisDirection, LocalToParentPlacement, Point3D,\n"
+            "    PurchasedHardwareSpec,\n"
+            ")\n"
             "from drawer_assembly_spec import DrawerAssemblySpec\n"
             "from drawer_box_spec import (\n"
             "    CabinetDrawerOpening, DrawerBoxSizingProfile, DrawerBoxSpec, DrawerPartSpec,\n"
@@ -35,12 +43,24 @@ class DrawerChildModuleRenderer:
             "    PurchasedHardwareSpec(\n"
             f"        'locking_device_left', 'Blum', "
             f"{hardware.locking_device_left.product_code!r},\n"
-            f"        {hardware.locking_device_left.asset_id!r}, None,\n"
+            f"        {hardware.locking_device_left.asset_id!r},\n"
+            "        local_to_parent="
+            + self.placement_renderer.render(
+                mounting.locking_device_left_in_drawer,
+                "        ",
+            )
+            + ",\n"
             "    ),\n"
             "    PurchasedHardwareSpec(\n"
             f"        'locking_device_right', 'Blum', "
             f"{hardware.locking_device_right.product_code!r},\n"
-            f"        {hardware.locking_device_right.asset_id!r}, None,\n"
+            f"        {hardware.locking_device_right.asset_id!r},\n"
+            "        local_to_parent="
+            + self.placement_renderer.render(
+                mounting.locking_device_right_in_drawer,
+                "        ",
+            )
+            + ",\n"
             "    ),\n"
             ")\n\n"
             "SPEC = DrawerAssemblySpec(\n"

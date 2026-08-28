@@ -57,7 +57,15 @@ class TestCabinetDrawerGenerator(unittest.TestCase):
         self.assertEqual(drawer["runner"]["product_code"], "760H5000S")
         self.assertEqual(
             drawer["runner"]["geometry"],
-            "source_cad_verified_unplaced",
+            "source_cad_mounting_plan_saved",
+        )
+        self.assertEqual(
+            drawer["runner"]["fixed_mounting_frames"]["left"]["origin_mm"],
+            {"x": 18.0, "y": 55.0, "z": 465.575},
+        )
+        self.assertEqual(
+            drawer["runner"]["fixed_mounting_frames"]["right"]["origin_mm"],
+            {"x": 725.0, "y": 55.0, "z": 465.575},
         )
         self.assertEqual(
             drawer["local_frame"]["origin_in_parent_mm"],

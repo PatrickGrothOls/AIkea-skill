@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+from movento_mounting_profile import MoventoMountingProfile
+
 
 @dataclass(frozen=True, slots=True)
 class DrawerInsideWidthLimits:
@@ -51,6 +53,7 @@ class MoventoRunnerProfile:
     nominal_length_mm: float
     maximum_load_kg: float
     hardware_asset_set: MoventoHardwareAssetSet | None
+    mounting_profile: MoventoMountingProfile | None = None
     drawer_inside_width_deduction_mm: float = 42.0
     drawer_inside_width_negative_tolerance_mm: float = 1.5
     drawer_side_length_deduction_mm: float = 10.0
@@ -107,6 +110,13 @@ class MoventoRunnerProfile:
                 f"selected runner {self.product_code} has no complete hardware CAD set"
             )
         return self.hardware_asset_set
+
+    def require_mounting_profile(self) -> MoventoMountingProfile:
+        if self.mounting_profile is None:
+            raise ValueError(
+                f"selected runner {self.product_code} has no verified mounting profile"
+            )
+        return self.mounting_profile
 
 
 __all__ = [
