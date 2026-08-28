@@ -57,18 +57,6 @@ class TestDrawerReviewFrames(unittest.TestCase):
         self.assertAlmostEqual(opened_center.y - closed_center.y, 0.0)
         self.assertAlmostEqual(opened_center.z - closed_center.z, 0.0)
 
-    def test_rejects_a_left_handed_saved_basis(self) -> None:
-        from local_to_parent_location import AssemblyFrameError, LocalToParentLocation
-
-        with self.assertRaisesRegex(AssemblyFrameError, "right-handed"):
-            LocalToParentLocation().build(
-                self._placement(
-                    x_axis=(1.0, 0.0, 0.0),
-                    y_axis=(0.0, -1.0, 0.0),
-                    z_axis=(0.0, 0.0, 1.0),
-                )
-            )
-
     def _placement(self, x_axis, y_axis, z_axis):
         return SimpleNamespace(
             origin_in_parent=SimpleNamespace(x_mm=100.0, y_mm=200.0, z_mm=300.0),

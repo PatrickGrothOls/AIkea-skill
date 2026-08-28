@@ -16,6 +16,7 @@ from .assembly_composition import (
 from .assembly_placement import (
     AxisBasis,
     AxisDirection,
+    AssemblyPlacementError,
     IDENTITY_AXIS_BASIS,
     IDENTITY_LOCAL_TO_PARENT,
     LocalToParentPlacement,

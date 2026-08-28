@@ -93,3 +93,30 @@ class TestAssemblyCompositionRejections(AssemblyCompositionTestCase):
                     values.BuiltPurchasedHardware(different, object()),
                 ),
             )
+
+    @pytest.mark.parametrize(
+        ("x_axis", "y_axis", "z_axis"),
+        (
+            ((1.0, 0.0, 0.0), (0.0, -1.0, 0.0), (0.0, 0.0, 1.0)),
+            ((2.0, 0.0, 0.0), (0.0, 1.0, 0.0), (0.0, 0.0, 1.0)),
+            ((1.0, 0.0, 0.0), (1.0, 1.0, 0.0), (0.0, 0.0, 1.0)),
+        ),
+    )
+    def test_saved_axis_basis_rejects_non_rigid_frames(
+        self,
+        generated_values,
+        x_axis,
+        y_axis,
+        z_axis,
+    ) -> None:
+        values, _ = generated_values
+
+        with pytest.raises(
+            values.AssemblyPlacementError,
+            match="orthonormal right-handed",
+        ):
+            values.AxisBasis(
+                values.AxisDirection(*x_axis),
+                values.AxisDirection(*y_axis),
+                values.AxisDirection(*z_axis),
+            )
