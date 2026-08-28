@@ -8,6 +8,7 @@ from typing import Any
 
 from assembly_run import AssemblyRunReader
 from base_mockup_geometry import BaseMockupGeometry
+from cabinet_review_addition import CabinetReviewAddition
 from cabinet_review_geometry import CabinetReviewGeometry
 from cadquery_glb_exporter import CadQueryGlbExporter
 from door_review_state import DoorReviewState
@@ -38,6 +39,7 @@ class FullWardrobeReviewGenerator:
         project_root: Path,
         project: dict[str, Any],
         door_plan: FullWardrobeDoorPlan | None = None,
+        additions: tuple[CabinetReviewAddition, ...] = (),
     ) -> FullWardrobeReviewResult:
         run = self.run_reader.read(project)
         assembly_ids = tuple(item.assembly_id for item in run.assemblies)
@@ -49,6 +51,12 @@ class FullWardrobeReviewGenerator:
             raise UnitMockupInputError(
                 ["unknown cabinet door states: " + ", ".join(unknown_assembly_ids)]
             )
+        additions_by_id = {item.assembly_id: item for item in additions}
+        unknown_additions = sorted(additions_by_id.keys() - set(assembly_ids))
+        if len(additions_by_id) != len(additions) or unknown_additions:
+            raise UnitMockupInputError(
+                ["cabinet review additions must target unique saved assemblies"]
+            )
         door_states = resolved_door_plan.states_for(assembly_ids)
         built_base = self.loader.load_assembly(project_root, self._BASE_ASSEMBLY_ID)
         base_parts = self.base_geometry.build(built_base)
@@ -58,6 +66,7 @@ class FullWardrobeReviewGenerator:
         )
         physical_cabinet_parts = tuple(
             self.cabinet_geometry.build(built, DoorReviewState.CLOSED)
+            + self._addition_parts(additions_by_id, built.spec.assembly_id, True)
             for built in built_cabinets
         )
         report = self.position_checker.check(
@@ -87,6 +96,11 @@ class FullWardrobeReviewGenerator:
                 built,
                 door_states[built.spec.assembly_id],
             )
+            + self._addition_parts(
+                additions_by_id,
+                built.spec.assembly_id,
+                False,
+            )
             for built in built_cabinets
         )
         for built, parts in zip(built_cabinets, review_cabinet_parts):
@@ -110,6 +124,17 @@ class FullWardrobeReviewGenerator:
                 }
             ),
         )
+
+    def _addition_parts(
+        self,
+        additions: dict[str, CabinetReviewAddition],
+        assembly_id: str,
+        physical: bool,
+    ) -> tuple[Any, ...]:
+        addition = additions.get(assembly_id)
+        if addition is None:
+            return ()
+        return addition.physical_parts if physical else addition.review_parts
 
 
 __all__ = ["FullWardrobeReviewGenerator"]

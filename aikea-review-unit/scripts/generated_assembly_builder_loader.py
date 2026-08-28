@@ -29,10 +29,17 @@ class GeneratedAssemblyBuilderLoader:
             raise UnitMockupInputError(["the first assembly must have a stable id"])
         return self.load_assembly(project_root, assembly_id)
 
-    def load_assembly(self, project_root: Path, assembly_id: str) -> Any:
+    def load_assembly(
+        self,
+        project_root: Path,
+        assembly_id: str,
+        builder_module: str = "builder",
+    ) -> Any:
         if not self._ID_PATTERN.fullmatch(assembly_id):
             raise UnitMockupInputError(["the assembly must have a stable id"])
-        builder_path = project_root / "assemblies" / assembly_id / "builder.py"
+        if not re.fullmatch(r"[a-z][a-z0-9_]*", builder_module):
+            raise UnitMockupInputError(["the builder module must have a stable name"])
+        builder_path = project_root / "assemblies" / assembly_id / f"{builder_module}.py"
         if not builder_path.is_file():
             raise UnitMockupInputError(
                 [f"missing generated local builder: {builder_path}"]
@@ -46,7 +53,9 @@ class GeneratedAssemblyBuilderLoader:
             sys.modules.pop(name)
         sys.path.insert(0, str(project_root))
         try:
-            module = importlib.import_module(f"assemblies.{assembly_id}.builder")
+            module = importlib.import_module(
+                f"assemblies.{assembly_id}.{builder_module}"
+            )
             return module.BUILDER.build()
         finally:
             sys.path.remove(str(project_root))
