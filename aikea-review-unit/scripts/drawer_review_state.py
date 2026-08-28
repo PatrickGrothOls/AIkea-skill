@@ -6,6 +6,7 @@ from enum import Enum
 class DrawerReviewState(str, Enum):
     CLOSED = "closed"
     OPEN = "open"
+    REMOVED = "removed"
 
 
 __all__ = ["DrawerReviewState"]

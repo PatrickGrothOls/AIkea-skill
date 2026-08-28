@@ -22,6 +22,20 @@ from unit_mockup import UnitMockupInputError
 class GenerateDrawerWardrobeReviewCommand:
     """Read one project and report its drawer review artifacts."""
 
+    @classmethod
+    def parser(cls) -> argparse.ArgumentParser:
+        parser = argparse.ArgumentParser(
+            description="Generate one drawer wardrobe review."
+        )
+        parser.add_argument("aikea_yaml", type=Path)
+        parser.add_argument("--assembly", required=True)
+        parser.add_argument(
+            "--drawer-state",
+            choices=tuple(state.value for state in DrawerReviewState),
+            default=DrawerReviewState.OPEN.value,
+        )
+        return parser
+
     def run(self, path: Path, assembly_id: str, drawer_state: str) -> int:
         try:
             from drawer_wardrobe_review_generator import DrawerWardrobeReviewGenerator
@@ -45,7 +59,9 @@ class GenerateDrawerWardrobeReviewCommand:
                     "status": "generated",
                     "assembly": result.assembly_id,
                     "drawer": result.drawer_id,
+                    "drawer_state": result.drawer_state,
                     "runner_product_code": result.runner_product_code,
+                    "runner_review": result.runner_review_representation,
                     "closeup_glb": str(result.closeup_glb_path),
                     "full_wardrobe_glb": str(result.full_wardrobe_glb_path),
                     "drawer_position_check": str(
@@ -71,15 +87,7 @@ def main() -> int:
         except CadQueryRuntimeError as error:
             print(json.dumps({"status": "invalid", "problems": [str(error)]}))
             return 2
-    parser = argparse.ArgumentParser(description="Generate one drawer wardrobe review.")
-    parser.add_argument("aikea_yaml", type=Path)
-    parser.add_argument("--assembly", required=True)
-    parser.add_argument(
-        "--drawer-state",
-        choices=("closed", "open"),
-        default="open",
-    )
-    arguments = parser.parse_args()
+    arguments = GenerateDrawerWardrobeReviewCommand.parser().parse_args()
     return GenerateDrawerWardrobeReviewCommand().run(
         arguments.aikea_yaml,
         arguments.assembly,

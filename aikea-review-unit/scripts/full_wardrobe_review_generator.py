@@ -40,6 +40,7 @@ class FullWardrobeReviewGenerator:
         project: dict[str, Any],
         door_plan: FullWardrobeDoorPlan | None = None,
         additions: tuple[CabinetReviewAddition, ...] = (),
+        output_filename: str | None = None,
     ) -> FullWardrobeReviewResult:
         run = self.run_reader.read(project)
         assembly_ids = tuple(item.assembly_id for item in run.assemblies)
@@ -110,7 +111,7 @@ class FullWardrobeReviewGenerator:
                 project_left_mm,
                 parts,
             )
-        filename = resolved_door_plan.filename_for(assembly_ids)
+        filename = output_filename or resolved_door_plan.filename_for(assembly_ids)
         glb_path = project_root / f"assemblies/{filename}"
         self.exporter.export("full_wardrobe", placed_parts, glb_path)
         return FullWardrobeReviewResult(

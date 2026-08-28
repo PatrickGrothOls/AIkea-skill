@@ -12,7 +12,9 @@ class DrawerWardrobeReviewResult:
 
     assembly_id: str
     drawer_id: str
+    drawer_state: str
     runner_product_code: str
+    runner_review_representation: str
     closeup_glb_path: Path
     full_wardrobe_glb_path: Path
     drawer_position_report_path: Path

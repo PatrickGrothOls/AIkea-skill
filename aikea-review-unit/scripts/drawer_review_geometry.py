@@ -37,6 +37,8 @@ class DrawerReviewGeometry:
                 ["drawer review requires exactly one built drawer child"]
             )
         child = drawers[0]
+        if state is DrawerReviewState.REMOVED:
+            return ()
         box = child.assembly.spec.box
         child_location = self.frame_location.build(child.spec.local_to_parent)
         pose = self._pose(state, box.side_length_mm)

@@ -50,12 +50,14 @@ class TestDrawerReviewFrames(unittest.TestCase):
 
         closed = geometry.build(cabinet, DrawerReviewState.CLOSED)[0]
         opened = geometry.build(cabinet, DrawerReviewState.OPEN)[0]
+        removed = geometry.build(cabinet, DrawerReviewState.REMOVED)
         closed_center = closed.placed_shape().Center()
         opened_center = opened.placed_shape().Center()
 
         self.assertAlmostEqual(opened_center.x - closed_center.x, 367.5)
         self.assertAlmostEqual(opened_center.y - closed_center.y, 0.0)
         self.assertAlmostEqual(opened_center.z - closed_center.z, 0.0)
+        self.assertEqual(removed, ())
 
     def _placement(self, x_axis, y_axis, z_axis):
         return SimpleNamespace(

@@ -13,6 +13,7 @@ import yaml
 from assembly_taxonomy_generator import AssemblyTaxonomyGenerator
 from cabinet_drawer_generator import CabinetDrawerGenerator
 from cabinet_drawer_plan import DrawerLayout
+from drawer_review_state import DrawerReviewState
 from test_unit_mockup_generator import GlbTestDocument
 
 
@@ -39,20 +40,59 @@ class TestDrawerWardrobeReview(unittest.TestCase):
     def tearDown(self) -> None:
         self.temporary_directory.cleanup()
 
-    def test_exports_the_built_child_in_closeup_and_existing_full_run(self) -> None:
-        result = self.generator.generate(
-            self.project_root,
-            self.project,
-            "tall_storage_01",
+    def test_exports_three_drawer_states_and_removed_mounting_zones(self) -> None:
+        results = {
+            state: self.generator.generate(
+                self.project_root,
+                self.project,
+                "tall_storage_01",
+                state,
+            )
+            for state in DrawerReviewState
+        }
+        documents = {
+            state: (
+                GlbTestDocument(result.closeup_glb_path),
+                GlbTestDocument(result.full_wardrobe_glb_path),
+            )
+            for state, result in results.items()
+        }
+        runner_nodes = {
+            "review_only__runner_left__760h5000s_mounting_zone",
+            "review_only__runner_right__760h5000s_mounting_zone",
+        }
+        for state, (closeup, full) in documents.items():
+            runner_is_visible = runner_nodes.issubset(closeup.node_names)
+            full_runner_is_visible = {
+                f"tall_storage_01__{name}" for name in runner_nodes
+            }.issubset(full.node_names)
+            expected_runner_visibility = state is DrawerReviewState.REMOVED
+            self.assertEqual(runner_is_visible, expected_runner_visibility)
+            self.assertEqual(full_runner_is_visible, expected_runner_visibility)
+            drawer_is_visible = "drawer_01__left_side" in closeup.node_names
+            self.assertEqual(drawer_is_visible, state is not DrawerReviewState.REMOVED)
+            self.assertEqual(results[state].drawer_state, state.value)
+            self.assertEqual(
+                results[state].runner_review_representation,
+                (
+                    "mounting_zones_only_exact_hardware_geometry_unresolved"
+                    if state is DrawerReviewState.REMOVED
+                    else "exact_hardware_geometry_omitted"
+                ),
+            )
+        self.assertEqual(
+            len({result.full_wardrobe_glb_path for result in results.values()}),
+            3,
         )
+        result = results[DrawerReviewState.OPEN]
         report = json.loads(
             result.drawer_position_report_path.read_text(encoding="utf-8")
         )
         full_report = json.loads(
             result.full_position_report_path.read_text(encoding="utf-8")
         )
-        closeup_nodes = GlbTestDocument(result.closeup_glb_path).node_names
-        full_nodes = GlbTestDocument(result.full_wardrobe_glb_path).node_names
+        closeup_nodes = documents[DrawerReviewState.OPEN][0].node_names
+        full_nodes = documents[DrawerReviewState.OPEN][1].node_names
 
         self.assertEqual(result.runner_product_code, "760H5000S")
         self.assertIn("drawer_01__left_side", closeup_nodes)
