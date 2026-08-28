@@ -51,3 +51,24 @@ test("preserves the source material for a review-only guide mesh", () => {
   assert.equal(mesh.material, sourceMaterial);
   assert.equal(mesh.material.opacity, 0.45);
 });
+
+test("preserves the manufacturer material for source CAD hardware", () => {
+  const sourceMaterial = new MeshStandardMaterial({
+    color: "#363a3e",
+    metalness: 0.8,
+    roughness: 0.35,
+  });
+  const mesh = new Mesh(new BoxGeometry(1, 1, 1), sourceMaterial);
+  mesh.name = "runner_left__source_cad_part";
+  const surface = new PlywoodSurface(
+    new Texture(),
+    new Texture(),
+    new Texture(),
+    1,
+  );
+
+  surface.applyTo(mesh);
+
+  assert.equal(mesh.material, sourceMaterial);
+  assert.equal(mesh.material.metalness, 0.8);
+});

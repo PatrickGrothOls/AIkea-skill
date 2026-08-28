@@ -8,6 +8,7 @@ import {
 
 const TEXTURE_SCALE_MM = 500;
 const REVIEW_ONLY_PREFIX = "review_only__";
+const SOURCE_CAD_MARKER = "__source_cad";
 
 export class PlywoodSurface {
   constructor(colorMap, normalMap, roughnessMap, anisotropy) {
@@ -19,7 +20,10 @@ export class PlywoodSurface {
   }
 
   applyTo(mesh) {
-    if (mesh.name.startsWith(REVIEW_ONLY_PREFIX)) {
+    if (
+      mesh.name.startsWith(REVIEW_ONLY_PREFIX) ||
+      mesh.name.includes(SOURCE_CAD_MARKER)
+    ) {
       return;
     }
     this.#addLocalTextureCoordinates(mesh.geometry);
