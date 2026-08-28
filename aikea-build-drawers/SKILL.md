@@ -42,7 +42,9 @@ geometry from prose.
 
 7. Require both the drawer position report and the complete wardrobe position
    report to pass. Present the close-up first, then the complete furniture run
-   containing that same composed cabinet.
+   containing that same composed cabinet. Use closed, open, and removed review
+   states when the client needs to compare the fitted box, its motion, and the
+   cabinet-owned runner locations.
 8. Explain the useful physical result in client-facing language and end with one
    concrete visual decision about the drawer's size or position.
 
@@ -51,7 +53,9 @@ geometry from prose.
 The implemented slice builds one five-panel wooden drawer in one existing
 cabinet, records the selected MOVENTO runner and locking-device identities, saves
 the cabinet-to-drawer frame, checks clearances and material collisions, and
-exports closed/open review geometry. Exact hardware CAD, mounting cuts,
+exports closed, open, and removed review geometry. While exact runner CAD is
+unresolved, the removed view shows clearly identified mounting zones rather than
+invented hardware solids. Exact hardware CAD, mounting cuts,
 drawer-box joinery, and manufacturing toolpaths remain later construction gates
 and are reported separately from this visual box-and-placement proof.
 

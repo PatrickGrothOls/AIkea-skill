@@ -53,6 +53,9 @@ geometry.
 7. Move only drawer-owned review geometry along the drawer's local opening axis.
    Cabinet-owned runner hardware remains fixed, while drawer-owned locking
    devices move with the box when their verified CAD is added.
+8. When the box is removed for inspection before exact runner CAD is available,
+   show only distinct review mounting zones derived from the registered runner
+   relationship. Keep those guides outside manufacturing and collision evidence.
 
 ## Required evidence
 

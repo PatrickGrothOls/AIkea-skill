@@ -98,6 +98,12 @@ keep a clean interactive image visible while the client moves or while photograp
 samples are still gathering, then fade into the refined image after the client
 settles on an angle.
 
+Drawer review supports closed, open, and removed states without changing the
+checked physical design. The removed state may expose cabinet-owned runner
+mounting zones when exact runner CAD is unresolved. Give those guides a distinct
+identity and appearance, and do not include them in manufacturing, machining,
+or material-collision claims.
+
 The same viewer accepts `view=top`, `view=bottom`, or `view=structure` in its URL
 when a fixed base angle explains the result more clearly than an interactive
 perspective. `title` supplies the short client-facing label shown with that view.

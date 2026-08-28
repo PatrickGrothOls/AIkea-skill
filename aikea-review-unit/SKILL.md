@@ -58,11 +58,13 @@ and standard construction details inside the skill.
 ## Present a cabinet drawer
 
 When `$aikea-build-drawers` has generated a cabinet-owned drawer child, run
-`python <skill-directory>/scripts/generate_drawer_wardrobe_review.py <project>/aikea.yaml --assembly <cabinet-id> --drawer-state open`.
+`python <skill-directory>/scripts/generate_drawer_wardrobe_review.py <project>/aikea.yaml --assembly <cabinet-id> --drawer-state <closed|open|removed>`.
 Require its drawer position report and the complete wardrobe position report to
 pass. Show the door-removed cabinet close-up first, then the same composed
 cabinet in the complete furniture run. Treat the closed drawer as the physical
-fit authority and the open drawer as its presentation state.
+fit authority and the open drawer as its presentation state. Use the removed
+state to inspect cabinet-owned runner locations; while exact hardware CAD is
+unresolved, present its mounting zones as review guides rather than rail geometry.
 
 ## Responsibility boundary
 
