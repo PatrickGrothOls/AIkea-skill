@@ -64,14 +64,14 @@ class TestAssemblyCompositionRejections(AssemblyCompositionTestCase):
             "runner_left",
             "Blum",
             "760H5500S-left",
-            "hardware/blum/760H5500S-left.step",
+            "movento-760h5500s-runner-left",
             values.IDENTITY_LOCAL_TO_PARENT,
         )
         different = values.PurchasedHardwareSpec(
             "runner_left",
             "Blum",
             "760H5500S-left",
-            "hardware/blum/760H5500S-left.step",
+            "movento-760h5500s-runner-left",
             values.LocalToParentPlacement(
                 values.Point3D(1.0, 0.0, 0.0),
                 values.IDENTITY_AXIS_BASIS,

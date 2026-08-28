@@ -26,13 +26,13 @@ class ChildAssemblySpec:
 
 @dataclass(frozen=True)
 class PurchasedHardwareSpec:
-    """Declare one purchased hardware instance and its vendor-CAD placement."""
+    """Declare one purchased instance through a registered hardware asset."""
 
     hardware_id: str
     manufacturer: str
     product_code: str
-    cad_asset_path: str
-    local_to_parent: LocalToParentPlacement
+    hardware_asset_id: str
+    local_to_parent: LocalToParentPlacement | None
 
 
 class AssemblySpecification(Protocol):
@@ -46,10 +46,14 @@ class AssemblySpecification(Protocol):
 
 @dataclass(frozen=True)
 class BuiltPurchasedHardware:
-    """Retain imported hardware geometry with its declared instance."""
+    """Retain optional verified geometry with its declared instance."""
 
     spec: PurchasedHardwareSpec
-    solid: Any
+    solid: Any | None
+
+    @property
+    def has_geometry(self) -> bool:
+        return self.solid is not None
 
 
 @dataclass(frozen=True)

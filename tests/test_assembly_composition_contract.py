@@ -40,7 +40,7 @@ class TestAssemblyCompositionContract(AssemblyCompositionTestCase):
             hardware_id="runner_left",
             manufacturer="Blum",
             product_code="760H5500S-left",
-            cad_asset_path="hardware/blum/760H5500S-left.step",
+            hardware_asset_id="movento-760h5500s-runner-left",
             local_to_parent=identity,
         )
         drawer_spec = self.fixture_assembly_spec(
@@ -72,4 +72,7 @@ class TestAssemblyCompositionContract(AssemblyCompositionTestCase):
         )
 
         assert built_cabinet.child_assemblies[0].spec.local_to_parent == drawer_placement
+        assert runner.hardware_asset_id == "movento-760h5500s-runner-left"
+        assert not hasattr(runner, "cad_asset_path")
         assert built_drawer.purchased_hardware[0].spec.local_to_parent == identity
+        assert built_drawer.purchased_hardware[0].has_geometry
