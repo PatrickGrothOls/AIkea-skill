@@ -17,6 +17,7 @@ from drawer_hardware_test_support import (
     DrawerHardwareSetVerifierFactoryTestDouble,
     TEST_HARDWARE_DIRECTORY,
 )
+from drawer_hardware_review_test_support import DrawerHardwareReviewBuilderTestDouble
 from drawer_review_state import DrawerReviewState
 from test_unit_mockup_generator import GlbTestDocument
 
@@ -42,7 +43,9 @@ class TestDrawerWardrobeReview(unittest.TestCase):
             DrawerLayout("drawer_01", bottom_height_mm=356.0),
             hardware_directory=TEST_HARDWARE_DIRECTORY,
         )
-        self.generator = DrawerWardrobeReviewGenerator()
+        self.generator = DrawerWardrobeReviewGenerator(
+            DrawerHardwareReviewBuilderTestDouble()
+        )
 
     def tearDown(self) -> None:
         self.temporary_directory.cleanup()
@@ -53,6 +56,7 @@ class TestDrawerWardrobeReview(unittest.TestCase):
                 self.project_root,
                 self.project,
                 "tall_storage_01",
+                TEST_HARDWARE_DIRECTORY,
                 state,
             )
             for state in DrawerReviewState
@@ -64,28 +68,31 @@ class TestDrawerWardrobeReview(unittest.TestCase):
             )
             for state, result in results.items()
         }
-        runner_nodes = {
-            "review_only__runner_left__760h5000s_mounting_zone",
-            "review_only__runner_right__760h5000s_mounting_zone",
+        runner_nodes = {"runner_left__source_cad", "runner_right__source_cad"}
+        lock_nodes = {
+            "drawer_01__locking_device_left__source_cad",
+            "drawer_01__locking_device_right__source_cad",
         }
         for state, (closeup, full) in documents.items():
             runner_is_visible = runner_nodes.issubset(closeup.node_names)
             full_runner_is_visible = {
                 f"tall_storage_01__{name}" for name in runner_nodes
             }.issubset(full.node_names)
-            expected_runner_visibility = state is DrawerReviewState.REMOVED
-            self.assertEqual(runner_is_visible, expected_runner_visibility)
-            self.assertEqual(full_runner_is_visible, expected_runner_visibility)
+            self.assertTrue(runner_is_visible)
+            self.assertTrue(full_runner_is_visible)
+            locks_are_visible = lock_nodes.issubset(closeup.node_names)
+            full_locks_are_visible = {
+                f"tall_storage_01__{name}" for name in lock_nodes
+            }.issubset(full.node_names)
+            expected_lock_visibility = state is not DrawerReviewState.REMOVED
+            self.assertEqual(locks_are_visible, expected_lock_visibility)
+            self.assertEqual(full_locks_are_visible, expected_lock_visibility)
             drawer_is_visible = "drawer_01__left_side" in closeup.node_names
             self.assertEqual(drawer_is_visible, state is not DrawerReviewState.REMOVED)
             self.assertEqual(results[state].drawer_state, state.value)
             self.assertEqual(
                 results[state].runner_review_representation,
-                (
-                    "mounting_zones_only_source_cad_verified_unplaced"
-                    if state is DrawerReviewState.REMOVED
-                    else "source_cad_verified_unplaced"
-                ),
+                "source_cad_mounted_and_position_checked",
             )
         self.assertEqual(
             len({result.full_wardrobe_glb_path for result in results.values()}),
@@ -98,6 +105,9 @@ class TestDrawerWardrobeReview(unittest.TestCase):
         full_report = json.loads(
             result.full_position_report_path.read_text(encoding="utf-8")
         )
+        hardware_report = json.loads(
+            result.hardware_position_report_path.read_text(encoding="utf-8")
+        )
         closeup_nodes = documents[DrawerReviewState.OPEN][0].node_names
         full_nodes = documents[DrawerReviewState.OPEN][1].node_names
 
@@ -109,6 +119,7 @@ class TestDrawerWardrobeReview(unittest.TestCase):
         self.assertIn("tall_storage_02__door_panel", full_nodes)
         self.assertEqual(report["status"], "valid")
         self.assertEqual(full_report["status"], "valid")
+        self.assertEqual(hardware_report["status"], "valid")
         relationships = report["relationships"]
         self.assertEqual(
             relationships["drawer_local_zero_in_cabinet_mm"],

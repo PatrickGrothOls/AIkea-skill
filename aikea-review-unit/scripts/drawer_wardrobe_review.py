@@ -18,6 +18,7 @@ class DrawerWardrobeReviewResult:
     closeup_glb_path: Path
     full_wardrobe_glb_path: Path
     drawer_position_report_path: Path
+    hardware_position_report_path: Path
     full_position_report_path: Path
 
 

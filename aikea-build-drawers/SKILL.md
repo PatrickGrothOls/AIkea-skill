@@ -40,7 +40,7 @@ geometry from prose.
    complete revision for client review.
 6. Run:
 
-   `python <aikea-review-unit-directory>/scripts/generate_drawer_wardrobe_review.py <project>/aikea.yaml --assembly <cabinet-id> --drawer-state open`
+   `python <aikea-review-unit-directory>/scripts/generate_drawer_wardrobe_review.py <project>/aikea.yaml --assembly <cabinet-id> --drawer-state open --hardware-directory <download-directory>`
 
 7. Require both the drawer position report and the complete wardrobe position
    report to pass. Present the close-up first, then the complete furniture run
@@ -57,12 +57,14 @@ cabinet, records the selected MOVENTO runner and locking-device identities, save
 the cabinet-to-drawer frame, checks clearances and material collisions, and
 exports closed, open, and removed review geometry. The exact handed 500 mm runner
 pair and both locking-device files are registered as verified user-supplied CAD,
-without packaging vendor bytes. Generation imports and verifies all four exact
-files before writing the drawer and records their state as
-`source_cad_verified_unplaced`. Their cabinet placement, drawer mating, and
-mounting cuts remain unresolved, so the removed review still shows identified
-mounting zones rather than source CAD in an invented position. Drawer-box joinery and
-manufacturing toolpaths remain later construction gates.
+without packaging vendor bytes. Review imports all four exact files, places the
+runners through their saved cabinet frames, composes each locking device through
+the moving drawer frame, and writes a hardware position report before export.
+Closed and open reviews show the complete mounted set; the removed review leaves
+the genuine runners fixed in the cabinet. The report isolates the remaining rear
+drawer preparation instead of treating it as an arbitrary collision. That rear
+preparation, mounting machining, drawer-box joinery, and manufacturing toolpaths
+remain later construction gates.
 
 ## Responsibility boundary
 

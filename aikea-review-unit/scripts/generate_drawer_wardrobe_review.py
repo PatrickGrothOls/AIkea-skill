@@ -16,6 +16,8 @@ sys.path.insert(0, str(DRAWER_SCRIPTS))
 
 from cadquery_runtime import CadQueryRuntime, CadQueryRuntimeError
 from drawer_review_state import DrawerReviewState
+from hardware_asset_resolver import HardwareAssetError
+from hardware_step_importer import HardwareStepImportError
 from unit_mockup import UnitMockupInputError
 
 
@@ -29,6 +31,7 @@ class GenerateDrawerWardrobeReviewCommand:
         )
         parser.add_argument("aikea_yaml", type=Path)
         parser.add_argument("--assembly", required=True)
+        parser.add_argument("--hardware-directory", required=True, type=Path)
         parser.add_argument(
             "--drawer-state",
             choices=tuple(state.value for state in DrawerReviewState),
@@ -36,7 +39,13 @@ class GenerateDrawerWardrobeReviewCommand:
         )
         return parser
 
-    def run(self, path: Path, assembly_id: str, drawer_state: str) -> int:
+    def run(
+        self,
+        path: Path,
+        assembly_id: str,
+        hardware_directory: Path,
+        drawer_state: str,
+    ) -> int:
         try:
             from drawer_wardrobe_review_generator import DrawerWardrobeReviewGenerator
 
@@ -47,12 +56,15 @@ class GenerateDrawerWardrobeReviewCommand:
                 path.parent,
                 project,
                 assembly_id,
+                hardware_directory,
                 DrawerReviewState(drawer_state),
             )
         except (OSError, yaml.YAMLError) as error:
             return self._invalid([str(error)])
         except UnitMockupInputError as error:
             return self._invalid(list(error.problems))
+        except (HardwareAssetError, HardwareStepImportError) as error:
+            return self._invalid([str(error)])
         print(
             json.dumps(
                 {
@@ -66,6 +78,9 @@ class GenerateDrawerWardrobeReviewCommand:
                     "full_wardrobe_glb": str(result.full_wardrobe_glb_path),
                     "drawer_position_check": str(
                         result.drawer_position_report_path
+                    ),
+                    "hardware_position_check": str(
+                        result.hardware_position_report_path
                     ),
                 },
                 indent=2,
@@ -91,6 +106,7 @@ def main() -> int:
     return GenerateDrawerWardrobeReviewCommand().run(
         arguments.aikea_yaml,
         arguments.assembly,
+        arguments.hardware_directory,
         arguments.drawer_state,
     )
 

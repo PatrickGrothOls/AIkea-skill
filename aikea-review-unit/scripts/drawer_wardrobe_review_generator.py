@@ -10,12 +10,11 @@ from cabinet_review_geometry import CabinetReviewGeometry
 from cadquery_glb_exporter import CadQueryGlbExporter
 from door_review_state import DoorReviewState
 from drawer_cabinet_position_checker import DrawerCabinetPositionChecker
+from drawer_hardware_review import DrawerHardwareReviewBuilder
 from drawer_review_geometry import DrawerReviewGeometry
 from drawer_review_state import DrawerReviewState
 from drawer_wardrobe_review import DrawerWardrobeReviewResult
-from fixed_runner_mounting_zone_review_geometry import (
-    FixedRunnerMountingZoneReviewGeometry,
-)
+from drawer_wardrobe_review_paths import DrawerWardrobeReviewPaths
 from full_wardrobe_door_plan import FullWardrobeDoorPlan
 from full_wardrobe_review_generator import FullWardrobeReviewGenerator
 from generated_assembly_builder_loader import GeneratedAssemblyBuilderLoader
@@ -27,11 +26,14 @@ class DrawerWardrobeReviewGenerator:
 
     _COMPOSED_BUILDER_MODULE = "with_drawers_builder"
 
-    def __init__(self) -> None:
+    def __init__(
+        self,
+        hardware_review_builder: DrawerHardwareReviewBuilder | None = None,
+    ) -> None:
         self.loader = GeneratedAssemblyBuilderLoader()
         self.cabinet_geometry = CabinetReviewGeometry()
         self.drawer_geometry = DrawerReviewGeometry()
-        self.runner_mounting_zones = FixedRunnerMountingZoneReviewGeometry()
+        self.hardware_review = hardware_review_builder or DrawerHardwareReviewBuilder()
         self.position_checker = DrawerCabinetPositionChecker()
         self.full_wardrobe = FullWardrobeReviewGenerator()
         self.exporter = CadQueryGlbExporter()
@@ -41,8 +43,14 @@ class DrawerWardrobeReviewGenerator:
         project_root: Path,
         project: dict[str, Any],
         assembly_id: str,
+        hardware_directory: Path,
         drawer_state: DrawerReviewState = DrawerReviewState.OPEN,
     ) -> DrawerWardrobeReviewResult:
+        paths = DrawerWardrobeReviewPaths.build(
+            project_root,
+            assembly_id,
+            drawer_state,
+        )
         built_cabinet = self.loader.load_assembly(
             project_root,
             assembly_id,
@@ -61,13 +69,7 @@ class DrawerWardrobeReviewGenerator:
             cabinet_physical,
             drawer_physical,
         )
-        report_path = (
-            project_root
-            / "assemblies"
-            / assembly_id
-            / "drawer-position-check.json"
-        )
-        report.write(report_path)
+        report.write(paths.drawer_position_report)
         if not report.is_valid:
             raise UnitMockupInputError(
                 [
@@ -76,31 +78,36 @@ class DrawerWardrobeReviewGenerator:
                 ]
             )
 
-        drawer_review = self.drawer_geometry.build(built_cabinet, drawer_state)
-        runner_review = (
-            self.runner_mounting_zones.build(built_cabinet)
-            if drawer_state is DrawerReviewState.REMOVED
-            else ()
+        hardware = self.hardware_review.build(
+            built_cabinet,
+            cabinet_physical,
+            drawer_physical,
+            hardware_directory,
+            drawer_state,
         )
+        hardware.position_report.write(paths.hardware_position_report)
+        if not hardware.position_report.is_valid:
+            raise UnitMockupInputError(
+                [
+                    "drawer hardware position check failed: "
+                    + ", ".join(hardware.position_report.failed_check_names())
+                ]
+            )
+
+        drawer_review = self.drawer_geometry.build(built_cabinet, drawer_state)
         cabinet_review = self.cabinet_geometry.build(
             built_cabinet,
             DoorReviewState.REMOVED,
         )
-        closeup_path = (
-            project_root
-            / "assemblies"
-            / assembly_id
-            / f"{assembly_id}_drawer_{drawer_state.value}_review.glb"
-        )
         self.exporter.export(
             f"{assembly_id}_drawer_review",
-            cabinet_review + runner_review + drawer_review,
-            closeup_path,
+            cabinet_review + hardware.review_parts + drawer_review,
+            paths.closeup_glb,
         )
         addition = CabinetReviewAddition(
             assembly_id,
-            drawer_physical,
-            runner_review + drawer_review,
+            drawer_physical + hardware.closed_parts,
+            drawer_review + hardware.review_parts,
         )
         door_plan = FullWardrobeDoorPlan.from_assignments(
             DoorReviewState.CLOSED,
@@ -111,7 +118,7 @@ class DrawerWardrobeReviewGenerator:
             project,
             door_plan,
             (addition,),
-            f"full_wardrobe_{assembly_id}_drawer_{drawer_state.value}_review.glb",
+            paths.full_wardrobe_filename,
         )
         child = next(
             item
@@ -123,14 +130,11 @@ class DrawerWardrobeReviewGenerator:
             drawer_id=child.spec.assembly_id,
             drawer_state=drawer_state.value,
             runner_product_code=child.assembly.spec.runner_product_code,
-            runner_review_representation=(
-                "mounting_zones_only_source_cad_verified_unplaced"
-                if drawer_state is DrawerReviewState.REMOVED
-                else "source_cad_verified_unplaced"
-            ),
-            closeup_glb_path=closeup_path,
+            runner_review_representation="source_cad_mounted_and_position_checked",
+            closeup_glb_path=paths.closeup_glb,
             full_wardrobe_glb_path=full_result.glb_path,
-            drawer_position_report_path=report_path,
+            drawer_position_report_path=paths.drawer_position_report,
+            hardware_position_report_path=paths.hardware_position_report,
             full_position_report_path=full_result.position_report_path,
         )
 

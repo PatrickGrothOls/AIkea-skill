@@ -44,8 +44,8 @@ a drawer or cabinet is a later explicit rigid transform, not part of import.
 `DrawerHardwareSetVerifier` admits a drawer generation only after the selected
 profile's left and right runners and matching left and right locking devices all
 prove build-ready state, identity, handedness, checksum, solid count, and native
-bounds. Passing this gate means source CAD is verified but unplaced; it does not
-prove installation, mating, or machining.
+bounds. Passing this gate proves the source files only. The later hardware
+position report proves their saved placement and reports machining still owed.
 
 ## Verified 500 mm mounting frame
 
@@ -69,6 +69,23 @@ The runner STEP contains the catalogue-matching system-screw axes at native Z
 `0` and `-256`. They become fixing depths 37 and 293 mm from the wooden drawer
 front. The 9.575 mm vertical translation places the T51 mounting pads on the
 drawer's lower edge; adding another 0.2 mm causes material interference.
+
+## Placed hardware proof
+
+The review builder uses those saved frames without recentering either component.
+The runners remain fixed to the cabinet while the locking devices inherit the
+drawer pose. Before export, the hardware position report must prove:
+
+- each runner meets its own inside cabinet face without entering the side panel;
+- each locking device meets the wooden drawer front without entering it;
+- the handed runner and locking device share their manufacturer origin and axes;
+- no hardware enters unrelated cabinet or drawer material;
+- any rear intrusion is contained within the lower drawer-back preparation that
+  the manufacturer requires.
+
+The current exact 500 mm proof passes those relationships. Its lower rear
+intrusion remains explicit as required preparation rather than being accepted as
+finished wood geometry.
 
 The resolved transform does not complete machining. The unmachined drawer back
 still occupies the runner's required rear hook/notch space, and the official
