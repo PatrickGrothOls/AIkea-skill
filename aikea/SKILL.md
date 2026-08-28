@@ -131,3 +131,8 @@ and positions, then lead directly into unit arrangement.
 ## Route the next stage
 
 When the overall space is checked, load `$aikea-arrange-units` immediately rather than waiting for the client to request the next stage. Keep unit arrangement out of this entry skill instead of duplicating its questions or saved-result rules here.
+
+When the client adds drawers to generated cabinets, load
+`$aikea-build-drawers`. Let that subskill calculate the drawer from its owning
+cabinet, save it as a local child assembly, and return the same composed cabinet
+to the complete furniture review.

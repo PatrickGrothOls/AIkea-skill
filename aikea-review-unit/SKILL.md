@@ -55,6 +55,15 @@ Communicate as a carpenter guiding a client through the physical result. Say wha
 the current work gives them and why it matters; keep implementation instructions
 and standard construction details inside the skill.
 
+## Present a cabinet drawer
+
+When `$aikea-build-drawers` has generated a cabinet-owned drawer child, run
+`python <skill-directory>/scripts/generate_drawer_wardrobe_review.py <project>/aikea.yaml --assembly <cabinet-id> --drawer-state open`.
+Require its drawer position report and the complete wardrobe position report to
+pass. Show the door-removed cabinet close-up first, then the same composed
+cabinet in the complete furniture run. Treat the closed drawer as the physical
+fit authority and the open drawer as its presentation state.
+
 ## Responsibility boundary
 
 This stage places and displays the parts returned by generated assembly builders.
