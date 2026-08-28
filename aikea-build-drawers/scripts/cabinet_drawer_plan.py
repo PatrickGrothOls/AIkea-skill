@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+import re
 from typing import Any
 
 from drawer_assembly_spec import DrawerAssemblySpec
@@ -15,9 +16,15 @@ from movento_runner_profile import MoventoRunnerProfile
 Vector3D = tuple[float, float, float]
 
 
+class DrawerLayoutError(ValueError):
+    """Report a drawer layout that cannot own a stable generated child."""
+
+
 @dataclass(frozen=True, slots=True)
 class DrawerLayout:
     """Record the local choices for one drawer inside one cabinet."""
+
+    _ID_PATTERN = re.compile(r"^[a-z][a-z0-9_]*_[0-9]{2}$")
 
     drawer_id: str
     bottom_height_mm: float
@@ -26,6 +33,13 @@ class DrawerLayout:
     bottom_thickness_mm: float = 9.0
     bottom_underside_recess_mm: float = 13.0
     box_height_mm: float = 160.0
+
+    def __post_init__(self) -> None:
+        if not self._ID_PATTERN.fullmatch(self.drawer_id):
+            raise DrawerLayoutError(
+                "drawer_id must be a stable lowercase Python identifier "
+                "with a two-digit suffix"
+            )
 
 
 @dataclass(frozen=True, slots=True)
@@ -120,4 +134,10 @@ class CabinetDrawerPlanner:
             raise ValueError("drawer layout does not fit inside the selected cabinet bay")
 
 
-__all__ = ["CabinetDrawerPlan", "CabinetDrawerPlanner", "DrawerLayout", "Vector3D"]
+__all__ = [
+    "CabinetDrawerPlan",
+    "CabinetDrawerPlanner",
+    "DrawerLayout",
+    "DrawerLayoutError",
+    "Vector3D",
+]

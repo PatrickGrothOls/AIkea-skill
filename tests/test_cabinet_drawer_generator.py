@@ -52,3 +52,35 @@ class TestCabinetDrawerGenerator(unittest.TestCase):
             drawer["local_frame"]["origin_in_parent_mm"],
             {"x": 24.0, "y": 18.0, "z": 456.0},
         )
+
+    def test_rejects_drawer_ids_that_cannot_be_stable_python_children(self) -> None:
+        invalid_ids = (
+            "drawer-01",
+            "Drawer_01",
+            "1_drawer_01",
+            "drawer_1",
+            "class",
+        )
+
+        for drawer_id in invalid_ids:
+            with self.subTest(drawer_id=drawer_id):
+                with self.assertRaisesRegex(ValueError, "stable lowercase"):
+                    DrawerLayout(drawer_id, bottom_height_mm=356.0)
+
+    def test_rejects_traversal_before_rendering_outside_the_drawers_root(self) -> None:
+        temporary_directory = TemporaryDirectory()
+        self.addCleanup(temporary_directory.cleanup)
+        project_root = Path(temporary_directory.name)
+        project = yaml.safe_load(self._FIXTURE.read_text(encoding="utf-8"))
+        AssemblyTaxonomyGenerator().generate(project, project_root)
+
+        with self.assertRaisesRegex(ValueError, "stable lowercase"):
+            CabinetDrawerGenerator().generate(
+                project_root,
+                "tall_storage_01",
+                DrawerLayout("../escaped_01", bottom_height_mm=356.0),
+            )
+
+        parent = project_root / "assemblies/tall_storage_01"
+        self.assertFalse((parent / "escaped_01").exists())
+        self.assertFalse((parent / "drawers").exists())
