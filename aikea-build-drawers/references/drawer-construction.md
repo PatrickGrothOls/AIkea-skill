@@ -22,6 +22,8 @@ assemblies/<cabinet-id>/
 `drawer-layout.yaml` records the local design and selected hardware identity.
 The drawer spec owns its calculated box and parts. The composed parent builder
 returns the original cabinet plus a declared and built child assembly.
+`drawers/generated-files.json` records the last AIkea-owned drawer result so a
+later proposal can revise untouched files without claiming locally edited work.
 
 ## Coordinate chain
 
@@ -49,7 +51,8 @@ geometry.
 6. Build the composed cabinet, check the closed drawer, and write the position
    report before applying an open review pose.
 7. Move only drawer-owned review geometry along the drawer's local opening axis.
-   Cabinet-owned runner hardware remains fixed when its verified CAD is added.
+   Cabinet-owned runner hardware remains fixed, while drawer-owned locking
+   devices move with the box when their verified CAD is added.
 
 ## Required evidence
 

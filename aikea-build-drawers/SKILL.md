@@ -33,7 +33,9 @@ geometry from prose.
 
 5. Treat the generated cabinet-local files as the source for this drawer. The
    composed cabinet builder must load the original cabinet builder and its saved
-   drawer child rather than reconstructing either assembly.
+   drawer child rather than reconstructing either assembly. Later proposals may
+   regenerate files still owned by AIkea, while a locally changed file stops the
+   complete revision for client review.
 6. Run:
 
    `python <aikea-review-unit-directory>/scripts/generate_drawer_wardrobe_review.py <project>/aikea.yaml --assembly <cabinet-id> --drawer-state open`
@@ -47,16 +49,17 @@ geometry from prose.
 ## Current capability
 
 The implemented slice builds one five-panel wooden drawer in one existing
-cabinet, records the selected MOVENTO runner identity, saves the cabinet-to-drawer
-frame, checks clearances and material collisions, and exports closed/open review
-geometry. Exact runner CAD, mounting cuts, drawer-box joinery, and manufacturing
-toolpaths remain later construction gates and are reported separately from this
-visual box-and-placement proof.
+cabinet, records the selected MOVENTO runner and locking-device identities, saves
+the cabinet-to-drawer frame, checks clearances and material collisions, and
+exports closed/open review geometry. Exact hardware CAD, mounting cuts,
+drawer-box joinery, and manufacturing toolpaths remain later construction gates
+and are reported separately from this visual box-and-placement proof.
 
 ## Responsibility boundary
 
 This skill owns drawer-local calculation, child-folder generation, hardware
 profile selection, and the drawer-to-cabinet fit gate. The existing cabinet owns
-the fixed runner installation; the drawer child owns the moving wooden box.
+the fixed runner installation; the drawer child owns the moving wooden box and
+its moving locking devices.
 `$aikea-review-unit` owns presentation and global placement, while the overall
 `aikea.yaml` remains unchanged because drawer arrangement is local to its cabinet.
