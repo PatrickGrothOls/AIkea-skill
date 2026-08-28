@@ -7,6 +7,7 @@ import {
 } from "three";
 
 const TEXTURE_SCALE_MM = 500;
+const REVIEW_ONLY_PREFIX = "review_only__";
 
 export class PlywoodSurface {
   constructor(colorMap, normalMap, roughnessMap, anisotropy) {
@@ -18,6 +19,9 @@ export class PlywoodSurface {
   }
 
   applyTo(mesh) {
+    if (mesh.name.startsWith(REVIEW_ONLY_PREFIX)) {
+      return;
+    }
     this.#addLocalTextureCoordinates(mesh.geometry);
     const useFaceMaterial = isPlywoodFace(mesh.geometry);
     const replacementMaterials = [mesh.material]

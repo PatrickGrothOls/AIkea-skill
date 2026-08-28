@@ -16,8 +16,8 @@ class FixedRunnerMountingZoneReviewGeometry:
 
     _COLOR = (0.23, 0.50, 0.68, 0.45)
     _RUNNER_IDS = ("runner_left", "runner_right")
-    _DISPLAY_BAND_HEIGHT_MM = 6.0
-    _DISPLAY_BAND_THICKNESS_MM = 1.0
+    _DISPLAY_BAND_HEIGHT_MM = 24.0
+    _DISPLAY_BAND_THICKNESS_MM = 12.0
 
     def __init__(self) -> None:
         self.frame_location = LocalToParentLocation()

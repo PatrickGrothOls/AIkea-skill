@@ -91,6 +91,16 @@ class TestReviewViewerInteraction:
         assert "minimumTravel" in bundle
         assert "stopImmediatePropagation" in bundle
 
+    def test_prebuilt_viewer_preserves_review_only_source_materials(self) -> None:
+        asset_root = (
+            Path(__file__).parents[1]
+            / "aikea-review-unit/assets/viewer/assets"
+        )
+        bundles = tuple(asset_root.glob("index-*.js"))
+        assert len(bundles) == 1
+
+        assert "review_only__" in bundles[0].read_text(encoding="utf-8")
+
     def test_prebuilt_viewer_contains_the_clean_photo_handoff(self) -> None:
         asset_root = (
             Path(__file__).parents[1]

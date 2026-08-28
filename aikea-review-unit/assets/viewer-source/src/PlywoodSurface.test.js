@@ -2,9 +2,16 @@
 
 import assert from "node:assert/strict";
 import test from "node:test";
-import { BufferGeometry, Float32BufferAttribute } from "three";
+import {
+  BoxGeometry,
+  BufferGeometry,
+  Float32BufferAttribute,
+  Mesh,
+  MeshStandardMaterial,
+  Texture,
+} from "three";
 
-import { isPlywoodFace } from "./PlywoodSurface.js";
+import { isPlywoodFace, PlywoodSurface } from "./PlywoodSurface.js";
 
 function geometryWithNormals(normals) {
   const geometry = new BufferGeometry();
@@ -22,4 +29,25 @@ test("recognizes a plywood cut edge from its local normal", () => {
   const geometry = geometryWithNormals([1, 0, 0, 1, 0, 0, 1, 0, 0]);
 
   assert.equal(isPlywoodFace(geometry), false);
+});
+
+test("preserves the source material for a review-only guide mesh", () => {
+  const sourceMaterial = new MeshStandardMaterial({
+    color: "#3a8ab8",
+    opacity: 0.45,
+    transparent: true,
+  });
+  const mesh = new Mesh(new BoxGeometry(1, 1, 1), sourceMaterial);
+  mesh.name = "review_only__runner_left__760h5000s_mounting_zone_part";
+  const surface = new PlywoodSurface(
+    new Texture(),
+    new Texture(),
+    new Texture(),
+    1,
+  );
+
+  surface.applyTo(mesh);
+
+  assert.equal(mesh.material, sourceMaterial);
+  assert.equal(mesh.material.opacity, 0.45);
 });
