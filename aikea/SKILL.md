@@ -136,3 +136,9 @@ When the client adds drawers to generated cabinets, load
 `$aikea-build-drawers`. Let that subskill calculate the drawer from its owning
 cabinet, save it as a local child assembly, and return the same composed cabinet
 to the complete furniture review.
+
+When a construction stage requires exact CAD for purchased hardware that is not
+already in the active project's local library, load
+`$aikea-source-hardware-cad`. Let it resolve the exact official item, guide any
+required user download, and return the local source directory before construction
+continues.

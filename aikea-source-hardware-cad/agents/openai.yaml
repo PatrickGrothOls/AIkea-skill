@@ -1,0 +1,4 @@
+interface:
+  display_name: "AIkea Source Hardware CAD"
+  short_description: "Find and store exact purchased-part CAD"
+  default_prompt: "Use $aikea-source-hardware-cad to find and store the exact manufacturer CAD required by my AIkea project."
