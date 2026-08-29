@@ -45,8 +45,8 @@ geometry.
    top boundary from its generated local specification.
 2. Select the longest registered runner whose complete required depth fits.
 3. Resolve the complete hardware set owned by that exact runner profile. Verify
-   both handed runner files and both matching locking devices in their unchanged
-   manufacturer frames before producing drawer files.
+   every handed file, paired assembly, and companion component required by that
+   profile in its unchanged manufacturer frame before producing drawer files.
 4. Convert the sourced runner profile into generic box-sizing values.
 5. Build every wooden sheet through `BlankSheetBuilder` in its canonical part
    frame and place it through `DrawerPartLocator`.
@@ -70,6 +70,7 @@ cabinet appears in both close-up and full-run exports. The generation gate must
 also prove the exact selected source-CAD set before any project drawer file is
 written.
 
-Purchased hardware uses the manifest in `assets/blum/movento/`. A verified local
-STEP is imported without scaling, recentering, mirroring, or changing its native
-manufacturer frame; its later rigid placement is a separate saved transform.
+Purchased hardware uses the manifest owned by its selected profile. A verified
+local STEP is imported without scaling, recentering, mirroring, or changing its
+native manufacturer frame; its later rigid placement is a separate saved
+transform.

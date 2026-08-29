@@ -17,12 +17,19 @@ class DrawerReviewMotion:
         state: DrawerReviewState,
         side_length_mm: float,
     ) -> cq.Location:
-        extension_mm = (
+        extension_mm = self.extension_mm(state, side_length_mm)
+        return cq.Location(cq.Vector(0.0, -extension_mm, 0.0))
+
+    def extension_mm(
+        self,
+        state: DrawerReviewState,
+        side_length_mm: float,
+    ) -> float:
+        return (
             side_length_mm * self._OPEN_FRACTION
             if state is DrawerReviewState.OPEN
             else 0.0
         )
-        return cq.Location(cq.Vector(0.0, -extension_mm, 0.0))
 
 
 __all__ = ["DrawerReviewMotion"]
