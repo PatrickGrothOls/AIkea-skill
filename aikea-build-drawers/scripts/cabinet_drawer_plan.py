@@ -88,7 +88,12 @@ class CabinetDrawerPlanner:
             layout.front_back_thickness_mm + runner.cabinet_depth_clearance_mm,
             float(cabinet.base_height_mm) + layout.bottom_height_mm,
         )
-        self.fit_checker.require_fit(cabinet, box, runner, layout, origin)
+        self.fit_checker.require_fit(
+            cabinet,
+            box,
+            runner.required_inside_depth_mm(layout.front_back_thickness_mm),
+            origin,
+        )
         drawer = DrawerAssemblySpec(
             assembly_id=layout.drawer_id,
             purpose="drawer",

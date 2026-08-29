@@ -30,8 +30,6 @@ class GenerateHettichKa5332PrototypeCommand:
         parser.add_argument("--assembly", required=True)
         parser.add_argument("--hardware-directory", required=True, type=Path)
         parser.add_argument("--output-directory", required=True, type=Path)
-        parser.add_argument("--drawer-front-mm", type=float, default=18.0)
-        parser.add_argument("--drawer-bottom-mm", type=float, default=456.0)
         return parser
 
     def run(self, arguments: argparse.Namespace) -> int:
@@ -45,8 +43,6 @@ class GenerateHettichKa5332PrototypeCommand:
                 arguments.assembly,
                 arguments.hardware_directory.resolve(),
                 arguments.output_directory.resolve(),
-                drawer_front_mm=arguments.drawer_front_mm,
-                drawer_bottom_mm=arguments.drawer_bottom_mm,
             )
         except (
             HardwareAssetError,

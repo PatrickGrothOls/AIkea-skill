@@ -25,6 +25,8 @@ drawer-box sizing. `HettichKa5332MountingPlanner` places the cabinet and drawer
 members from the cabinet's local faces. The review generator may compose those
 results, but it must not replace their calculations.
 
-The current KA 5332 output is a visually approved construction prototype. It
-does not yet save the drawer as a cabinet-owned project child or claim mounting
-machining and manufacturing readiness.
+`generate_hettich_ka_5332_cabinet_drawer.py` saves the wooden box as a
+cabinet-owned child, one cabinet-owned purchased runner pair, and the distinct
+left and right translations used for all six source members. The visual review
+must load that composed child and its saved frames. Mounting machining and
+manufacturing readiness remain later gates.

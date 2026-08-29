@@ -10,7 +10,6 @@ from unit_mockup import MockupPart
 class HettichKa5332ConnectionCloseup:
     """Keep one real runner hand and only the nearby portions of its wood."""
 
-    _WOOD_PART_NAMES = {"left_side", "drawer__left_side"}
     _RUNNER_NAME_PREFIX = "ka_5332__left__"
 
     def build(
@@ -39,10 +38,13 @@ class HettichKa5332ConnectionCloseup:
         selected = tuple(
             part
             for part in parts
-            if part.name in self._WOOD_PART_NAMES
+            if self._is_wood_part(part.name)
             or part.name.startswith(self._RUNNER_NAME_PREFIX)
         )
-        drawer_present = any(part.name == "drawer__left_side" for part in selected)
+        drawer_present = any(
+            part.name != "left_side" and part.name.endswith("__left_side")
+            for part in selected
+        )
         return tuple(
             self._crop_wood(
                 part,
@@ -50,10 +52,13 @@ class HettichKa5332ConnectionCloseup:
                 if part.name == "left_side" and drawer_present
                 else full_depth_region,
             )
-            if part.name in self._WOOD_PART_NAMES
+            if self._is_wood_part(part.name)
             else part
             for part in selected
         )
+
+    def _is_wood_part(self, name: str) -> bool:
+        return name == "left_side" or name.endswith("__left_side")
 
     def _crop_wood(self, part: MockupPart, region: cq.Shape) -> MockupPart:
         placed_shape = part.solid.val().located(part.location)

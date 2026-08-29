@@ -8,18 +8,12 @@ from pathlib import Path
 from cabinet_review_geometry import CabinetReviewGeometry
 from cadquery_glb_exporter import CadQueryGlbExporter
 from door_review_state import DoorReviewState
-from drawer_box_builder import DrawerBoxBuilder
-from drawer_box_planner import DrawerBoxPlanner
-from drawer_box_spec import CabinetDrawerOpening
+from drawer_review_geometry import DrawerReviewGeometry
 from drawer_review_state import DrawerReviewState
 from generated_assembly_builder_loader import GeneratedAssemblyBuilderLoader
-from hettich_ka_5332_drawer_box_profile import (
-    HettichKa5332DrawerBoxProfileAdapter,
-)
 from hettich_ka_5332_connection_closeup import HettichKa5332ConnectionCloseup
-from hettich_ka_5332_mounting_plan import HettichKa5332MountingPlanner
 from hettich_ka_5332_review_geometry import HettichKa5332ReviewGeometry
-from hettich_ka_5332_runner_profile import HETTICH_KA_5332_500
+from hettich_ka_5332_saved_plan_loader import HettichKa5332SavedPlanLoader
 from hettich_ka_5332_step_assembly import HettichKa5332StepAssemblyLoader
 
 
@@ -39,16 +33,14 @@ class HettichKa5332PrototypeResult:
 
 
 class HettichKa5332PrototypeGenerator:
-    """Reuse generated cabinet and drawer parts around the exact runner STEP."""
+    """Review the saved cabinet child around the exact runner STEP."""
 
     def __init__(self) -> None:
         self.cabinet_loader = GeneratedAssemblyBuilderLoader()
         self.cabinet_geometry = CabinetReviewGeometry()
+        self.drawer_geometry = DrawerReviewGeometry()
         self.step_loader = HettichKa5332StepAssemblyLoader()
-        self.mounting_planner = HettichKa5332MountingPlanner()
-        self.box_profile = HettichKa5332DrawerBoxProfileAdapter()
-        self.box_planner = DrawerBoxPlanner()
-        self.box_builder = DrawerBoxBuilder()
+        self.saved_plan_loader = HettichKa5332SavedPlanLoader()
         self.review_geometry = HettichKa5332ReviewGeometry()
         self.connection_closeup = HettichKa5332ConnectionCloseup()
         self.exporter = CadQueryGlbExporter()
@@ -59,32 +51,14 @@ class HettichKa5332PrototypeGenerator:
         assembly_id: str,
         hardware_directory: Path,
         output_directory: Path,
-        *,
-        drawer_front_mm: float,
-        drawer_bottom_mm: float,
     ) -> HettichKa5332PrototypeResult:
-        cabinet = self.cabinet_loader.load_assembly(project_root, assembly_id)
+        cabinet = self.cabinet_loader.load_assembly(
+            project_root,
+            assembly_id,
+            "with_drawers_builder",
+        )
         step = self.step_loader.load(hardware_directory)
-        plan = self.mounting_planner.plan(
-            cabinet.spec,
-            step,
-            HETTICH_KA_5332_500,
-            drawer_front_mm=drawer_front_mm,
-            drawer_bottom_mm=drawer_bottom_mm,
-        )
-        sizing = self.box_profile.build(
-            HETTICH_KA_5332_500,
-            side_thickness_mm=15.0,
-            front_back_thickness_mm=15.0,
-            bottom_thickness_mm=9.0,
-            bottom_underside_recess_mm=13.0,
-            box_height_mm=160.0,
-        )
-        box_spec = self.box_planner.plan(
-            CabinetDrawerOpening.from_assembly_spec(cabinet.spec),
-            sizing,
-        )
-        box = self.box_builder.build(box_spec)
+        plan = self.saved_plan_loader.load(project_root, assembly_id, cabinet)
         cabinet_parts = self.cabinet_geometry.build(
             cabinet,
             DoorReviewState.REMOVED,
@@ -102,13 +76,13 @@ class HettichKa5332PrototypeGenerator:
             parts = (
                 cabinet_parts
                 + self.review_geometry.build_hardware(step, plan, state)
-                + self.review_geometry.build_drawer(box, plan, state)
+                + self.drawer_geometry.build(cabinet, state)
             )
             self.exporter.export(f"ka_5332_{state.value}", parts, output)
             connection_parts = self.connection_closeup.build(
                 parts,
-                drawer_front_mm=drawer_front_mm,
-                drawer_bottom_mm=drawer_bottom_mm,
+                drawer_front_mm=plan.drawer_origin_mm[1],
+                drawer_bottom_mm=plan.drawer_origin_mm[2],
             )
             self.exporter.export(
                 f"ka_5332_{state.value}_connection",
