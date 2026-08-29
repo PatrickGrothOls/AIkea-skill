@@ -9,16 +9,15 @@ description: Add a calculated wooden drawer subassembly to an existing generated
 
 Turn a drawer design inside an existing generated cabinet into a project-owned
 child assembly. Resolve its wooden parts from the cabinet's real clear opening,
-select the longest registered runner that fits, verify the complete exact
-purchased-hardware CAD set, preserve every local-to-parent frame, and
-prove the closed drawer fits before showing an open review.
+verify the selected purchased-hardware CAD, preserve every local-to-parent
+frame, and prove the saved cabinet can be rebuilt before showing it in review.
 
 Use the supplied implementation as the construction authority. The model chooses
 the intended cabinet and drawer arrangement, runs the deterministic builders,
 and discusses the physical result with the client. It does not recreate drawer
 geometry from prose.
 
-## Build one drawer mock-up from verified source CAD
+## Build one drawer from verified source CAD
 
 1. Resolve the active AIkea project and require its completed `aikea.yaml` and
    generated `assemblies/` folders.
@@ -36,8 +35,11 @@ geometry from prose.
 
    `python <skill-directory>/scripts/generate_cabinet_drawer.py <project>/aikea.yaml --assembly <cabinet-id> --drawer <drawer-id> --bottom-height-mm <height-above-carcass-bottom> --hardware-directory <download-directory>`
 
-   For the approved KA 5332 prototype, pass the same returned directory rather
-   than selecting its STEP file yourself:
+   For KA 5332, save the visually approved result into the cabinet first:
+
+   `python <skill-directory>/scripts/generate_hettich_ka_5332_cabinet_drawer.py <project>/aikea.yaml --assembly <cabinet-id> --drawer <drawer-id> --bottom-height-mm <height-above-carcass-bottom> --hardware-directory <hardware-directory>`
+
+   Then review that saved child and its exact runner source:
 
    `python <aikea-review-unit-directory>/scripts/generate_hettich_ka_5332_prototype.py <project>/aikea.yaml --assembly <cabinet-id> --hardware-directory <hardware-directory> --output-directory <review-directory>`
 
@@ -60,25 +62,22 @@ geometry from prose.
 
 ## Current capability
 
-The implemented slice builds one five-panel wooden drawer in one existing
-cabinet, records the selected MOVENTO runner and locking-device identities, saves
-the cabinet-to-drawer frame, checks clearances and material collisions, and
-exports closed, open, and removed review geometry. The exact handed 500 mm runner
-pair and both locking-device files are registered as verified user-supplied CAD,
-without packaging vendor bytes. Review imports all four exact files, places the
-runners through their saved cabinet frames, composes each locking device through
-the moving drawer frame, and writes a hardware position report before export.
-Closed and open reviews show the complete mounted set; the removed review leaves
-the genuine runners fixed in the cabinet. The report isolates the remaining rear
-drawer preparation instead of treating it as an arbitrary collision. That rear
-preparation, mounting machining, drawer-box joinery, and manufacturing toolpaths
-remain later construction gates.
+The implemented KA 5332 slice builds one five-panel wooden drawer beneath an
+existing cabinet, records one purchased runner pair and both source-side member
+placements, and saves the cabinet-to-drawer frame. The composed builder executes
+those generated files, and closed, open, and removed reviews read the same saved
+child rather than recalculating it from command-line dimensions. The sourced
+paired STEP remains outside the public skill and supplies all six genuine
+telescoping members. The manufacturer's width recommendation is retained as
+evidence without replacing the resolved cabinet geometry. Mounting machining,
+drawer-box joinery, and manufacturing toolpaths remain later construction gates.
 
 ## Responsibility boundary
 
 This skill owns drawer-local calculation, child-folder generation, hardware
 profile selection, and the drawer-to-cabinet fit gate. The existing cabinet owns
-the fixed runner installation; the drawer child owns the moving wooden box and
-its moving locking devices.
+the purchased runner system; the drawer child owns the moving wooden box. A
+runner system's saved member placements define how its purchased components
+follow those two assemblies.
 `$aikea-review-unit` owns presentation and global placement, while the overall
 `aikea.yaml` remains unchanged because drawer arrangement is local to its cabinet.

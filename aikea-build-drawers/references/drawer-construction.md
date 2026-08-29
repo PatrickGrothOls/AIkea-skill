@@ -50,16 +50,17 @@ geometry.
 4. Convert the sourced runner profile into generic box-sizing values.
 5. Build every wooden sheet through `BlankSheetBuilder` in its canonical part
    frame and place it through `DrawerPartLocator`.
-6. Save the drawer child, its explicit cabinet-local placement, and the honest
-   `source_cad_verified_unplaced` hardware state.
+6. Save the drawer child, its explicit cabinet-local placement, and the resolved
+   source-CAD mounting frames.
 7. Build the composed cabinet, check the closed drawer, and write the position
    report before applying an open review pose.
-8. Move only drawer-owned review geometry along the drawer's local opening axis.
-   Cabinet-owned runner hardware remains fixed, while drawer-owned locking
-   devices move with the box when their verified CAD is added.
-9. When the box is removed before a hardware installation transform is proven,
-   show only distinct review mounting zones derived from the registered runner
-   relationship. Keep those guides outside manufacturing and collision evidence.
+8. Use the source CAD's actual member structure when it is available. Keep
+   cabinet members fixed, let drawer members inherit drawer travel, and move any
+   intermediate members only through the selected runner's saved review model.
+9. When a source file has no articulated members, keep its static geometry as
+   the closed-position authority and label any open movement preview separately.
+10. In the removed view, leave every cabinet-owned source member in place so its
+    saved installation can be inspected directly.
 
 ## Required evidence
 
