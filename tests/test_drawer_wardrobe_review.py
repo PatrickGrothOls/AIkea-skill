@@ -69,6 +69,11 @@ class TestDrawerWardrobeReview(unittest.TestCase):
             for state, result in results.items()
         }
         runner_nodes = {"runner_left__source_cad", "runner_right__source_cad"}
+        preview_nodes = {
+            f"review_only__runner_{hand}__{part}"
+            for hand in ("left", "right")
+            for part in ("fixed_path", "drawer_side_guide")
+        }
         lock_nodes = {
             "drawer_01__locking_device_left__source_cad",
             "drawer_01__locking_device_right__source_cad",
@@ -78,8 +83,13 @@ class TestDrawerWardrobeReview(unittest.TestCase):
             full_runner_is_visible = {
                 f"tall_storage_01__{name}" for name in runner_nodes
             }.issubset(full.node_names)
-            self.assertTrue(runner_is_visible)
-            self.assertTrue(full_runner_is_visible)
+            exact_is_expected = state is not DrawerReviewState.OPEN
+            self.assertEqual(runner_is_visible, exact_is_expected)
+            self.assertEqual(full_runner_is_visible, exact_is_expected)
+            self.assertEqual(
+                preview_nodes.issubset(closeup.node_names),
+                state is DrawerReviewState.OPEN,
+            )
             locks_are_visible = lock_nodes.issubset(closeup.node_names)
             full_locks_are_visible = {
                 f"tall_storage_01__{name}" for name in lock_nodes
@@ -92,7 +102,11 @@ class TestDrawerWardrobeReview(unittest.TestCase):
             self.assertEqual(results[state].drawer_state, state.value)
             self.assertEqual(
                 results[state].runner_review_representation,
-                "source_cad_mounted_and_position_checked",
+                (
+                    "review_only_runner_movement"
+                    if state is DrawerReviewState.OPEN
+                    else "source_cad_mounted_and_position_checked"
+                ),
             )
         self.assertEqual(
             len({result.full_wardrobe_glb_path for result in results.values()}),
@@ -108,6 +122,9 @@ class TestDrawerWardrobeReview(unittest.TestCase):
         hardware_report = json.loads(
             result.hardware_position_report_path.read_text(encoding="utf-8")
         )
+        movement_report = json.loads(
+            result.runner_movement_report_path.read_text(encoding="utf-8")
+        )
         closeup_nodes = documents[DrawerReviewState.OPEN][0].node_names
         full_nodes = documents[DrawerReviewState.OPEN][1].node_names
 
@@ -120,6 +137,8 @@ class TestDrawerWardrobeReview(unittest.TestCase):
         self.assertEqual(report["status"], "valid")
         self.assertEqual(full_report["status"], "valid")
         self.assertEqual(hardware_report["status"], "valid")
+        self.assertEqual(movement_report["status"], "valid")
+        self.assertFalse(movement_report["manufacturing_authority"])
         relationships = report["relationships"]
         self.assertEqual(
             relationships["drawer_local_zero_in_cabinet_mm"],
@@ -128,7 +147,7 @@ class TestDrawerWardrobeReview(unittest.TestCase):
         self.assertEqual(relationships["runner_required_depth_mm"], 518.0)
         self.assertEqual(
             relationships["hardware_geometry"],
-            "source_cad_verified_unplaced",
+            "source_cad_mounting_plan_saved",
         )
         self.assertEqual(
             relationships["closed_clearances_mm"],

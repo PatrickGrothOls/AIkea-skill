@@ -31,6 +31,8 @@ class GenerateHettichKa5332CabinetDrawerCommand:
         parser.add_argument("--assembly", required=True)
         parser.add_argument("--drawer", default="drawer_01")
         parser.add_argument("--bottom-height-mm", required=True, type=float)
+        parser.add_argument("--box-height-mm", default=160.0, type=float)
+        parser.add_argument("--box-depth-mm", type=float)
         parser.add_argument("--hardware-directory", required=True, type=Path)
         return parser
 
@@ -40,12 +42,19 @@ class GenerateHettichKa5332CabinetDrawerCommand:
         assembly_id: str,
         drawer_id: str,
         bottom_height_mm: float,
+        box_height_mm: float,
+        box_depth_mm: float | None,
         hardware_directory: Path,
     ) -> int:
         result = HettichKa5332CabinetDrawerGenerator().generate(
             aikea_yaml.parent,
             assembly_id,
-            DrawerLayout(drawer_id, bottom_height_mm),
+            DrawerLayout(
+                drawer_id,
+                bottom_height_mm,
+                box_height_mm=box_height_mm,
+                box_depth_mm=box_depth_mm,
+            ),
             hardware_directory=hardware_directory,
         )
         print(
@@ -54,6 +63,8 @@ class GenerateHettichKa5332CabinetDrawerCommand:
                     "status": "generated",
                     "assembly": assembly_id,
                     "drawer": drawer_id,
+                    "drawer_height_mm": result.plan.drawer.box.sizing.box_height_mm,
+                    "drawer_depth_mm": result.plan.drawer.box.side_length_mm,
                     "runner_product_code": result.plan.runner.product_code,
                     "drawer_outside_width_mm": result.plan.drawer.box.outside_width_mm,
                     "recommended_width_met": (
@@ -82,6 +93,8 @@ def main() -> int:
         arguments.assembly,
         arguments.drawer,
         arguments.bottom_height_mm,
+        arguments.box_height_mm,
+        arguments.box_depth_mm,
         arguments.hardware_directory,
     )
 

@@ -36,6 +36,7 @@ class DrawerLayout:
     bottom_thickness_mm: float = 9.0
     bottom_underside_recess_mm: float = 13.0
     box_height_mm: float = 160.0
+    box_depth_mm: float | None = None
 
     def __post_init__(self) -> None:
         if not self._ID_PATTERN.fullmatch(self.drawer_id):
@@ -43,6 +44,12 @@ class DrawerLayout:
                 "drawer_id must be a stable lowercase Python identifier "
                 "with a two-digit suffix"
             )
+        if self.bottom_height_mm < 0.0:
+            raise DrawerLayoutError("drawer bottom height cannot be negative")
+        if self.box_height_mm <= 0.0:
+            raise DrawerLayoutError("drawer box height must be positive")
+        if self.box_depth_mm is not None and self.box_depth_mm <= 0.0:
+            raise DrawerLayoutError("drawer box depth must be positive")
 
 
 @dataclass(frozen=True, slots=True)

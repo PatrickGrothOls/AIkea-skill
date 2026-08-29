@@ -69,14 +69,7 @@ class DrawerWardrobeReviewGenerator:
             cabinet_physical,
             drawer_physical,
         )
-        report.write(paths.drawer_position_report)
-        if not report.is_valid:
-            raise UnitMockupInputError(
-                [
-                    "drawer position check failed: "
-                    + ", ".join(report.failed_check_names())
-                ]
-            )
+        self._write_valid_report(report, paths.drawer_position_report, "drawer position")
 
         hardware = self.hardware_review.build(
             built_cabinet,
@@ -85,14 +78,19 @@ class DrawerWardrobeReviewGenerator:
             hardware_directory,
             drawer_state,
         )
-        hardware.position_report.write(paths.hardware_position_report)
-        if not hardware.position_report.is_valid:
-            raise UnitMockupInputError(
-                [
-                    "drawer hardware position check failed: "
-                    + ", ".join(hardware.position_report.failed_check_names())
-                ]
-            )
+        for checked_report, path, label in (
+            (
+                hardware.position_report,
+                paths.hardware_position_report,
+                "drawer hardware position",
+            ),
+            (
+                hardware.movement_report,
+                paths.runner_movement_report,
+                "drawer runner movement",
+            ),
+        ):
+            self._write_valid_report(checked_report, path, label)
 
         drawer_review = self.drawer_geometry.build(built_cabinet, drawer_state)
         cabinet_review = self.cabinet_geometry.build(
@@ -130,13 +128,25 @@ class DrawerWardrobeReviewGenerator:
             drawer_id=child.spec.assembly_id,
             drawer_state=drawer_state.value,
             runner_product_code=child.assembly.spec.runner_product_code,
-            runner_review_representation="source_cad_mounted_and_position_checked",
+            runner_review_representation=(
+                "review_only_runner_movement"
+                if drawer_state is DrawerReviewState.OPEN
+                else "source_cad_mounted_and_position_checked"
+            ),
             closeup_glb_path=paths.closeup_glb,
             full_wardrobe_glb_path=full_result.glb_path,
             drawer_position_report_path=paths.drawer_position_report,
             hardware_position_report_path=paths.hardware_position_report,
+            runner_movement_report_path=paths.runner_movement_report,
             full_position_report_path=full_result.position_report_path,
         )
+
+    def _write_valid_report(self, report, path, label: str) -> None:
+        report.write(path)
+        if not report.is_valid:
+            raise UnitMockupInputError(
+                [f"{label} check failed: " + ", ".join(report.failed_check_names())]
+            )
 
 
 __all__ = ["DrawerWardrobeReviewGenerator"]

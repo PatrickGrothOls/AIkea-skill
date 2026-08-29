@@ -17,8 +17,11 @@ from hettich_ka_5332_mounting_plan import (
     HettichKa5332MountingPlan,
     HettichKa5332MountingPlanner,
 )
+from hettich_ka_5332_runner_catalog import (
+    HETTICH_KA_5332_RUNNER_CATALOG,
+    HettichKa5332RunnerCatalog,
+)
 from hettich_ka_5332_runner_profile import (
-    HETTICH_KA_5332_500,
     HettichKa5332RunnerProfile,
 )
 from hettich_ka_5332_step_assembly import HettichKa5332StepAssembly
@@ -42,7 +45,13 @@ class HettichKa5332CabinetDrawerPlan:
 class HettichKa5332CabinetDrawerPlanner:
     """Promote the approved visual prototype calculations into project data."""
 
-    def __init__(self) -> None:
+    def __init__(
+        self,
+        runner_catalog: HettichKa5332RunnerCatalog = (
+            HETTICH_KA_5332_RUNNER_CATALOG
+        ),
+    ) -> None:
+        self.runner_catalog = runner_catalog
         self.box_profile = HettichKa5332DrawerBoxProfileAdapter()
         self.box_planner = DrawerBoxPlanner()
         self.mounting_planner = HettichKa5332MountingPlanner()
@@ -55,7 +64,10 @@ class HettichKa5332CabinetDrawerPlanner:
         hardware_step: HettichKa5332StepAssembly,
     ) -> HettichKa5332CabinetDrawerPlan:
         opening = CabinetDrawerOpening.from_assembly_spec(cabinet)
-        runner = HETTICH_KA_5332_500
+        runner = self.runner_catalog.select(
+            layout.box_depth_mm,
+            opening.inside_depth_mm,
+        )
         sizing = self.box_profile.build(
             runner,
             side_thickness_mm=layout.side_thickness_mm,

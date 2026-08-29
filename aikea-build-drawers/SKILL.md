@@ -17,7 +17,7 @@ the intended cabinet and drawer arrangement, runs the deterministic builders,
 and discusses the physical result with the client. It does not recreate drawer
 geometry from prose.
 
-## Build one drawer from verified source CAD
+## Build drawer children from verified source CAD
 
 1. Resolve the active AIkea project and require its completed `aikea.yaml` and
    generated `assemblies/` folders.
@@ -26,9 +26,10 @@ geometry from prose.
    [references/movento-760h-hardware.md](references/movento-760h-hardware.md).
    For Hettich KA 5332, instead read
    [references/hettich-ka-5332-hardware.md](references/hettich-ka-5332-hardware.md).
-3. Identify the existing cabinet that will own the drawer. Use a client-supplied
-   position when one is part of the design; otherwise make one practical visual
-   proposal inside that cabinet and let the client judge it in the model.
+3. Identify the existing cabinet that will own each drawer. Resolve every
+   drawer as an independent child with its own height, depth, vertical position,
+   runner selection, and review pose. Repeating a drawer is ordinary collection
+   composition; it is not a separate stack design.
 4. Resolve the exact source STEP files named by the selected runner profile. If
    they are absent, load `$aikea-source-hardware-cad` and resume with the returned
    project-local `hardware_directory`. For the implemented MOVENTO generator, run:
@@ -37,7 +38,10 @@ geometry from prose.
 
    For KA 5332, save the visually approved result into the cabinet first:
 
-   `python <skill-directory>/scripts/generate_hettich_ka_5332_cabinet_drawer.py <project>/aikea.yaml --assembly <cabinet-id> --drawer <drawer-id> --bottom-height-mm <height-above-carcass-bottom> --hardware-directory <hardware-directory>`
+   `python <skill-directory>/scripts/generate_hettich_ka_5332_cabinet_drawer.py <project>/aikea.yaml --assembly <cabinet-id> --drawer <drawer-id> --bottom-height-mm <height-above-carcass-bottom> --box-height-mm <height> --box-depth-mm <depth> --hardware-directory <hardware-directory>`
+
+   Run the command once per requested drawer. A later call revises the named
+   drawer while preserving the cabinet's other generated drawer children.
 
    Then review that saved child and its exact runner source:
 
@@ -55,22 +59,22 @@ geometry from prose.
 7. Require both the drawer position report and the complete wardrobe position
    report to pass. Present the close-up first, then the complete furniture run
    containing that same composed cabinet. Use closed, open, and removed review
-   states when the client needs to compare the fitted box, its motion, and the
-   cabinet-owned runner locations.
+   states when the client needs to compare the fitted box, its movement, and the
+   cabinet-owned runner locations. Require the runner movement report when the
+   drawer is shown open.
 8. Explain the useful physical result in client-facing language and end with one
    concrete visual decision about the drawer's size or position.
 
 ## Current capability
 
-The implemented KA 5332 slice builds one five-panel wooden drawer beneath an
-existing cabinet, records one purchased runner pair and both source-side member
-placements, and saves the cabinet-to-drawer frame. The composed builder executes
-those generated files, and closed, open, and removed reviews read the same saved
-child rather than recalculating it from command-line dimensions. The sourced
-paired STEP remains outside the public skill and supplies all six genuine
-telescoping members. The manufacturer's width recommendation is retained as
-evidence without replacing the resolved cabinet geometry. Mounting machining,
-drawer-box joinery, and manufacturing toolpaths remain later construction gates.
+The implemented KA 5332 slice composes any number of independently sized and
+positioned five-panel drawer children beneath an existing cabinet. Each drawer
+owns one purchased runner pair, both source-side member placements, and its
+cabinet-local frame. Review can assign a different extension to every child
+while the closed collection remains the fit authority. Depth selection accepts
+only a registered exact runner length with verified source CAD; the current
+public profile is the approved 500 mm article. Mounting machining, drawer-box
+joinery, and manufacturing toolpaths remain later construction gates.
 
 ## Responsibility boundary
 

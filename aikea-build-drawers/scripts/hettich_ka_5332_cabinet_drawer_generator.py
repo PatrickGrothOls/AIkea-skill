@@ -5,18 +5,13 @@ from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
 
-from assembly_taxonomy_writer import AssemblyTaxonomyWriter
-from cabinet_assembly_spec_loader import CabinetAssemblySpecLoader
 from cabinet_drawer_plan import DrawerLayout
-from drawer_generated_file_record import DrawerGeneratedFileRecord
 from hettich_ka_5332_cabinet_drawer_plan import (
     HettichKa5332CabinetDrawerPlan,
-    HettichKa5332CabinetDrawerPlanner,
 )
-from hettich_ka_5332_drawer_file_set_renderer import (
-    HettichKa5332DrawerFileSetRenderer,
+from hettich_ka_5332_cabinet_drawers_generator import (
+    HettichKa5332CabinetDrawersGenerator,
 )
-from hettich_ka_5332_step_assembly import HettichKa5332StepAssemblyLoader
 
 
 @dataclass(frozen=True, slots=True)
@@ -32,13 +27,9 @@ class HettichKa5332CabinetDrawerGenerator:
 
     def __init__(
         self,
-        step_loader: HettichKa5332StepAssemblyLoader | None = None,
+        step_loader=None,
     ) -> None:
-        self.spec_loader = CabinetAssemblySpecLoader()
-        self.step_loader = step_loader or HettichKa5332StepAssemblyLoader()
-        self.planner = HettichKa5332CabinetDrawerPlanner()
-        self.renderer = HettichKa5332DrawerFileSetRenderer()
-        self.writer = AssemblyTaxonomyWriter()
+        self.drawers = HettichKa5332CabinetDrawersGenerator(step_loader)
 
     def generate(
         self,
@@ -48,17 +39,18 @@ class HettichKa5332CabinetDrawerGenerator:
         *,
         hardware_directory: Path,
     ) -> HettichKa5332DrawerGenerationResult:
-        cabinet = self.spec_loader.load(project_root, parent_assembly_id)
-        hardware_step = self.step_loader.load(hardware_directory)
-        plan = self.planner.plan(cabinet, layout, hardware_step)
-        files = self.renderer.render(plan)
-        recorded = DrawerGeneratedFileRecord.load(project_root, parent_assembly_id)
-        written = self.writer.write(project_root, files, recorded=recorded)
-        DrawerGeneratedFileRecord.from_rendered(
+        result = self.drawers.add(
+            project_root,
             parent_assembly_id,
-            files,
-        ).save(project_root)
-        return HettichKa5332DrawerGenerationResult(plan, written)
+            layout,
+            hardware_directory=hardware_directory,
+        )
+        plan = next(
+            drawer
+            for drawer in result.plan.drawers
+            if drawer.drawer.assembly_id == layout.drawer_id
+        )
+        return HettichKa5332DrawerGenerationResult(plan, result.written_paths)
 
 
 __all__ = [

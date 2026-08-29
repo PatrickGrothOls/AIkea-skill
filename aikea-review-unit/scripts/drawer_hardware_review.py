@@ -11,6 +11,10 @@ from drawer_hardware_review_geometry import DrawerHardwareReviewGeometry
 from drawer_hardware_set_verifier import DrawerHardwareSetVerifierFactory
 from drawer_review_state import DrawerReviewState
 from movento_runner_catalog import MOVENTO_RUNNER_CATALOG
+from runner_movement_preview_geometry import RunnerMovementPreviewGeometry
+from runner_movement_preview_position_checker import (
+    RunnerMovementPreviewPositionChecker,
+)
 from unit_mockup import MockupPart, UnitMockupInputError
 
 
@@ -21,6 +25,7 @@ class DrawerHardwareReview:
     closed_parts: tuple[MockupPart, ...]
     review_parts: tuple[MockupPart, ...]
     position_report: Any
+    movement_report: Any
 
 
 class DrawerHardwareReviewBuilder:
@@ -32,6 +37,8 @@ class DrawerHardwareReviewBuilder:
     ) -> None:
         self.verifier_factory = verifier_factory or DrawerHardwareSetVerifierFactory()
         self.geometry = DrawerHardwareReviewGeometry()
+        self.movement_preview = RunnerMovementPreviewGeometry()
+        self.movement_checker = RunnerMovementPreviewPositionChecker()
         self.position_checker = DrawerHardwarePositionChecker()
 
     def build(
@@ -49,15 +56,46 @@ class DrawerHardwareReviewBuilder:
             hardware,
             DrawerReviewState.CLOSED,
         )
+        preview_closed = self._movement_parts(
+            built_cabinet,
+            hardware,
+            runner,
+            DrawerReviewState.CLOSED,
+        )
+        preview_open = self._movement_parts(
+            built_cabinet,
+            hardware,
+            runner,
+            DrawerReviewState.OPEN,
+        )
         return DrawerHardwareReview(
             closed_parts=closed_parts,
-            review_parts=self.geometry.build(built_cabinet, hardware, state),
+            review_parts=(
+                preview_open
+                if state is DrawerReviewState.OPEN
+                else self.geometry.build(built_cabinet, hardware, state)
+            ),
             position_report=self.position_checker.check(
                 built_cabinet,
                 cabinet_parts,
                 drawer_parts,
                 hardware,
             ),
+            movement_report=self.movement_checker.check(
+                built_cabinet,
+                preview_closed,
+                preview_open,
+            ),
+        )
+
+    def _movement_parts(self, built_cabinet, hardware, runner, state):
+        child = next(
+            item
+            for item in built_cabinet.child_assemblies
+            if item.spec.purpose == "drawer"
+        )
+        return self.movement_preview.build(built_cabinet, runner, state) + (
+            self.geometry.build_locks(child, hardware, state)
         )
 
     def _runner_for(self, built_cabinet: Any) -> Any:

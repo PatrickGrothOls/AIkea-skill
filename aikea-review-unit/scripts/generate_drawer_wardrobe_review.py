@@ -82,6 +82,9 @@ class GenerateDrawerWardrobeReviewCommand:
                     "hardware_position_check": str(
                         result.hardware_position_report_path
                     ),
+                    "runner_movement_check": str(
+                        result.runner_movement_report_path
+                    ),
                 },
                 indent=2,
             )

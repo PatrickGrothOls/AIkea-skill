@@ -47,9 +47,9 @@ class DrawerHardwareReviewGeometry:
         )
         if state is DrawerReviewState.REMOVED:
             return fixed
-        return fixed + self._moving_locks(child, hardware, state)
+        return fixed + self.build_locks(child, hardware, state)
 
-    def _moving_locks(
+    def build_locks(
         self,
         child: Any,
         hardware: VerifiedDrawerHardwareSet,

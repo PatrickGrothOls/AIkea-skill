@@ -20,6 +20,23 @@ class DrawerHardwarePositionReportTestDouble:
         return []
 
 
+class RunnerMovementPreviewReportTestDouble:
+    """Behave like one already-passed review-only movement report."""
+
+    is_valid = True
+
+    def write(self, path: Path) -> None:
+        payload = {
+            "status": "valid",
+            "representation": "review_only_runner_movement",
+            "manufacturing_authority": False,
+        }
+        path.write_text(json.dumps(payload) + "\n", encoding="utf-8")
+
+    def failed_check_names(self) -> list[str]:
+        return []
+
+
 class DrawerHardwareReviewBuilderTestDouble:
     """Create named test solids without reading manufacturer CAD files."""
 
@@ -38,7 +55,7 @@ class DrawerHardwareReviewBuilderTestDouble:
 
         solid = cq.Workplane("XY").box(1.0, 1.0, 1.0)
         location = cq.Location(cq.Vector(100.0, 100.0, 500.0))
-        runners = tuple(
+        exact_runners = tuple(
             MockupPart(
                 f"runner_{hand}__source_cad",
                 solid,
@@ -46,6 +63,16 @@ class DrawerHardwareReviewBuilderTestDouble:
                 (0.2, 0.2, 0.2, 1.0),
             )
             for hand in ("left", "right")
+        )
+        preview_parts = tuple(
+            MockupPart(
+                f"review_only__runner_{hand}__{part}",
+                solid,
+                location,
+                (0.3, 0.3, 0.3, 1.0),
+            )
+            for hand in ("left", "right")
+            for part in ("fixed_path", "drawer_side_guide")
         )
         locks = tuple(
             MockupPart(
@@ -56,11 +83,17 @@ class DrawerHardwareReviewBuilderTestDouble:
             )
             for hand in ("left", "right")
         )
-        closed_parts = runners + locks
+        closed_parts = exact_runners + locks
+        review_parts = {
+            DrawerReviewState.CLOSED: closed_parts,
+            DrawerReviewState.OPEN: preview_parts + locks,
+            DrawerReviewState.REMOVED: exact_runners,
+        }[state]
         return DrawerHardwareReview(
             closed_parts=closed_parts,
-            review_parts=(runners if state is DrawerReviewState.REMOVED else closed_parts),
+            review_parts=review_parts,
             position_report=DrawerHardwarePositionReportTestDouble(),
+            movement_report=RunnerMovementPreviewReportTestDouble(),
         )
 
 

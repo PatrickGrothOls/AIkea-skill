@@ -2,6 +2,11 @@
 
 Use this reference for the visually approved 500 mm KA 5332 prototype.
 
+The runner catalog resolves each drawer's requested depth independently. It may
+use this article only for a 500 mm drawer. Another depth becomes available by
+registering that exact product profile and its verified source CAD, never by
+scaling this STEP assembly.
+
 ## Local source
 
 Obtain article `9057405` through `$aikea-source-hardware-cad`. Pass its returned

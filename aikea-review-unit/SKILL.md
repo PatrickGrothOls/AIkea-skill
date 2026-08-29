@@ -62,9 +62,15 @@ When `$aikea-build-drawers` has generated a cabinet-owned drawer child, run
 Require its drawer position report and the complete wardrobe position report to
 pass. Show the door-removed cabinet close-up first, then the same composed
 cabinet in the complete furniture run. Treat the closed drawer as the physical
-fit authority and the open drawer as its presentation state. Use the removed
-state to inspect cabinet-owned runner locations; while exact hardware CAD is
-unresolved, present its mounting zones as review guides rather than rail geometry.
+fit authority and the open drawer as its presentation state. The open view must
+also pass its runner movement report. Use the removed state to inspect the exact
+cabinet-owned runner CAD in its checked mounting frames.
+
+For cabinets with repeated drawer children, use
+`generate_drawer_collection_wardrobe_review.py`. Assign drawer extensions and
+door states independently so the client can reveal the useful cabinets without
+changing any checked closed geometry. It accepts the same `--doors` default and
+repeated `--door <assembly-id>=<state>` choices as the full wardrobe review.
 
 ## Inspect drawer locking devices
 

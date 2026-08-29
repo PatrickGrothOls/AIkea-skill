@@ -69,7 +69,8 @@ box remains inside the cabinet opening, no drawer sheet occupies cabinet materia
 all three saved child axes form the frame used by CadQuery, and the same composed
 cabinet appears in both close-up and full-run exports. The generation gate must
 also prove the exact selected source-CAD set before any project drawer file is
-written.
+written. The open review additionally requires a passing movement report whose
+preview geometry is explicitly excluded from manufacturing authority.
 
 Purchased hardware uses the manifest owned by its selected profile. A verified
 local STEP is imported without scaling, recentering, mirroring, or changing its

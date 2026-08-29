@@ -87,6 +87,21 @@ The current exact 500 mm proof passes those relationships. Its lower rear
 intrusion remains explicit as required preparation rather than being accepted as
 finished wood geometry.
 
+## Static CAD and open review
+
+The official left and right runner download records offer STEP, Parasolid,
+Collada, and other static exchange formats. Inspection of the available STEP,
+Parasolid, and Collada files found the same two flattened product bodies and no
+kinematic joints or separately identified telescoping members. They therefore
+prove closed geometry and placement, not internal runner movement.
+
+Keep those exact files unchanged as the closed and removed-position authority.
+The open visual review uses a separate movement preview derived only from facts
+the saved frames establish: the cabinet-side path stays fixed, and the
+drawer-side attachment plus locking device travel with the drawer. The preview
+does not infer intermediate members, extension ratios, clearances, machining, or
+toolpaths and is never manufacturing authority.
+
 The resolved transform does not complete machining. The unmachined drawer back
 still occupies the runner's required rear hook/notch space, and the official
 rear preparation must be applied before manufacture. The manufacturer runner

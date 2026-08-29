@@ -14,6 +14,7 @@ class DrawerWardrobeReviewPaths:
 
     drawer_position_report: Path
     hardware_position_report: Path
+    runner_movement_report: Path
     closeup_glb: Path
     full_wardrobe_filename: str
 
@@ -30,6 +31,9 @@ class DrawerWardrobeReviewPaths:
             drawer_position_report=assembly_root / "drawer-position-check.json",
             hardware_position_report=(
                 assembly_root / "drawer-hardware-position-check.json"
+            ),
+            runner_movement_report=(
+                assembly_root / "drawer-runner-movement-check.json"
             ),
             closeup_glb=(
                 assembly_root / f"{assembly_id}_drawer_{state}_review.glb"
