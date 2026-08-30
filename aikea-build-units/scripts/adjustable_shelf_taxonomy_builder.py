@@ -5,9 +5,9 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from assembly_taxonomy import AssemblyTaxonomyInputError, PartTaxonomy
-from universal_side_panel_hole_pattern import (
-    UniversalSidePanelHolePattern,
-    UniversalSidePanelHoleProfile,
+from system_32_side_panel_grid import (
+    System32SidePanelGrid,
+    System32SidePanelGridProfile,
 )
 
 
@@ -24,10 +24,10 @@ class AdjustableShelfTaxonomyBuilder:
     def __init__(
         self,
         profile: AdjustableShelfProfile | None = None,
-        hole_profile: UniversalSidePanelHoleProfile | None = None,
+        grid_profile: System32SidePanelGridProfile | None = None,
     ) -> None:
         self.profile = profile or AdjustableShelfProfile()
-        self.hole_pattern = UniversalSidePanelHolePattern(hole_profile)
+        self.hardware_grid = System32SidePanelGrid(grid_profile)
 
     def build(
         self,
@@ -38,11 +38,11 @@ class AdjustableShelfTaxonomyBuilder:
         thickness_mm: float,
     ) -> tuple[PartTaxonomy, ...]:
         shelf_width_mm = width_mm - (2.0 * thickness_mm)
-        shared_rows = self.hole_pattern.row_heights_mm(
+        shared_rows = self.hardware_grid.row_heights_mm(
             min(left_side_height_mm, right_side_height_mm)
         )
         selected_rows = self._select_even_rows(shared_rows)
-        support_offset_mm = self.hole_pattern.profile.diameter_mm / 2.0
+        support_offset_mm = self.hardware_grid.profile.hole_diameter_mm / 2.0
         return tuple(
             PartTaxonomy(
                 part_id=f"shelf_{number:02d}",

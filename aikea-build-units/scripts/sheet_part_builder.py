@@ -5,7 +5,7 @@ from __future__ import annotations
 from typing import Any
 
 from part_blank_builder import PartBlankBuilder
-from universal_side_panel_hole_pattern import UniversalSidePanelHolePattern
+from system_32_side_panel_grid import System32SidePanelGrid
 
 
 class SheetPartBuilder:
@@ -14,7 +14,7 @@ class SheetPartBuilder:
     def __init__(self) -> None:
         self.blank_builder = PartBlankBuilder()
         self._local_machining = {
-            "side_panel": UniversalSidePanelHolePattern().apply,
+            "side_panel": System32SidePanelGrid().apply,
         }
 
     def build(self, part: Any, cuts: tuple[Any, ...]) -> Any:

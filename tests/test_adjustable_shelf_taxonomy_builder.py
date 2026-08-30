@@ -1,7 +1,7 @@
 """Scope: Verify adjustable shelves derive from matching side-panel support rows."""
 
 from adjustable_shelf_taxonomy_builder import AdjustableShelfTaxonomyBuilder
-from universal_side_panel_hole_pattern import UniversalSidePanelHolePattern
+from system_32_side_panel_grid import System32SidePanelGrid
 
 
 class TestAdjustableShelfTaxonomyBuilder:
@@ -32,7 +32,7 @@ class TestAdjustableShelfTaxonomyBuilder:
         )
 
     def test_every_shelf_uses_a_row_present_on_both_unequal_sides(self) -> None:
-        pattern = UniversalSidePanelHolePattern()
+        pattern = System32SidePanelGrid()
         left_rows = pattern.row_heights_mm(2266.0)
         right_rows = pattern.row_heights_mm(2010.0)
         shelves = AdjustableShelfTaxonomyBuilder().build(
