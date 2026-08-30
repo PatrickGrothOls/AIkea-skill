@@ -44,6 +44,9 @@ Use explicit user messages to create or revise the saved measurements and shared
   choices for all edges fitted or only some edges fitted. Repeat the named labels
   in the second choice so the client can reply, for example,
   `2: C (sloped top)`. Do not split this into separate questions about each side.
+- Preserve from that same answer which left, right, and top room boundaries are
+  physically present. Later movement checks depend on those individual edges
+  even when only one side is fitted and the overall width remains open.
 - Then ask one separate depth question: "Does the wardrobe front need to finish
   flush with a wall or another fixed line?" This is not a question about enclosing
   the front.
@@ -136,6 +139,15 @@ When the client adds drawers to generated cabinets, load
 `$aikea-build-drawers`. Let that subskill calculate the drawer from its owning
 cabinet, save it as a local child assembly, and return the same composed cabinet
 to the complete furniture review.
+
+Every generated cabinet whose specification includes a fitted hinged door needs
+that door completed before its first visual approval. Load `$aikea-build-doors`
+without waiting for the client to request its standard hinge construction. Let
+that subskill resolve the visible door relationship, select an exact purchased
+hinge-and-plate profile, derive both panels' machining from shared placements,
+prove the proposed opening side for every door from the measured room boundaries,
+and show one complete closed/open door before the client approves the run-wide
+opening plan.
 
 When a construction stage requires exact CAD for purchased hardware that is not
 already in the active project's local library, load

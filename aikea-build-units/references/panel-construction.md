@@ -79,23 +79,23 @@ the connectors evenly between the two end positions. The one calculated position
 set drives both participating panels, so increasing the count cannot separate a
 source pocket from its matching receiver cut.
 
-## Machine universal side-panel holes
+## Machine the cabinet hardware grid
 
-Every generated side panel receives the reusable shelf-and-hanger hardware
-pattern before its joint cuts are applied. The pattern is construction knowledge,
-not a client choice or a project-wide geometry setting. It uses the panel's own
-depth, height, thickness, and named inside face.
+Every generated side panel owns one versioned System 32 grid before joint cuts
+are applied. The grid is local cabinet construction knowledge, not a client
+choice or a project-wide geometry setting. It uses the panel's own depth, height,
+thickness, and named inside face.
 
 Rows share one bottom reference so holes remain level across side panels with
-different top heights. Place the front and rear columns 37 mm from their respective
-panel edges. This gives shelves a broad support footprint and keeps the front row
-on the shared System 32 hardware reference. Every hole is blind from the inside
+different top heights. The rows repeat every 32 mm; front and rear columns sit
+37 mm from their respective panel edges. Every 5 mm hole is blind from the inside
 face. A panel too thin to preserve its outside face must fail construction instead
 of receiving a through hole.
 
-The front row can provide the reference used by compatible drawer fittings, but it
-does not define a complete drawer installation. A selected rail profile must still
-own its exact mounting holes, vertical position, clearances, and receiving work.
+Construction capabilities consume this saved grid rather than creating another
+panel-hole system. A shelf selects one row. A compatible hinge plate selects two
+adjacent rows. A selected drawer-runner profile declares which grid positions it
+uses and owns any additional preparation, vertical placement, and clearances.
 
 ## Build adjustable shelves
 

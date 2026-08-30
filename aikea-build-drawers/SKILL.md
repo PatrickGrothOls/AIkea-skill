@@ -52,6 +52,9 @@ geometry from prose.
    drawer child rather than reconstructing either assembly. Later proposals may
    regenerate files still owned by AIkea, while a locally changed file stops the
    complete revision for client review.
+   Require the resolved runner center to occupy a real shared System 32 row and
+   save its cabinet and drawer machining plus physical hardware reservation with
+   the generated child.
 6. Run:
 
    `python <aikea-review-unit-directory>/scripts/generate_drawer_wardrobe_review.py <project>/aikea.yaml --assembly <cabinet-id> --drawer-state open --hardware-directory <download-directory>`
@@ -73,8 +76,10 @@ owns one purchased runner pair, both source-side member placements, and its
 cabinet-local frame. Review can assign a different extension to every child
 while the closed collection remains the fit authority. Depth selection accepts
 only a registered exact runner length with verified source CAD; the current
-public profile is the approved 500 mm article. Mounting machining, drawer-box
-joinery, and manufacturing toolpaths remain later construction gates.
+public profile is the approved 500 mm article. Its resolved System 32 node,
+five cabinet-side fixings, five drawer-side pilots, and full installed envelope
+are now produced and checked on both hands. Drawer-box joinery and manufacturing
+toolpaths remain later construction gates.
 
 ## Responsibility boundary
 
@@ -82,6 +87,8 @@ This skill owns drawer-local calculation, child-folder generation, hardware
 profile selection, and the drawer-to-cabinet fit gate. The existing cabinet owns
 the purchased runner system; the drawer child owns the moving wooden box. A
 runner system's saved member placements define how its purchased components
-follow those two assemblies.
+follow those two assemblies. The shared cabinet hardware map prevents a runner,
+hinge plate, shelf, or later fitting from occupying the same fixing node or
+physical panel space.
 `$aikea-review-unit` owns presentation and global placement, while the overall
 `aikea.yaml` remains unchanged because drawer arrangement is local to its cabinet.
