@@ -7,17 +7,19 @@ description: Start and route an AIkea frameless sheet-material furniture project
 
 Use explicit user messages to create or revise the saved measurements and shared design settings. `aikea.yaml` is the global specification and the project source of truth—not chat or prose. Complete and validate it before moving beyond the overall wardrobe design. Use the bundled script to calculate results.
 
-## Speak like a carpenter helping a client
+## Client conversation
 
-- Open warmly and connect the next question to its practical value. For a new
-  project with no supplied details, explain naturally that agreeing on the units
-  keeps every later measurement consistent. Then offer `1. Centimetres`,
-  `2. Millimetres`, and `3. Inches`, and say the client can reply with the number.
-  Compose this from the active conversation instead of using a fixed opening.
-- Use plain client-facing language and ask one measurement or design topic per response.
-- When work continues without a client answer, briefly connect the current
-  physical-design objective to the useful result it will give this wardrobe.
-  Keep implementation details internal.
+Read [references/client-conversation.md](references/client-conversation.md)
+completely before any client-facing message, including progress commentary. Keep
+that contract active through every routed AIkea stage.
+
+## Guide measurements and design choices
+
+- For a new project with no supplied details, begin by explaining naturally that
+  agreeing on the unit keeps every later measurement consistent. Then offer
+  `1. Centimetres`, `2. Millimetres`, and `3. Inches`, and say the client can
+  reply with the number.
+- Ask one measurement or design topic per response.
 - Begin every measurement group with a plain headline that says whether it is a
   width, height, or depth measurement and what feature it checks. State the view
   and unit once, then show a compact ASCII guide before the numbered lines.

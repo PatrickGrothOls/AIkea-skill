@@ -5,6 +5,10 @@ description: Generate populated local assembly, part, builder, and joint folders
 
 # AIkea build units
 
+Before any client-facing message, including progress commentary, read
+[../aikea/references/client-conversation.md](../aikea/references/client-conversation.md)
+completely and apply it throughout this stage.
+
 ## Goal
 
 Turn the completed overall project and ordered unit run into self-contained,

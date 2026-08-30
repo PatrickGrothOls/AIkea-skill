@@ -5,6 +5,10 @@ description: Build and show generated AIkea cabinets, structural bases, or the c
 
 # AIkea review unit
 
+Before any client-facing message, including progress commentary, read
+[../aikea/references/client-conversation.md](../aikea/references/client-conversation.md)
+completely and apply it throughout this stage.
+
 ## Goal
 
 Give the client a clear view of the real generated parts as physical assemblies,

@@ -5,6 +5,10 @@ description: Add a calculated wooden drawer subassembly to an existing generated
 
 # AIkea build drawers
 
+Before any client-facing message, including progress commentary, read
+[../aikea/references/client-conversation.md](../aikea/references/client-conversation.md)
+completely and apply it throughout this stage.
+
 ## Goal
 
 Turn a drawer design inside an existing generated cabinet into a project-owned

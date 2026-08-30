@@ -5,6 +5,10 @@ description: Find exact manufacturer CAD for purchased furniture hardware, guide
 
 # AIkea source hardware CAD
 
+Before any client-facing message, including progress commentary, read
+[../aikea/references/client-conversation.md](../aikea/references/client-conversation.md)
+completely and apply it throughout this stage.
+
 ## Goal
 
 Give later AIkea builders the exact purchased component they are designing

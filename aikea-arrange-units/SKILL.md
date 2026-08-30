@@ -5,7 +5,11 @@ description: Arrange the physical units in a measured AIkea furniture project fr
 
 # AIkea arrange units
 
-Settle one ordered furniture arrangement and save it in the global project specification. Speak like a carpenter helping a client; keep project-file fields and calculations private. End every response with the next concrete action. Ask the client only when their answer can change the design; otherwise continue automatically.
+Before any client-facing message, including progress commentary, read
+[../aikea/references/client-conversation.md](../aikea/references/client-conversation.md)
+completely and apply it throughout this stage.
+
+Settle one ordered furniture arrangement and save it in the global project specification. Ask the client only when their answer can change the design; otherwise continue automatically.
 
 ## Goal
 
