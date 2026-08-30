@@ -15,6 +15,11 @@ design_settings:
     width: null
     depth: null
     height: null
+  installation_boundaries:
+    left: null
+    right: null
+    top: null
+  door_openings: {}
   cabinet_run:
     cabinet_count: null
     cabinet_width_shares: []

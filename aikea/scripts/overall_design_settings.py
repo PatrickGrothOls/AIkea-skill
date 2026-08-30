@@ -11,12 +11,14 @@ from door_and_plinth_settings import (
     PlinthFront,
 )
 from fitted_dimensions import FittedDimensionReader, FittedDimensions
+from installation_boundaries import InstallationBoundaries, InstallationBoundaryReader
 
 
 @dataclass(frozen=True)
 class OverallDesignSettings:
     fit_allowance_mm: float
     fitted_dimensions: FittedDimensions
+    installation_boundaries: InstallationBoundaries
     cabinet_count: int
     cabinet_width_shares: tuple[float, ...]
     left_clearance_mm: float
@@ -59,9 +61,15 @@ class OverallDesignSettingReader:
         cabinet_count = self._read_cabinet_count(data, problems)
         shares = self._read_width_shares(data, cabinet_count, problems)
         lower_front = DoorAndPlinthSettingReader().read(data, scale, problems)
+        fitted_dimensions = FittedDimensionReader().read(data, problems)
         return OverallDesignSettings(
             fit_allowance_mm=numbers["design_settings.fit_allowance"],
-            fitted_dimensions=FittedDimensionReader().read(data, problems),
+            fitted_dimensions=fitted_dimensions,
+            installation_boundaries=InstallationBoundaryReader().read(
+                data,
+                fitted_dimensions,
+                problems,
+            ),
             cabinet_count=cabinet_count,
             cabinet_width_shares=shares,
             left_clearance_mm=numbers["design_settings.cabinet_run.left_clearance"],

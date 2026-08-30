@@ -277,7 +277,7 @@ Translate ceiling descriptions directly when height is fitted:
 
 Require the first distance to be `0`, the final distance to cover the calculated usable width, and all distances to increase from left to right. Preserve every raw reading and measured change point. Never average readings, reorder points, extend a section, or infer a missing endpoint to make the outline pass.
 
-## Record the confirmed top boundary and fitted dimensions
+## Record the confirmed installation boundaries and fitted dimensions
 
 Keep the raw measurements unchanged. Translate the labelled-edge and flush-depth
 answers into whether each dimension must fit between fixed boundaries under
@@ -290,6 +290,18 @@ answers into whether each dimension must fit between fixed boundaries under
 - `depth` is true only when the wardrobe must fit between its back boundary and a
   required finished-front line. The front remains open.
 
+Also preserve each physical room edge from the same labelled placement answer
+under `installation_boundaries`:
+
+- `left` records whether the labelled left edge is fitted;
+- `right` records whether the labelled right edge is fitted;
+- `top` records whether the complete labelled top boundary is fitted.
+
+The individual edges retain the room context needed for later door and hardware
+movement checks. `fitted_dimensions.width` remains true only when both side
+boundaries are present, while `fitted_dimensions.height` agrees with the top
+boundary.
+
 The template and deterministic calculator own the fitting allowance and all
 derived dimensions. Preserve the template's value in the project's chosen unit;
 do not turn the calculation policy into a client question or explanation.
@@ -301,6 +313,8 @@ The template supplies `fit_allowance`. Collect the remaining internal values:
 - `fitted_dimensions.width` and `fitted_dimensions.height`, derived from the
   labelled-edge answer, plus `fitted_dimensions.depth`, derived from the separate
   flush-depth answer;
+- `installation_boundaries.left`, `installation_boundaries.right`, and
+  `installation_boundaries.top`, derived from that same labelled-edge answer;
 - `cabinet_count`;
 - `cabinet_width_shares`, one positive number per cabinet from left to right;
 - `left_clearance`, `right_clearance`, `cabinet_gap`, and `ceiling_clearance`;
