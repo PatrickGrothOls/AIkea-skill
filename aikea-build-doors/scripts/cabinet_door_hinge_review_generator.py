@@ -7,7 +7,6 @@ from pathlib import Path
 from typing import Any
 
 from assembly_run import AssemblyRunReader
-from assembly_run_overall_project_adapter import AssemblyRunOverallProjectAdapter
 from cadquery_glb_exporter import CadQueryGlbExporter
 from concealed_hinge_machining import ConcealedHingeMachining
 from door_hinge_plan import DoorHingePlanner
@@ -18,7 +17,6 @@ from door_opening_run_resolver import DoorOpeningRunResolver
 from generated_assembly_builder_loader import GeneratedAssemblyBuilderLoader
 from riex_nc70_hardware_loader import RiexNc70HardwareLoader
 from riex_nc70_hinge_profile import RIEX_NC70_FULL_OVERLAY
-from overall_wardrobe_inputs import OverallWardrobeInputReader
 from panel_hardware_reservation import PanelHardwareReservationStore
 from riex_nc70_hardware_reservations import RiexNc70HardwareReservations
 
@@ -45,7 +43,6 @@ class CabinetDoorHingeReviewGenerator:
     def __init__(self) -> None:
         self.loader = GeneratedAssemblyBuilderLoader()
         self.assembly_run = AssemblyRunReader()
-        self.overall_project = AssemblyRunOverallProjectAdapter()
         self.planner = DoorHingePlanner()
         self.opening_run = DoorOpeningRunResolver()
         self.opening_review = DoorOpeningReviewRecord()
@@ -66,17 +63,13 @@ class CabinetDoorHingeReviewGenerator:
         built = self.loader.load_assembly(project_root, assembly_id)
         profile = RIEX_NC70_FULL_OVERLAY
         run = self.assembly_run.read(project)
-        overall_project = self.overall_project.adapt(project, run)
-        inputs = OverallWardrobeInputReader().read(overall_project)
         opening_run = self.opening_run.resolve(
             project_root,
             project,
             run,
-            inputs,
-            profile,
         )
         opening_run.write_local_plans(project_root)
-        if not opening_run.passes:
+        if not opening_run.has_doors:
             raise ValueError(opening_run.failure_reason)
         opening_plan = opening_run.for_assembly(assembly_id)
         source_directory = project_root / "assemblies" / assembly_id / "door_hinges"
@@ -139,9 +132,8 @@ class CabinetDoorHingeReviewGenerator:
             report_path=report_path,
             closed_glb_path=closed_path,
             open_glb_path=open_path,
-            fabrication_ready=plan.fabrication_ready and opening_run.passes,
-            compatibility_issues=plan.compatibility_issues
-            + tuple(issue for check in opening_plan.checks for issue in check.issues),
+            fabrication_ready=plan.fabrication_ready,
+            compatibility_issues=plan.compatibility_issues,
         )
 
 

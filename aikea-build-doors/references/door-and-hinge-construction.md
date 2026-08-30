@@ -23,18 +23,15 @@ supported leaves when that better serves the furniture layout. Do not preserve
 an unsuitable leaf merely because a cabinet folder already exists; revise the
 overall arrangement and regenerate its local results first.
 
-For every single door, begin with the ordinary left-side hinge and evaluate its
-complete movement through at least 90 degrees against the measured room
-boundaries. Preserve that hand when it clears. When it does not, evaluate the
-right-side alternative and use it only when the same proof passes. If neither
-hand clears, revise the front division. Apply the same movement objective to
-shaped and sloped doors rather than inferring a hand from the slope direction.
+Every single door begins with the ordinary left-side hinge. Room boundaries,
+slopes, and position in the run do not change that proposal. Only an explicit
+client choice changes one door to the right side, and that choice remains part of
+the global furniture specification.
 
 The first cabinet remains the complete physical review model. The project-wide
 review record lists the proposed hand for every saved cabinet, including any
-measured-space exception or client-requested exception. Approval confirms the
-whole proposal; a requested change returns to the global project choice and is
-recalculated before review continues.
+client-requested exception. Approval confirms the whole proposal; a requested
+change returns to the global project choice before review continues.
 
 ## First registered profile
 
@@ -77,8 +74,7 @@ Before a door can be repeated, its saved result must expose:
 - paired machining in the door and cabinet side;
 - material containment and retained panel thickness;
 - the closed fit and the manufacturer's open state;
-- a run-wide 90-degree room-boundary result and the client's reviewed opening
-  decision;
+- the client's reviewed opening decision for the complete run;
 - collisions with cabinet parts or other owned features;
 - all profile compatibility findings.
 

@@ -26,10 +26,8 @@ class DoorHingeReviewReport:
     overlay_mm: float
     plate_mount_face_mm: float
     open_angle_degrees: float
-    required_clear_opening_degrees: float
-    opening_boundary_clearances_mm: tuple[tuple[str, float], ...]
     opening_side_changed_from_default: bool
-    opening_clearance_passed: bool
+    opening_selection_source: str
     shared_placement_drives_both_panels: bool
     mounting_uses_cabinet_grid: bool
     exact_closed_and_open_source_cad: bool
@@ -59,10 +57,8 @@ class DoorHingeReviewReport:
             overlay_mm=plan.overlay_mm,
             plate_mount_face_mm=side_thickness_mm,
             open_angle_degrees=abs(profile.open_angle_degrees),
-            required_clear_opening_degrees=opening_plan.checks[-1].required_angle_degrees,
-            opening_boundary_clearances_mm=opening_plan.checks[-1].boundary_clearances_mm,
             opening_side_changed_from_default=opening_plan.changes_default,
-            opening_clearance_passed=opening_plan.passes,
+            opening_selection_source=opening_plan.selection_source,
             shared_placement_drives_both_panels=True,
             mounting_uses_cabinet_grid=True,
             exact_closed_and_open_source_cad=True,

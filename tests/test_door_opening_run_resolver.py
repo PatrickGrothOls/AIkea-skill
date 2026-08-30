@@ -46,9 +46,7 @@ class _SpecLoader:
 class _SideResolver:
     def resolve(
         self,
-        _inputs,
         spec: _Spec,
-        _profile,
         preferred_side: DoorHingeSide | None,
     ) -> DoorOpeningSidePlan:
         side = preferred_side or DoorHingeSide.LEFT
@@ -56,9 +54,8 @@ class _SideResolver:
             spec.assembly_id,
             DoorHingeSide.LEFT,
             side,
-            "checked",
-            (),
-            "client_choice" if preferred_side else "automatic",
+            "resolved",
+            "client_choice" if preferred_side else "standard",
         )
 
 
@@ -73,13 +70,18 @@ class TestDoorOpeningRunResolver(unittest.TestCase):
         )
         project = {
             "design_settings": {
+                "installation_boundaries": {
+                    "left": True,
+                    "right": True,
+                    "top": True,
+                },
                 "door_openings": {"tall_storage_02": "right"},
             }
         }
 
         with TemporaryDirectory() as directory:
             root = Path(directory)
-            result = resolver.resolve(root, project, run, object(), object())
+            result = resolver.resolve(root, project, run)
             result.write_local_plans(root)
 
             self.assertEqual(resolver.specs.loaded, [
@@ -89,7 +91,11 @@ class TestDoorOpeningRunResolver(unittest.TestCase):
                 "bench_01",
             ])
             self.assertEqual(len(result.plans), 3)
-            self.assertTrue(result.passes)
+            self.assertTrue(result.has_doors)
+            self.assertIs(
+                result.for_assembly("tall_storage_01").proposed_side,
+                DoorHingeSide.LEFT,
+            )
             self.assertTrue(result.for_assembly("tall_storage_02").changes_default)
             self.assertTrue(
                 (root / "assemblies/tall_storage_03/door_hinges/opening-plan.json").is_file()
@@ -106,11 +112,9 @@ class TestDoorOpeningRunResolver(unittest.TestCase):
                 Path(directory),
                 {"design_settings": {}},
                 _Run((_Item("bench_01"),)),
-                object(),
-                object(),
             )
 
-        self.assertFalse(result.passes)
+        self.assertFalse(result.has_doors)
         self.assertIn("no fitted single doors", result.failure_reason)
 
 

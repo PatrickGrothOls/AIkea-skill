@@ -18,7 +18,7 @@ class DoorOpeningReviewRecord:
         path: Path,
         plans: tuple[DoorOpeningSidePlan, ...],
     ) -> None:
-        if not plans or any(plan.proposed_side is None for plan in plans):
+        if not plans:
             raise ValueError("every door needs a clear opening side before review")
         proposal = {
             "review_type": "door_openings",
@@ -31,7 +31,6 @@ class DoorOpeningReviewRecord:
                     "hinge_side": plan.proposed_side.value,
                     "exception": plan.changes_default,
                     "note": self._note(plan),
-                    "opens_90_degrees": plan.passes,
                     "reason": plan.reason,
                 }
                 for index, plan in enumerate(plans, start=1)
@@ -46,9 +45,7 @@ class DoorOpeningReviewRecord:
     def _note(self, plan: DoorOpeningSidePlan) -> str | None:
         if not plan.changes_default:
             return None
-        if plan.selection_source == "client_choice":
-            return "your requested opening"
-        return "changed to clear the room"
+        return "your requested opening"
 
     def _read(self, path: Path) -> dict:
         if not path.is_file():

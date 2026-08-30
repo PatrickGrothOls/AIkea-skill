@@ -39,19 +39,19 @@ class TestDoorOpeningReviewRecord(unittest.TestCase):
             self.assertFalse(saved["doors"][0]["exception"])
             self.assertTrue(saved["doors"][1]["exception"])
             self.assertEqual(saved["doors"][1]["note"], "your requested opening")
+            self.assertNotIn("opens_90_degrees", saved["doors"][0])
 
     def _plan(
         self,
         assembly_id: str,
         side: DoorHingeSide,
-        source: str = "automatic",
+        source: str = "standard",
     ) -> DoorOpeningSidePlan:
         return DoorOpeningSidePlan(
             assembly_id,
             DoorHingeSide.LEFT,
             side,
-            "checked through 90 degrees",
-            (),
+            "resolved opening hand",
             source,
         )
 

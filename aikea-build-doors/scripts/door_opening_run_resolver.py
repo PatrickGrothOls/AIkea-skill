@@ -9,7 +9,6 @@ from typing import Any
 from door_opening_preference_reader import DoorOpeningPreferenceReader
 from door_opening_side_resolver import DoorOpeningSidePlan, DoorOpeningSideResolver
 from generated_assembly_spec_loader import GeneratedAssemblySpecLoader
-from riex_nc70_hinge_profile import RiexNc70HingeProfile
 
 
 @dataclass(frozen=True, slots=True)
@@ -19,18 +18,14 @@ class DoorOpeningRunPlan:
     plans: tuple[DoorOpeningSidePlan, ...]
 
     @property
-    def passes(self) -> bool:
-        return bool(self.plans) and all(plan.passes for plan in self.plans)
+    def has_doors(self) -> bool:
+        return bool(self.plans)
 
     @property
     def failure_reason(self) -> str:
         if not self.plans:
             return "the selected run has no fitted single doors"
-        return "; ".join(
-            f"{plan.assembly_id}: {plan.reason}"
-            for plan in self.plans
-            if not plan.passes
-        )
+        return ""
 
     def for_assembly(self, assembly_id: str) -> DoorOpeningSidePlan:
         matches = tuple(plan for plan in self.plans if plan.assembly_id == assembly_id)
@@ -50,7 +45,7 @@ class DoorOpeningRunPlan:
 
 
 class DoorOpeningRunResolver:
-    """Prove every generated single door without building later cabinet geometry."""
+    """Resolve every generated single door without building later cabinets."""
 
     def __init__(self) -> None:
         self.specs = GeneratedAssemblySpecLoader()
@@ -62,8 +57,6 @@ class DoorOpeningRunResolver:
         project_root: Path,
         project: dict[str, Any],
         run: Any,
-        inputs: Any,
-        profile: RiexNc70HingeProfile,
     ) -> DoorOpeningRunPlan:
         specifications = tuple(
             self.specs.load(project_root, item.assembly_id) for item in run.assemblies
@@ -80,9 +73,7 @@ class DoorOpeningRunResolver:
         return DoorOpeningRunPlan(
             tuple(
                 self.side.resolve(
-                    inputs,
                     specification,
-                    profile,
                     preferences.get(specification.assembly_id),
                 )
                 for specification in door_specifications
