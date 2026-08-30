@@ -8,6 +8,7 @@ import sys
 from tempfile import TemporaryDirectory
 import unittest
 
+from cadquery import Vector
 import yaml
 
 from assembly_taxonomy_generator import AssemblyTaxonomyGenerator
@@ -62,7 +63,11 @@ class TestHettichKa5332CabinetDrawerGenerator(unittest.TestCase):
         self.assertAlmostEqual(self.result.plan.drawer.box.outside_width_mm, 681.6)
         self.assertEqual(
             self.result.plan.origin_in_parent_mm,
-            (30.7, 18.0, 456.0),
+            (30.7, 18.0, 465.0),
+        )
+        self.assertEqual(
+            self.result.plan.hardware_mounting.system_32_row_height_mm,
+            388.0,
         )
         self.assertFalse(self.result.plan.hardware_mounting.recommended_width_met)
         self.assertTrue(self.result.plan.hardware_mounting.minimum_depth_met)
@@ -78,11 +83,11 @@ class TestHettichKa5332CabinetDrawerGenerator(unittest.TestCase):
         self.assertEqual(runner["source"]["solid_count"], 6)
         self.assertEqual(
             runner["side_placements"]["left"],
-            {"x": 25.95, "y": 55.0, "z": 479.0},
+            {"x": 25.95, "y": 55.0, "z": 488.0},
         )
         self.assertEqual(
             runner["side_placements"]["right"],
-            {"x": 531.95, "y": 55.0, "z": 479.0},
+            {"x": 531.95, "y": 55.0, "z": 488.0},
         )
 
     def test_composed_builder_owns_one_pair_and_one_wooden_child(self) -> None:
@@ -110,15 +115,19 @@ class TestHettichKa5332CabinetDrawerGenerator(unittest.TestCase):
         self.assertEqual(len(built.child_assemblies), 1)
         self.assertEqual(len(built.child_assemblies[0].assembly.parts), 5)
         self.assertEqual(len(built.purchased_hardware), 1)
+        cabinet_side = next(part for part in built.parts if part.spec.part_id == "left_side")
+        drawer_side = built.child_assemblies[0].assembly.parts[0]
+        self.assertFalse(cabinet_side.solid.val().isInside(Vector(128.0, 388.0, 17.0)))
+        self.assertFalse(drawer_side.solid.val().isInside(Vector(372.0, 23.0, 14.0)))
         saved_plan = HettichKa5332SavedPlanLoader().load(
             self.project_root,
             "tall_storage_01",
             built,
         )
-        self.assertEqual(saved_plan.drawer_origin_mm, (30.7, 18.0, 456.0))
+        self.assertEqual(saved_plan.drawer_origin_mm, (30.7, 18.0, 465.0))
         self.assertEqual(
             saved_plan.left_runner_translation_mm,
-            (25.95, 55.0, 479.0),
+            (25.95, 55.0, 488.0),
         )
 
     def _remove_generated_modules(self) -> None:

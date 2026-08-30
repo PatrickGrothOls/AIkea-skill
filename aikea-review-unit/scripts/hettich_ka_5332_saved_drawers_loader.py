@@ -68,12 +68,19 @@ class HettichKa5332SavedDrawersLoader:
             )
         runner = record["runner"]
         fit = runner["fit_evidence"]
+        system_32 = runner["system_32"]
         placements = runner["side_placements"]
         mounting = HettichKa5332MountingPlan(
             drawer_origin_mm=saved_origin_mm,
             drawer_outside_width_mm=child.assembly.spec.box.outside_width_mm,
             left_runner_translation_mm=self._vector(placements["left"]),
             right_runner_translation_mm=self._vector(placements["right"]),
+            system_32_row_height_mm=float(
+                system_32["front_node_row_height_mm"]
+            ),
+            resolved_drawer_bottom_height_mm=float(
+                record["bottom_height_mm"]
+            ),
             recommended_width_met=fit["recommended_width_met"],
             minimum_depth_met=fit["minimum_depth_met"],
         )

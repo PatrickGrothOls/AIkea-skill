@@ -17,7 +17,8 @@ class HettichKa5332DrawerLayoutRecord:
         x_mm, y_mm, z_mm = plan.origin_in_parent_mm
         return {
             "id": layout.drawer_id,
-            "bottom_height_mm": layout.bottom_height_mm,
+            "requested_bottom_height_mm": layout.bottom_height_mm,
+            "bottom_height_mm": mounting.resolved_drawer_bottom_height_mm,
             "box": {
                 "height_mm": layout.box_height_mm,
                 "requested_depth_mm": layout.box_depth_mm,
@@ -49,6 +50,17 @@ class HettichKa5332DrawerLayoutRecord:
                 "fit_evidence": {
                     "minimum_depth_met": mounting.minimum_depth_met,
                     "recommended_width_met": mounting.recommended_width_met,
+                },
+                "system_32": {
+                    "front_node_row_height_mm": (
+                        mounting.system_32_row_height_mm
+                    ),
+                    "cabinet_fixing_positions_from_front_mm": list(
+                        plan.runner.cabinet_fixing_positions_from_front_mm
+                    ),
+                    "drawer_fixing_positions_from_front_mm": list(
+                        plan.runner.drawer_fixing_positions_from_front_mm
+                    ),
                 },
                 "side_placements": {
                     "left": self._translation(

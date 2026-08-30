@@ -11,6 +11,7 @@ from hettich_ka_5332_cabinet_drawer_plan import (
     HettichKa5332CabinetDrawerPlanner,
 )
 from hettich_ka_5332_step_assembly import HettichKa5332StepAssembly
+from panel_hardware_reservation import PanelHardwareReservation
 
 
 class HettichKa5332CabinetDrawersPlanError(ValueError):
@@ -23,6 +24,7 @@ class HettichKa5332CabinetDrawersPlan:
 
     parent_assembly_id: str
     drawers: tuple[HettichKa5332CabinetDrawerPlan, ...]
+    hardware_reservations: tuple[PanelHardwareReservation, ...]
 
 
 class HettichKa5332CabinetDrawersPlanner:
@@ -39,6 +41,7 @@ class HettichKa5332CabinetDrawersPlanner:
         cabinet: Any,
         layouts: tuple[DrawerLayout, ...],
         hardware_step: HettichKa5332StepAssembly,
+        blocked_reservations: tuple[PanelHardwareReservation, ...] = (),
     ) -> HettichKa5332CabinetDrawersPlan:
         if not layouts:
             raise HettichKa5332CabinetDrawersPlanError(
@@ -49,12 +52,24 @@ class HettichKa5332CabinetDrawersPlanner:
             raise HettichKa5332CabinetDrawersPlanError(
                 "drawer IDs must be unique inside one cabinet"
             )
-        drawers = tuple(
-            self.drawer_planner.plan(cabinet, layout, hardware_step)
-            for layout in layouts
+        drawers: list[HettichKa5332CabinetDrawerPlan] = []
+        reservations = list(blocked_reservations)
+        for layout in layouts:
+            drawer = self.drawer_planner.plan(
+                cabinet,
+                layout,
+                hardware_step,
+                tuple(reservations),
+            )
+            drawers.append(drawer)
+            reservations.extend(drawer.hardware_reservations)
+        resolved_drawers = tuple(drawers)
+        self._require_separate_vertical_spans(resolved_drawers)
+        return HettichKa5332CabinetDrawersPlan(
+            cabinet.assembly_id,
+            resolved_drawers,
+            tuple(reservations),
         )
-        self._require_separate_vertical_spans(drawers)
-        return HettichKa5332CabinetDrawersPlan(cabinet.assembly_id, drawers)
 
     def _require_separate_vertical_spans(
         self,

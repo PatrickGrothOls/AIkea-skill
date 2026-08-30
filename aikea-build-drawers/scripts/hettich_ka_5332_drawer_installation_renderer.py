@@ -43,6 +43,8 @@ class HettichKa5332DrawerInstallationRenderer:
             "    None,\n"
             ")\n"
             "PURCHASED_HARDWARE = (RUNNER_PAIR,)\n\n"
+            "RUNNER_SYSTEM_32_ROWS_MM = "
+            f"({mounting.system_32_row_height_mm!r},)\n\n"
             "RUNNER_SIDE_PLACEMENTS = {\n"
             "    'left': "
             + self._placement_source(mounting.left_runner_translation_mm, "    ")

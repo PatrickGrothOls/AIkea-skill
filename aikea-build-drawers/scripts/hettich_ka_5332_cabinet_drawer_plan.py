@@ -24,7 +24,14 @@ from hettich_ka_5332_runner_catalog import (
 from hettich_ka_5332_runner_profile import (
     HettichKa5332RunnerProfile,
 )
+from hettich_ka_5332_hardware_reservations import (
+    HettichKa5332HardwareReservations,
+)
+from hettich_ka_5332_system_32_row_resolver import (
+    HettichKa5332System32RowResolver,
+)
 from hettich_ka_5332_step_assembly import HettichKa5332StepAssembly
+from panel_hardware_reservation import PanelHardwareReservation
 
 SOURCE_CAD_MOUNTING_PLAN_SAVED = "source_cad_mounting_plan_saved"
 
@@ -40,6 +47,7 @@ class HettichKa5332CabinetDrawerPlan:
     origin_in_parent_mm: tuple[float, float, float]
     hardware_mounting: HettichKa5332MountingPlan
     hardware_step: HettichKa5332StepAssembly
+    hardware_reservations: tuple[PanelHardwareReservation, ...]
 
 
 class HettichKa5332CabinetDrawerPlanner:
@@ -55,6 +63,8 @@ class HettichKa5332CabinetDrawerPlanner:
         self.box_profile = HettichKa5332DrawerBoxProfileAdapter()
         self.box_planner = DrawerBoxPlanner()
         self.mounting_planner = HettichKa5332MountingPlanner()
+        self.row_resolver = HettichKa5332System32RowResolver()
+        self.hardware_reservations = HettichKa5332HardwareReservations()
         self.fit_checker = CabinetDrawerFitChecker()
 
     def plan(
@@ -62,6 +72,7 @@ class HettichKa5332CabinetDrawerPlanner:
         cabinet: Any,
         layout: DrawerLayout,
         hardware_step: HettichKa5332StepAssembly,
+        blocked_reservations: tuple[PanelHardwareReservation, ...] = (),
     ) -> HettichKa5332CabinetDrawerPlan:
         opening = CabinetDrawerOpening.from_assembly_spec(cabinet)
         runner = self.runner_catalog.select(
@@ -77,14 +88,24 @@ class HettichKa5332CabinetDrawerPlanner:
             box_height_mm=layout.box_height_mm,
         )
         box = self.box_planner.plan(opening, sizing)
+        system_32_row_mm = self.row_resolver.resolve(
+            cabinet,
+            layout.drawer_id,
+            layout.bottom_height_mm,
+            runner,
+            blocked_reservations,
+        )
         drawer_front_mm = float(cabinet.part("left_side").local_size_mm[2])
-        drawer_bottom_mm = float(cabinet.base_height_mm) + layout.bottom_height_mm
+        drawer_bottom_mm = float(cabinet.base_height_mm) + (
+            system_32_row_mm - runner.runner_center_from_drawer_bottom_mm
+        )
         mounting = self.mounting_planner.plan(
             cabinet,
             hardware_step,
             runner,
             drawer_front_mm=drawer_front_mm,
             drawer_bottom_mm=drawer_bottom_mm,
+            system_32_row_height_mm=system_32_row_mm,
         )
         if abs(box.outside_width_mm - mounting.drawer_outside_width_mm) > 1e-6:
             raise ValueError("drawer box and runner placement resolve different widths")
@@ -102,6 +123,11 @@ class HettichKa5332CabinetDrawerPlanner:
             hardware_geometry_state=SOURCE_CAD_MOUNTING_PLAN_SAVED,
             box=box,
         )
+        reservations = self.hardware_reservations.build(
+            layout.drawer_id,
+            system_32_row_mm,
+            runner,
+        )
         return HettichKa5332CabinetDrawerPlan(
             parent_assembly_id=cabinet.assembly_id,
             layout=layout,
@@ -110,6 +136,7 @@ class HettichKa5332CabinetDrawerPlanner:
             origin_in_parent_mm=mounting.drawer_origin_mm,
             hardware_mounting=mounting,
             hardware_step=hardware_step,
+            hardware_reservations=reservations,
         )
 
 

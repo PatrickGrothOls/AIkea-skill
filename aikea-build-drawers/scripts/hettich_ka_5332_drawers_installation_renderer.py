@@ -20,6 +20,10 @@ class HettichKa5332DrawersInstallationRenderer:
         placements = ",\n".join(
             self._runner_placements_source(drawer) for drawer in plan.drawers
         )
+        rows = ", ".join(
+            repr(drawer.hardware_mounting.system_32_row_height_mm)
+            for drawer in plan.drawers
+        )
         return (
             f'"""Scope: Place drawers and runner hardware owned by {plan.parent_assembly_id}."""\n\n'
             "from assemblies.specification import (\n"
@@ -31,6 +35,7 @@ class HettichKa5332DrawersInstallationRenderer:
             ")\n\n"
             f"CHILD_ASSEMBLIES = (\n{children},\n)\n\n"
             f"PURCHASED_HARDWARE = (\n{hardware},\n)\n\n"
+            f"RUNNER_SYSTEM_32_ROWS_MM = ({rows},)\n\n"
             f"RUNNER_SIDE_PLACEMENTS = {{\n{placements},\n}}\n"
         )
 

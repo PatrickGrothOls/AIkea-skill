@@ -20,6 +20,7 @@ from hettich_ka_5332_drawers_file_set_renderer import (
     HettichKa5332DrawersFileSetRenderer,
 )
 from hettich_ka_5332_step_assembly import HettichKa5332StepAssemblyLoader
+from panel_hardware_reservation import PanelHardwareReservationStore
 
 
 @dataclass(frozen=True, slots=True)
@@ -40,6 +41,7 @@ class HettichKa5332CabinetDrawersGenerator:
         self.planner = HettichKa5332CabinetDrawersPlanner()
         self.renderer = HettichKa5332DrawersFileSetRenderer()
         self.writer = AssemblyTaxonomyWriter()
+        self.reservation_store = PanelHardwareReservationStore()
 
     def add(
         self,
@@ -68,7 +70,20 @@ class HettichKa5332CabinetDrawersGenerator:
     ) -> HettichKa5332DrawersGenerationResult:
         cabinet = self.spec_loader.load(project_root, parent_assembly_id)
         hardware_step = self.step_loader.load(hardware_directory)
-        plan = self.planner.plan(cabinet, layouts, hardware_step)
+        existing = tuple(
+            item
+            for item in self.reservation_store.load(
+                project_root,
+                parent_assembly_id,
+            )
+            if item.hardware_kind != "drawer_runner"
+        )
+        plan = self.planner.plan(
+            cabinet,
+            layouts,
+            hardware_step,
+            existing,
+        )
         files = self.renderer.render(plan)
         recorded = DrawerGeneratedFileRecord.load(project_root, parent_assembly_id)
         written = self.writer.write(project_root, files, recorded=recorded)
@@ -76,7 +91,15 @@ class HettichKa5332CabinetDrawersGenerator:
             parent_assembly_id,
             files,
         ).save(project_root)
-        return HettichKa5332DrawersGenerationResult(plan, written)
+        reservation_path = self.reservation_store.write(
+            project_root,
+            parent_assembly_id,
+            plan.hardware_reservations,
+        )
+        return HettichKa5332DrawersGenerationResult(
+            plan,
+            written + (reservation_path.relative_to(project_root),),
+        )
 
     def _upsert(
         self,
