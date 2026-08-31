@@ -4,7 +4,6 @@ from __future__ import annotations
 
 from typing import Any
 
-from drawer_part_locator import DrawerPartLocator
 from drawer_review_motion import DrawerReviewMotion
 from drawer_review_state import DrawerReviewState
 from local_to_parent_location import LocalToParentLocation
@@ -15,8 +14,8 @@ class DrawerReviewGeometry:
     """Apply review motion only to a drawer child and its owned box parts."""
 
     _DRAWER_COLOR = (0.84, 0.75, 0.62, 1.0)
+
     def __init__(self) -> None:
-        self.part_locator = DrawerPartLocator()
         self.frame_location = LocalToParentLocation()
         self.review_motion = DrawerReviewMotion()
 
@@ -46,7 +45,7 @@ class DrawerReviewGeometry:
                 part.solid,
                 child_location
                 * pose
-                * self.part_locator.placement(part.spec.part_id, box).location(),
+                * self.frame_location.build(part.spec.local_to_parent),
                 self._DRAWER_COLOR,
             )
             for part in child.assembly.parts

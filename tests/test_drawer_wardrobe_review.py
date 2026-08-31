@@ -155,7 +155,7 @@ class TestDrawerWardrobeReview(unittest.TestCase):
                 "left": 6.0,
                 "right": 6.0,
                 "front": 18.0,
-                "rear": 56.0,
+                "rear": 26.0,
                 "below": 356.0,
                 "above": 98.5,
             },
