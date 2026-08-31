@@ -49,6 +49,9 @@ that contract active through every routed AIkea stage.
 - Preserve from that same answer which left, right, and top room boundaries are
   physically present. Later movement checks depend on those individual edges
   even when only one side is fitted and the overall width remains open.
+- Never use those room boundaries, a slope, or a unit's position to choose a
+  single door's hinge side. Every single door begins left-hinged; only an
+  explicit client choice made after the first visual review may change it.
 - Then ask one separate depth question: "Does the wardrobe front need to finish
   flush with a wall or another fixed line?" This is not a question about enclosing
   the front.
@@ -152,8 +155,9 @@ that door completed before its first visual approval. Load `$aikea-build-doors`
 without waiting for the client to request its standard hinge construction. Let
 that subskill resolve the visible door relationship, select an exact purchased
 hinge-and-plate profile, derive both panels' machining from shared placements,
-and show one complete closed/open door together with the run-wide opening proposal
-before the client approves repetition.
+and show one complete closed/open door together with the run-wide opening
+proposal before the client approves repetition. Do not preselect or describe a
+right-hand exception before that review; the standard proposal is left-hinged.
 
 When a construction stage requires exact CAD for purchased hardware that is not
 already in the active project's local library, load

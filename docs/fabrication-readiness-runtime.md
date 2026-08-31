@@ -48,6 +48,11 @@ path, 22 viewer tests, and production viewer build pass. A completely isolated
 Python install could not be retained on this machine because the volume has
 less than 1 GiB free; the declarations were validated against the matching
 existing CadQuery runtime through a repository-local virtual environment.
+The first blind fresh-project run was stopped after the entry router inferred a
+right-hinged first door from the left room boundary. The specialized door skill
+already prohibited that inference; the same approved invariant is now explicit
+at the entry point and protected by a focused regression check. A second blind
+run remains the behavioral proof.
 
 ## Audit log
 
@@ -71,6 +76,10 @@ existing CadQuery runtime through a repository-local virtual environment.
   feature and position evidence, and approval bound to the exact GLB checksum.
 - 2026-08-31: Generalized the prebuilt viewer decision panel so the client can
   approve either door-opening proposals or the exact closed fabrication model.
+- 2026-08-31: The first blind combined-feature run exposed an instruction-order
+  leak: the entry router described a right-hinged first door before loading the
+  door builder. Repeated the already approved left-hand invariant at the router
+  boundary and added a focused regression check; no construction policy changed.
 
 1. 2026-08-31 - Kept runtime locks and viewer source tooling repository-only;
    the downloadable skill will receive prebuilt static viewer assets.
