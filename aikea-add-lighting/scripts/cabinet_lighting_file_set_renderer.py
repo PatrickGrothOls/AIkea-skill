@@ -23,7 +23,11 @@ class CabinetLightingFileSetRenderer:
             host / "lighting.yaml": yaml.safe_dump(plan.as_record(), sort_keys=False),
             host / "lighting.py": self._plan_module(plan),
             host / "lighting_builder.py": self._part_builder_module(plan),
-            assembly / "with_lighting_builder.py": self._assembly_builder_module(
+            assembly / "lighting/__init__.py": (
+                f'"""Scope: Contain lighting features owned by {plan.assembly_id}."""\n'
+            ),
+            assembly / "lighting/feature.py": self._assembly_feature_module(plan),
+            assembly / "with_lighting_builder.py": self._wrapper_module(
                 plan,
                 base_builder_module,
             ),
@@ -49,25 +53,19 @@ class CabinetLightingFileSetRenderer:
             "BUILDER = HostPartLightingBuilder()\n"
         )
 
-    def _assembly_builder_module(
-        self,
-        plan: PartLightingPlan,
-        base_builder_module: str,
-    ) -> str:
+    def _assembly_feature_module(self, plan: PartLightingPlan) -> str:
         return (
-            f'"""Scope: Build {plan.assembly_id} with its declared recessed light."""\n\n'
+            f'"""Scope: Apply the declared recessed light to {plan.assembly_id}."""\n\n'
             "from dataclasses import replace\n"
             "from assemblies.specification import (\n"
             "    BuiltAssembly, BuiltPurchasedHardware, PurchasedHardwareSpec,\n"
             ")\n"
             "from cabinet_lighting_placement import CabinetLightingPlacementBuilder\n\n"
-            f"from .{base_builder_module} import BUILDER as CABINET_BUILDER\n"
-            f"from .parts.{plan.part_id}.lighting import PLAN\n"
-            f"from .parts.{plan.part_id}.lighting_builder import BUILDER as LIGHTING_BUILDER\n\n\n"
-            "class CabinetWithLightingBuilder:\n"
+            f"from ..parts.{plan.part_id}.lighting import PLAN\n"
+            f"from ..parts.{plan.part_id}.lighting_builder import BUILDER as LIGHTING_BUILDER\n\n\n"
+            "class CabinetLightingFeature:\n"
             "    \"\"\"Compose the machined host part and one purchased luminaire.\"\"\"\n\n"
-            "    def build(self) -> BuiltAssembly:\n"
-            "        cabinet = CABINET_BUILDER.build()\n"
+            "    def apply(self, cabinet) -> BuiltAssembly:\n"
             "        host = next(part for part in cabinet.parts if part.spec.part_id == PLAN.part_id)\n"
             "        lighting = LIGHTING_BUILDER.build(host)\n"
             "        placement = CabinetLightingPlacementBuilder().build(\n"
@@ -94,7 +92,20 @@ class CabinetLightingFileSetRenderer:
             "            child_assemblies=cabinet.child_assemblies,\n"
             "            purchased_hardware=cabinet.purchased_hardware + (hardware,),\n"
             "        )\n\n\n"
-            "BUILDER = CabinetWithLightingBuilder()\n"
+            "FEATURE = CabinetLightingFeature()\n"
+        )
+
+    def _wrapper_module(
+        self,
+        plan: PartLightingPlan,
+        base_builder_module: str,
+    ) -> str:
+        return (
+            f'"""Scope: Build {plan.assembly_id} with its recessed light."""\n\n'
+            "from assemblies.assembly_feature import FeatureComposedAssemblyBuilder\n\n"
+            f"from .{base_builder_module} import BUILDER as BASE_BUILDER\n"
+            "from .lighting.feature import FEATURE\n\n\n"
+            "BUILDER = FeatureComposedAssemblyBuilder(BASE_BUILDER, (FEATURE,))\n"
         )
 
 

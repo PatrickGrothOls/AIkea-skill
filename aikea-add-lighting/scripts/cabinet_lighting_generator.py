@@ -8,6 +8,7 @@ import re
 
 from assembly_taxonomy_writer import AssemblyTaxonomyWriter
 from cabinet_assembly_spec_loader import CabinetAssemblySpecLoader
+from cabinet_feature_manifest import CabinetFeatureManifest
 from cabinet_lighting_file_set_renderer import CabinetLightingFileSetRenderer
 from lighting_generated_file_record import LightingGeneratedFileRecord
 from lighting_run import LightingRun
@@ -31,6 +32,7 @@ class CabinetLightingGenerator:
         self.spec_loader = CabinetAssemblySpecLoader()
         self.renderer = CabinetLightingFileSetRenderer()
         self.writer = AssemblyTaxonomyWriter()
+        self.features = CabinetFeatureManifest()
 
     def generate(
         self,
@@ -52,7 +54,17 @@ class CabinetLightingGenerator:
         recorded = LightingGeneratedFileRecord.load(project_root, assembly_id)
         written = self.writer.write(project_root, files, recorded=recorded)
         LightingGeneratedFileRecord.from_rendered(assembly_id, files).save(project_root)
-        return CabinetLightingGenerationResult(plan, written)
+        manifest = self.features.register(
+            project_root,
+            assembly_id,
+            "lighting.feature",
+            30,
+        )
+        return CabinetLightingGenerationResult(
+            plan,
+            written
+            + ((manifest.relative_to(project_root),) if manifest else ()),
+        )
 
 
 __all__ = ["CabinetLightingGenerationResult", "CabinetLightingGenerator"]
