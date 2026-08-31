@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# macOS
+.DS_Store
+
+# Generated CAD and review outputs
+*.step
+!aikea-build-units/assets/cabineo/*.step
+*.stp
+*.glb
+*.gltf
+*.bgcode
+
+# Local viewer dependencies and intermediate builds
+aikea-review-unit/assets/viewer-source/node_modules/
+aikea-review-unit/assets/viewer-source/dist/
