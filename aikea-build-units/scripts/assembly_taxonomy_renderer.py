@@ -13,6 +13,7 @@ from assembly_taxonomy import (
     ProjectAssemblyTaxonomy,
 )
 from complete_assembly_builder_renderer import CompleteAssemblyBuilderRenderer
+from wardrobe_assembly_renderer import WardrobeAssemblyRenderer
 
 
 class AssemblyTaxonomyRenderer:
@@ -31,6 +32,7 @@ class AssemblyTaxonomyRenderer:
         self.modules = AssemblyModuleRenderer()
         self.complete_builder = CompleteAssemblyBuilderRenderer()
         self.specs = AssemblySpecRenderer()
+        self.wardrobe = WardrobeAssemblyRenderer()
 
     def render(self, taxonomy: ProjectAssemblyTaxonomy) -> dict[Path, str]:
         files = {
@@ -41,6 +43,8 @@ class AssemblyTaxonomyRenderer:
         files.update(self._project_contract_files())
         for assembly in taxonomy.assemblies:
             files.update(self._assembly_files(assembly))
+        if taxonomy.wardrobe:
+            files.update(self.wardrobe.render(taxonomy.wardrobe))
         return files
 
     def render_metadata_scaffold(
@@ -89,7 +93,7 @@ class AssemblyTaxonomyRenderer:
             else assembly
             for assembly in taxonomy.assemblies
         )
-        return self.render(ProjectAssemblyTaxonomy(assemblies))
+        return self.render(ProjectAssemblyTaxonomy(assemblies, taxonomy.wardrobe))
 
     def _assembly_files(
         self, assembly: LocalAssemblyTaxonomy | BaseAssemblyTaxonomy

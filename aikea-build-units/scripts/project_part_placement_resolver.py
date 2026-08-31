@@ -24,7 +24,7 @@ class ProjectPartPlacementResolver:
             else self.storage.resolve(assembly)
             for assembly in project.assemblies
         )
-        return ProjectAssemblyTaxonomy(assemblies)
+        return ProjectAssemblyTaxonomy(assemblies, project.wardrobe)
 
 
 __all__ = ["ProjectPartPlacementResolver"]

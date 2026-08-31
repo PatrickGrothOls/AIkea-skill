@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+from wardrobe_assembly_taxonomy import WardrobeAssemblyTaxonomy
+
 
 class AssemblyTaxonomyInputError(ValueError):
     """Report project values that cannot produce a local taxonomy."""
@@ -133,3 +135,4 @@ class BaseAssemblyTaxonomy:
 @dataclass(frozen=True)
 class ProjectAssemblyTaxonomy:
     assemblies: tuple[LocalAssemblyTaxonomy | BaseAssemblyTaxonomy, ...]
+    wardrobe: WardrobeAssemblyTaxonomy | None = None

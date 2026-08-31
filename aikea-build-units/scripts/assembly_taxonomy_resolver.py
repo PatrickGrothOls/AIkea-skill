@@ -20,6 +20,7 @@ from overall_wardrobe_inputs import OverallWardrobeInputs, OverallWardrobeInputR
 from overall_wardrobe_results import CabinetOverallSize
 from project_part_placement_resolver import ProjectPartPlacementResolver
 from top_boundary import TopBoundaryKind
+from wardrobe_taxonomy_resolver import WardrobeTaxonomyResolver
 
 
 class AssemblyTaxonomyResolver:
@@ -31,6 +32,7 @@ class AssemblyTaxonomyResolver:
         self.overall_project = AssemblyRunOverallProjectAdapter()
         self.door_bottom_height = DoorBottomHeightResolver()
         self.part_placements = ProjectPartPlacementResolver()
+        self.wardrobe = WardrobeTaxonomyResolver()
 
     def resolve(self, project: dict[str, Any]) -> ProjectAssemblyTaxonomy:
         run = AssemblyRunReader().read(project)
@@ -51,7 +53,10 @@ class AssemblyTaxonomyResolver:
             inputs.settings.plinth_front.value,
             inputs.settings.plinth_recess_mm,
         )
-        return self.part_placements.resolve(ProjectAssemblyTaxonomy((*cabinets, base)))
+        placed = self.part_placements.resolve(
+            ProjectAssemblyTaxonomy((*cabinets, base))
+        )
+        return self.wardrobe.resolve(placed)
 
     def _resolve_assembly(
         self,

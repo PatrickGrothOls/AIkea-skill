@@ -42,6 +42,17 @@ class PartSpec:
 
 
 @dataclass(frozen=True)
+class CompositeAssemblySpec:
+    """Declare a physical parent whose contents are nested assemblies."""
+
+    assembly_id: str
+    purpose: str
+    child_assemblies: tuple[ChildAssemblySpec, ...]
+    parts: tuple[PartSpec, ...] = ()
+    purchased_hardware: tuple[PurchasedHardwareSpec, ...] = ()
+
+
+@dataclass(frozen=True)
 class JointSpec:
     joint_id: str
     participant_ids: tuple[str, ...]
