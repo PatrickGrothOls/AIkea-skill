@@ -38,16 +38,15 @@ class TestAssemblyTreeWalker(AssemblyCompositionTestCase):
             values.Point3D(0.0, 2.0, 0.0),
             values.IDENTITY_AXIS_BASIS,
         )
-        part = values.BuiltPart(
-            values.PartSpec("drawer_side", "drawer_side", ()),
-            object(),
-            part_frame,
+        part_spec = values.PartSpec(
+            "drawer_side", "drawer_side", (), part_frame
         )
+        part = values.BuiltPart(part_spec, object())
         hardware_spec = values.PurchasedHardwareSpec(
             "runner_left", "Hettich", "9057405", "ka-5332-left", hardware_frame
         )
         drawer_spec = self.fixture_assembly_spec(
-            "drawer_01", "drawer", (), (hardware_spec,)
+            "drawer_01", "drawer", (), (hardware_spec,), (part_spec,)
         )
         drawer = values.BuiltAssembly(
             drawer_spec,
@@ -99,18 +98,6 @@ class TestAssemblyTreeWalker(AssemblyCompositionTestCase):
         assert visits[4].local_to_root.origin_in_parent == values.Point3D(
             108.0, 0.0, 0.0
         )
-
-    def test_rejects_an_unplaced_built_part(self, generated_values) -> None:
-        values, _ = generated_values
-        tree = importlib.import_module("assemblies.assembly_tree")
-        spec = self.fixture_assembly_spec("cabinet_01", "cabinet", (), ())
-        part = values.BuiltPart(
-            values.PartSpec("left_side", "left_side", ()), object()
-        )
-        assembly = values.BuiltAssembly(spec, (part,), ())
-
-        with pytest.raises(tree.AssemblyTreeError, match="left_side"):
-            tree.AssemblyTreeWalker().walk(assembly)
 
     def test_requires_placement_only_for_hardware_with_geometry(
         self, generated_values

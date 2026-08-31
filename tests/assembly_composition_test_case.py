@@ -48,6 +48,7 @@ class AssemblyCompositionTestCase:
         purpose: str,
         child_assemblies: tuple,
         purchased_hardware: tuple,
+        parts: tuple = (),
     ):
         @dataclass(frozen=True)
         class FixtureAssemblySpec:
@@ -55,10 +56,12 @@ class AssemblyCompositionTestCase:
             purpose: str
             child_assemblies: tuple
             purchased_hardware: tuple
+            parts: tuple = ()
 
         return FixtureAssemblySpec(
             assembly_id,
             purpose,
             child_assemblies,
             purchased_hardware,
+            parts,
         )

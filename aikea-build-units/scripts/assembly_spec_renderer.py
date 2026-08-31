@@ -8,12 +8,15 @@ from assembly_taxonomy import (
     CabineoJointTaxonomy,
     JointTaxonomy,
     LocalAssemblyTaxonomy,
-    PartTaxonomy,
 )
+from part_spec_source_renderer import PartSpecSourceRenderer
 
 
 class AssemblySpecRenderer:
     """Keep every generated local value in one authoritative specification."""
+
+    def __init__(self) -> None:
+        self.parts = PartSpecSourceRenderer()
 
     def render(self, assembly: LocalAssemblyTaxonomy | BaseAssemblyTaxonomy) -> str:
         if isinstance(assembly, BaseAssemblyTaxonomy):
@@ -21,7 +24,9 @@ class AssemblySpecRenderer:
         return self._storage(assembly)
 
     def _storage(self, assembly: LocalAssemblyTaxonomy) -> str:
-        parts = "\n".join(self._part(part) for part in assembly.parts)
+        parts = "\n".join(
+            self.parts.render(part) for part in assembly.parts
+        )
         joints = "\n".join(self._joint(joint) for joint in assembly.joints)
         top = self._points(assembly.top)
         return (
@@ -31,7 +36,11 @@ class AssemblySpecRenderer:
             "    BoundaryPoint,\n"
             "    CabineoJointSpec,\n"
             "    JointSpec,\n"
+            "    LocalToParentPlacement,\n"
             "    PartSpec,\n"
+            "    Point3D,\n"
+            "    AxisBasis,\n"
+            "    AxisDirection,\n"
             ")\n\n\n"
             "SPEC = AssemblySpec(\n"
             f"    assembly_id={assembly.assembly_id!r},\n"
@@ -56,7 +65,9 @@ class AssemblySpecRenderer:
         )
 
     def _base(self, assembly: BaseAssemblyTaxonomy) -> str:
-        parts = "\n".join(self._part(part) for part in assembly.parts)
+        parts = "\n".join(
+            self.parts.render(part) for part in assembly.parts
+        )
         joints = "\n".join(self._joint(joint) for joint in assembly.joints)
         modules = "\n".join(
             "        BaseModuleSpec("
@@ -70,7 +81,11 @@ class AssemblySpecRenderer:
             "    BaseModuleSpec,\n"
             "    CabineoJointSpec,\n"
             "    JointSpec,\n"
+            "    LocalToParentPlacement,\n"
             "    PartSpec,\n"
+            "    Point3D,\n"
+            "    AxisBasis,\n"
+            "    AxisDirection,\n"
             ")\n\n\n"
             "SPEC = BaseAssemblySpec(\n"
             f"    assembly_id={assembly.assembly_id!r},\n"
@@ -92,18 +107,6 @@ class AssemblySpecRenderer:
             f"{joints}\n"
             "    ),\n"
             ")\n"
-        )
-
-    def _part(self, part: PartTaxonomy) -> str:
-        return (
-            "        PartSpec(\n"
-            f"            part_id={part.part_id!r},\n"
-            f"            role={part.role!r},\n"
-            f"            dimensions_mm={part.dimensions_mm!r},\n"
-            f"            outline_mm={self._points(part.outline_mm)},\n"
-            f"            local_size_mm={part.local_size_mm!r},\n"
-            f"            inside_face={part.inside_face!r},\n"
-            "        ),"
         )
 
     def _joint(self, joint: JointTaxonomy | CabineoJointTaxonomy) -> str:

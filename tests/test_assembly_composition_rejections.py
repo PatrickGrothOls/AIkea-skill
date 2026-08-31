@@ -10,6 +10,21 @@ from assembly_composition_test_case import AssemblyCompositionTestCase
 class TestAssemblyCompositionRejections(AssemblyCompositionTestCase):
     """Keep built composition synchronized with its owning specification."""
 
+    def test_built_parts_must_match_declared_specs(self, generated_values) -> None:
+        values, _ = generated_values
+        placement = values.IDENTITY_LOCAL_TO_PARENT
+        declared = values.PartSpec("left_side", "side_panel", (), placement)
+        different = values.PartSpec("right_side", "side_panel", (), placement)
+        spec = self.fixture_assembly_spec(
+            "cabinet_01", "storage", (), (), (declared,)
+        )
+
+        with pytest.raises(
+            values.AssemblyCompositionError,
+            match="built parts",
+        ):
+            values.BuiltAssembly(spec, (values.BuiltPart(different, object()),), ())
+
     def test_built_child_rejects_a_different_declared_placement(
         self, generated_values
     ) -> None:

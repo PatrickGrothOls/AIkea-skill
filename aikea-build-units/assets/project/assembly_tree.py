@@ -72,14 +72,10 @@ class AssemblyTreeWalker:
     ) -> Iterator[AssemblyTreeItem]:
         yield AssemblyTreeAssembly(path, assembly, local_to_root)
         for part in assembly.parts:
-            if part.local_to_parent is None:
-                raise AssemblyTreeError(
-                    f"built part has no local placement: {'/'.join(path)}/{part.spec.part_id}"
-                )
             yield AssemblyTreePart(
                 path + (f"part:{part.spec.part_id}",),
                 part,
-                local_to_root.compose_child(part.local_to_parent),
+                local_to_root.compose_child(part.spec.local_to_parent),
             )
         for hardware in assembly.purchased_hardware:
             placement = hardware.spec.local_to_parent

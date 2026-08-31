@@ -3,12 +3,12 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any
-
 from .assembly_composition import (
     AssemblyCompositionError,
     AssemblySpecification,
+    BuiltAssembly,
     BuiltChildAssembly,
+    BuiltPart,
     BuiltPurchasedHardware,
     ChildAssemblySpec,
     PurchasedHardwareSpec,
@@ -35,6 +35,7 @@ class PartSpec:
     part_id: str
     role: str
     dimensions_mm: tuple[tuple[str, float], ...]
+    local_to_parent: LocalToParentPlacement
     outline_mm: tuple[BoundaryPoint, ...] = ()
     local_size_mm: tuple[float, float, float] = ()
     inside_face: str = ""
@@ -117,32 +118,3 @@ class BaseAssemblySpec:
 
     def part(self, part_id: str) -> PartSpec:
         return next(part for part in self.parts if part.part_id == part_id)
-
-
-@dataclass(frozen=True)
-class BuiltPart:
-    spec: PartSpec
-    solid: Any
-    local_to_parent: LocalToParentPlacement | None = None
-
-
-@dataclass(frozen=True)
-class BuiltAssembly:
-    spec: AssemblySpecification
-    parts: tuple[BuiltPart, ...]
-    joints: tuple[JointSpec | CabineoJointSpec, ...]
-    cuts: tuple[Any, ...] = ()
-    child_assemblies: tuple[BuiltChildAssembly, ...] = ()
-    purchased_hardware: tuple[BuiltPurchasedHardware, ...] = ()
-
-    def __post_init__(self) -> None:
-        built_child_specs = tuple(child.spec for child in self.child_assemblies)
-        if built_child_specs != self.spec.child_assemblies:
-            raise AssemblyCompositionError(
-                "built child assemblies do not match their declared placements"
-            )
-        built_hardware_specs = tuple(item.spec for item in self.purchased_hardware)
-        if built_hardware_specs != self.spec.purchased_hardware:
-            raise AssemblyCompositionError(
-                "built purchased hardware does not match its declared placements"
-            )

@@ -32,7 +32,7 @@ class TestAssemblyTaxonomyUpgrade:
             tmp_path / "assemblies/specification.py"
         ).read_text(encoding="utf-8")
         assert "SheetPartBuilder().build(SPEC, cuts)" in part_builder
-        assert "class BuiltPart" in specification
+        assert "BuiltPart," in specification
         assert "class PartBuildPlan" not in specification
 
     def test_untouched_pre_shelf_taxonomy_receives_generated_shelf_parts(

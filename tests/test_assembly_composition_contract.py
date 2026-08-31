@@ -13,7 +13,8 @@ class TestAssemblyCompositionContract(AssemblyCompositionTestCase):
     def test_existing_specs_keep_empty_composition(self, generated_values) -> None:
         specification, project_root = generated_values
         spec_module = importlib.import_module("assemblies.tall_storage_01.spec")
-        built = specification.BuiltAssembly(spec_module.SPEC, (), spec_module.SPEC.joints)
+        empty_spec = self.fixture_assembly_spec("empty_01", "empty", (), ())
+        built = specification.BuiltAssembly(empty_spec, (), ())
 
         assert spec_module.SPEC.child_assemblies == ()
         assert spec_module.SPEC.purchased_hardware == ()

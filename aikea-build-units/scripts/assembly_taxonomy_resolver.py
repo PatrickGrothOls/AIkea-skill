@@ -18,6 +18,7 @@ from door_bottom_height_resolver import DoorBottomHeightResolver
 from overall_wardrobe_calculator import OverallWardrobeCalculator
 from overall_wardrobe_inputs import OverallWardrobeInputs, OverallWardrobeInputReader
 from overall_wardrobe_results import CabinetOverallSize
+from project_part_placement_resolver import ProjectPartPlacementResolver
 from top_boundary import TopBoundaryKind
 
 
@@ -29,6 +30,7 @@ class AssemblyTaxonomyResolver:
         self.base_taxonomy = BaseTaxonomyBuilder()
         self.overall_project = AssemblyRunOverallProjectAdapter()
         self.door_bottom_height = DoorBottomHeightResolver()
+        self.part_placements = ProjectPartPlacementResolver()
 
     def resolve(self, project: dict[str, Any]) -> ProjectAssemblyTaxonomy:
         run = AssemblyRunReader().read(project)
@@ -49,7 +51,7 @@ class AssemblyTaxonomyResolver:
             inputs.settings.plinth_front.value,
             inputs.settings.plinth_recess_mm,
         )
-        return ProjectAssemblyTaxonomy((*cabinets, base))
+        return self.part_placements.resolve(ProjectAssemblyTaxonomy((*cabinets, base)))
 
     def _resolve_assembly(
         self,

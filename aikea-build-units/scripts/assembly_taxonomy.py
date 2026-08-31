@@ -20,6 +20,37 @@ class BoundaryPoint:
 
 
 @dataclass(frozen=True)
+class PartPlacementTaxonomy:
+    """Describe one manufactured part's rigid frame inside its assembly."""
+
+    origin_in_parent_mm: tuple[float, float, float]
+    local_x_in_parent: tuple[float, float, float]
+    local_y_in_parent: tuple[float, float, float]
+    local_z_in_parent: tuple[float, float, float]
+
+    @classmethod
+    def from_plane(
+        cls,
+        origin_in_parent_mm: tuple[float, float, float],
+        local_x_in_parent: tuple[float, float, float],
+        local_z_in_parent: tuple[float, float, float],
+    ) -> "PartPlacementTaxonomy":
+        x_x, x_y, x_z = local_x_in_parent
+        z_x, z_y, z_z = local_z_in_parent
+        local_y_in_parent = (
+            (z_y * x_z) - (z_z * x_y),
+            (z_z * x_x) - (z_x * x_z),
+            (z_x * x_y) - (z_y * x_x),
+        )
+        return cls(
+            origin_in_parent_mm,
+            local_x_in_parent,
+            local_y_in_parent,
+            local_z_in_parent,
+        )
+
+
+@dataclass(frozen=True)
 class PartTaxonomy:
     part_id: str
     role: str
@@ -27,6 +58,7 @@ class PartTaxonomy:
     outline_mm: tuple[BoundaryPoint, ...] = ()
     local_size_mm: tuple[float, float, float] = ()
     inside_face: str = ""
+    local_to_parent: PartPlacementTaxonomy | None = None
 
 
 @dataclass(frozen=True)
