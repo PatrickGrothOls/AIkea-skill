@@ -2,8 +2,8 @@
 
 ## Scope
 
-Make the generated `BuiltAssembly` taxonomy the complete physical authority for
-one recursively composed assembly. Add explicit part placement and one generic
+Make the generated assembly taxonomy the complete physical authority for one
+recursively composed assembly. Add explicit part placement and one generic
 tree traversal without changing current cabinet geometry or feature behavior.
 Keep cabinet-feature migration and wardrobe-level composition in later stacked
 branches so this branch remains independently testable and reviewable.
@@ -19,10 +19,10 @@ branches so this branch remains independently testable and reviewable.
 
 ### WP2 - Complete physical node contract
 
-- [x] Add an explicit local-to-parent placement slot to every built part.
-- [ ] Make every generated assembly builder populate its part placements.
-- [ ] Require every geometric hardware instance to have an explicit placement.
-- [ ] Keep declared specifications and built values structurally aligned.
+- [x] Add an explicit local-to-parent placement to every generated part spec.
+- [x] Make generated cabinet and base builders retain those part placements.
+- [x] Require every geometric hardware instance to have an explicit placement.
+- [x] Keep declared specifications and built values structurally aligned.
 
 ### WP3 - Generic recursive traversal
 
@@ -35,7 +35,7 @@ branches so this branch remains independently testable and reviewable.
 
 - [x] Add arbitrary-depth nesting tests.
 - [x] Add transform-composition and stable-order tests.
-- [ ] Prove generated cabinet and base placements match their current locators.
+- [x] Prove generated cabinet and base frames match their legacy formulas.
 - [x] Run focused composition and taxonomy tests.
 - [ ] Run focused review tests after generated builders populate placements.
 
@@ -48,11 +48,15 @@ branches so this branch remains independently testable and reviewable.
 
 ## Current state
 
-The reusable tree contract and walker are implemented and covered by arbitrary
-nesting, transform-composition, stable-order, missing-placement, and hardware
-placement tests. Generated part builders still need to populate the new placement
-slot from the current cabinet, base, and drawer placement authorities before
-review consumers can switch to the generic traversal.
+The reusable tree contract and walker are implemented. Cabinet and structural-base
+part frames are now resolved into their generated specifications; builders are
+rejected if their built parts differ from those declarations. The former cabinet
+and base locators now only convert saved frames into CadQuery locations. Drawer
+parts and feature builders remain the next stacked branch.
+
+The dependency-free suite passes 204 tests with 53 expected skips when the one
+viewer-server API test is allowed to use a local socket. Fifteen focused CadQuery
+geometry tests are among the skips because CadQuery is not installed here.
 
 ## Audit log
 
@@ -68,3 +72,14 @@ review consumers can switch to the generic traversal.
 4. 2026-08-31 - Added frame composition and a generic tree walker without any
    rendering or furniture-specific knowledge. It exposes assembly, part, and
    hardware visits while preserving stable paths and root-relative placements.
+5. 2026-08-31 - Put part placement on `PartSpec`, not `BuiltPart`. Placement is a
+   declared property of the assembly taxonomy, while `BuiltPart` only materializes
+   the declared part as a solid. This prevents each consumer from rebuilding the
+   cabinet's spatial rules independently.
+6. 2026-08-31 - Replaced cabinet and base placement calculations in review locators
+   with one conversion of the saved spec frame. Pure tests preserve the exact
+   origins and axes used by the previous formulas.
+7. 2026-08-31 - The required 150-line review separated materialized `Built*`
+   values and their alignment invariants into `assembly_composition.py`; declarative
+   part, cabinet, and base schemas remain in `specification.py`. Existing imports
+   from `assemblies.specification` remain compatible through re-exports.
