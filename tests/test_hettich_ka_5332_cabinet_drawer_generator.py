@@ -64,7 +64,7 @@ class TestHettichKa5332CabinetDrawerGenerator(unittest.TestCase):
         self.assertEqual(self.result.plan.drawer.box.outside_depth_mm, 530.0)
         self.assertEqual(
             self.result.plan.origin_in_parent_mm,
-            (30.7, 18.0, 465.0),
+            (30.7, 0.0, 465.0),
         )
         self.assertEqual(
             self.result.plan.hardware_mounting.system_32_row_height_mm,
@@ -87,11 +87,11 @@ class TestHettichKa5332CabinetDrawerGenerator(unittest.TestCase):
         self.assertEqual(runner["source"]["solid_count"], 6)
         self.assertEqual(
             runner["side_placements"]["left"],
-            {"x": 25.95, "y": 55.0, "z": 488.0},
+            {"x": 25.95, "y": 37.0, "z": 488.0},
         )
         self.assertEqual(
             runner["side_placements"]["right"],
-            {"x": 531.95, "y": 55.0, "z": 488.0},
+            {"x": 531.95, "y": 37.0, "z": 488.0},
         )
 
     def test_composed_builder_owns_one_pair_and_one_wooden_child(self) -> None:
@@ -128,10 +128,10 @@ class TestHettichKa5332CabinetDrawerGenerator(unittest.TestCase):
             "tall_storage_01",
             built,
         )
-        self.assertEqual(saved_plan.drawer_origin_mm, (30.7, 18.0, 465.0))
+        self.assertEqual(saved_plan.drawer_origin_mm, (30.7, 0.0, 465.0))
         self.assertEqual(
             saved_plan.left_runner_translation_mm,
-            (25.95, 55.0, 488.0),
+            (25.95, 37.0, 488.0),
         )
 
     def _remove_generated_modules(self) -> None:

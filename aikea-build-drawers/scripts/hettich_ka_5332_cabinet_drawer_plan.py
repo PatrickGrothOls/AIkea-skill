@@ -95,7 +95,7 @@ class HettichKa5332CabinetDrawerPlanner:
             runner,
             blocked_reservations,
         )
-        drawer_front_mm = float(cabinet.part("left_side").local_size_mm[2])
+        cabinet_opening_front_mm = 0.0
         drawer_bottom_mm = float(cabinet.base_height_mm) + (
             system_32_row_mm - runner.runner_center_from_drawer_bottom_mm
         )
@@ -103,7 +103,7 @@ class HettichKa5332CabinetDrawerPlanner:
             cabinet,
             hardware_step,
             runner,
-            drawer_front_mm=drawer_front_mm,
+            drawer_front_mm=cabinet_opening_front_mm,
             drawer_bottom_mm=drawer_bottom_mm,
             system_32_row_height_mm=system_32_row_mm,
         )
