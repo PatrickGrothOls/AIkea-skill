@@ -14,11 +14,11 @@ import { AssemblyStudioEnvironment } from "./AssemblyStudioEnvironment";
 import { AssemblyStudioLights } from "./AssemblyStudioLights";
 import { AssemblyLighting } from "./AssemblyLighting";
 import { CloseInspectionControls } from "./CloseInspectionControls";
-import { DoorOpeningApprovalPanel } from "./DoorOpeningApprovalPanel";
 import { LightingSource } from "./LightingSource";
 import { LightingSurface } from "./LightingSurface";
 import { PlywoodSurface } from "./PlywoodSurface";
 import { ReviewGuidanceCard } from "./ReviewGuidanceCard";
+import { ReviewApprovalPanel } from "./ReviewApprovalPanel";
 import { configureReviewRenderer } from "./ReviewRenderer";
 import { ReviewView } from "./ReviewView";
 
@@ -138,7 +138,7 @@ export function AssemblyReviewViewer() {
         {!reviewView.usesPhotoRenderer() && <AssemblyContactShading />}
       </Canvas>
       <ReviewGuidanceCard reviewView={reviewView} />
-      <DoorOpeningApprovalPanel ready={modelBounds.modelRoot !== null} />
+      <ReviewApprovalPanel ready={modelBounds.modelRoot !== null} />
     </main>
   );
 }

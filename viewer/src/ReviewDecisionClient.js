@@ -7,7 +7,7 @@ export class ReviewDecisionClient {
       return null;
     }
     if (!response.ok) {
-      throw new Error("The door-opening review could not be loaded.");
+      throw new Error("The visual review could not be loaded.");
     }
     return response.json();
   }
@@ -19,7 +19,7 @@ export class ReviewDecisionClient {
       body: JSON.stringify({ decision }),
     });
     if (!response.ok) {
-      throw new Error("The door-opening decision could not be saved.");
+      throw new Error("The visual review decision could not be saved.");
     }
     return response.json();
   }

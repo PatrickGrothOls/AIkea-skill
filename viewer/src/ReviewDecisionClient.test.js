@@ -15,7 +15,7 @@ test("missing review data keeps an ordinary visual review decision-free", async 
   }
 });
 
-test("door approval is submitted to the bounded local endpoint", async () => {
+test("visual approval is submitted to the bounded local endpoint", async () => {
   const originalFetch = global.fetch;
   let request;
   global.fetch = async (url, options) => {

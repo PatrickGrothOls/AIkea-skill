@@ -1,10 +1,28 @@
-/** Scope: Present and persist the client's post-visual door-opening decision. */
+/** Scope: Present and persist the bounded decision attached to one visual review. */
 
 import { useEffect, useState } from "react";
 
 import { ReviewDecisionClient } from "./ReviewDecisionClient";
 
-export function DoorOpeningApprovalPanel({ ready }) {
+const COPY = {
+  door_openings: {
+    eyebrow: "Door opening check",
+    approve: "Approve door openings",
+    change: "Change a door",
+    approved: "Door openings approved.",
+    requested: "Change requested—return to the chat and name the door.",
+  },
+  fabrication_assembly: {
+    eyebrow: "Fabrication visual check",
+    approve: "Approve this assembly",
+    change: "Request a change",
+    approved: "This exact assembly is visually approved.",
+    requested: "Change requested—return to the chat and describe it.",
+  },
+};
+
+// A function component is the smallest boundary for the review-decision request state.
+export function ReviewApprovalPanel({ ready }) {
   const [client] = useState(() => new ReviewDecisionClient());
   const [review, setReview] = useState(null);
   const [error, setError] = useState("");
@@ -17,7 +35,7 @@ export function DoorOpeningApprovalPanel({ ready }) {
     let active = true;
     client.load()
       .then((value) => {
-        if (active && value?.review_type === "door_openings") {
+        if (active && COPY[value?.review_type]) {
           setReview(value);
         }
       })
@@ -42,25 +60,28 @@ export function DoorOpeningApprovalPanel({ ready }) {
       setSaving(false);
     }
   };
+  const copy = review ? COPY[review.review_type] : null;
 
   return (
     <section className="decision-card" aria-live="polite">
       {review && (
         <>
-          <p className="eyebrow">Door opening check</p>
+          <p className="eyebrow">{copy.eyebrow}</p>
           <h2>{review.message}</h2>
-          <ul>
-            {review.doors.map((door) => (
-              <li key={door.assembly_id}>
-                <strong>{door.label ?? door.assembly_id}</strong>: hinges on the {door.hinge_side}
-                {door.note ? ` (${door.note})` : ""}
-              </li>
-            ))}
-          </ul>
+          {review.doors && (
+            <ul>
+              {review.doors.map((door) => (
+                <li key={door.assembly_id}>
+                  <strong>{door.label ?? door.assembly_id}</strong>: hinges on the {door.hinge_side}
+                  {door.note ? ` (${door.note})` : ""}
+                </li>
+              ))}
+            </ul>
+          )}
           {review.status === "proposed" ? (
             <div className="decision-actions">
               <button disabled={saving} onClick={() => decide("approved")} type="button">
-                Approve door openings
+                {copy.approve}
               </button>
               <button
                 className="secondary"
@@ -68,14 +89,12 @@ export function DoorOpeningApprovalPanel({ ready }) {
                 onClick={() => decide("change_requested")}
                 type="button"
               >
-                Change a door
+                {copy.change}
               </button>
             </div>
           ) : (
             <p className="decision-status">
-              {review.status === "approved"
-                ? "Door openings approved."
-                : "Change requested—return to the chat and name the door."}
+              {review.status === "approved" ? copy.approved : copy.requested}
             </p>
           )}
         </>
