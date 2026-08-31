@@ -35,7 +35,7 @@ class CabinetDrawerFitChecker:
             origin[0] >= left_mm,
             origin[0] + box.outside_width_mm <= right_mm,
             required_inside_depth_mm <= float(cabinet.inside_depth_mm),
-            origin[1] + box.side_length_mm <= float(cabinet.inside_depth_mm),
+            origin[1] + box.outside_depth_mm <= float(cabinet.inside_depth_mm),
             origin[2] >= float(cabinet.base_height_mm),
             origin[2] + box.sizing.box_height_mm <= inside_top_mm,
         )

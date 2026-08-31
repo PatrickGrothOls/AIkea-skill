@@ -22,6 +22,9 @@ class DrawerLayoutRenderer:
                     "bottom_height_mm": layout.bottom_height_mm,
                     "box": {
                         "height_mm": layout.box_height_mm,
+                        "outside_width_mm": plan.drawer.box.outside_width_mm,
+                        "side_length_mm": plan.drawer.box.side_length_mm,
+                        "outside_depth_mm": plan.drawer.box.outside_depth_mm,
                         "side_thickness_mm": layout.side_thickness_mm,
                         "front_back_thickness_mm": layout.front_back_thickness_mm,
                         "bottom_thickness_mm": layout.bottom_thickness_mm,

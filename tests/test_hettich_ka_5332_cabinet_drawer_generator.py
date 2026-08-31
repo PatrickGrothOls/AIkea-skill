@@ -61,6 +61,7 @@ class TestHettichKa5332CabinetDrawerGenerator(unittest.TestCase):
         self.assertTrue((parent / "with_drawers_builder.py").is_file())
         self.assertEqual(self.source.read_text(encoding="utf-8"), self.original_source)
         self.assertAlmostEqual(self.result.plan.drawer.box.outside_width_mm, 681.6)
+        self.assertEqual(self.result.plan.drawer.box.outside_depth_mm, 530.0)
         self.assertEqual(
             self.result.plan.origin_in_parent_mm,
             (30.7, 18.0, 465.0),
@@ -75,8 +76,11 @@ class TestHettichKa5332CabinetDrawerGenerator(unittest.TestCase):
     def test_records_the_exact_pair_and_both_native_side_placements(self) -> None:
         parent = self.project_root / "assemblies/tall_storage_01"
         layout = yaml.safe_load((parent / "drawer-layout.yaml").read_text())
-        runner = layout["drawers"][0]["runner"]
+        drawer = layout["drawers"][0]
+        runner = drawer["runner"]
 
+        self.assertEqual(drawer["box"]["side_length_mm"], 500.0)
+        self.assertEqual(drawer["box"]["outside_depth_mm"], 530.0)
         self.assertEqual(runner["manufacturer"], "Hettich")
         self.assertEqual(runner["item_number"], "9057405")
         self.assertEqual(runner["source"]["filename"], "9057405.stp")

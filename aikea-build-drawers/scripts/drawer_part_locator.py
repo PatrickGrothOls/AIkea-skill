@@ -36,25 +36,25 @@ class DrawerPartLocator:
         side_thickness_mm = drawer.sizing.side_thickness_mm
         front_back_thickness_mm = drawer.sizing.front_back_thickness_mm
         inside_right_mm = side_thickness_mm + drawer.clear_inside_width_mm
-        inside_back_mm = drawer.side_length_mm - front_back_thickness_mm
+        inside_back_mm = drawer.outside_depth_mm - front_back_thickness_mm
         placements = {
             "left_side": DrawerPartPlacement(
-                (side_thickness_mm, drawer.side_length_mm, 0.0),
+                (side_thickness_mm, inside_back_mm, 0.0),
                 (0.0, -1.0, 0.0),
                 (-1.0, 0.0, 0.0),
             ),
             "right_side": DrawerPartPlacement(
-                (inside_right_mm, 0.0, 0.0),
+                (inside_right_mm, front_back_thickness_mm, 0.0),
                 (0.0, 1.0, 0.0),
                 (1.0, 0.0, 0.0),
             ),
             "front": DrawerPartPlacement(
-                (side_thickness_mm, front_back_thickness_mm, 0.0),
+                (0.0, front_back_thickness_mm, 0.0),
                 (1.0, 0.0, 0.0),
                 (0.0, -1.0, 0.0),
             ),
             "back": DrawerPartPlacement(
-                (inside_right_mm, inside_back_mm, 0.0),
+                (drawer.outside_width_mm, inside_back_mm, 0.0),
                 (-1.0, 0.0, 0.0),
                 (0.0, 1.0, 0.0),
             ),

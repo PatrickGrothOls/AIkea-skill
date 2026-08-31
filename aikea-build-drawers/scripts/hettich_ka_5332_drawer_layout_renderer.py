@@ -34,6 +34,7 @@ class HettichKa5332DrawerLayoutRenderer:
                         ),
                         "outside_width_mm": plan.drawer.box.outside_width_mm,
                         "side_length_mm": plan.drawer.box.side_length_mm,
+                        "outside_depth_mm": plan.drawer.box.outside_depth_mm,
                     },
                     "runner": {
                         "manufacturer": plan.runner.manufacturer,

@@ -30,16 +30,17 @@ class DrawerBoxPlanner:
         side_length_mm = (
             sizing.runner_length_mm - sizing.runner_to_side_length_reduction_mm
         )
-        clear_depth_mm = side_length_mm - (
+        clear_depth_mm = side_length_mm
+        outside_depth_mm = side_length_mm + (
             2.0 * sizing.front_back_thickness_mm
         )
         if min(clear_width_mm, clear_depth_mm) <= 0.0:
             raise DrawerBoxPlanningError(
                 "the opening and sizing profile leave no drawer interior"
             )
-        if side_length_mm > opening.inside_depth_mm:
+        if outside_depth_mm > opening.inside_depth_mm:
             raise DrawerBoxPlanningError(
-                "the drawer side is deeper than the cabinet opening"
+                "the complete drawer is deeper than the cabinet opening"
             )
         if (
             sizing.bottom_underside_recess_mm + sizing.bottom_thickness_mm
@@ -52,8 +53,8 @@ class DrawerBoxPlanner:
         parts = (
             self._part("left_side", "drawer_side", side_length_mm, sizing),
             self._part("right_side", "drawer_side", side_length_mm, sizing),
-            self._part("front", "drawer_front", clear_width_mm, sizing),
-            self._part("back", "drawer_back", clear_width_mm, sizing),
+            self._part("front", "drawer_front", outside_width_mm, sizing),
+            self._part("back", "drawer_back", outside_width_mm, sizing),
             DrawerPartSpec(
                 part_id="bottom",
                 role="drawer_bottom",
@@ -68,6 +69,7 @@ class DrawerBoxPlanner:
             clear_inside_width_mm=clear_width_mm,
             outside_width_mm=outside_width_mm,
             side_length_mm=side_length_mm,
+            outside_depth_mm=outside_depth_mm,
             clear_inside_depth_mm=clear_depth_mm,
             parts=parts,
         )

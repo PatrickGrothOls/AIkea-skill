@@ -64,7 +64,8 @@ class GenerateHettichKa5332CabinetDrawerCommand:
                     "assembly": assembly_id,
                     "drawer": drawer_id,
                     "drawer_height_mm": result.plan.drawer.box.sizing.box_height_mm,
-                    "drawer_depth_mm": result.plan.drawer.box.side_length_mm,
+                    "drawer_side_length_mm": result.plan.drawer.box.side_length_mm,
+                    "drawer_outside_depth_mm": result.plan.drawer.box.outside_depth_mm,
                     "runner_product_code": result.plan.runner.product_code,
                     "drawer_outside_width_mm": result.plan.drawer.box.outside_width_mm,
                     "recommended_width_met": (

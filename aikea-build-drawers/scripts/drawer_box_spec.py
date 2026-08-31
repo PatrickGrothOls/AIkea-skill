@@ -68,6 +68,7 @@ class DrawerBoxSpec:
     clear_inside_width_mm: float
     outside_width_mm: float
     side_length_mm: float
+    outside_depth_mm: float
     clear_inside_depth_mm: float
     parts: tuple[DrawerPartSpec, ...]
 

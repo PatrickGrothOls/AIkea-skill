@@ -100,7 +100,7 @@ class HettichKa5332DrawersPositionChecker:
             0.0,
             box.outside_width_mm,
             0.0,
-            box.side_length_mm,
+            box.outside_depth_mm,
             0.0,
             box.sizing.box_height_mm,
         )

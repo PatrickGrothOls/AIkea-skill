@@ -62,6 +62,16 @@ geometry.
 10. In the removed view, leave every cabinet-owned source member in place so its
     saved installation can be inspected directly.
 
+## Drawer box panel relationship
+
+The front and back panels span the complete outside width of the drawer. The
+left and right side panels fit between their inner faces. Keep the purchased
+runner profile's calculated side-panel length unchanged; derive the complete
+outside depth by adding the front and back thicknesses. The bottom fills the
+clear opening between all four walls. Use `DrawerBoxPlanner` and
+`DrawerPartLocator` as the construction authority rather than recreating these
+relationships in project builders.
+
 ## Vertical drawer density
 
 Resolve the runner rows and the upper boundary of the intended drawer zone before

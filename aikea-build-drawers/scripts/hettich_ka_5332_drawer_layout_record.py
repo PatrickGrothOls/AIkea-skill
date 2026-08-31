@@ -23,6 +23,8 @@ class HettichKa5332DrawerLayoutRecord:
                 "height_mm": layout.box_height_mm,
                 "requested_depth_mm": layout.box_depth_mm,
                 "resolved_depth_mm": plan.drawer.box.side_length_mm,
+                "side_length_mm": plan.drawer.box.side_length_mm,
+                "outside_depth_mm": plan.drawer.box.outside_depth_mm,
                 "side_thickness_mm": layout.side_thickness_mm,
                 "front_back_thickness_mm": layout.front_back_thickness_mm,
                 "bottom_thickness_mm": layout.bottom_thickness_mm,

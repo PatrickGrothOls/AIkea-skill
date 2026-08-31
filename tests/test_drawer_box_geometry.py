@@ -53,15 +53,16 @@ class TestDrawerBoxGeometry(unittest.TestCase):
         self.assertAlmostEqual(self.drawer.clear_inside_width_mm, 665.0)
         self.assertAlmostEqual(self.drawer.outside_width_mm, 695.0)
         self.assertAlmostEqual(self.drawer.side_length_mm, 490.0)
-        self.assertAlmostEqual(self.drawer.clear_inside_depth_mm, 460.0)
+        self.assertAlmostEqual(self.drawer.outside_depth_mm, 520.0)
+        self.assertAlmostEqual(self.drawer.clear_inside_depth_mm, 490.0)
 
     def test_every_part_starts_in_its_canonical_manufacturing_frame(self) -> None:
         expected_sizes = {
             "left_side": (490.0, 160.0, 15.0),
             "right_side": (490.0, 160.0, 15.0),
-            "front": (665.0, 160.0, 15.0),
-            "back": (665.0, 160.0, 15.0),
-            "bottom": (665.0, 460.0, 9.0),
+            "front": (695.0, 160.0, 15.0),
+            "back": (695.0, 160.0, 15.0),
+            "bottom": (665.0, 490.0, 9.0),
         }
         for part in self.built.parts:
             bounds = part.solid.val().BoundingBox()
@@ -74,11 +75,11 @@ class TestDrawerBoxGeometry(unittest.TestCase):
 
     def test_explicit_placements_close_the_box_without_material_overlap(self) -> None:
         expected_bounds = {
-            "left_side": (0.0, 15.0, 0.0, 490.0, 0.0, 160.0),
-            "right_side": (680.0, 695.0, 0.0, 490.0, 0.0, 160.0),
-            "front": (15.0, 680.0, 0.0, 15.0, 0.0, 160.0),
-            "back": (15.0, 680.0, 475.0, 490.0, 0.0, 160.0),
-            "bottom": (15.0, 680.0, 15.0, 475.0, 13.0, 22.0),
+            "left_side": (0.0, 15.0, 15.0, 505.0, 0.0, 160.0),
+            "right_side": (680.0, 695.0, 15.0, 505.0, 0.0, 160.0),
+            "front": (0.0, 695.0, 0.0, 15.0, 0.0, 160.0),
+            "back": (0.0, 695.0, 505.0, 520.0, 0.0, 160.0),
+            "bottom": (15.0, 680.0, 15.0, 505.0, 13.0, 22.0),
         }
         for part in self.built.parts:
             self.assert_bounds(
@@ -92,14 +93,18 @@ class TestDrawerBoxGeometry(unittest.TestCase):
         self.assertEqual(report.missing_contacts, ())
         self.assertEqual(report.overlapping_parts, ())
 
-    def test_the_same_calculation_accepts_a_550_millimetre_runner(self) -> None:
+    def test_the_same_calculation_accepts_a_550_millimetre_runner_in_depth(self) -> None:
         drawer = DrawerBoxPlanner().plan(
-            self.opening,
+            CabinetDrawerOpening(
+                clear_width_mm=self.opening.clear_width_mm,
+                inside_depth_mm=600.0,
+            ),
             DrawerBoxSizingProfile(runner_length_mm=550.0),
         )
 
         self.assertAlmostEqual(drawer.side_length_mm, 540.0)
-        self.assertAlmostEqual(drawer.clear_inside_depth_mm, 510.0)
+        self.assertAlmostEqual(drawer.outside_depth_mm, 570.0)
+        self.assertAlmostEqual(drawer.clear_inside_depth_mm, 540.0)
 
     def assert_bounds(self, bounds, expected: tuple[float, ...]) -> None:
         actual = (

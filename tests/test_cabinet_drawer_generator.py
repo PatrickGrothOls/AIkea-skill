@@ -50,10 +50,13 @@ class TestCabinetDrawerGenerator(unittest.TestCase):
         self.assertEqual(source.read_text(encoding="utf-8"), original_source)
         self.assertEqual(result.plan.runner.product_code, "760H5000S")
         self.assertEqual(result.plan.drawer.box.outside_width_mm, 695.0)
+        self.assertEqual(result.plan.drawer.box.outside_depth_mm, 520.0)
         self.assertEqual(result.plan.origin_in_parent_mm, (24.0, 18.0, 456.0))
 
         layout = yaml.safe_load((parent / "drawer-layout.yaml").read_text())
         drawer = layout["drawers"][0]
+        self.assertEqual(drawer["box"]["side_length_mm"], 490.0)
+        self.assertEqual(drawer["box"]["outside_depth_mm"], 520.0)
         self.assertEqual(drawer["runner"]["product_code"], "760H5000S")
         self.assertEqual(
             drawer["runner"]["geometry"],
