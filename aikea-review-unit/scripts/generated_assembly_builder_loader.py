@@ -3,11 +3,13 @@
 from __future__ import annotations
 
 import importlib
+import json
 from pathlib import Path
 import re
 import sys
 from typing import Any, Callable
 
+from assembly_feature_review import RegisteredAssemblyFeatureReview
 from unit_mockup import UnitMockupInputError
 
 
@@ -61,6 +63,52 @@ class GeneratedAssemblyBuilderLoader:
             lambda: importlib.import_module(
                 "assemblies.assembly_tree"
             ).AssemblyTreeWalker().walk(built_assembly),
+        )
+
+    def load_review_features(
+        self,
+        project_root: Path,
+        owner_path: tuple[str, ...],
+    ) -> tuple[RegisteredAssemblyFeatureReview, ...]:
+        """Load optional review adapters from the same ordered manifest."""
+        assembly_id = owner_path[-1]
+        root = project_root / "assemblies" / owner_path[0]
+        candidates = (
+            (root / "features.json",)
+            if len(owner_path) == 1
+            else tuple(root.glob(f"**/{assembly_id}/features.json"))
+        )
+        matches = tuple(path for path in candidates if path.is_file())
+        if not matches:
+            return ()
+        if len(matches) != 1:
+            raise UnitMockupInputError(
+                [f"assembly review source is ambiguous: {'/'.join(owner_path)}"]
+            )
+        path = matches[0]
+        data = json.loads(path.read_text(encoding="utf-8"))
+        if not isinstance(data, dict) or data.get("schema_version") != 1:
+            raise UnitMockupInputError([f"unsupported feature manifest: {path}"])
+        features = data.get("features")
+        if not isinstance(features, list):
+            raise UnitMockupInputError([f"invalid feature manifest: {path}"])
+        registrations = tuple(
+            (item["module"].split(".", 1)[0], item["review_module"])
+            for item in features
+            if item.get("review_module")
+        )
+        package = ".".join(path.parent.relative_to(project_root).parts)
+        return self._execute(
+            project_root,
+            lambda: tuple(
+                RegisteredAssemblyFeatureReview(
+                    feature_id,
+                    importlib.import_module(
+                        f"{package}.{module}"
+                    ).REVIEW,
+                )
+                for feature_id, module in registrations
+            ),
         )
 
     def _execute(self, project_root: Path, operation: Callable[[], Any]) -> Any:

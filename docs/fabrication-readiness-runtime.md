@@ -28,8 +28,9 @@ only.
 
 ### WP4 - Fresh combined-feature run
 
-- [ ] Generate a fresh measured wardrobe and complete first cabinet.
-- [ ] Compose drawer, door, exact hardware, and lighting through one builder.
+- [x] Generate a fresh measured wardrobe and complete first cabinet.
+- [x] Compose drawer, door, exact hardware, and lighting through one builder.
+- [x] Export every feature state through the reusable recursive review command.
 - [ ] Build the wardrobe root, run fit/machining checks, and export GLB.
 - [ ] Open the interactive viewer for visual approval.
 
@@ -53,6 +54,16 @@ right-hinged first door from the left room boundary. The specialized door skill
 already prohibited that inference; the same approved invariant is now explicit
 at the entry point and protected by a focused regression check. A second blind
 run remains the behavioral proof.
+The isolated second run proved the physical recursion through shelves, three
+drawer children, exact Hettich runners, recessed lighting, a machined door, and
+exact Riex hardware. It then invented three local scripts to combine the final
+review. That exposed the missing review-adapter registry; implementation is now
+moving the state contribution and export loop into the reusable review skill.
+The replacement command now exports 40-item closed and exact door-open GLBs from
+that preserved project. Both contain three drawer children and runners, three
+shelves, recessed lighting, the machined door, and five exact hinge/plate pairs.
+Feature-state selectors use the full assembly-tree path, so repeated child IDs in
+different branches remain unambiguous.
 
 ## Audit log
 
@@ -80,6 +91,18 @@ run remains the behavioral proof.
   leak: the entry router described a right-hinged first door before loading the
   door builder. Repeated the already approved left-hand invariant at the router
   boundary and added a focused regression check; no construction policy changed.
+- 2026-08-31: The properly isolated rerun proved generic physical composition
+  but invented project-local approval composition and fit scripts. Added an
+  optional feature-review registration and one recursive review command so a
+  feature owns only its state contribution and the skill owns orchestration.
+- 2026-08-31: The first direct recursive-review invocation exposed an eager
+  CadQuery import before runtime handoff. Deferred the implementation import to
+  the command boundary so a clean project can reach the packaged CAD runtime.
+- 2026-08-31: Full regression found one stale viewer test still naming the
+  superseded door-only panel. Pointed it at the generic review panel and retained
+  assertions for both the door and fabrication decision copies.
+- 2026-08-31: Made review discovery recursive and state selectors path-scoped.
+  This preserves generic composition when nested branches reuse local child IDs.
 
 1. 2026-08-31 - Kept runtime locks and viewer source tooling repository-only;
    the downloadable skill will receive prebuilt static viewer assets.

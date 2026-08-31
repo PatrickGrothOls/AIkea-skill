@@ -42,6 +42,7 @@ class CabinetDoorFeatureGenerator:
             plan.assembly_id,
             "door_hinges.feature",
             20,
+            review_module="door_hinges.review",
         )
         return written + ((manifest.relative_to(project_root),) if manifest else ())
 

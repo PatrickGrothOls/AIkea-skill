@@ -1,0 +1,129 @@
+"""Scope: Verify generic review orchestration uses registered feature adapters."""
+
+from __future__ import annotations
+
+from types import SimpleNamespace
+
+import pytest
+
+from assembly_feature_review import RegisteredAssemblyFeatureReview
+from assembly_tree_review_plan import AssemblyTreeReviewPlan
+from complete_assembly_review_generator import CompleteAssemblyReviewGenerator
+from generate_complete_assembly_review import FeatureStateArguments
+from unit_mockup import UnitMockupInputError
+
+
+class AssemblyTreeAssembly:
+    """Represent the minimum owner node consumed by the generic loop."""
+
+    def __init__(self) -> None:
+        self.path = ("cabinet_01",)
+        self.assembly = SimpleNamespace(
+            spec=SimpleNamespace(assembly_id="cabinet_01")
+        )
+
+
+class ReviewFeatureProbe:
+    """Expose the requested state as one hidden path for observable composition."""
+
+    def __init__(self) -> None:
+        self.states = []
+
+    def plan(self, context, state):
+        self.states.append((context.owner_path, state))
+        return AssemblyTreeReviewPlan(
+            hidden_paths=(context.owner_path + ("part:door",),)
+        )
+
+
+class ReviewLoaderProbe:
+    """Return one root and one registered feature for both tree walks."""
+
+    def __init__(self, feature) -> None:
+        self.feature = feature
+
+    def load_assembly(self, _root, _assembly_id):
+        return "built"
+
+    def walk(self, _root, _assembly):
+        return (AssemblyTreeAssembly(),)
+
+    def load_review_features(self, _root, _assembly_id):
+        return (RegisteredAssemblyFeatureReview("door", self.feature),)
+
+
+class HydratorProbe:
+    """Prove hidden review paths are not hydrated as physical hardware."""
+
+    def hydrate(self, _root, _built, skip_path):
+        assert skip_path(("cabinet_01", "part:door"))
+        return "hydrated"
+
+
+class GeometryProbe:
+    """Return one render item after confirming the merged plan survives."""
+
+    def build(self, _visits, _door_states, plan):
+        assert plan.hides(("cabinet_01", "part:door"))
+        return ("rendered",)
+
+
+class ExporterProbe:
+    """Capture the generic export call without requiring CadQuery."""
+
+    def __init__(self) -> None:
+        self.call = None
+
+    def export(self, assembly_id, parts, output):
+        self.call = (assembly_id, parts, output)
+
+
+class TestCompleteAssemblyReviewGenerator:
+    """Protect recursive orchestration from furniture-specific branches."""
+
+    def test_merges_registered_state_and_exports_one_tree(self, tmp_path) -> None:
+        feature = ReviewFeatureProbe()
+        exporter = ExporterProbe()
+        output = tmp_path / "review.glb"
+        generator = CompleteAssemblyReviewGenerator(
+            loader=ReviewLoaderProbe(feature),
+            hydrator=HydratorProbe(),
+            geometry=GeometryProbe(),
+            exporter=exporter,
+        )
+
+        result = generator.generate(
+            tmp_path,
+            "cabinet_01",
+            output,
+            {"cabinet_01/door": "open"},
+        )
+
+        assert feature.states == [(("cabinet_01",), "open")]
+        assert exporter.call == ("cabinet_01", ("rendered",), output)
+        assert result.feature_selectors == ("cabinet_01/door",)
+        assert result.part_count == 1
+
+    def test_rejects_unknown_feature_selector(self, tmp_path) -> None:
+        generator = CompleteAssemblyReviewGenerator(
+            loader=ReviewLoaderProbe(ReviewFeatureProbe()),
+            hydrator=HydratorProbe(),
+            geometry=GeometryProbe(),
+            exporter=ExporterProbe(),
+        )
+
+        with pytest.raises(UnitMockupInputError, match="unknown assembly feature"):
+            generator.generate(
+                tmp_path,
+                "cabinet_01",
+                tmp_path / "review.glb",
+                {"cabinet_01/lighting": "on"},
+            )
+
+    def test_cli_state_parser_requires_scoped_selectors(self) -> None:
+        assert FeatureStateArguments().parse(
+            ["cabinet_01/door_hinges=open"]
+        ) == {"cabinet_01/door_hinges": "open"}
+
+        with pytest.raises(ValueError, match="assembly-id"):
+            FeatureStateArguments().parse(["door_hinges=open"])

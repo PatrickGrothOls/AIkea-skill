@@ -26,7 +26,20 @@ checked before the design is repeated or manufacturing work continues.
    must come from that one completed door relationship.
 4. For an intentionally doorless assembly, run
    `python <skill-directory>/scripts/generate_unit_mockup.py <project>/aikea.yaml`.
-5. For a fitted-door review, run:
+5. For a cabinet with any registered features, generate the closed complete tree:
+
+   ```bash
+   python <skill-directory>/scripts/generate_complete_assembly_review.py \
+     <project>/aikea.yaml --assembly <cabinet-id> \
+     --output <project>/assemblies/<cabinet-id>/review/complete-closed.glb
+   ```
+
+   Generate an exact alternate feature state through the same command. For the
+   first fitted-door review, add
+   `--state <cabinet-id>/door_hinges=open` and write `complete-open.glb`. Never
+   create project-local scripts to combine features; their registered review
+   adapters contribute to this generic traversal.
+6. Serve the generated complete GLB:
 
    ```bash
    python <skill-directory>/scripts/serve_unit_review.py <generated-glb> \
@@ -35,10 +48,10 @@ checked before the design is repeated or manufacturing work continues.
 
    Leave the local viewer available while the client reviews the cabinet. Show
    both checked states when the completed door supplies closed and open artifacts.
-6. Let the loaded model reveal the run-wide opening proposal. It states that
+7. Let the loaded model reveal the run-wide opening proposal. It states that
    single doors hinge on the left unless marked otherwise, labels each cabinet,
    and ends with `Approve door openings` and `Change a door`.
-7. Stop with the project awaiting that visual decision. An approval confirms the
+8. Stop with the project awaiting that visual decision. An approval confirms the
    saved proposal. A change request returns to the conversation so the client can
    name the cabinet and preferred side before a new checked review is produced.
    Do not produce the other cabinets until the client approves this one.

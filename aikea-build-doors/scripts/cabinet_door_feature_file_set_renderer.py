@@ -36,6 +36,7 @@ class CabinetDoorFeatureFileSetRenderer:
                 assembly, plan, profile
             ),
             root / "door_hinges/feature.py": self._feature(plan),
+            root / "door_hinges/review.py": self._review(),
             root / "with_door_builder.py": self.wrapper.render(
                 plan.assembly_id,
                 "door_hinges.feature",
@@ -90,6 +91,14 @@ class CabinetDoorFeatureFileSetRenderer:
             "            purchased_hardware=cabinet.purchased_hardware + hardware,\n"
             "        )\n\n\n"
             "FEATURE = CabinetDoorFeature()\n"
+        )
+
+    def _review(self) -> str:
+        return (
+            '"""Scope: Contribute exact door poses to generic assembly review."""\n\n'
+            "from riex_nc70_door_review_feature import RiexNc70DoorReviewFeature\n\n"
+            "from .plan import PLAN\n\n\n"
+            "REVIEW = RiexNc70DoorReviewFeature(PLAN)\n"
         )
 
 

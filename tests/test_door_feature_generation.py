@@ -40,6 +40,7 @@ class TestDoorFeatureGeneration:
 
         root = tmp_path / "assemblies/tall_storage_01"
         assert (root / "door_hinges/feature.py").is_file()
+        assert (root / "door_hinges/review.py").is_file()
         assert (root / "with_door_builder.py").is_file()
         compile(
             (root / "door_hinges/feature.py").read_text(encoding="utf-8"),
@@ -48,7 +49,11 @@ class TestDoorFeatureGeneration:
         )
         manifest = json.loads((root / "features.json").read_text(encoding="utf-8"))
         assert manifest["features"] == [
-            {"module": "door_hinges.feature", "order": 20}
+            {
+                "module": "door_hinges.feature",
+                "order": 20,
+                "review_module": "door_hinges.review",
+            }
         ]
         specification, hardware, loaded_plan, tree = self._load_generated(tmp_path)
         assert loaded_plan.PLAN == plan

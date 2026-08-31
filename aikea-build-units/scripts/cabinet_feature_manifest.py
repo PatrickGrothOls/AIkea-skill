@@ -19,12 +19,18 @@ class CabinetFeatureManifest:
         assembly_id: str,
         module: str,
         order: int,
+        review_module: str | None = None,
     ) -> Path | None:
         self._validate(assembly_id, module, order)
+        if review_module is not None and not self._MODULE.fullmatch(review_module):
+            raise ValueError("review module must be a stable dotted name")
         path = project_root / "assemblies" / assembly_id / "features.json"
         features = self._load(path)
         by_module = {item["module"]: item for item in features}
-        by_module[module] = {"module": module, "order": order}
+        registration = {"module": module, "order": order}
+        if review_module is not None:
+            registration["review_module"] = review_module
+        by_module[module] = registration
         ordered = sorted(by_module.values(), key=lambda item: (item["order"], item["module"]))
         data = {"schema_version": 1, "features": ordered}
         content = json.dumps(data, indent=2) + "\n"

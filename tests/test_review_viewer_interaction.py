@@ -110,12 +110,14 @@ class TestReviewViewerInteraction:
         assert "renderDelay:350" in bundle
 
     def test_door_review_ends_with_two_concrete_client_actions(self) -> None:
-        source = (self.viewer_source / "DoorOpeningApprovalPanel.jsx").read_text(
+        source = (self.viewer_source / "ReviewApprovalPanel.jsx").read_text(
             encoding="utf-8"
         )
 
         assert "Approve door openings" in source
         assert "Change a door" in source
+        assert "Approve this assembly" in source
+        assert "Request a change" in source
         assert "ready={modelBounds.modelRoot !== null}" in (
             self.viewer_source / "AssemblyReviewViewer.jsx"
         ).read_text(encoding="utf-8")

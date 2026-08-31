@@ -57,6 +57,26 @@ class TestAssemblyFeatureComposition(AssemblyCompositionTestCase):
             {"module": "lighting.feature", "order": 30},
         ]
 
+    def test_manifest_can_register_an_optional_review_adapter(self, tmp_path) -> None:
+        manifest = CabinetFeatureManifest()
+
+        manifest.register(
+            tmp_path,
+            "cabinet_01",
+            "door_hinges.feature",
+            20,
+            review_module="door_hinges.review",
+        )
+
+        path = tmp_path / "assemblies/cabinet_01/features.json"
+        assert json.loads(path.read_text())["features"] == [
+            {
+                "module": "door_hinges.feature",
+                "order": 20,
+                "review_module": "door_hinges.review",
+            }
+        ]
+
     def test_generated_assemblies_expose_complete_builder(self, generated_values) -> None:
         _values, project_root = generated_values
 
