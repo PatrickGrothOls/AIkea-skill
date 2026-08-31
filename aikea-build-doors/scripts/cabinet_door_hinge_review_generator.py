@@ -8,6 +8,7 @@ from typing import Any
 
 from assembly_run import AssemblyRunReader
 from cadquery_glb_exporter import CadQueryGlbExporter
+from cabinet_door_feature_generator import CabinetDoorFeatureGenerator
 from concealed_hinge_machining import ConcealedHingeMachining
 from door_hinge_plan import DoorHingePlanner
 from door_hinge_review_geometry import DoorHingeReviewGeometry
@@ -52,6 +53,7 @@ class CabinetDoorHingeReviewGenerator:
         self.exporter = CadQueryGlbExporter()
         self.reservation_store = PanelHardwareReservationStore()
         self.hardware_reservations = RiexNc70HardwareReservations()
+        self.feature_generator = CabinetDoorFeatureGenerator()
 
     def generate(
         self,
@@ -89,6 +91,7 @@ class CabinetDoorHingeReviewGenerator:
         machined = self.machining.apply(built, plan, profile)
         installation_path = source_directory / "installation.json"
         plan.write(installation_path)
+        self.feature_generator.generate(project_root, built.spec, plan, profile)
         side_dimensions = {
             name: float(value)
             for name, value in built.spec.part(plan.hinge_side.side_part_id).dimensions_mm

@@ -8,7 +8,10 @@ import cadquery as cq
 
 from door_hinge_plan import DoorHingePlan
 from door_hinge_side import DoorHingeSide
-from riex_nc70_hinge_pivot import RiexNc70HingePivot
+from riex_nc70_hardware_frame import (
+    RiexNc70HardwareFrame,
+    RiexNc70HardwareFrameResolver,
+)
 from riex_nc70_hardware_loader import RiexNc70HardwareSet
 from riex_nc70_hinge_profile import RiexNc70HingeProfile
 from unit_mockup import MockupPart
@@ -20,7 +23,7 @@ class RiexNc70HardwarePlacement:
     _METAL = (0.48, 0.50, 0.52, 1.0)
 
     def __init__(self) -> None:
-        self.hinge_pivot = RiexNc70HingePivot()
+        self.frames = RiexNc70HardwareFrameResolver()
 
     def parts(
         self,
@@ -70,23 +73,8 @@ class RiexNc70HardwarePlacement:
         center_z_mm: float,
         hinge_side: DoorHingeSide = DoorHingeSide.LEFT,
     ) -> cq.Location:
-        origin_x_mm = self.hinge_pivot.hinge_origin_x(
-            assembly, profile, hinge_side
-        )
-        return cq.Location(
-            cq.Plane(
-                origin=(
-                    origin_x_mm,
-                    -profile.native_door_surface_x_mm,
-                    center_z_mm,
-                ),
-                xDir=(0.0, 1.0, 0.0),
-                normal=(
-                    (0.0, 0.0, 1.0)
-                    if hinge_side is DoorHingeSide.LEFT
-                    else (0.0, 0.0, -1.0)
-                ),
-            )
+        return self._location(
+            self.frames.hinge(assembly, profile, center_z_mm, hinge_side)
         )
 
     def plate_location(
@@ -96,26 +84,16 @@ class RiexNc70HardwarePlacement:
         center_z_mm: float,
         hinge_side: DoorHingeSide = DoorHingeSide.LEFT,
     ) -> cq.Location:
-        side_thickness_mm = self._dimensions(assembly.part(hinge_side.side_part_id))[
-            "thickness"
-        ]
-        origin_x_mm = side_thickness_mm + profile.plate_native_panel_face_y_mm
-        origin_z_mm = center_z_mm - profile.plate_native_vertical_center_x_mm
-        x_direction = (0.0, 0.0, 1.0)
-        if hinge_side is DoorHingeSide.RIGHT:
-            origin_x_mm = float(assembly.width_mm) - origin_x_mm
-            origin_z_mm = center_z_mm + profile.plate_native_vertical_center_x_mm
-            x_direction = (0.0, 0.0, -1.0)
+        return self._location(
+            self.frames.plate(assembly, profile, center_z_mm, hinge_side)
+        )
+
+    def _location(self, frame: RiexNc70HardwareFrame) -> cq.Location:
         return cq.Location(
             cq.Plane(
-                origin=(
-                    origin_x_mm,
-                    profile.plate_line_from_front_mm
-                    + profile.plate_native_fixing_axis_z_mm,
-                    origin_z_mm,
-                ),
-                xDir=x_direction,
-                normal=(0.0, -1.0, 0.0),
+                origin=frame.origin_mm,
+                xDir=frame.local_x_in_cabinet,
+                normal=frame.local_z_in_cabinet,
             )
         )
 
@@ -125,10 +103,7 @@ class RiexNc70HardwarePlacement:
         profile: RiexNc70HingeProfile,
         hinge_side: DoorHingeSide = DoorHingeSide.LEFT,
     ) -> tuple[float, float]:
-        return self.hinge_pivot.resolve(assembly, profile, hinge_side)
-
-    def _dimensions(self, part: Any) -> dict[str, float]:
-        return {name: float(value) for name, value in part.dimensions_mm}
+        return self.frames.pivot(assembly, profile, hinge_side)
 
 
 __all__ = ["RiexNc70HardwarePlacement"]

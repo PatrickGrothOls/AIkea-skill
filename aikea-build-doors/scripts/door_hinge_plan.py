@@ -50,6 +50,23 @@ class DoorHingePlan:
         values["fabrication_ready"] = self.fabrication_ready
         path.write_text(json.dumps(values, indent=2) + "\n", encoding="utf-8")
 
+    @classmethod
+    def read(cls, path: Path) -> "DoorHingePlan":
+        values = json.loads(path.read_text(encoding="utf-8"))
+        values.pop("fabrication_ready", None)
+        values["hinge_side"] = DoorHingeSide(values["hinge_side"])
+        values["placements"] = tuple(
+            DoorHingePlacement(
+                item["hinge_id"],
+                float(item["door_height_mm"]),
+                float(item["cabinet_height_mm"]),
+                tuple(float(value) for value in item["cabinet_fixing_rows_mm"]),
+            )
+            for item in values["placements"]
+        )
+        values["compatibility_issues"] = tuple(values["compatibility_issues"])
+        return cls(**values)
+
 
 class DoorHingePlanner:
     """Fit the manufacturer quantity around this cabinet's owned features."""
