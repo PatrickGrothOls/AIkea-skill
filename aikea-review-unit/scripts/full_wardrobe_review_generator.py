@@ -8,8 +8,8 @@ from typing import Any
 
 from assembly_run import AssemblyRunReader
 from assembly_tree_review_geometry import AssemblyTreeReviewGeometry
+from assembly_tree_review_plan import AssemblyTreeReviewPlan
 from base_mockup_geometry import BaseMockupGeometry
-from cabinet_review_addition import CabinetReviewAddition
 from cabinet_review_geometry import CabinetReviewGeometry
 from cadquery_glb_exporter import CadQueryGlbExporter
 from door_review_state import DoorReviewState
@@ -20,7 +20,6 @@ from generated_assembly_builder_loader import GeneratedAssemblyBuilderLoader
 from project_hardware_geometry_resolver import ProjectHardwareGeometryResolver
 from purchased_hardware_hydrator import PurchasedHardwareHydrator
 from unit_mockup import UnitMockupInputError
-from wardrobe_addition_review_geometry import WardrobeAdditionReviewGeometry
 
 
 class FullWardrobeReviewGenerator:
@@ -38,7 +37,6 @@ class FullWardrobeReviewGenerator:
         self.hardware = PurchasedHardwareHydrator(
             ProjectHardwareGeometryResolver()
         )
-        self.addition_geometry = WardrobeAdditionReviewGeometry()
         self.exporter = CadQueryGlbExporter()
 
     def generate(
@@ -46,7 +44,7 @@ class FullWardrobeReviewGenerator:
         project_root: Path,
         project: dict[str, Any],
         door_plan: FullWardrobeDoorPlan | None = None,
-        additions: tuple[CabinetReviewAddition, ...] = (),
+        review_plan: AssemblyTreeReviewPlan | None = None,
         output_filename: str | None = None,
     ) -> FullWardrobeReviewResult:
         run = self.run_reader.read(project)
@@ -59,19 +57,13 @@ class FullWardrobeReviewGenerator:
             raise UnitMockupInputError(
                 ["unknown cabinet door states: " + ", ".join(unknown_assembly_ids)]
             )
-        additions_by_id = {item.assembly_id: item for item in additions}
-        unknown_additions = sorted(additions_by_id.keys() - set(assembly_ids))
-        if len(additions_by_id) != len(additions) or unknown_additions:
-            raise UnitMockupInputError(
-                ["cabinet review additions must target unique saved assemblies"]
-            )
         door_states = resolved_door_plan.states_for(assembly_ids)
+        resolved_review_plan = review_plan or AssemblyTreeReviewPlan()
         wardrobe = self.loader.load_assembly(project_root, self._ROOT_ASSEMBLY_ID)
         built_base, built_cabinets = self._children(wardrobe, assembly_ids)
         base_parts = self.base_geometry.build(built_base)
         physical_cabinet_parts = tuple(
             self.cabinet_geometry.build(built, DoorReviewState.CLOSED)
-            + self._addition_parts(additions_by_id, built.spec.assembly_id, True)
             for built in built_cabinets
         )
         report = self.position_checker.check(
@@ -89,17 +81,17 @@ class FullWardrobeReviewGenerator:
                     + ", ".join(report.failed_check_names())
                 ]
             )
-        if additions:
-            placed_parts = self.addition_geometry.build(
-                built_base,
-                built_cabinets,
-                door_states,
-                additions_by_id,
-            )
-        else:
-            hydrated = self.hardware.hydrate(project_root, wardrobe)
-            visits = self.loader.walk(project_root, hydrated)
-            placed_parts = self.tree_geometry.build(visits, door_states)
+        hydrated = self.hardware.hydrate(
+            project_root,
+            wardrobe,
+            resolved_review_plan.hides,
+        )
+        visits = self.loader.walk(project_root, hydrated)
+        placed_parts = self.tree_geometry.build(
+            visits,
+            door_states,
+            resolved_review_plan,
+        )
         filename = output_filename or resolved_door_plan.filename_for(assembly_ids)
         glb_path = project_root / f"assemblies/{filename}"
         self.exporter.export("full_wardrobe", placed_parts, glb_path)
@@ -127,17 +119,5 @@ class FullWardrobeReviewGenerator:
                 ["wardrobe root children do not match the saved assembly run"]
             )
         return children[0], children[1:]
-
-    def _addition_parts(
-        self,
-        additions: dict[str, CabinetReviewAddition],
-        assembly_id: str,
-        physical: bool,
-    ) -> tuple[Any, ...]:
-        addition = additions.get(assembly_id)
-        if addition is None:
-            return ()
-        return addition.physical_parts if physical else addition.review_parts
-
 
 __all__ = ["FullWardrobeReviewGenerator"]

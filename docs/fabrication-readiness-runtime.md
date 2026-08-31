@@ -17,8 +17,8 @@ only.
 
 ### WP2 - Remaining review migration
 
-- [ ] Replace specialized drawer additions with tree-owned pose overrides.
-- [ ] Keep closed geometry as fabrication authority and open poses review-only.
+- [x] Replace specialized drawer additions with tree-owned pose overrides.
+- [x] Keep closed geometry as fabrication authority and open poses review-only.
 
 ### WP3 - Fabrication gate
 
@@ -35,13 +35,16 @@ only.
 
 ## Current state
 
-The recursive source architecture and reproducible source-environment contract
-are complete. The exact Python, CadQuery, VTK, PyYAML, pytest, Node, and npm
-versions are declared. The repository-local Python command path, 22 viewer
-tests, and production viewer build pass. A completely isolated Python install
-could not be retained on this machine because the volume has less than 1 GiB
-free; the declarations were validated against the matching existing CadQuery
-runtime through a repository-local virtual environment.
+The recursive source architecture, reproducible source-environment contract,
+and generic review-pose layer are complete. Any assembly subtree can now be
+moved or hidden by path, and non-authoritative overlays attach through an owner
+path. The wardrobe renderer contains no drawer-specific branch. Closed saved
+frames remain fabrication authority. The exact Python, CadQuery, VTK, PyYAML,
+pytest, Node, and npm versions are declared. The repository-local Python command
+path, 22 viewer tests, and production viewer build pass. A completely isolated
+Python install could not be retained on this machine because the volume has
+less than 1 GiB free; the declarations were validated against the matching
+existing CadQuery runtime through a repository-local virtual environment.
 
 ## Audit log
 
@@ -54,6 +57,12 @@ runtime through a repository-local virtual environment.
   no split is warranted for the one corrected physical assertion.
 - 2026-08-31: Pinned Python 3.10.16, CadQuery 2.4.0, VTK 9.2.6, PyYAML 6.0.2,
   pytest 9.0.1, Node 24.4.1, and npm 11.4.2. Node remains repository-only.
+- 2026-08-31: Replaced cabinet-specific review additions with generic tree
+  motions, exact-item/subtree visibility, and owner-frame overlays. Open drawer
+  travel is presentation-only; closed saved frames remain physical authority.
+- 2026-08-31: The required scope review found the 153-line drawer review
+  generator coherent as one delegated application workflow; no split is
+  warranted unless result mapping grows into a separate responsibility.
 
 1. 2026-08-31 - Kept runtime locks and viewer source tooling repository-only;
    the downloadable skill will receive prebuilt static viewer assets.

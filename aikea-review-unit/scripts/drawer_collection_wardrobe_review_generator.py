@@ -6,8 +6,14 @@ from collections.abc import Mapping
 from pathlib import Path
 from typing import Any
 
+import cadquery as cq
+
+from assembly_tree_review_plan import (
+    AssemblyReviewMotion,
+    AssemblyReviewOverlay,
+    AssemblyTreeReviewPlan,
+)
 from assembly_run import AssemblyRunReader
-from cabinet_review_addition import CabinetReviewAddition
 from cabinet_review_geometry import CabinetReviewGeometry
 from door_review_state import DoorReviewState
 from drawer_collection_wardrobe_review import DrawerCollectionWardrobeReviewResult
@@ -60,7 +66,9 @@ class DrawerCollectionWardrobeReviewGenerator:
             raise UnitMockupInputError(
                 ["drawer extensions target unknown cabinets: " + ", ".join(sorted(unknown))]
             )
-        additions: list[CabinetReviewAddition] = []
+        motions: list[AssemblyReviewMotion] = []
+        hidden_hardware: list[tuple[str, ...]] = []
+        overlays: list[AssemblyReviewOverlay] = []
         reports: list[Path] = []
         for assembly_id in assembly_ids:
             cabinet = self.loader.load_assembly(
@@ -94,20 +102,38 @@ class DrawerCollectionWardrobeReviewGenerator:
                     ]
                 )
             poses = extensions_mm.get(assembly_id, {})
-            additions.append(
-                CabinetReviewAddition(
-                    assembly_id,
-                    closed_drawers + self.drawer_geometry.build_hardware(saved, steps, {}),
-                    self.drawer_geometry.build_drawers(saved, poses)
-                    + self.drawer_geometry.build_hardware(saved, steps, poses),
+            cabinet_path = ("wardrobe_01", assembly_id)
+            overlays.append(
+                AssemblyReviewOverlay(
+                    cabinet_path,
+                    self.drawer_geometry.build_hardware(saved, steps, poses),
                 )
             )
+            for drawer in saved:
+                extension_mm = float(poses.get(drawer.drawer_id, 0.0))
+                if extension_mm:
+                    motions.append(
+                        AssemblyReviewMotion(
+                            cabinet_path + (drawer.drawer_id,),
+                            cq.Location(cq.Vector(0.0, -extension_mm, 0.0)),
+                        )
+                    )
+                hidden_hardware.extend(
+                    cabinet_path
+                    + (f"hardware:{drawer.drawer_id}_runner_{hand}",)
+                    for hand in ("left", "right")
+                )
             reports.append(report_path)
+        review_plan = AssemblyTreeReviewPlan(
+            motions=tuple(motions),
+            hidden_paths=tuple(hidden_hardware),
+            overlays=tuple(overlays),
+        )
         full = self.full_wardrobe.generate(
             project_root,
             project,
             door_plan or FullWardrobeDoorPlan.uniform(DoorReviewState.CLOSED),
-            tuple(additions),
+            review_plan,
             output_filename,
         )
         return DrawerCollectionWardrobeReviewResult(

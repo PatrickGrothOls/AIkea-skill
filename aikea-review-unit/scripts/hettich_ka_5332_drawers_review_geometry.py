@@ -7,7 +7,6 @@ from typing import Any
 
 import cadquery as cq
 
-from drawer_part_locator import DrawerPartLocator
 from hettich_ka_5332_saved_drawers_loader import HettichKa5332SavedDrawer
 from hettich_ka_5332_step_assembly import HettichKa5332SideStepParts
 from local_to_parent_location import LocalToParentLocation
@@ -23,7 +22,6 @@ class HettichKa5332DrawersReviewGeometry:
     _DRAWER_COLOR = (0.84, 0.75, 0.62, 1.0)
 
     def __init__(self) -> None:
-        self.part_locator = DrawerPartLocator()
         self.frame_location = LocalToParentLocation()
 
     def build_drawers(
@@ -73,7 +71,7 @@ class HettichKa5332DrawersReviewGeometry:
                 part.solid,
                 child_frame
                 * motion
-                * self.part_locator.placement(part.spec.part_id, box).location(),
+                * self.frame_location.build(part.spec.local_to_parent),
                 self._DRAWER_COLOR,
             )
             for part in drawer.child.assembly.parts

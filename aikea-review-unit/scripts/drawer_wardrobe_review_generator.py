@@ -5,10 +5,10 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
-from cabinet_review_addition import CabinetReviewAddition
 from cabinet_review_geometry import CabinetReviewGeometry
 from cadquery_glb_exporter import CadQueryGlbExporter
 from door_review_state import DoorReviewState
+from drawer_assembly_review_plan import DrawerAssemblyReviewPlanBuilder
 from drawer_cabinet_position_checker import DrawerCabinetPositionChecker
 from drawer_hardware_review import DrawerHardwareReviewBuilder
 from drawer_review_geometry import DrawerReviewGeometry
@@ -34,6 +34,7 @@ class DrawerWardrobeReviewGenerator:
         self.cabinet_geometry = CabinetReviewGeometry()
         self.drawer_geometry = DrawerReviewGeometry()
         self.hardware_review = hardware_review_builder or DrawerHardwareReviewBuilder()
+        self.review_plan = DrawerAssemblyReviewPlanBuilder()
         self.position_checker = DrawerCabinetPositionChecker()
         self.full_wardrobe = FullWardrobeReviewGenerator()
         self.exporter = CadQueryGlbExporter()
@@ -102,10 +103,10 @@ class DrawerWardrobeReviewGenerator:
             cabinet_review + hardware.review_parts + drawer_review,
             paths.closeup_glb,
         )
-        addition = CabinetReviewAddition(
-            assembly_id,
-            drawer_physical + hardware.closed_parts,
-            drawer_review + hardware.review_parts,
+        review_plan = self.review_plan.build(
+            built_cabinet,
+            drawer_state,
+            hardware.review_parts,
         )
         door_plan = FullWardrobeDoorPlan.from_assignments(
             DoorReviewState.CLOSED,
@@ -115,7 +116,7 @@ class DrawerWardrobeReviewGenerator:
             project_root,
             project,
             door_plan,
-            (addition,),
+            review_plan,
             paths.full_wardrobe_filename,
         )
         child = next(
