@@ -33,10 +33,13 @@ class GeneratedAssemblyBuilderLoader:
         self,
         project_root: Path,
         assembly_id: str,
-        builder_module: str = "builder",
+        builder_module: str | None = None,
     ) -> Any:
         if not self._ID_PATTERN.fullmatch(assembly_id):
             raise UnitMockupInputError(["the assembly must have a stable id"])
+        builder_module = builder_module or self._default_builder_module(
+            project_root, assembly_id
+        )
         if not re.fullmatch(r"[a-z][a-z0-9_]*", builder_module):
             raise UnitMockupInputError(["the builder module must have a stable name"])
         builder_path = project_root / "assemblies" / assembly_id / f"{builder_module}.py"
@@ -51,15 +54,32 @@ class GeneratedAssemblyBuilderLoader:
         }
         for name in previous:
             sys.modules.pop(name)
-        sys.path.insert(0, str(project_root))
+        runtime_paths = self._feature_runtime_paths()
+        sys.path[:0] = [str(project_root), *runtime_paths]
         try:
             module = importlib.import_module(
                 f"assemblies.{assembly_id}.{builder_module}"
             )
             return module.BUILDER.build()
         finally:
-            sys.path.remove(str(project_root))
+            for path in (str(project_root), *runtime_paths):
+                sys.path.remove(path)
             for name in tuple(sys.modules):
                 if name == "assemblies" or name.startswith("assemblies."):
                     sys.modules.pop(name)
             sys.modules.update(previous)
+
+    def _default_builder_module(self, project_root: Path, assembly_id: str) -> str:
+        complete = project_root / "assemblies" / assembly_id / "complete_builder.py"
+        return "complete_builder" if complete.is_file() else "builder"
+
+    def _feature_runtime_paths(self) -> tuple[str, ...]:
+        skill_root = Path(__file__).resolve().parents[2]
+        directories = (
+            skill_root / "aikea/scripts",
+            skill_root / "aikea-build-units/scripts",
+            skill_root / "aikea-build-drawers/scripts",
+            skill_root / "aikea-build-doors/scripts",
+            skill_root / "aikea-add-lighting/scripts",
+        )
+        return tuple(str(path) for path in directories if path.is_dir())

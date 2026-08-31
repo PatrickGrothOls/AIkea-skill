@@ -12,6 +12,7 @@ from assembly_taxonomy import (
     LocalAssemblyTaxonomy,
     ProjectAssemblyTaxonomy,
 )
+from complete_assembly_builder_renderer import CompleteAssemblyBuilderRenderer
 
 
 class AssemblyTaxonomyRenderer:
@@ -19,6 +20,7 @@ class AssemblyTaxonomyRenderer:
 
     _PROJECT_CONTRACT_FILES = (
         "assembly_composition.py",
+        "assembly_feature.py",
         "assembly_placement.py",
         "assembly_tree.py",
         "specification.py",
@@ -27,6 +29,7 @@ class AssemblyTaxonomyRenderer:
     def __init__(self, asset_root: Path) -> None:
         self.asset_root = asset_root
         self.modules = AssemblyModuleRenderer()
+        self.complete_builder = CompleteAssemblyBuilderRenderer()
         self.specs = AssemblySpecRenderer()
 
     def render(self, taxonomy: ProjectAssemblyTaxonomy) -> dict[Path, str]:
@@ -98,6 +101,9 @@ class AssemblyTaxonomyRenderer:
             ),
             root / "spec.py": self.specs.render(assembly),
             root / "builder.py": self.modules.assembly_builder(assembly),
+            root / "complete_builder.py": self.complete_builder.render(
+                assembly.assembly_id
+            ),
             root / "joints/__init__.py": self.modules.package(
                 f"Contain joints owned by {assembly.assembly_id}"
             ),
