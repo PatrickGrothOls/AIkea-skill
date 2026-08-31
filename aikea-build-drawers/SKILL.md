@@ -33,7 +33,11 @@ geometry from prose.
 3. Identify the existing cabinet that will own each drawer. Resolve every
    drawer as an independent child with its own height, depth, vertical position,
    runner selection, and review pose. Repeating a drawer is ordinary collection
-   composition; it is not a separate stack design.
+   composition; it is not a separate stack design. When the client has not fixed
+   the box heights, resolve the mounting rows and the drawer stack's upper
+   boundary, then use `DrawerStackHeightPlanner` to turn the available intervals
+   into useful box capacity with a deliberate clear gap. Keep explicitly chosen
+   heights unchanged.
 4. Resolve the exact source STEP files named by the selected runner profile. If
    they are absent, load `$aikea-source-hardware-cad` and resume with the returned
    project-local `hardware_directory`. For the implemented MOVENTO generator, run:

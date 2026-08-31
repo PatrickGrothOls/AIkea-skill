@@ -62,6 +62,20 @@ geometry.
 10. In the removed view, leave every cabinet-owned source member in place so its
     saved installation can be inspected directly.
 
+## Vertical drawer density
+
+Resolve the runner rows and the upper boundary of the intended drawer zone before
+choosing automatic box heights. Pass those physical positions to
+`DrawerStackHeightPlanner`; its result is the construction value. It fills each
+available interval while retaining the chosen clear gap, can equalize a matching
+set when the design calls for it, and reports the actual remaining space above
+every box. A client-fixed height remains fixed and its resulting gap stays visible
+for review.
+
+Use the calculated height in each saved drawer child and show the resulting stack
+before repeating it. The model should choose the desired visual or hand clearance
+with the client, not recreate the spacing arithmetic in conversation.
+
 ## Required evidence
 
 The drawer proof is valid when the chosen runner depth fits, the complete closed
