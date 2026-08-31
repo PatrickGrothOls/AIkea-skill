@@ -45,6 +45,18 @@ internal means. Do not report them merely because they are the current internal
 activity. If an internal issue changes the result or needs client input, explain
 the physical consequence and the exact client action instead.
 
+## Protect a fresh project
+
+When the client says the project is completely fresh, use only their current
+messages, explicitly supplied attachments, official manufacturer sources, the
+reusable skill package, and files created inside the active project.
+
+Do not search, open, or copy another client project's folders, saved records,
+generated geometry, placements, measurements, layouts, or design decisions.
+Memory may restore reusable procedure, but never project-specific values. A
+previous result is not a template for the new furniture; calculate every value
+from the active project's own specification.
+
 ## Check before sending
 
 Silently check every client-facing message:

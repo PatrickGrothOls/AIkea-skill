@@ -64,6 +64,12 @@ that preserved project. Both contain three drawer children and runners, three
 shelves, recessed lighting, the machined door, and five exact hinge/plate pairs.
 Feature-state selectors use the full assembly-tree path, so repeated child IDs in
 different branches remain unambiguous.
+The next blind run reached the registered drawer and door composition, then
+opened an older project's lighting record. The shared package contract now
+forbids opening any other client project during a fresh run while still allowing
+reusable skill procedure and official manufacturer sources. Future test folders
+must have Git initialized before the prompt is sent so setup cannot enter the
+client conversation.
 
 ## Audit log
 
@@ -103,6 +109,9 @@ different branches remain unambiguous.
   assertions for both the door and fabrication decision copies.
 - 2026-08-31: Made review discovery recursive and state selectors path-scoped.
   This preserves generic composition when nested branches reuse local child IDs.
+- 2026-08-31: A fresh-run audit caught another project being opened for lighting
+  placement. Strengthened the package-wide isolation contract: another client
+  project is never an input, even as an apparent example.
 
 1. 2026-08-31 - Kept runtime locks and viewer source tooling repository-only;
    the downloadable skill will receive prebuilt static viewer assets.

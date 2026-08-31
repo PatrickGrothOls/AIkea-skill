@@ -159,8 +159,10 @@ direnv exec . python work/generate_complete_cabinet_review.py . --opened --outpu
 ### Fresh whole-skill test
 
 Create a new empty project folder and start a fresh task with no earlier project
-files or measurements. Paste only the client prompt below; keep this document and
-the test observations out of that task's context.
+files or measurements. Initialize Git and its feature branch before starting the
+task so repository setup cannot leak into the client conversation. Paste only the
+client prompt below; keep this document and the test observations out of that
+task's context.
 
 ```text
 $aikea
