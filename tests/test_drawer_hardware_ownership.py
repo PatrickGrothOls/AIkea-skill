@@ -110,6 +110,32 @@ class TestDrawerHardwareOwnership(unittest.TestCase):
             built = self.specification.BuiltPurchasedHardware(item, None)
             self.assertFalse(built.has_geometry)
 
+    def test_drawer_parts_are_directly_walkable_from_their_saved_frames(self) -> None:
+        tree = importlib.import_module("assemblies.assembly_tree")
+        built_parts = tuple(
+            self.specification.BuiltPart(part, object())
+            for part in self.drawer_spec.parts
+        )
+        built_hardware = tuple(
+            self.specification.BuiltPurchasedHardware(item, None)
+            for item in self.drawer_spec.purchased_hardware
+        )
+        drawer = self.specification.BuiltAssembly(
+            self.drawer_spec,
+            built_parts,
+            (),
+            purchased_hardware=built_hardware,
+        )
+
+        visits = tree.AssemblyTreeWalker().walk(drawer)
+
+        part_visits = [item for item in visits if type(item).__name__ == "AssemblyTreePart"]
+        self.assertEqual(len(part_visits), 5)
+        self.assertEqual(
+            part_visits[0].local_to_root.origin_in_parent,
+            self.specification.Point3D(15.0, 505.0, 0.0),
+        )
+
     def _remove_generated_modules(self) -> None:
         for name in tuple(sys.modules):
             if name == "assemblies" or name.startswith("assemblies."):

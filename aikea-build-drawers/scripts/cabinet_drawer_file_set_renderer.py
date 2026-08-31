@@ -4,6 +4,9 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from cabinet_feature_builder_wrapper_renderer import (
+    CabinetFeatureBuilderWrapperRenderer,
+)
 from cabinet_drawer_plan import CabinetDrawerPlan
 from cabinet_with_drawers_builder_renderer import (
     CabinetWithDrawersBuilderRenderer,
@@ -20,6 +23,7 @@ class CabinetDrawerFileSetRenderer:
         self.layout = DrawerLayoutRenderer()
         self.installation = DrawerInstallationRenderer()
         self.parent_builder = CabinetWithDrawersBuilderRenderer()
+        self.wrapper = CabinetFeatureBuilderWrapperRenderer()
         self.drawer_child = DrawerChildModuleRenderer()
 
     def render(self, plan: CabinetDrawerPlan) -> dict[Path, str]:
@@ -31,7 +35,11 @@ class CabinetDrawerFileSetRenderer:
                 f'"""Scope: Contain drawer children owned by {plan.parent_assembly_id}."""\n'
             ),
             parent / "drawer_installation.py": self.installation.render(plan),
-            parent / "with_drawers_builder.py": self.parent_builder.render(plan),
+            parent / "drawers/feature.py": self.parent_builder.render(plan),
+            parent / "with_drawers_builder.py": self.wrapper.render(
+                plan.parent_assembly_id,
+                "drawers.feature",
+            ),
         }
         files.update(self.drawer_child.render(drawer, plan))
         return files

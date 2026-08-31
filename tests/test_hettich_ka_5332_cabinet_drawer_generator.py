@@ -110,15 +110,17 @@ class TestHettichKa5332CabinetDrawerGenerator(unittest.TestCase):
         finally:
             sys.path.remove(str(self.project_root))
 
-        self.assertEqual(len(installation.PURCHASED_HARDWARE), 1)
-        pair = installation.PURCHASED_HARDWARE[0]
-        self.assertEqual(pair.hardware_id, "drawer_01_runner_pair")
-        self.assertEqual(pair.hardware_asset_id, "hettich-ka-5332-500-runner-pair")
-        self.assertIsNone(pair.local_to_parent)
+        self.assertEqual(len(installation.PURCHASED_HARDWARE), 2)
+        left, right = installation.PURCHASED_HARDWARE
+        self.assertEqual(left.hardware_id, "drawer_01_runner_left")
+        self.assertEqual(right.hardware_id, "drawer_01_runner_right")
+        self.assertEqual(left.hardware_asset_id, "hettich-ka-5332-500-runner-pair")
+        self.assertEqual((left.geometry_selector, right.geometry_selector), ("left", "right"))
+        self.assertIsNotNone(left.local_to_parent)
         self.assertEqual(drawer_spec.purchased_hardware, ())
         self.assertEqual(len(built.child_assemblies), 1)
         self.assertEqual(len(built.child_assemblies[0].assembly.parts), 5)
-        self.assertEqual(len(built.purchased_hardware), 1)
+        self.assertEqual(len(built.purchased_hardware), 2)
         cabinet_side = next(part for part in built.parts if part.spec.part_id == "left_side")
         drawer_side = built.child_assemblies[0].assembly.parts[0]
         self.assertFalse(cabinet_side.solid.val().isInside(Vector(128.0, 388.0, 17.0)))

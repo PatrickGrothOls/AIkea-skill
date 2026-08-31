@@ -4,6 +4,9 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from cabinet_feature_builder_wrapper_renderer import (
+    CabinetFeatureBuilderWrapperRenderer,
+)
 from hettich_ka_5332_cabinet_drawers_builder_renderer import (
     HettichKa5332CabinetDrawersBuilderRenderer,
 )
@@ -26,6 +29,7 @@ class HettichKa5332DrawersFileSetRenderer:
         self.layout = HettichKa5332DrawersLayoutRenderer()
         self.installation = HettichKa5332DrawersInstallationRenderer()
         self.cabinet_builder = HettichKa5332CabinetDrawersBuilderRenderer()
+        self.wrapper = CabinetFeatureBuilderWrapperRenderer()
         self.drawer_child = WoodenDrawerChildModuleRenderer()
 
     def render(self, plan: HettichKa5332CabinetDrawersPlan) -> dict[Path, str]:
@@ -36,7 +40,11 @@ class HettichKa5332DrawersFileSetRenderer:
                 f'"""Scope: Contain drawer children owned by {plan.parent_assembly_id}."""\n'
             ),
             parent / "drawer_installation.py": self.installation.render(plan),
-            parent / "with_drawers_builder.py": self.cabinet_builder.render(plan),
+            parent / "drawers/feature.py": self.cabinet_builder.render(plan),
+            parent / "with_drawers_builder.py": self.wrapper.render(
+                plan.parent_assembly_id,
+                "drawers.feature",
+            ),
         }
         for drawer in plan.drawers:
             root = parent / "drawers" / drawer.drawer.assembly_id

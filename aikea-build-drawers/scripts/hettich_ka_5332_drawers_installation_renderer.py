@@ -53,13 +53,28 @@ class HettichKa5332DrawersInstallationRenderer:
         )
 
     def _hardware_source(self, drawer) -> str:
+        mounting = drawer.hardware_mounting
+        left = self._runner_hardware_source(
+            drawer,
+            "left",
+            mounting.left_runner_translation_mm,
+        )
+        right = self._runner_hardware_source(
+            drawer,
+            "right",
+            mounting.right_runner_translation_mm,
+        )
+        return f"{left},\n{right}"
+
+    def _runner_hardware_source(self, drawer, hand: str, origin_mm) -> str:
         return (
             "    PurchasedHardwareSpec(\n"
-            f"        {drawer.drawer.assembly_id + '_runner_pair'!r},\n"
+            f"        {drawer.drawer.assembly_id + '_runner_' + hand!r},\n"
             f"        {drawer.runner.manufacturer!r},\n"
             f"        {drawer.runner.product_code!r},\n"
             f"        {drawer.runner.asset_id!r},\n"
-            "        None,\n"
+            "        " + self._placement_source(origin_mm, "        ") + ",\n"
+            f"        geometry_selector={hand!r},\n"
             "    )"
         )
 

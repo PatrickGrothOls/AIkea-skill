@@ -8,6 +8,7 @@ from pathlib import Path
 from assembly_taxonomy_writer import AssemblyTaxonomyWriter
 from cabinet_assembly_spec_loader import CabinetAssemblySpecLoader
 from cabinet_drawer_plan import DrawerLayout
+from cabinet_feature_manifest import CabinetFeatureManifest
 from drawer_generated_file_record import DrawerGeneratedFileRecord
 from hettich_ka_5332_cabinet_drawers_plan import (
     HettichKa5332CabinetDrawersPlan,
@@ -42,6 +43,7 @@ class HettichKa5332CabinetDrawersGenerator:
         self.renderer = HettichKa5332DrawersFileSetRenderer()
         self.writer = AssemblyTaxonomyWriter()
         self.reservation_store = PanelHardwareReservationStore()
+        self.features = CabinetFeatureManifest()
 
     def add(
         self,
@@ -96,9 +98,23 @@ class HettichKa5332CabinetDrawersGenerator:
             parent_assembly_id,
             plan.hardware_reservations,
         )
+        manifest_path = self.features.register(
+            project_root,
+            parent_assembly_id,
+            "drawers.feature",
+            10,
+        )
         return HettichKa5332DrawersGenerationResult(
             plan,
-            written + (reservation_path.relative_to(project_root),),
+            written
+            + (
+                reservation_path.relative_to(project_root),
+                *(
+                    (manifest_path.relative_to(project_root),)
+                    if manifest_path
+                    else ()
+                ),
+            ),
         )
 
     def _upsert(

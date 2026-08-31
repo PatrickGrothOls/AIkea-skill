@@ -5,6 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 from tempfile import TemporaryDirectory
 import unittest
+import json
 
 import yaml
 
@@ -46,12 +47,24 @@ class TestCabinetDrawerGenerator(unittest.TestCase):
         self.assertTrue((parent / "drawer-layout.yaml").is_file())
         self.assertTrue((parent / "drawers/drawer_01/spec.py").is_file())
         self.assertTrue((parent / "drawers/drawer_01/builder.py").is_file())
+        self.assertTrue((parent / "drawers/feature.py").is_file())
         self.assertTrue((parent / "with_drawers_builder.py").is_file())
+        self.assertTrue((parent / "complete_builder.py").is_file())
+        compile(
+            (parent / "drawers/feature.py").read_text(encoding="utf-8"),
+            "drawers/feature.py",
+            "exec",
+        )
         self.assertEqual(source.read_text(encoding="utf-8"), original_source)
         self.assertEqual(result.plan.runner.product_code, "760H5000S")
         self.assertEqual(result.plan.drawer.box.outside_width_mm, 695.0)
         self.assertEqual(result.plan.drawer.box.outside_depth_mm, 520.0)
         self.assertEqual(result.plan.origin_in_parent_mm, (24.0, 18.0, 456.0))
+        feature_manifest = json.loads((parent / "features.json").read_text())
+        self.assertEqual(
+            feature_manifest["features"],
+            [{"module": "drawers.feature", "order": 10}],
+        )
 
         layout = yaml.safe_load((parent / "drawer-layout.yaml").read_text())
         drawer = layout["drawers"][0]

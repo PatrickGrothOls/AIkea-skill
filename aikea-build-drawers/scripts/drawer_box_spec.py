@@ -3,7 +3,10 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from drawer_part_locator import DrawerPartPlacement
 
 
 @dataclass(frozen=True, slots=True)
@@ -53,6 +56,7 @@ class DrawerPartSpec:
     width_mm: float
     height_mm: float
     thickness_mm: float
+    local_to_parent: DrawerPartPlacement | None = None
 
     @property
     def local_size_mm(self) -> tuple[float, float, float]:

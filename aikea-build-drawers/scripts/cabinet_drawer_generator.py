@@ -7,6 +7,7 @@ from pathlib import Path
 
 from assembly_taxonomy_writer import AssemblyTaxonomyWriter
 from cabinet_assembly_spec_loader import CabinetAssemblySpecLoader
+from cabinet_feature_manifest import CabinetFeatureManifest
 from cabinet_drawer_file_set_renderer import CabinetDrawerFileSetRenderer
 from cabinet_drawer_plan import CabinetDrawerPlan, CabinetDrawerPlanner, DrawerLayout
 from drawer_hardware_set_verifier import DrawerHardwareSetVerifierFactory
@@ -32,6 +33,7 @@ class CabinetDrawerGenerator:
         self.planner = CabinetDrawerPlanner()
         self.renderer = CabinetDrawerFileSetRenderer()
         self.writer = AssemblyTaxonomyWriter()
+        self.features = CabinetFeatureManifest()
         self.hardware_verifier_factory = (
             hardware_verifier_factory or DrawerHardwareSetVerifierFactory()
         )
@@ -63,7 +65,17 @@ class CabinetDrawerGenerator:
             parent_assembly_id,
             files,
         ).save(project_root)
-        return CabinetDrawerGenerationResult(plan, written)
+        manifest = self.features.register(
+            project_root,
+            parent_assembly_id,
+            "drawers.feature",
+            10,
+        )
+        return CabinetDrawerGenerationResult(
+            plan,
+            written
+            + ((manifest.relative_to(project_root),) if manifest else ()),
+        )
 
 
 __all__ = ["CabinetDrawerGenerationResult", "CabinetDrawerGenerator"]

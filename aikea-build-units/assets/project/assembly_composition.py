@@ -33,6 +33,7 @@ class PurchasedHardwareSpec:
     product_code: str
     hardware_asset_id: str
     local_to_parent: LocalToParentPlacement | None
+    geometry_selector: str | None = None
 
 
 class AssemblySpecification(Protocol):

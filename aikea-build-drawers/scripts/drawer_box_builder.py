@@ -7,7 +7,8 @@ from typing import Any
 
 from blank_sheet_builder import BlankSheetBuilder
 from drawer_box_spec import DrawerBoxSpec, DrawerPartSpec
-from drawer_part_locator import DrawerPartLocator, DrawerPartPlacement
+from drawer_part_locator import DrawerPartPlacement
+from local_to_parent_location import LocalToParentLocation
 
 
 @dataclass(frozen=True, slots=True)
@@ -19,7 +20,7 @@ class BuiltDrawerPart:
     placement: DrawerPartPlacement
 
     def placed_shape(self) -> Any:
-        return self.solid.val().located(self.placement.location())
+        return self.solid.val().located(LocalToParentLocation().build(self.placement))
 
 
 @dataclass(frozen=True, slots=True)
@@ -36,23 +37,16 @@ class BuiltDrawerBox:
 class DrawerBoxBuilder:
     """Construct every drawer part through the shared BlankSheetBuilder."""
 
-    def __init__(self) -> None:
-        self.locator = DrawerPartLocator()
-
     def build(self, drawer: DrawerBoxSpec) -> BuiltDrawerBox:
-        parts = tuple(self._build_part(part, drawer) for part in drawer.parts)
+        parts = tuple(self._build_part(part) for part in drawer.parts)
         return BuiltDrawerBox(spec=drawer, parts=parts)
 
-    def _build_part(
-        self,
-        part: DrawerPartSpec,
-        drawer: DrawerBoxSpec,
-    ) -> BuiltDrawerPart:
+    def _build_part(self, part: DrawerPartSpec) -> BuiltDrawerPart:
         blank = BlankSheetBuilder.rectangle(*part.local_size_mm).build()
         return BuiltDrawerPart(
             spec=part,
             solid=blank,
-            placement=self.locator.placement(part.part_id, drawer),
+            placement=part.local_to_parent,
         )
 
 

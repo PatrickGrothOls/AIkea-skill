@@ -6,22 +6,20 @@ from cabinet_drawer_plan import CabinetDrawerPlan
 
 
 class CabinetWithDrawersBuilderRenderer:
-    """Keep parent composition separate from drawer and hardware calculation."""
+    """Render a reusable drawer feature over an already-built cabinet."""
 
     def render(self, plan: CabinetDrawerPlan) -> str:
         return (
-            f'"""Scope: Build {plan.parent_assembly_id} with its declared drawer children."""\n\n'
+            f'"""Scope: Apply declared drawers to {plan.parent_assembly_id}."""\n\n'
             "from dataclasses import replace\n"
             "from assemblies.specification import (\n"
             "    BuiltAssembly, BuiltChildAssembly, BuiltPurchasedHardware,\n"
             ")\n\n"
-            "from .builder import BUILDER as CABINET_BUILDER\n"
-            "from .drawer_installation import CHILD_ASSEMBLIES, FIXED_RUNNERS\n"
-            f"from .drawers.{plan.drawer.assembly_id}.builder import BUILDER as DRAWER_BUILDER\n\n\n"
-            "class CabinetWithDrawersBuilder:\n"
+            "from ..drawer_installation import CHILD_ASSEMBLIES, FIXED_RUNNERS\n"
+            f"from .{plan.drawer.assembly_id}.builder import BUILDER as DRAWER_BUILDER\n\n\n"
+            "class CabinetDrawerFeature:\n"
             "    \"\"\"Compose the existing cabinet and its project-owned drawer child.\"\"\"\n\n"
-            "    def build(self) -> BuiltAssembly:\n"
-            "        cabinet = CABINET_BUILDER.build()\n"
+            "    def apply(self, cabinet) -> BuiltAssembly:\n"
             "        child = BuiltChildAssembly(CHILD_ASSEMBLIES[0], DRAWER_BUILDER.build())\n"
             "        spec = replace(\n"
             "            cabinet.spec,\n"
@@ -36,7 +34,7 @@ class CabinetWithDrawersBuilderRenderer:
             "            child_assemblies=cabinet.child_assemblies + (child,),\n"
             "            purchased_hardware=cabinet.purchased_hardware + runners,\n"
             "        )\n\n\n"
-            "BUILDER = CabinetWithDrawersBuilder()\n"
+            "FEATURE = CabinetDrawerFeature()\n"
         )
 
 

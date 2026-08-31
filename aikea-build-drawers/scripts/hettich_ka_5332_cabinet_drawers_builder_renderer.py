@@ -8,7 +8,7 @@ from hettich_ka_5332_cabinet_drawers_plan import (
 
 
 class HettichKa5332CabinetDrawersBuilderRenderer:
-    """Compose existing cabinet geometry with every declared drawer child."""
+    """Render reusable Hettich drawer composition over a built cabinet."""
 
     def render(self, plan: HettichKa5332CabinetDrawersPlan) -> str:
         imports = "\n".join(
@@ -20,22 +20,20 @@ class HettichKa5332CabinetDrawersBuilderRenderer:
             for drawer in plan.drawers
         )
         return (
-            f'"""Scope: Build {plan.parent_assembly_id} with its declared drawers."""\n\n'
+            f'"""Scope: Apply declared Hettich drawers to {plan.parent_assembly_id}."""\n\n'
             "from dataclasses import replace\n"
             "from assemblies.specification import (\n"
             "    BuiltAssembly, BuiltChildAssembly, BuiltPurchasedHardware,\n"
             ")\n\n"
             "from hettich_ka_5332_panel_machining import HettichKa5332PanelMachining\n\n"
-            "from .builder import BUILDER as CABINET_BUILDER\n"
-            "from .drawer_installation import (\n"
+            "from ..drawer_installation import (\n"
             "    CHILD_ASSEMBLIES, PURCHASED_HARDWARE, RUNNER_SYSTEM_32_ROWS_MM,\n"
             ")\n"
             f"{imports}\n\n\n"
             f"DRAWER_BUILDERS = ({builders},)\n\n\n"
-            "class CabinetWithDrawersBuilder:\n"
+            "class HettichDrawerFeature:\n"
             "    \"\"\"Compose the cabinet and its independently placed drawer children.\"\"\"\n\n"
-            "    def build(self) -> BuiltAssembly:\n"
-            "        cabinet = CABINET_BUILDER.build()\n"
+            "    def apply(self, cabinet) -> BuiltAssembly:\n"
             "        cabinet_parts = HettichKa5332PanelMachining().cabinet_parts(\n"
             "            cabinet.parts, RUNNER_SYSTEM_32_ROWS_MM\n"
             "        )\n"
@@ -60,12 +58,12 @@ class HettichKa5332CabinetDrawersBuilderRenderer:
             "            child_assemblies=cabinet.child_assemblies + children,\n"
             "            purchased_hardware=cabinet.purchased_hardware + hardware,\n"
             "        )\n\n\n"
-            "BUILDER = CabinetWithDrawersBuilder()\n"
+            "FEATURE = HettichDrawerFeature()\n"
         )
 
     def _builder_import(self, drawer_id: str) -> str:
         return (
-            f"from .drawers.{drawer_id}.builder import BUILDER as "
+            f"from .{drawer_id}.builder import BUILDER as "
             f"{self._builder_name(drawer_id)}"
         )
 

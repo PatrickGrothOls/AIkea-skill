@@ -3,9 +3,9 @@
 from __future__ import annotations
 
 from pathlib import Path
-from pprint import pformat
 
 from cabinet_drawer_plan import CabinetDrawerPlan
+from drawer_box_spec_source_renderer import DrawerBoxSpecSourceRenderer
 from hardware_placement_renderer import HardwarePlacementRenderer
 
 
@@ -13,6 +13,7 @@ class DrawerChildModuleRenderer:
     """Create one importable drawer child without parent-cabinet concerns."""
 
     def __init__(self) -> None:
+        self.box_renderer = DrawerBoxSpecSourceRenderer()
         self.placement_renderer = HardwarePlacementRenderer()
 
     def render(self, root: Path, plan: CabinetDrawerPlan) -> dict[Path, str]:
@@ -25,7 +26,7 @@ class DrawerChildModuleRenderer:
         }
 
     def _spec(self, plan: CabinetDrawerPlan) -> str:
-        box = pformat(plan.drawer.box, width=88, sort_dicts=False)
+        box = self.box_renderer.render(plan.drawer.box)
         hardware = plan.runner.require_hardware_asset_set()
         mounting = plan.hardware_mounting
         return (

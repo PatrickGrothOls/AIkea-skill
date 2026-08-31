@@ -3,12 +3,16 @@
 from __future__ import annotations
 
 from pathlib import Path
-from pprint import pformat
 from typing import Any
+
+from drawer_box_spec_source_renderer import DrawerBoxSpecSourceRenderer
 
 
 class WoodenDrawerChildModuleRenderer:
     """Create an importable five-sheet drawer child from a resolved plan."""
+
+    def __init__(self) -> None:
+        self.box_renderer = DrawerBoxSpecSourceRenderer()
 
     def render(self, root: Path, plan: Any) -> dict[Path, str]:
         return {
@@ -20,9 +24,12 @@ class WoodenDrawerChildModuleRenderer:
         }
 
     def _spec(self, plan: Any) -> str:
-        box = pformat(plan.drawer.box, width=88, sort_dicts=False)
+        box = self.box_renderer.render(plan.drawer.box)
         return (
             f'"""Scope: Own the resolved {plan.drawer.assembly_id} dimensions."""\n\n'
+            "from assemblies.specification import (\n"
+            "    AxisBasis, AxisDirection, LocalToParentPlacement, Point3D,\n"
+            ")\n"
             "from drawer_assembly_spec import DrawerAssemblySpec\n"
             "from drawer_box_spec import (\n"
             "    CabinetDrawerOpening, DrawerBoxSizingProfile, DrawerBoxSpec, DrawerPartSpec,\n"

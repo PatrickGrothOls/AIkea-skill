@@ -35,14 +35,17 @@ class HettichKa5332DrawerInstallationRenderer:
             "    ),\n"
             ")\n"
             "CHILD_ASSEMBLIES = (DRAWER_CHILD,)\n\n"
-            "RUNNER_PAIR = PurchasedHardwareSpec(\n"
-            "    'runner_pair',\n"
-            f"    {plan.runner.manufacturer!r},\n"
-            f"    {plan.runner.product_code!r},\n"
-            f"    {plan.runner.asset_id!r},\n"
-            "    None,\n"
-            ")\n"
-            "PURCHASED_HARDWARE = (RUNNER_PAIR,)\n\n"
+            + self._hardware_source(
+                plan,
+                "left",
+                mounting.left_runner_translation_mm,
+            )
+            + self._hardware_source(
+                plan,
+                "right",
+                mounting.right_runner_translation_mm,
+            )
+            + "PURCHASED_HARDWARE = (RUNNER_LEFT, RUNNER_RIGHT)\n\n"
             "RUNNER_SYSTEM_32_ROWS_MM = "
             f"({mounting.system_32_row_height_mm!r},)\n\n"
             "RUNNER_SIDE_PLACEMENTS = {\n"
@@ -53,6 +56,19 @@ class HettichKa5332DrawerInstallationRenderer:
             + self._placement_source(mounting.right_runner_translation_mm, "    ")
             + ",\n"
             "}\n"
+        )
+
+    def _hardware_source(self, plan, hand: str, origin_mm) -> str:
+        constant = f"RUNNER_{hand.upper()}"
+        return (
+            f"{constant} = PurchasedHardwareSpec(\n"
+            f"    {plan.drawer.assembly_id + '_runner_' + hand!r},\n"
+            f"    {plan.runner.manufacturer!r},\n"
+            f"    {plan.runner.product_code!r},\n"
+            f"    {plan.runner.asset_id!r},\n"
+            "    " + self._placement_source(origin_mm, "    ") + ",\n"
+            f"    geometry_selector={hand!r},\n"
+            ")\n"
         )
 
     def _placement_source(

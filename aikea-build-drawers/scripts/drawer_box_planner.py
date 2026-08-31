@@ -2,12 +2,15 @@
 
 from __future__ import annotations
 
+from dataclasses import replace
+
 from drawer_box_spec import (
     CabinetDrawerOpening,
     DrawerBoxSizingProfile,
     DrawerBoxSpec,
     DrawerPartSpec,
 )
+from drawer_part_locator import DrawerPartLocator
 
 
 class DrawerBoxPlanningError(ValueError):
@@ -16,6 +19,9 @@ class DrawerBoxPlanningError(ValueError):
 
 class DrawerBoxPlanner:
     """Resolve five rectangular sheet parts without adding joinery machining."""
+
+    def __init__(self) -> None:
+        self.part_placements = DrawerPartLocator()
 
     def plan(
         self,
@@ -63,7 +69,7 @@ class DrawerBoxPlanner:
                 thickness_mm=sizing.bottom_thickness_mm,
             ),
         )
-        return DrawerBoxSpec(
+        box = DrawerBoxSpec(
             opening=opening,
             sizing=sizing,
             clear_inside_width_mm=clear_width_mm,
@@ -73,6 +79,14 @@ class DrawerBoxPlanner:
             clear_inside_depth_mm=clear_depth_mm,
             parts=parts,
         )
+        placed_parts = tuple(
+            replace(
+                part,
+                local_to_parent=self.part_placements.placement(part.part_id, box),
+            )
+            for part in box.parts
+        )
+        return replace(box, parts=placed_parts)
 
     def _part(
         self,
