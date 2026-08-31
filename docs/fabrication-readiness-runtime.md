@@ -31,8 +31,9 @@ only.
 - [x] Generate a fresh measured wardrobe and complete first cabinet.
 - [x] Compose drawer, door, exact hardware, and lighting through one builder.
 - [x] Export every feature state through the reusable recursive review command.
-- [ ] Build the wardrobe root, run fit/machining checks, and export GLB.
-- [ ] Open the interactive viewer for visual approval.
+- [x] Open the closed and open interactive viewers for visual approval.
+- [ ] After approval, repeat the approved construction through the wardrobe root,
+      run fabrication checks, and export the complete wardrobe GLB.
 
 ## Current state
 
@@ -49,31 +50,23 @@ path, 22 viewer tests, and production viewer build pass. A completely isolated
 Python install could not be retained on this machine because the volume has
 less than 1 GiB free; the declarations were validated against the matching
 existing CadQuery runtime through a repository-local virtual environment.
-The first blind fresh-project run was stopped after the entry router inferred a
-right-hinged first door from the left room boundary. The specialized door skill
-already prohibited that inference; the same approved invariant is now explicit
-at the entry point and protected by a focused regression check. A second blind
-run remains the behavioral proof.
-The isolated second run proved the physical recursion through shelves, three
-drawer children, exact Hettich runners, recessed lighting, a machined door, and
-exact Riex hardware. It then invented three local scripts to combine the final
-review. That exposed the missing review-adapter registry; implementation is now
-moving the state contribution and export loop into the reusable review skill.
-The replacement command now exports 40-item closed and exact door-open GLBs from
-that preserved project. Both contain three drawer children and runners, three
-shelves, recessed lighting, the machined door, and five exact hinge/plate pairs.
-Feature-state selectors use the full assembly-tree path, so repeated child IDs in
-different branches remain unambiguous.
+The clean proof run completed the first cabinet through the recursive physical
+tree: three drawer children, six exact Hettich runner assemblies, three shelves,
+one recessed light, one machined left-hand door, and five exact Riex hinge/plate
+pairs. The packaged command exported 40-item closed and exact door-open GLBs and
+opened both interactive viewers. Feature-state selectors use the full assembly-
+tree path, so repeated child IDs in different branches remain unambiguous.
 The command now writes a checksum-bound `.review.json` beside each GLB with every
 rendered item and its placed bounds. This moves the final generic inspection out
 of client projects; registered feature reports remain the fit evidence until the
 separate fabrication gate can grant manufacturing authority.
-The next blind run reached the registered drawer and door composition, then
-opened an older project's lighting record. The shared package contract now
-forbids opening any other client project during a fresh run while still allowing
-reusable skill procedure and official manufacturer sources. Future test folders
-must have Git initialized before the prompt is sent so setup cannot enter the
-client conversation.
+Earlier stopped runs exposed and closed three behavioral gaps: door hand was
+being inferred from room position, another client project could be opened as an
+example, and missing generic review evidence encouraged local inspection
+scripts. The entry contract, fresh-project isolation rule, and packaged report
+now prevent those paths. The remaining work begins only after visual approval:
+repeat the approved cabinet architecture, produce the full manufacturing pack,
+validate the complete wardrobe, and bind approval to its exact closed GLB.
 
 ## Audit log
 
@@ -119,6 +112,10 @@ client conversation.
 - 2026-08-31: The clean proof run used the recursive GLB command but invented a
   local bounds inspector. Added the same item-and-bounds manifest to the packaged
   command and prohibited local inspection or collision scripts during review.
+- 2026-08-31: The resumed clean proof used only packaged assembly commands,
+  produced checksum-matched closed and open reports for all 40 rendered items,
+  and opened both interactive viewers. This completes the first-cabinet visual
+  gate; it does not grant fabrication authority to the unrepeated wardrobe.
 
 1. 2026-08-31 - Kept runtime locks and viewer source tooling repository-only;
    the downloadable skill will receive prebuilt static viewer assets.
