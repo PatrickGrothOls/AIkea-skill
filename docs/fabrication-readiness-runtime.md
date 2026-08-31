@@ -64,6 +64,10 @@ that preserved project. Both contain three drawer children and runners, three
 shelves, recessed lighting, the machined door, and five exact hinge/plate pairs.
 Feature-state selectors use the full assembly-tree path, so repeated child IDs in
 different branches remain unambiguous.
+The command now writes a checksum-bound `.review.json` beside each GLB with every
+rendered item and its placed bounds. This moves the final generic inspection out
+of client projects; registered feature reports remain the fit evidence until the
+separate fabrication gate can grant manufacturing authority.
 The next blind run reached the registered drawer and door composition, then
 opened an older project's lighting record. The shared package contract now
 forbids opening any other client project during a fresh run while still allowing
@@ -112,6 +116,9 @@ client conversation.
 - 2026-08-31: A fresh-run audit caught another project being opened for lighting
   placement. Strengthened the package-wide isolation contract: another client
   project is never an input, even as an apparent example.
+- 2026-08-31: The clean proof run used the recursive GLB command but invented a
+  local bounds inspector. Added the same item-and-bounds manifest to the packaged
+  command and prohibited local inspection or collision scripts during review.
 
 1. 2026-08-31 - Kept runtime locks and viewer source tooling repository-only;
    the downloadable skill will receive prebuilt static viewer assets.

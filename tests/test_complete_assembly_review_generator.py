@@ -78,18 +78,31 @@ class ExporterProbe:
         self.call = (assembly_id, parts, output)
 
 
+class ReporterProbe:
+    """Capture the reusable manifest call without geometric bounds."""
+
+    def __init__(self) -> None:
+        self.call = None
+
+    def write(self, assembly_id, output, parts, states):
+        self.call = (assembly_id, output, parts, states)
+        return output.with_suffix(".review.json")
+
+
 class TestCompleteAssemblyReviewGenerator:
     """Protect recursive orchestration from furniture-specific branches."""
 
     def test_merges_registered_state_and_exports_one_tree(self, tmp_path) -> None:
         feature = ReviewFeatureProbe()
         exporter = ExporterProbe()
+        reporter = ReporterProbe()
         output = tmp_path / "review.glb"
         generator = CompleteAssemblyReviewGenerator(
             loader=ReviewLoaderProbe(feature),
             hydrator=HydratorProbe(),
             geometry=GeometryProbe(),
             exporter=exporter,
+            reporter=reporter,
         )
 
         result = generator.generate(
@@ -101,8 +114,15 @@ class TestCompleteAssemblyReviewGenerator:
 
         assert feature.states == [(("cabinet_01",), "open")]
         assert exporter.call == ("cabinet_01", ("rendered",), output)
+        assert reporter.call == (
+            "cabinet_01",
+            output,
+            ("rendered",),
+            {"cabinet_01/door": "open"},
+        )
         assert result.feature_selectors == ("cabinet_01/door",)
         assert result.part_count == 1
+        assert result.report_path == output.with_suffix(".review.json")
 
     def test_rejects_unknown_feature_selector(self, tmp_path) -> None:
         generator = CompleteAssemblyReviewGenerator(
@@ -110,6 +130,7 @@ class TestCompleteAssemblyReviewGenerator:
             hydrator=HydratorProbe(),
             geometry=GeometryProbe(),
             exporter=ExporterProbe(),
+            reporter=ReporterProbe(),
         )
 
         with pytest.raises(UnitMockupInputError, match="unknown assembly feature"):

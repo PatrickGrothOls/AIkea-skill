@@ -9,6 +9,7 @@ from assembly_feature_review import AssemblyFeatureReviewContext
 from assembly_review_plan_composer import AssemblyReviewPlanComposer
 from assembly_tree_review_geometry import AssemblyTreeReviewGeometry
 from cadquery_glb_exporter import CadQueryGlbExporter
+from complete_assembly_review_report import CompleteAssemblyReviewReport
 from generated_assembly_builder_loader import GeneratedAssemblyBuilderLoader
 from project_hardware_geometry_resolver import ProjectHardwareGeometryResolver
 from purchased_hardware_hydrator import PurchasedHardwareHydrator
@@ -23,6 +24,7 @@ class CompleteAssemblyReviewResult:
     glb_path: Path
     part_count: int
     feature_selectors: tuple[str, ...]
+    report_path: Path
 
 
 class CompleteAssemblyReviewGenerator:
@@ -35,6 +37,7 @@ class CompleteAssemblyReviewGenerator:
         geometry=None,
         exporter=None,
         composer=None,
+        reporter=None,
     ) -> None:
         self.loader = loader or GeneratedAssemblyBuilderLoader()
         self.hydrator = hydrator or PurchasedHardwareHydrator(
@@ -43,6 +46,7 @@ class CompleteAssemblyReviewGenerator:
         self.geometry = geometry or AssemblyTreeReviewGeometry()
         self.exporter = exporter or CadQueryGlbExporter()
         self.composer = composer or AssemblyReviewPlanComposer()
+        self.reporter = reporter or CompleteAssemblyReviewReport()
 
     def generate(
         self,
@@ -56,6 +60,7 @@ class CompleteAssemblyReviewGenerator:
         visits = self.loader.walk(project_root, built)
         plans = []
         selectors = []
+        resolved_states = {}
         for item in visits:
             if type(item).__name__ != "AssemblyTreeAssembly":
                 continue
@@ -65,6 +70,7 @@ class CompleteAssemblyReviewGenerator:
             ):
                 selector = "/".join((*item.path, registration.feature_id))
                 selectors.append(selector)
+                resolved_states[selector] = requested.get(selector, "closed")
                 context = AssemblyFeatureReviewContext(
                     project_root,
                     item.path,
@@ -73,7 +79,7 @@ class CompleteAssemblyReviewGenerator:
                 plans.append(
                     registration.feature.plan(
                         context,
-                        requested.get(selector, "closed"),
+                        resolved_states[selector],
                     )
                 )
         unknown = sorted(set(requested) - set(selectors))
@@ -90,11 +96,18 @@ class CompleteAssemblyReviewGenerator:
         )
         output.parent.mkdir(parents=True, exist_ok=True)
         self.exporter.export(assembly_id, rendered, output)
+        report_path = self.reporter.write(
+            assembly_id,
+            output,
+            rendered,
+            resolved_states,
+        )
         return CompleteAssemblyReviewResult(
             assembly_id,
             output,
             len(rendered),
             tuple(selectors),
+            report_path,
         )
 
 

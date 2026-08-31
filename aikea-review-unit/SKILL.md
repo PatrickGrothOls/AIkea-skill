@@ -38,7 +38,12 @@ checked before the design is repeated or manufacturing work continues.
    first fitted-door review, add
    `--state <cabinet-id>/door_hinges=open` and write `complete-open.glb`. Never
    create project-local scripts to combine features; their registered review
-   adapters contribute to this generic traversal.
+   adapters contribute to this generic traversal. Read the command's generated
+   `.review.json` for every rendered item and its placed bounds. Do not create a
+   project-local inspection or collision script. The complete-tree report plus
+   each feature's saved fit, movement, and reservation reports are the evidence
+   for visual review; manufacturing authority remains with the later fabrication
+   readiness gate.
 6. Serve the generated complete GLB:
 
    ```bash

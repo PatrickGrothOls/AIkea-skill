@@ -72,6 +72,7 @@ class GenerateCompleteAssemblyReviewCommand:
                     "glb": str(result.glb_path),
                     "part_count": result.part_count,
                     "feature_selectors": result.feature_selectors,
+                    "review_report": str(result.report_path),
                 },
                 indent=2,
             )
