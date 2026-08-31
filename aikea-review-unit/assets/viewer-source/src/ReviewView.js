@@ -8,15 +8,19 @@ export class ReviewView {
       view,
       query.get("title") ?? "Your first cabinet",
       query.get("render") ?? (view === "perspective" ? "photo" : "interactive"),
+      query.get("lighting") !== "off",
+      query.get("framing") === "close" ? 0.72 : 1,
     );
   }
 
-  constructor(view, title, renderMode) {
+  constructor(view, title, renderMode, lightingEnabled, framingScale) {
     this.view = ["top", "bottom", "structure"].includes(view)
       ? view
       : "perspective";
     this.title = title;
     this.renderMode = renderMode === "photo" ? "photo" : "interactive";
+    this.lightingEnabled = lightingEnabled;
+    this.framingScale = framingScale;
   }
 
   cameraDirection() {
@@ -46,6 +50,10 @@ export class ReviewView {
     return this.renderMode === "photo";
   }
 
+  showsLighting() {
+    return this.lightingEnabled;
+  }
+
   frameDimensions(size) {
     if (["perspective", "structure"].includes(this.view)) {
       return { horizontal: size.x, vertical: size.y, depth: size.z };
@@ -56,14 +64,15 @@ export class ReviewView {
   cameraDistance(size, verticalFov, horizontalFov) {
     if (this.view === "perspective") {
       const radius = Math.hypot(size.x, size.y, size.z) / 2;
-      return radius / Math.sin(Math.min(verticalFov, horizontalFov) / 2) * 1.08;
+      return radius / Math.sin(Math.min(verticalFov, horizontalFov) / 2)
+        * 1.08 * this.framingScale;
     }
     const frame = this.frameDimensions(size);
     return Math.max(
       frame.vertical / (2 * Math.tan(verticalFov / 2)),
       frame.horizontal / (2 * Math.tan(horizontalFov / 2)),
       frame.depth,
-    ) * 1.35;
+    ) * 1.35 * this.framingScale;
   }
 
   guidance() {

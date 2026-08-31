@@ -4,9 +4,7 @@ import { lazy, Suspense, useLayoutEffect, useState } from "react";
 import { Canvas, useThree } from "@react-three/fiber";
 import { useGLTF, useTexture } from "@react-three/drei";
 import {
-  AgXToneMapping,
   Box3,
-  SRGBColorSpace,
   Vector3,
 } from "three";
 
@@ -14,17 +12,17 @@ import { AssemblyContactShading } from "./AssemblyContactShading";
 import { AssemblyStudioFloor } from "./AssemblyStudioFloor";
 import { AssemblyStudioEnvironment } from "./AssemblyStudioEnvironment";
 import { AssemblyStudioLights } from "./AssemblyStudioLights";
+import { AssemblyLighting } from "./AssemblyLighting";
 import { CloseInspectionControls } from "./CloseInspectionControls";
+import { DoorOpeningApprovalPanel } from "./DoorOpeningApprovalPanel";
+import { LightingSource } from "./LightingSource";
+import { LightingSurface } from "./LightingSurface";
 import { PlywoodSurface } from "./PlywoodSurface";
+import { ReviewGuidanceCard } from "./ReviewGuidanceCard";
+import { configureReviewRenderer } from "./ReviewRenderer";
 import { ReviewView } from "./ReviewView";
 
 const AssemblyPhotoRenderer = lazy(() => import("./AssemblyPhotoRenderer"));
-
-function configureReviewRenderer({ gl }) {
-  gl.outputColorSpace = SRGBColorSpace;
-  gl.toneMapping = AgXToneMapping;
-  gl.toneMappingExposure = 1.15;
-}
 
 // A function component is the smallest React boundary for the GLB-loading hook.
 function ReviewModel({ onModelMeasured, reviewView }) {
@@ -45,12 +43,14 @@ function ReviewModel({ onModelMeasured, reviewView }) {
       roughnessMap,
       renderer.capabilities.getMaxAnisotropy(),
     );
+    const lightingSurface = new LightingSurface(reviewView.showsLighting());
     scene.rotation.x = -Math.PI / 2;
     scene.traverse((node) => {
       if (node.isMesh) {
         node.castShadow = true;
         node.receiveShadow = true;
         surface.applyTo(node);
+        lightingSurface.applyTo(node);
       }
     });
     scene.updateMatrixWorld(true);
@@ -59,6 +59,7 @@ function ReviewModel({ onModelMeasured, reviewView }) {
     const size = bounds.getSize(new Vector3());
     onModelMeasured({
       center: center.toArray(),
+      lightingSources: LightingSource.collect(scene),
       modelRoot: scene,
       size: size.toArray(),
       span: Math.max(size.x, size.y, size.z),
@@ -86,6 +87,7 @@ function ReviewModel({ onModelMeasured, reviewView }) {
 export function AssemblyReviewViewer() {
   const [modelBounds, setModelBounds] = useState({
     center: [0, 0, 0],
+    lightingSources: [],
     modelRoot: null,
     size: [1, 1, 1],
     span: 1,
@@ -99,13 +101,20 @@ export function AssemblyReviewViewer() {
       <Suspense fallback={null}>
         <AssemblyStudioEnvironment />
         <AssemblyStudioLights modelBounds={modelBounds} />
+        <AssemblyLighting
+          enabled={reviewView.showsLighting()}
+          sources={modelBounds.lightingSources}
+        />
         <ReviewModel onModelMeasured={setModelBounds} reviewView={reviewView} />
       </Suspense>
     </>
   );
 
   return (
-    <main className="review-shell">
+    <main
+      className="review-shell"
+      data-light-source-count={modelBounds.lightingSources.length}
+    >
       <Canvas
         camera={{ position: [150, 100, 150], fov: 50 }}
         dpr={[1, 2]}
@@ -128,11 +137,8 @@ export function AssemblyReviewViewer() {
         )}
         {!reviewView.usesPhotoRenderer() && <AssemblyContactShading />}
       </Canvas>
-      <section className="review-card">
-        <p className="eyebrow">AIkea visual review</p>
-        <h1>{reviewView.title}</h1>
-        <p>{reviewView.guidance()}</p>
-      </section>
+      <ReviewGuidanceCard reviewView={reviewView} />
+      <DoorOpeningApprovalPanel ready={modelBounds.modelRoot !== null} />
     </main>
   );
 }

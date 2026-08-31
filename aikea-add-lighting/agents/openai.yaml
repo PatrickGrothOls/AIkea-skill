@@ -1,0 +1,4 @@
+interface:
+  display_name: "AIkea Add Lighting"
+  short_description: "Add recessed lighting to generated furniture"
+  default_prompt: "Use $aikea-add-lighting to add a recessed light to this generated AIkea unit."

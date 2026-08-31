@@ -113,3 +113,16 @@ class TestReviewViewerInteraction:
         assert "dynamicLowRes:!1" in bundle
         assert "rasterizeScene:!0" in bundle
         assert "renderDelay:350" in bundle
+
+    def test_door_review_ends_with_two_concrete_client_actions(self) -> None:
+        source = (
+            Path(__file__).parents[1]
+            / "aikea-review-unit/assets/viewer-source/src/DoorOpeningApprovalPanel.jsx"
+        ).read_text(encoding="utf-8")
+
+        assert "Approve door openings" in source
+        assert "Change a door" in source
+        assert "ready={modelBounds.modelRoot !== null}" in (
+            Path(__file__).parents[1]
+            / "aikea-review-unit/assets/viewer-source/src/AssemblyReviewViewer.jsx"
+        ).read_text(encoding="utf-8")

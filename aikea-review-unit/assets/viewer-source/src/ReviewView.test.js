@@ -40,6 +40,18 @@ test("perspective distance contains the complete three-dimensional bounds", () =
   assert.ok(view.cameraDistance(size, fieldOfView, fieldOfView) > 5000);
 });
 
+test("close framing opens nearer without changing the model", () => {
+  const ordinary = ReviewView.fromSearch("");
+  const close = ReviewView.fromSearch("?framing=close");
+  const size = { x: 743, y: 2288, z: 582 };
+  const fieldOfView = 50 * Math.PI / 180;
+
+  assert.ok(
+    close.cameraDistance(size, fieldOfView, fieldOfView)
+      < ordinary.cameraDistance(size, fieldOfView, fieldOfView),
+  );
+});
+
 test("only a perspective review shows the studio floor", () => {
   assert.equal(ReviewView.fromSearch("").showsStudioFloor(), true);
   assert.equal(ReviewView.fromSearch("?view=top").showsStudioFloor(), false);

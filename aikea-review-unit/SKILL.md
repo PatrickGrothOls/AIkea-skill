@@ -20,13 +20,28 @@ checked before the design is repeated or manufacturing work continues.
 1. Resolve the active project and require its completed `aikea.yaml` and generated
    `assemblies/` folders.
 2. Read [references/visual-review.md](references/visual-review.md) completely.
-3. Run `python <skill-directory>/scripts/generate_unit_mockup.py <project>/aikea.yaml`.
-4. Run `python <skill-directory>/scripts/serve_unit_review.py <generated-glb>` and
-   leave the local viewer available while the client reviews the cabinet.
-5. Briefly explain the visible result and ask one concrete question about the
-   physical feature currently being reviewed.
-6. Stop with the project awaiting that visual decision. Do not produce the other
-   cabinets until the client approves this one.
+3. Resolve whether the first cabinet has a fitted hinged door. When it does, load
+   `$aikea-build-doors` and use its checked closed and open cabinet artifacts for
+   this review. The visible door panel, purchased hinges, and paired panel work
+   must come from that one completed door relationship.
+4. For an intentionally doorless assembly, run
+   `python <skill-directory>/scripts/generate_unit_mockup.py <project>/aikea.yaml`.
+5. For a fitted-door review, run:
+
+   ```bash
+   python <skill-directory>/scripts/serve_unit_review.py <generated-glb> \
+     --review-data <project>/reviews/door-openings.json
+   ```
+
+   Leave the local viewer available while the client reviews the cabinet. Show
+   both checked states when the completed door supplies closed and open artifacts.
+6. Let the loaded model reveal the run-wide opening proposal. It states that
+   single doors hinge on the left unless marked otherwise, labels each cabinet,
+   and ends with `Approve door openings` and `Change a door`.
+7. Stop with the project awaiting that visual decision. An approval confirms the
+   saved proposal. A change request returns to the conversation so the client can
+   name the cabinet and preferred side before a new checked review is produced.
+   Do not produce the other cabinets until the client approves this one.
 
 ## Present the structural base
 

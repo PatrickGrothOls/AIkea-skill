@@ -4,6 +4,8 @@
 
 - The active project contains a complete `aikea.yaml`.
 - `assemblies/specification.py` and every calculated local unit folder exist.
+- When the first cabinet has a fitted hinged door, its complete door relationship
+  and exact purchased hinge hardware have been built before review.
 - No later unit has been produced as a visual or manufacturing model.
 
 ## Review artifact
@@ -11,20 +13,30 @@
 Use the first assembly in the saved left-to-right run as the review cabinet.
 Execute its generated assembly builder, place the returned local CadQuery parts
 through explicit assembly locations, combine them in one named CadQuery assembly,
-and use CadQuery's GLB exporter. The mock-up includes every calculated carcass
-panel, complete shaped back and door outlines, every top-boundary segment, and
-the supplied removable shelves. Open the door from its calculated hinge edge so
-the cabinet and the shelf spacing can be inspected.
-It preserves any construction already produced by the generated assembly builder;
-the review stage itself neither adds nor approximates missing manufacturing work.
+and use CadQuery's GLB exporter. The result includes every calculated carcass
+panel, complete shaped back and top-boundary segments, and the supplied removable
+shelves.
 
-The generator writes exactly one file:
+Treat every configured fitted door as a physical relationship rather than a
+visible slab. Its first review must come from `$aikea-build-doors` and include the
+machined door, matching cabinet-side work, exact purchased hinges and plates, and
+the checked closed and open positions. The plain unit mock-up is the review path
+only when the assembly is intentionally doorless. The review stage preserves the
+construction produced by the owning builders; it neither adds nor approximates
+missing manufacturing work.
+
+An intentionally doorless review writes exactly one file:
 
 ```text
 assemblies/<first-assembly-id>/<first-assembly-id>.glb
 ```
 
-Do not create GLBs for later assemblies before approval.
+The complete fitted-door review instead uses its door skill's checked closed and
+open GLBs. Its first model also loads the project-wide door-opening review record.
+That record lists every cabinet's checked hand while later cabinets remain saved
+specifications rather than additional visual models. The client approves the
+complete opening proposal or requests one cabinet change directly from the
+viewer. Do not create GLBs for later assemblies before approval.
 
 ## Structural base review
 
@@ -113,5 +125,7 @@ perspective. `title` supplies the short client-facing label shown with that view
 ## Completion state
 
 The stage is complete only when the GLB is open and the client has one clear
-decision to make about the cabinet's visible result. Until they approve it, the
-project state is `awaiting_visual_approval` and later cabinets remain unbuilt.
+decision to make about the cabinet's visible result. A fitted-door review is
+approved only after the model has loaded and the client confirms the labelled
+opening proposal. Until then, the project state is `awaiting_visual_approval`
+and later cabinets remain unbuilt.

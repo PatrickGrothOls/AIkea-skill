@@ -9,6 +9,8 @@ import {
 const TEXTURE_SCALE_MM = 500;
 const REVIEW_ONLY_PREFIX = "review_only__";
 const SOURCE_CAD_MARKER = "__source_cad";
+const PURCHASED_LIGHT_PREFIX = "purchased_light__";
+const LIGHT_SOURCE_PREFIX = "light_source__";
 
 export class PlywoodSurface {
   constructor(colorMap, normalMap, roughnessMap, anisotropy) {
@@ -22,7 +24,9 @@ export class PlywoodSurface {
   applyTo(mesh) {
     if (
       mesh.name.startsWith(REVIEW_ONLY_PREFIX) ||
-      mesh.name.includes(SOURCE_CAD_MARKER)
+      mesh.name.includes(SOURCE_CAD_MARKER) ||
+      mesh.name.startsWith(PURCHASED_LIGHT_PREFIX) ||
+      mesh.name.startsWith(LIGHT_SOURCE_PREFIX)
     ) {
       return;
     }

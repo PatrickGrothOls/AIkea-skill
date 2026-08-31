@@ -29,6 +29,19 @@ class TestReviewFileResolver:
 
         assert resolver.resolve("/assets/viewer.js") == asset
 
+    def test_exposes_only_the_selected_review_record(self, tmp_path: Path) -> None:
+        viewer = tmp_path / "viewer"
+        viewer.mkdir()
+        review = tmp_path / "opening-review.json"
+        review.write_text("{}", encoding="utf-8")
+        resolver = ReviewFileResolver(
+            viewer,
+            tmp_path / "cabinet.glb",
+            review,
+        )
+
+        assert resolver.resolve("/review-data.json") == review
+
     def test_rejects_unknown_and_escaping_paths(self, tmp_path: Path) -> None:
         viewer = tmp_path / "viewer"
         viewer.mkdir()

@@ -142,14 +142,18 @@ When the client adds drawers to generated cabinets, load
 cabinet, save it as a local child assembly, and return the same composed cabinet
 to the complete furniture review.
 
+When the client adds recessed lighting to a generated furniture part, load
+`$aikea-add-lighting`. Let that subskill save one part-local run, derive the host
+groove and complete purchased luminaire from it, and show the same assembly lit
+and unlit before repeating the feature.
+
 Every generated cabinet whose specification includes a fitted hinged door needs
 that door completed before its first visual approval. Load `$aikea-build-doors`
 without waiting for the client to request its standard hinge construction. Let
 that subskill resolve the visible door relationship, select an exact purchased
 hinge-and-plate profile, derive both panels' machining from shared placements,
-prove the proposed opening side for every door from the measured room boundaries,
-and show one complete closed/open door before the client approves the run-wide
-opening plan.
+and show one complete closed/open door together with the run-wide opening proposal
+before the client approves repetition.
 
 When a construction stage requires exact CAD for purchased hardware that is not
 already in the active project's local library, load
