@@ -157,19 +157,22 @@ class TestFullWardrobeReview(unittest.TestCase):
         )
         self.assertEqual(report["status"], "valid")
 
-    def test_project_placement_closes_the_complete_run_bounds(self) -> None:
-        built = self.generator.loader.load_assembly(self.project_root, "tall_storage_03")
+    def test_tree_placement_closes_the_complete_run_bounds(self) -> None:
         from door_review_state import DoorReviewState
 
-        local_parts = self.generator.cabinet_geometry.build(
-            built,
-            DoorReviewState.CLOSED,
+        wardrobe = self.generator.loader.load_assembly(
+            self.project_root,
+            "wardrobe_01",
         )
-        placed = self.generator.part_placer.place(
-            built.spec.assembly_id,
-            built.spec.global_left_mm,
-            10.0,
-            local_parts,
+        visits = self.generator.loader.walk(self.project_root, wardrobe)
+        all_parts = self.generator.tree_geometry.build(
+            visits,
+            {"tall_storage_03": DoorReviewState.CLOSED},
+        )
+        placed = tuple(
+            part
+            for part in all_parts
+            if part.name.startswith("tall_storage_03__")
         )
         bounds = [part.placed_shape().BoundingBox() for part in placed]
 
