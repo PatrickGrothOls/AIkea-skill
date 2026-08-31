@@ -6,7 +6,7 @@ import importlib
 from pathlib import Path
 import re
 import sys
-from typing import Any
+from typing import Any, Callable
 
 from unit_mockup import UnitMockupInputError
 
@@ -47,6 +47,23 @@ class GeneratedAssemblyBuilderLoader:
             raise UnitMockupInputError(
                 [f"missing generated local builder: {builder_path}"]
             )
+        return self._execute(
+            project_root,
+            lambda: importlib.import_module(
+                f"assemblies.{assembly_id}.{builder_module}"
+            ).BUILDER.build(),
+        )
+
+    def walk(self, project_root: Path, built_assembly: Any) -> tuple[Any, ...]:
+        """Traverse one returned assembly through its generated tree contract."""
+        return self._execute(
+            project_root,
+            lambda: importlib.import_module(
+                "assemblies.assembly_tree"
+            ).AssemblyTreeWalker().walk(built_assembly),
+        )
+
+    def _execute(self, project_root: Path, operation: Callable[[], Any]) -> Any:
         previous = {
             name: module
             for name, module in sys.modules.items()
@@ -57,10 +74,7 @@ class GeneratedAssemblyBuilderLoader:
         runtime_paths = self._feature_runtime_paths()
         sys.path[:0] = [str(project_root), *runtime_paths]
         try:
-            module = importlib.import_module(
-                f"assemblies.{assembly_id}.{builder_module}"
-            )
-            return module.BUILDER.build()
+            return operation()
         finally:
             for path in (str(project_root), *runtime_paths):
                 sys.path.remove(path)

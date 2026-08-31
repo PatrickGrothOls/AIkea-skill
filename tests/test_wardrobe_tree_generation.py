@@ -6,6 +6,7 @@ import importlib
 
 from assembly_composition_test_case import AssemblyCompositionTestCase
 from assembly_taxonomy_generator import AssemblyTaxonomyGenerator
+from generated_assembly_builder_loader import GeneratedAssemblyBuilderLoader
 from overall_wardrobe_test_project import OverallWardrobeTestProject
 
 
@@ -71,8 +72,7 @@ class TestWardrobeTreeGeneration(AssemblyCompositionTestCase):
             child_assemblies=children,
         )
 
-        tree = importlib.import_module("assemblies.assembly_tree")
-        visits = tree.AssemblyTreeWalker().walk(wardrobe)
+        visits = GeneratedAssemblyBuilderLoader().walk(project_root, wardrobe)
 
         assemblies = [
             item for item in visits if type(item).__name__ == "AssemblyTreeAssembly"

@@ -7,6 +7,7 @@ from types import MappingProxyType
 from typing import Any
 
 from assembly_run import AssemblyRunReader
+from assembly_tree_review_geometry import AssemblyTreeReviewGeometry
 from base_mockup_geometry import BaseMockupGeometry
 from cabinet_review_addition import CabinetReviewAddition
 from cabinet_review_geometry import CabinetReviewGeometry
@@ -16,14 +17,16 @@ from full_wardrobe_door_plan import FullWardrobeDoorPlan
 from full_wardrobe_position_checker import FullWardrobePositionChecker
 from full_wardrobe_review import FullWardrobeReviewResult
 from generated_assembly_builder_loader import GeneratedAssemblyBuilderLoader
-from project_part_placer import ProjectPartPlacer
+from project_hardware_geometry_resolver import ProjectHardwareGeometryResolver
+from purchased_hardware_hydrator import PurchasedHardwareHydrator
 from unit_mockup import UnitMockupInputError
+from wardrobe_addition_review_geometry import WardrobeAdditionReviewGeometry
 
 
 class FullWardrobeReviewGenerator:
     """Build, position-check, and export all generated wardrobe assemblies."""
 
-    _BASE_ASSEMBLY_ID = "base_01"
+    _ROOT_ASSEMBLY_ID = "wardrobe_01"
 
     def __init__(self) -> None:
         self.run_reader = AssemblyRunReader()
@@ -31,7 +34,11 @@ class FullWardrobeReviewGenerator:
         self.base_geometry = BaseMockupGeometry()
         self.cabinet_geometry = CabinetReviewGeometry()
         self.position_checker = FullWardrobePositionChecker()
-        self.part_placer = ProjectPartPlacer()
+        self.tree_geometry = AssemblyTreeReviewGeometry()
+        self.hardware = PurchasedHardwareHydrator(
+            ProjectHardwareGeometryResolver()
+        )
+        self.addition_geometry = WardrobeAdditionReviewGeometry()
         self.exporter = CadQueryGlbExporter()
 
     def generate(
@@ -59,12 +66,9 @@ class FullWardrobeReviewGenerator:
                 ["cabinet review additions must target unique saved assemblies"]
             )
         door_states = resolved_door_plan.states_for(assembly_ids)
-        built_base = self.loader.load_assembly(project_root, self._BASE_ASSEMBLY_ID)
+        wardrobe = self.loader.load_assembly(project_root, self._ROOT_ASSEMBLY_ID)
+        built_base, built_cabinets = self._children(wardrobe, assembly_ids)
         base_parts = self.base_geometry.build(built_base)
-        built_cabinets = tuple(
-            self.loader.load_assembly(project_root, item.assembly_id)
-            for item in run.assemblies
-        )
         physical_cabinet_parts = tuple(
             self.cabinet_geometry.build(built, DoorReviewState.CLOSED)
             + self._addition_parts(additions_by_id, built.spec.assembly_id, True)
@@ -85,32 +89,17 @@ class FullWardrobeReviewGenerator:
                     + ", ".join(report.failed_check_names())
                 ]
             )
-        project_left_mm = float(built_base.spec.global_left_mm)
-        placed_parts = self.part_placer.place(
-            built_base.spec.assembly_id,
-            project_left_mm,
-            project_left_mm,
-            base_parts,
-        )
-        review_cabinet_parts = tuple(
-            self.cabinet_geometry.build(
-                built,
-                door_states[built.spec.assembly_id],
-            )
-            + self._addition_parts(
+        if additions:
+            placed_parts = self.addition_geometry.build(
+                built_base,
+                built_cabinets,
+                door_states,
                 additions_by_id,
-                built.spec.assembly_id,
-                False,
             )
-            for built in built_cabinets
-        )
-        for built, parts in zip(built_cabinets, review_cabinet_parts):
-            placed_parts += self.part_placer.place(
-                built.spec.assembly_id,
-                float(built.spec.global_left_mm),
-                project_left_mm,
-                parts,
-            )
+        else:
+            hydrated = self.hardware.hydrate(project_root, wardrobe)
+            visits = self.loader.walk(project_root, hydrated)
+            placed_parts = self.tree_geometry.build(visits, door_states)
         filename = output_filename or resolved_door_plan.filename_for(assembly_ids)
         glb_path = project_root / f"assemblies/{filename}"
         self.exporter.export("full_wardrobe", placed_parts, glb_path)
@@ -125,6 +114,19 @@ class FullWardrobeReviewGenerator:
                 }
             ),
         )
+
+    def _children(
+        self,
+        wardrobe: Any,
+        expected_cabinet_ids: tuple[str, ...],
+    ) -> tuple[Any, tuple[Any, ...]]:
+        children = tuple(child.assembly for child in wardrobe.child_assemblies)
+        child_ids = tuple(child.spec.assembly_id for child in children)
+        if not children or child_ids != ("base_01", *expected_cabinet_ids):
+            raise UnitMockupInputError(
+                ["wardrobe root children do not match the saved assembly run"]
+            )
+        return children[0], children[1:]
 
     def _addition_parts(
         self,
