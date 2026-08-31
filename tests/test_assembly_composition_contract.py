@@ -22,6 +22,7 @@ class TestAssemblyCompositionContract(AssemblyCompositionTestCase):
         assert specification.IDENTITY_LOCAL_TO_PARENT.origin_in_parent.x_mm == 0.0
         assert (project_root / "assemblies/assembly_composition.py").is_file()
         assert (project_root / "assemblies/assembly_placement.py").is_file()
+        assert (project_root / "assemblies/assembly_tree.py").is_file()
 
     def test_child_and_hardware_keep_explicit_local_to_parent_frames(
         self, generated_values

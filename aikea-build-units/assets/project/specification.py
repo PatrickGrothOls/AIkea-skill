@@ -123,6 +123,7 @@ class BaseAssemblySpec:
 class BuiltPart:
     spec: PartSpec
     solid: Any
+    local_to_parent: LocalToParentPlacement | None = None
 
 
 @dataclass(frozen=True)

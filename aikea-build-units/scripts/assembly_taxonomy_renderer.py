@@ -20,6 +20,7 @@ class AssemblyTaxonomyRenderer:
     _PROJECT_CONTRACT_FILES = (
         "assembly_composition.py",
         "assembly_placement.py",
+        "assembly_tree.py",
         "specification.py",
     )
 
