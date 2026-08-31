@@ -112,3 +112,14 @@ base remains the authority for the full run. Full-wardrobe review maps every
 approved assembly from its own local zero into the shared project coordinates.
 Approved visible results become the reference for completing construction and
 manufacturing stages.
+
+## Grant fabrication readiness
+
+Read [references/fabrication-readiness.md](references/fabrication-readiness.md)
+before making any fabrication claim. After the complete closed assembly is
+approved, run
+`python <skill-directory>/scripts/check_fabrication_readiness.py <project>/aikea.yaml`.
+Only its `fabrication-ready` result grants that state. A valid GLB, a passed
+position report, or visual approval alone is insufficient; every recursive
+part, joint, machining declaration, purchased item, STEP, drawing, BOM, cut-list
+row, feature proof, and current model checksum must pass together.

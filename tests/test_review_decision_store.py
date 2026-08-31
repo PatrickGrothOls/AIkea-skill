@@ -54,6 +54,24 @@ class TestReviewDecisionStore(unittest.TestCase):
 
         self.assertEqual(self.path.read_text(encoding="utf-8"), before)
 
+    def test_accepts_a_fabrication_assembly_decision(self) -> None:
+        self.path.write_text(
+            json.dumps(
+                {
+                    "review_type": "fabrication_assembly",
+                    "status": "proposed",
+                    "message": "Approve this exact assembly.",
+                    "artifact_sha256": "abc123",
+                }
+            ),
+            encoding="utf-8",
+        )
+
+        result = ReviewDecisionStore(self.path).decide("approved")
+
+        self.assertEqual(result["status"], "approved")
+        self.assertEqual(result["artifact_sha256"], "abc123")
+
 
 if __name__ == "__main__":
     unittest.main()

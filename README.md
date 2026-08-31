@@ -23,6 +23,16 @@ direnv exec . python -m pytest -q
 The review commands discover the same interpreter through
 `AIKEA_CADQUERY_PYTHON`, which `.envrc` sets to `.venv/bin/python`.
 
+For a generated project, the final readiness command is:
+
+```sh
+direnv exec . python aikea-review-unit/scripts/check_fabrication_readiness.py \
+  /path/to/project/aikea.yaml
+```
+
+It reports every missing physical, manufacturing-pack, validation, or visual
+approval requirement and returns success only for `fabrication-ready`.
+
 ## Viewer source
 
 The installed skill contains prebuilt static viewer files and does not require

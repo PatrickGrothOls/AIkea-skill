@@ -22,9 +22,9 @@ only.
 
 ### WP3 - Fabrication gate
 
-- [ ] Define machine-checkable fabrication-ready evidence.
-- [ ] Reject missing geometry, placement, joints, machining, or validation proof.
-- [ ] Keep visual approval as an explicit required gate.
+- [x] Define machine-checkable fabrication-ready evidence.
+- [x] Reject missing geometry, placement, joints, machining, or validation proof.
+- [x] Keep visual approval as an explicit required gate.
 
 ### WP4 - Fresh combined-feature run
 
@@ -39,7 +39,10 @@ The recursive source architecture, reproducible source-environment contract,
 and generic review-pose layer are complete. Any assembly subtree can now be
 moved or hidden by path, and non-authoritative overlays attach through an owner
 path. The wardrobe renderer contains no drawer-specific branch. Closed saved
-frames remain fabrication authority. The exact Python, CadQuery, VTK, PyYAML,
+frames remain fabrication authority. The fabrication gate now rejects incomplete
+tree geometry, hardware, joints, machining, STEP and DXF exports, BOM, cut list,
+feature evidence, validation, or stale visual approval. The exact Python,
+CadQuery, VTK, PyYAML,
 pytest, Node, and npm versions are declared. The repository-local Python command
 path, 22 viewer tests, and production viewer build pass. A completely isolated
 Python install could not be retained on this machine because the volume has
@@ -63,6 +66,11 @@ existing CadQuery runtime through a repository-local virtual environment.
 - 2026-08-31: The required scope review found the 153-line drawer review
   generator coherent as one delegated application workflow; no split is
   warranted unless result mapping grows into a separate responsibility.
+- 2026-08-31: Defined fabrication readiness as the conjunction of the closed
+  recursive physical tree, a complete per-part manufacturing pack, valid
+  feature and position evidence, and approval bound to the exact GLB checksum.
+- 2026-08-31: Generalized the prebuilt viewer decision panel so the client can
+  approve either door-opening proposals or the exact closed fabrication model.
 
 1. 2026-08-31 - Kept runtime locks and viewer source tooling repository-only;
    the downloadable skill will receive prebuilt static viewer assets.

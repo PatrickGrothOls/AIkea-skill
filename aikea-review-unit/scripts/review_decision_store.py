@@ -14,6 +14,7 @@ class ReviewDecisionStore:
         "approved": "approved",
         "change_requested": "change_requested",
     }
+    _REVIEW_TYPES = {"door_openings", "fabrication_assembly"}
 
     def __init__(self, path: Path) -> None:
         self.path = path.resolve()
@@ -23,8 +24,11 @@ class ReviewDecisionStore:
         if status is None:
             raise ValueError("unsupported review decision")
         record = json.loads(self.path.read_text(encoding="utf-8"))
-        if not isinstance(record, dict) or record.get("review_type") != "door_openings":
-            raise ValueError("review record is not a door-opening proposal")
+        if (
+            not isinstance(record, dict)
+            or record.get("review_type") not in self._REVIEW_TYPES
+        ):
+            raise ValueError("review record type is unsupported")
         record["status"] = status
         record["decided_at"] = datetime.now(timezone.utc).isoformat()
         self.path.write_text(json.dumps(record, indent=2) + "\n", encoding="utf-8")
