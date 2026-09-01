@@ -124,6 +124,9 @@ validate the complete wardrobe, and bind approval to its exact closed GLB.
   locking devices. Door and lighting hardware now remain in combined reviews.
 - 2026-09-01: Made every motion, hidden item, hidden subtree, and overlay owner
   prove its path against the closed tree before hardware or review geometry runs.
+- 2026-09-01: Made recursive review reports validate the GLB header and length,
+  exact checksum, unique named positive-volume parts, finite placed bounds, and
+  feature states before writing `status: valid`.
 
 1. 2026-08-31 - Kept runtime locks and viewer source tooling repository-only;
    the downloadable skill will receive prebuilt static viewer assets.
