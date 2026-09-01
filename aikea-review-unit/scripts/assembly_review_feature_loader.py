@@ -75,11 +75,10 @@ class AssemblyReviewFeatureLoader:
         owner_path: tuple[str, ...],
     ) -> bool:
         lineage = self._lineage(assemblies_root, manifest_path)
-        return bool(
-            lineage
-            and len(lineage) <= len(owner_path)
-            and owner_path[-len(lineage) :] == lineage
-        )
+        valid_lineages = {owner_path}
+        if len(owner_path) > 1:
+            valid_lineages.add(owner_path[1:])
+        return bool(lineage and lineage in valid_lineages)
 
     def _lineage(
         self,

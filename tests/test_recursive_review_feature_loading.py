@@ -81,6 +81,22 @@ class TestRecursiveReviewFeatureLoading:
             ("wardrobe_01", "cabinet_01"),
         ) == ()
 
+    def test_does_not_fall_back_to_a_shallow_leaf_manifest(self, tmp_path) -> None:
+        self._feature_package(
+            tmp_path,
+            "assemblies/drawer_01",
+            "unrelated",
+        )
+        self._assembly_package(
+            tmp_path,
+            "assemblies/cabinet_01/children/drawer_01",
+        )
+
+        assert AssemblyReviewFeatureLoader().load(
+            tmp_path,
+            ("wardrobe_01", "cabinet_01", "drawer_01"),
+        ) == ()
+
     def _feature_package(self, root: Path, relative: str, marker: str) -> None:
         package = self._assembly_package(root, relative)
         (package / "review.py").write_text(
