@@ -31,7 +31,7 @@ class FabricationReadinessReport:
 
     @property
     def is_ready(self) -> bool:
-        return all(check.passed for check in self.checks)
+        return bool(self.checks) and all(check.passed for check in self.checks)
 
     def as_dict(self) -> dict[str, object]:
         return {
