@@ -62,10 +62,6 @@ class HettichKa4532SpacerMotionChecker:
                 "motion preserves every placed volume and orientation",
                 self._geometry_matches(closed, opened),
             ),
-            self._check(
-                "both exact spacer instances preserve one source volume",
-                self._spacer_volumes_match(closed, drawer_id),
-            ),
         )
         return HettichKa4532SpacerMotionEvidence(
             {
@@ -91,13 +87,6 @@ class HettichKa4532SpacerMotionChecker:
             )
             for name in closed
         )
-
-    def _spacer_volumes_match(self, parts: dict[str, Any], drawer_id: str) -> bool:
-        names = tuple(f"{drawer_id}_spacer_{hand}" for hand in ("left", "right"))
-        if not set(names) <= parts.keys():
-            return False
-        volumes = tuple(parts[name].placed_shape().Volume() for name in names)
-        return abs(volumes[0] - volumes[1]) <= self._TOLERANCE_MM
 
     def _required_moving_names(self, drawer_id: str) -> set[str]:
         return {

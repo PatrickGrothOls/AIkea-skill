@@ -10,6 +10,14 @@ from hettich_ka_4532_spacer_profile import HETTICH_KA_4532_500_WITH_13952
 class HettichKa4532SpacerSourceChecker:
     """Reject labels or equal-volume substitutes for the purchased hardware."""
 
+    _TOLERANCE_MM3 = 1e-5
+    _RUNNER_MEMBERS = {
+        "left-fixed": ("runner_left", "fixed_member"),
+        "left-moving": ("runner_left", "moving_member"),
+        "right-fixed": ("runner_right", "fixed_member"),
+        "right-moving": ("runner_right", "moving_member"),
+    }
+
     def matches(
         self,
         drawer_id: str,
@@ -22,16 +30,45 @@ class HettichKa4532SpacerSourceChecker:
             expected.keys() <= parts.keys()
             and self._metadata_matches(source_cad, step_set)
             and all(
-                parts[name].source_hardware_asset_id == authority[0]
-                and parts[name].source_geometry_selector == authority[1]
-                and parts[name].source_solid is not None
-                and parts[name].solid.val().isSame(parts[name].source_solid.val())
+                self._part_matches(parts[name], authority, step_set)
                 for name, authority in expected.items()
             )
-            and parts[f"{drawer_id}_spacer_left"].solid.val().isSame(
-                parts[f"{drawer_id}_spacer_right"].solid.val()
+        )
+
+    def _part_matches(
+        self,
+        part: Any,
+        authority: tuple[str, str | None],
+        step_set: Any,
+    ) -> bool:
+        asset_id, selector = authority
+        return (
+            part.source_hardware_asset_id == asset_id
+            and part.source_geometry_selector == selector
+            and self._geometry_matches(
+                part.solid.val(),
+                self._source_solid(selector, step_set),
             )
         )
+
+    def _geometry_matches(self, rendered: Any, source: Any) -> bool:
+        rendered_volume = rendered.Volume()
+        source_volume = source.Volume()
+        shared_volume = rendered.intersect(source).Volume()
+        return all(
+            abs(left - right) <= self._TOLERANCE_MM3
+            for left, right in (
+                (rendered_volume, source_volume),
+                (shared_volume, rendered_volume),
+                (shared_volume, source_volume),
+            )
+        )
+
+    def _source_solid(self, selector: str | None, step_set: Any) -> Any:
+        if selector is None:
+            return step_set.spacer_solid
+        side_name, member_name = self._RUNNER_MEMBERS[selector]
+        return getattr(getattr(step_set, side_name), member_name)
 
     def _metadata_matches(self, source_cad: dict[str, Any], step_set: Any) -> bool:
         profile = HETTICH_KA_4532_500_WITH_13952

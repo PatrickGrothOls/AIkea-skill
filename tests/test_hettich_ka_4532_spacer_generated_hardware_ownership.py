@@ -63,12 +63,13 @@ class TestHettichKa4532SpacerGeneratedHardwareOwnership:
         reserved = result.plan.hardware_reservations[0].depth_interval_mm
         assert reserved[0] <= min(fixed.ymin, moving.ymin)
         assert reserved[1] >= max(fixed.ymax, moving.ymax)
-        for name in (
-            "drawer_01_spacer_left",
-            "drawer_01_spacer_right",
-            "drawer_01_runner_left_fixed",
-            "drawer_01__drawer_01_runner_left_moving",
-        ):
+        selectors = {
+            "drawer_01_spacer_left": None,
+            "drawer_01_spacer_right": None,
+            "drawer_01_runner_left_fixed": "left-fixed",
+            "drawer_01__drawer_01_runner_left_moving": "left-moving",
+        }
+        for name, selector in selectors.items():
             part = by_name[name]
             assert part.source_hardware_asset_id.startswith("hettich-")
-            assert part.solid.val().isSame(part.source_solid.val())
+            assert part.source_geometry_selector == selector

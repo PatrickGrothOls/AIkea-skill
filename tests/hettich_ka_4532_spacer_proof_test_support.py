@@ -6,9 +6,6 @@ from types import SimpleNamespace
 
 import cadquery as cq
 
-from hettich_ka_4532_spacer_proof_checker import (
-    HettichKa4532SpacerProofChecker,
-)
 from unit_mockup import MockupPart
 
 
@@ -71,43 +68,6 @@ class HettichKa4532SpacerProofTestSupport:
             ),
         )
 
-    def check(self, closed, opened, source):
-        return HettichKa4532SpacerProofChecker().check(
-            "cabinet_01",
-            "drawer_01",
-            50.0,
-            closed,
-            opened,
-            {
-                "runner": {
-                    "item_number": "9114276",
-                    "asset_id": "hettich-ka-4532-500-runner-pair",
-                    "sha256": "runner-sha256",
-                },
-                "spacer": {
-                    "item_number": "13952",
-                    "asset_id": "hettich-13952-spacer-profile",
-                    "sha256": "spacer-sha256",
-                    "instances": 2,
-                },
-            },
-            source,
-            {"closed": {}, "open": {}},
-            {
-                "manufacturing_authority": False,
-                "missing_authority": [
-                    "spacer_to_cabinet_fixing_hole_subset",
-                    "spacer_to_cabinet_fastener_identity",
-                    "cabinet_pilot_diameter_mm",
-                    "cabinet_pilot_depth_mm",
-                ],
-            },
-            (
-                {"side_part_id": "left_side"},
-                {"side_part_id": "right_side"},
-            ),
-        )
-
     def part(self, name: str, x_mm: float, y_mm: float) -> MockupPart:
         return MockupPart(
             name,
@@ -138,10 +98,9 @@ class HettichKa4532SpacerProofTestSupport:
             (0.5, 0.5, 0.5, 1.0),
             asset_id,
             selector,
-            workplane,
         )
 
-    def replace_spacer(self, parts, substitute, source_shape):
+    def replace_spacer(self, parts, substitute):
         replacement = MockupPart(
             "drawer_01_spacer_right",
             cq.Workplane(obj=substitute),
@@ -149,19 +108,11 @@ class HettichKa4532SpacerProofTestSupport:
             (0.5, 0.5, 0.5, 1.0),
             "hettich-13952-spacer-profile",
             None,
-            cq.Workplane(obj=source_shape),
         )
         return tuple(replacement if part.name == replacement.name else part for part in parts)
 
-    def passed(self, report, name_fragment: str) -> bool:
-        return next(
-            check["passed"]
-            for check in report.checks
-            if name_fragment in check["name"]
-        )
-
     def equal_volume_substitute(self):
-        return self._shape()
+        return cq.Workplane("XY").box(4.0, 5.0, 2.0, centered=False).val()
 
     def _shape(self):
         return cq.Workplane("XY").box(2.0, 10.0, 2.0, centered=False).val()

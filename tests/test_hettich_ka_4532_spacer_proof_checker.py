@@ -3,6 +3,7 @@
 from hettich_ka_4532_spacer_proof_test_support import (
     HettichKa4532SpacerProofTestSupport,
 )
+from hettich_ka_4532_spacer_proof_checker import HettichKa4532SpacerProofChecker
 
 
 class TestHettichKa4532SpacerProofChecker:
@@ -41,25 +42,62 @@ class TestHettichKa4532SpacerProofChecker:
         substitute = self.support.equal_volume_substitute()
 
         report = self._check(
-            self.support.replace_spacer(
-                self._parts(0.0), substitute, self.source.spacer_solid
-            ),
-            self.support.replace_spacer(
-                self._parts(-50.0), substitute, self.source.spacer_solid
-            ),
+            self.support.replace_spacer(self._parts(0.0), substitute),
+            self.support.replace_spacer(self._parts(-50.0), substitute),
         )
 
         assert not report.is_valid
-        assert not self.support.passed(report, "all six purchased items")
+        assert not self._passed(report, "all six purchased items")
 
     def test_rejects_an_empty_drawer_subtree(self) -> None:
         report = self._check(self._parts(0.0)[:4], self._parts(-50.0)[:4])
 
         assert not report.is_valid
-        assert not self.support.passed(report, "complete generated drawer subtree")
+        assert not self._passed(report, "complete generated drawer subtree")
 
     def _parts(self, drawer_y_mm: float):
         return self.support.parts(drawer_y_mm, self.source)
 
     def _check(self, closed, opened):
-        return self.support.check(closed, opened, self.source)
+        return HettichKa4532SpacerProofChecker().check(
+            "cabinet_01",
+            "drawer_01",
+            50.0,
+            closed,
+            opened,
+            {
+                "runner": {
+                    "item_number": "9114276",
+                    "asset_id": "hettich-ka-4532-500-runner-pair",
+                    "sha256": "runner-sha256",
+                },
+                "spacer": {
+                    "item_number": "13952",
+                    "asset_id": "hettich-13952-spacer-profile",
+                    "sha256": "spacer-sha256",
+                    "instances": 2,
+                },
+            },
+            self.source,
+            {"closed": {}, "open": {}},
+            {
+                "manufacturing_authority": False,
+                "missing_authority": [
+                    "spacer_to_cabinet_fixing_hole_subset",
+                    "spacer_to_cabinet_fastener_identity",
+                    "cabinet_pilot_diameter_mm",
+                    "cabinet_pilot_depth_mm",
+                ],
+            },
+            (
+                {"side_part_id": "left_side"},
+                {"side_part_id": "right_side"},
+            ),
+        )
+
+    def _passed(self, report, name_fragment: str) -> bool:
+        return next(
+            check["passed"]
+            for check in report.checks
+            if name_fragment in check["name"]
+        )

@@ -18,6 +18,7 @@ for skill_name in (
 
 from cadquery_runtime import CadQueryRuntime, CadQueryRuntimeError
 from generate_complete_assembly_review import FeatureStateArguments
+from hettich_ka_4532_spacer_proof_report import HettichKa4532SpacerProofReport
 
 
 class GenerateHettichKa4532SpacerProofCommand:
@@ -37,15 +38,8 @@ class GenerateHettichKa4532SpacerProofCommand:
         from hettich_ka_4532_spacer_proof_generator import (
             HettichKa4532SpacerProofGenerator,
         )
-        from hettich_ka_4532_spacer_proof_report import (
-            HettichKa4532SpacerProofReport,
-        )
         from unit_mockup import UnitMockupInputError
 
-        report_path = (
-            arguments.output_directory.resolve()
-            / "ka4532-spacer-movement-collision-check.json"
-        )
         try:
             result = HettichKa4532SpacerProofGenerator().generate(
                 arguments.aikea_yaml.resolve().parent,
@@ -54,7 +48,7 @@ class GenerateHettichKa4532SpacerProofCommand:
                 FeatureStateArguments().parse(arguments.state),
             )
         except (OSError, KeyError, TypeError, UnitMockupInputError, ValueError) as error:
-            HettichKa4532SpacerProofReport.invalidate(report_path, str(error))
+            self.invalidate(arguments, str(error))
             print(json.dumps({"status": "invalid", "problems": [str(error)]}))
             return 2
         payload = {
@@ -67,18 +61,32 @@ class GenerateHettichKa4532SpacerProofCommand:
         print(json.dumps(payload, indent=2))
         return 0 if result.report.is_valid else 2
 
+    def invalidate(
+        self,
+        arguments: argparse.Namespace,
+        problem: str | None = None,
+    ) -> None:
+        report_path = (
+            arguments.output_directory.resolve()
+            / "ka4532-spacer-movement-collision-check.json"
+        )
+        HettichKa4532SpacerProofReport.invalidate(report_path, problem)
+
 
 # This small adapter keeps runtime handoff outside the command object.
 def main() -> int:
+    command = GenerateHettichKa4532SpacerProofCommand()
+    arguments = command.parser().parse_args()
+    command.invalidate(arguments)
     runtime = CadQueryRuntime.from_environment()
     if not runtime.current_is_ready():
         try:
             return runtime.run_script(Path(__file__).resolve(), sys.argv[1:])
         except CadQueryRuntimeError as error:
+            command.invalidate(arguments, str(error))
             print(json.dumps({"status": "invalid", "problems": [str(error)]}))
             return 2
-    command = GenerateHettichKa4532SpacerProofCommand()
-    return command.run(command.parser().parse_args())
+    return command.run(arguments)
 
 
 if __name__ == "__main__":

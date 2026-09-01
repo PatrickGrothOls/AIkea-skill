@@ -104,7 +104,6 @@ class AssemblyTreeReviewGeometry:
                 self._HARDWARE,
                 item.hardware.spec.hardware_asset_id,
                 item.hardware.spec.geometry_selector,
-                item.hardware.solid,
             ),
         )
 
