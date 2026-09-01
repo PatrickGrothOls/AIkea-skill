@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Any
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(frozen=True)
 class HettichKa4532SpacerProofReport:
     """Keep review evidence explicit without granting fabrication authority."""
 
