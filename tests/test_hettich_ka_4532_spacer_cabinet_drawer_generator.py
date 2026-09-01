@@ -79,6 +79,7 @@ class TestHettichKa4532SpacerCabinetDrawerGenerator:
         assert authority["manufacturing_authority"] is False
         assert authority["reason"] == "blocked_missing_13952_fixing_authority"
         assert features["features"][0]["module"] == "drawers.feature"
+        assert features["features"][0]["review_module"] == "drawers.review"
         assert "drawer_01/left_side" in features["features"][0][
             "affected_manufactured_part_paths"
         ]

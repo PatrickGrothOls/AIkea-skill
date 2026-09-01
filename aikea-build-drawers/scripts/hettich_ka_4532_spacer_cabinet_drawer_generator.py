@@ -81,6 +81,7 @@ class HettichKa4532SpacerCabinetDrawerGenerator:
             parent_assembly_id,
             "drawers.feature",
             10,
+            review_module="drawers.review",
             affected_manufactured_part_paths=(
                 "left_side",
                 "right_side",

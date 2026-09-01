@@ -22,6 +22,9 @@ from hettich_ka_4532_spacer_layout_renderer import (
 from hettich_ka_4532_spacer_machining_authority_renderer import (
     HettichKa4532SpacerMachiningAuthorityRenderer,
 )
+from hettich_ka_4532_spacer_review_module_renderer import (
+    HettichKa4532SpacerReviewModuleRenderer,
+)
 
 
 class HettichKa4532SpacerFileSetRenderer:
@@ -34,6 +37,7 @@ class HettichKa4532SpacerFileSetRenderer:
         self.feature = CabinetWithDrawersBuilderRenderer()
         self.wrapper = CabinetFeatureBuilderWrapperRenderer()
         self.machining = HettichKa4532SpacerMachiningAuthorityRenderer()
+        self.review = HettichKa4532SpacerReviewModuleRenderer()
 
     def render(self, plan) -> dict[Path, str]:
         parent = Path("assemblies") / plan.parent_assembly_id
@@ -46,6 +50,7 @@ class HettichKa4532SpacerFileSetRenderer:
                 f'"""Scope: Contain drawer features owned by {plan.parent_assembly_id}."""\n'
             ),
             drawers / "feature.py": self.feature.render(plan, "CABINET_HARDWARE"),
+            drawers / "review.py": self.review.render(plan),
             drawers / "machining-authority.json": self.machining.render(plan),
             parent / "with_drawers_builder.py": self.wrapper.render(
                 plan.parent_assembly_id,
