@@ -42,6 +42,8 @@ coordinate frame so local construction can verify and place them later.
 
 For Hettich KA 5332 article 9057405, also read
 [references/hettich-ka-5332.md](references/hettich-ka-5332.md).
+For the Hettich KA 4532 runner and its approved 13952 spacer, instead read
+[references/hettich-ka-4532-spacer.md](references/hettich-ka-4532-spacer.md).
 
 ## Project storage
 

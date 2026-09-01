@@ -30,6 +30,8 @@ geometry from prose.
    [references/movento-760h-hardware.md](references/movento-760h-hardware.md).
    For Hettich KA 5332, instead read
    [references/hettich-ka-5332-hardware.md](references/hettich-ka-5332-hardware.md).
+   For Hettich KA 4532 mounted on the approved spacer profile, instead read
+   [references/hettich-ka-4532-spacer-hardware.md](references/hettich-ka-4532-spacer-hardware.md).
 3. Identify the existing cabinet that will own each drawer. Resolve every
    drawer as an independent child with its own height, depth, vertical position,
    runner selection, and review pose. Repeating a drawer is ordinary collection
@@ -88,6 +90,13 @@ public profile is the approved 500 mm article. Its resolved System 32 node,
 five cabinet-side fixings, five drawer-side pilots, and full installed envelope
 are now produced and checked on both hands. Drawer-box joinery and manufacturing
 toolpaths remain later construction gates.
+
+The exact KA 4532 article `9114276` and Hettich spacer article `13952` are
+registered together as a paired hardware option. Their public manifest, native
+STEP observations, and drawer-width calculation are skill-owned. Loading their
+project-local CAD and writing complete placements, machining, reservations, and
+movement evidence remain the next implementation gate before this option can
+generate a fabrication-ready drawer.
 
 ## Responsibility boundary
 
