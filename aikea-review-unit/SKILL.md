@@ -109,6 +109,18 @@ door states independently so the client can reveal the useful cabinets without
 changing any checked closed geometry. It accepts the same `--doors` default and
 repeated `--door <assembly-id>=<state>` choices as the full wardrobe review.
 
+For the first KA 4532 drawer fitted with exact article 13952 spacers, save the
+closed/open physical proof through the same recursive tree:
+
+`python <skill-directory>/scripts/generate_hettich_ka_4532_spacer_proof.py <project>/aikea.yaml --assembly <cabinet-id> --output-directory <review-directory>`
+
+If a fitted door is present, add `--state <cabinet-id>/door_hinges=open` so both
+drawer states are compared with the same unobstructed door state. Require the
+saved `ka4532-spacer-movement-collision-check.json` to have no failed checks.
+Its swept AABB result is conservative conflict evidence, not an exact collision
+claim. The report must retain `manufacturing_authority: false` until the spacer
+fixing authority is complete.
+
 ## Inspect drawer locking devices
 
 When the client needs to inspect the moving locking devices before their mounting

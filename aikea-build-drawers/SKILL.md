@@ -57,6 +57,13 @@ geometry from prose.
 
    `python <aikea-review-unit-directory>/scripts/generate_hettich_ka_5332_prototype.py <project>/aikea.yaml --assembly <cabinet-id> --hardware-directory <hardware-directory> --output-directory <review-directory>`
 
+   For KA 4532 with article 13952, generate only the first requested drawer:
+
+   `python <skill-directory>/scripts/generate_hettich_ka_4532_spacer_cabinet_drawer.py <project>/aikea.yaml --assembly <cabinet-id> --drawer <drawer-id> --bottom-height-mm <height-above-carcass-bottom> --box-height-mm <height> --box-depth-mm <depth> --drawer-front-mm <drawer-front> --hardware-directory <hardware-directory>`
+
+   Do not repeat it yet. This command preserves one unchanged spacer STEP on
+   each cabinet side and records the unresolved spacer fixing authority.
+
 5. Treat the generated cabinet-local files as the source for this drawer. The
    composed cabinet builder must load the original cabinet builder and its saved
    drawer child rather than reconstructing either assembly. Later proposals may
@@ -65,16 +72,26 @@ geometry from prose.
    Require the resolved runner center to occupy a real shared System 32 row and
    save its cabinet and drawer machining plus physical hardware reservation with
    the generated child.
-6. Run:
+6. For MOVENTO and KA 5332, run:
 
    `python <aikea-review-unit-directory>/scripts/generate_drawer_wardrobe_review.py <project>/aikea.yaml --assembly <cabinet-id> --drawer-state open --hardware-directory <download-directory>`
+
+   For KA 4532 with article 13952, instead run:
+
+   `python <aikea-review-unit-directory>/scripts/generate_hettich_ka_4532_spacer_proof.py <project>/aikea.yaml --assembly <cabinet-id> --output-directory <review-directory>`
+
+   When the cabinet has a fitted door, append
+   `--state <cabinet-id>/door_hinges=open` so the door is held open in both
+   compared drawer states.
 
 7. Require both the drawer position report and the complete wardrobe position
    report to pass. Present the close-up first, then the complete furniture run
    containing that same composed cabinet. Use closed, open, and removed review
    states when the client needs to compare the fitted box, its movement, and the
    cabinet-owned runner locations. Require the runner movement report when the
-   drawer is shown open.
+   drawer is shown open. For KA 4532 with article 13952, require the saved
+   `ka4532-spacer-movement-collision-check.json` to have no failed checks instead;
+   it remains explicitly non-authoritative for fabrication.
 8. Explain the useful physical result in client-facing language and end with one
    concrete visual decision about the drawer's size or position.
 
@@ -92,11 +109,14 @@ are now produced and checked on both hands. Drawer-box joinery and manufacturing
 toolpaths remain later construction gates.
 
 The exact KA 4532 article `9114276` and Hettich spacer article `13952` are
-registered together as a paired hardware option. Their public manifest, native
-STEP observations, and drawer-width calculation are skill-owned. Loading their
-project-local CAD and writing complete placements, machining, reservations, and
-movement evidence remain the next implementation gate before this option can
-generate a fabrication-ready drawer.
+registered together as a paired hardware option. The single-drawer generator
+checksum-gates their project-local STEP files, classifies every runner member,
+places the same unchanged spacer solid on both cabinet sides, and saves exact
+hardware ownership and panel reservations. Recursive review now checks closed
+and open movement, exact endpoint intersections, and conservative linear swept
+envelopes. Repetition and fabrication readiness remain blocked until one
+complete cabinet passes and an approved spacer fixing plan supplies the missing
+hole subset, fastener, pilot diameter, and pilot depth.
 
 ## Responsibility boundary
 
