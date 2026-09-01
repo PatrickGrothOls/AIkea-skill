@@ -25,6 +25,14 @@ only.
 - [x] Define machine-checkable fabrication-ready evidence.
 - [x] Reject missing geometry, placement, joints, machining, or validation proof.
 - [x] Keep visual approval as an explicit required gate.
+- [x] Close independent-review false-green probes against saved evidence.
+
+### WP3.1 - Exact material authority
+
+- [x] Block fabricated parts without an explicit authoritative material ID.
+- [ ] Add exact user-selected cabinet, door, back, base, and drawer material IDs
+      to the project input and generated part contracts.
+- [ ] Regenerate the target project after Patrick confirms those products.
 
 ### WP4 - Fresh combined-feature run
 
@@ -43,10 +51,15 @@ moved or hidden by path, and non-authoritative overlays attach through an owner
 path. The wardrobe renderer contains no drawer-specific branch. Closed saved
 frames remain fabrication authority. The fabrication gate now rejects incomplete
 tree geometry, hardware, joints, machining, STEP and DXF exports, BOM, cut list,
-feature evidence, validation, or stale visual approval. The exact Python,
-CadQuery, VTK, PyYAML,
+feature evidence, validation, or stale visual approval. STEP solids and DXF
+topology are compared to built geometry; feature evidence has exact owner-relative
+part scope; position evidence carries the complete current-tree fingerprint; and
+approval must match a freshly rebuilt canonical closed GLB. Invalid command runs
+replace any old ready report, while viewer decisions serialize across processes
+and always serve immutable startup bytes. The exact Python, CadQuery, VTK, PyYAML,
 pytest, Node, and npm versions are declared. The repository-local Python command
-path, 23 viewer tests, and production viewer build pass. A completely isolated
+path, 347 Python tests, 72 subtests, 23 viewer tests, and production viewer build
+pass. A completely isolated
 Python install could not be retained on this machine because the volume has
 less than 1 GiB free; the declarations were validated against the matching
 existing CadQuery runtime through a repository-local virtual environment.
@@ -65,9 +78,13 @@ Earlier stopped runs exposed and closed three behavioral gaps: door hand was
 being inferred from room position, another client project could be opened as an
 example, and missing generic review evidence encouraged local inspection
 scripts. The entry contract, fresh-project isolation rule, and packaged report
-now prevent those paths. The remaining work begins only after visual approval:
-repeat the approved cabinet architecture, produce the full manufacturing pack,
-validate the complete wardrobe, and bind approval to its exact closed GLB.
+now prevent those paths. Exact material identity is deliberately not inferred
+from thickness, role, or BOM prose: current generated projects remain blocked
+until the selected material IDs are propagated into every generated part
+specification. After that input is confirmed, the remaining project work is to
+regenerate, repeat the approved cabinet architecture, produce the full
+manufacturing pack, validate the complete wardrobe, and approve its exact closed
+GLB.
 
 ## Audit log
 
@@ -145,6 +162,20 @@ validate the complete wardrobe, and bind approval to its exact closed GLB.
 - 2026-09-01: Full regression exposed the legacy Blum runner IDs as
   `runner_left` and `runner_right`, not drawer-prefixed IDs. Corrected the
   drawer overlay ownership filter while retaining door and lighting hardware.
-
-1. 2026-08-31 - Kept runtime locks and viewer source tooling repository-only;
+- 2026-09-01: The second independent review found same-bounds DXFs, unrelated
+  feature STEP evidence, and weak position records. DXF topology now matches the
+  authoritative blank; feature manifests declare exact affected parts; and saved
+  position data must have complete structure and the current tree fingerprint.
+- 2026-09-01: Bound closed-model approval to a freshly regenerated canonical GLB
+  from the current tree. Structurally empty scenes, stale frames, duplicate tree
+  paths, missing material identity, and stale ready reports now block.
+- 2026-09-01: Replaced in-process viewer locking with a stable sidecar file lock
+  and removed project files from static resolution. Concurrent processes cannot
+  both decide, and encoded model routes return only immutable startup bytes.
+- 2026-09-01: The material-contract audit confirmed generated specs expose
+  thickness but not exact board identity. The gate blocks safely; selected
+  product IDs must be propagated separately instead of inferred or generalized.
+- 2026-09-01: The required 157-line drawer generator test review separated
+  `DrawerLayout` identifier validation from the generator integration contract.
+- 2026-08-31: Kept runtime locks and viewer source tooling repository-only;
    the downloadable skill will receive prebuilt static viewer assets.
