@@ -26,20 +26,29 @@ class CheckFabricationReadinessCommand:
         try:
             from fabrication_readiness_gate import FabricationReadinessGate
             from generated_assembly_builder_loader import GeneratedAssemblyBuilderLoader
+            from project_hardware_geometry_resolver import (
+                ProjectHardwareGeometryError,
+                ProjectHardwareGeometryResolver,
+            )
+            from purchased_hardware_hydrator import PurchasedHardwareHydrator
 
             project = yaml.safe_load(path.read_text(encoding="utf-8"))
             if not isinstance(project, dict):
                 raise UnitMockupInputError(["aikea.yaml must contain an object"])
             loader = GeneratedAssemblyBuilderLoader()
             wardrobe = loader.load_assembly(path.parent, self._ROOT_ASSEMBLY_ID)
+            wardrobe = PurchasedHardwareHydrator(
+                ProjectHardwareGeometryResolver()
+            ).hydrate(path.parent, wardrobe)
             visits = loader.walk(path.parent, wardrobe)
             report = FabricationReadinessGate().evaluate(path.parent, visits)
             output = path.parent / "manufacturing/fabrication-readiness.json"
             report.write(output)
         except (OSError, yaml.YAMLError, PartConstructionError) as error:
             return self._invalid([str(error)])
-        except UnitMockupInputError as error:
-            return self._invalid(list(error.problems))
+        except (UnitMockupInputError, ProjectHardwareGeometryError) as error:
+            problems = getattr(error, "problems", (str(error),))
+            return self._invalid(list(problems))
         payload = report.as_dict() | {"report": str(output)}
         print(json.dumps(payload, indent=2))
         return 0 if report.is_ready else 2

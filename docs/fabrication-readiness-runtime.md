@@ -131,6 +131,10 @@ validate the complete wardrobe, and bind approval to its exact closed GLB.
   Each STEP must boolean-match its built local solid; each DXF must parse to a
   closed face with the same millimetre footprint. Placeholder and stale exports
   now block readiness.
+- 2026-09-01: Made BOM, cut-list, and machining coverage exact: duplicates,
+  extras, wrong quantities, dimensions, hardware identity, and unresolved joint
+  operations now block. Position reports require real checks and recursive
+  feature evidence must checksum-bind its affected STEP artifacts.
 
 1. 2026-08-31 - Kept runtime locks and viewer source tooling repository-only;
    the downloadable skill will receive prebuilt static viewer assets.

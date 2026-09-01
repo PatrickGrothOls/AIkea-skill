@@ -43,6 +43,7 @@ class AssemblyPositionReport:
 
     def as_dict(self) -> dict[str, Any]:
         return {
+            "schema_version": 1,
             "status": "valid" if self.is_valid else "invalid",
             "global_coordinates": {
                 "zero": "front-left floor point of the measured space",

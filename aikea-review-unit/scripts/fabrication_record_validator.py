@@ -1,60 +1,39 @@
-"""Scope: Validate structured fabrication records and their tree-path coverage."""
+"""Scope: Parse versioned fabrication records into unique exact-path indexes."""
 
 from __future__ import annotations
 
+from collections import Counter
 import csv
 import json
 from pathlib import Path
 
 
 class FabricationRecordValidator:
-    """Require versioned records with one complete row per expected physical item."""
+    """Reject malformed records, missing paths, duplicates, and unexpected rows."""
 
-    def json_coverage(
+    def json_index(
         self,
         path: Path,
         key: str,
-        expected: tuple[str, ...],
-        required_fields: tuple[str, ...],
-    ) -> tuple[str, ...]:
+        expected_paths: tuple[str, ...],
+    ) -> tuple[dict[str, dict], tuple[str, ...]]:
         data = self.read_json(path)
-        if not data or data.get("schema_version") != 1:
-            return (str(path),)
-        records = data.get(key)
+        records = data.get(key) if data and data.get("schema_version") == 1 else None
         if not isinstance(records, list):
-            return (str(path),)
-        by_path = {
-            item.get("path"): item for item in records if isinstance(item, dict)
-        }
-        missing = set(expected) - set(by_path)
-        incomplete = {
-            item_path
-            for item_path in expected
-            if item_path in by_path
-            and any(by_path[item_path].get(field) in (None, "") for field in required_fields)
-        }
-        return tuple(sorted(missing | incomplete))
+            return {}, (str(path),)
+        return self._index(path, tuple(records), expected_paths)
 
-    def csv_coverage(
+    def csv_index(
         self,
         path: Path,
-        expected: tuple[str, ...],
-        required_fields: tuple[str, ...],
-    ) -> tuple[str, ...]:
+        expected_paths: tuple[str, ...],
+    ) -> tuple[dict[str, dict], tuple[str, ...]]:
         try:
             with path.open(newline="", encoding="utf-8") as source:
-                rows = tuple(csv.DictReader(source))
+                records = tuple(csv.DictReader(source))
         except OSError:
-            return (str(path),)
-        by_path = {row.get("path"): row for row in rows}
-        missing = set(expected) - set(by_path)
-        incomplete = {
-            item_path
-            for item_path in expected
-            if item_path in by_path
-            and any(by_path[item_path].get(field) in (None, "") for field in required_fields)
-        }
-        return tuple(sorted(missing | incomplete)) or (() if rows else (str(path),))
+            return {}, (str(path),)
+        return self._index(path, records, expected_paths)
 
     def read_json(self, path: Path) -> dict | None:
         try:
@@ -62,6 +41,31 @@ class FabricationRecordValidator:
         except (OSError, json.JSONDecodeError):
             return None
         return value if isinstance(value, dict) else None
+
+    def _index(
+        self,
+        path: Path,
+        records: tuple,
+        expected_paths: tuple[str, ...],
+    ) -> tuple[dict[str, dict], tuple[str, ...]]:
+        valid_records = tuple(item for item in records if isinstance(item, dict))
+        record_paths = tuple(item.get("path") for item in valid_records)
+        counts = Counter(item for item in record_paths if isinstance(item, str))
+        expected = set(expected_paths)
+        actual = set(counts)
+        problems = tuple(
+            sorted(
+                ({str(path)} if len(valid_records) != len(records) else set())
+                | {f"{item}: missing" for item in expected - actual}
+                | {f"{item}: unexpected" for item in actual - expected}
+                | {f"{item}: duplicate" for item, count in counts.items() if count != 1}
+            )
+        )
+        return {
+            item["path"]: item
+            for item in valid_records
+            if isinstance(item.get("path"), str) and counts[item["path"]] == 1
+        }, problems
 
 
 __all__ = ["FabricationRecordValidator"]

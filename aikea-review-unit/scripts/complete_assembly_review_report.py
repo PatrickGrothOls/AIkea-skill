@@ -2,12 +2,11 @@
 
 from __future__ import annotations
 
-from hashlib import sha256
 import json
 from math import isfinite
 from pathlib import Path
-import struct
 
+from glb_artifact_snapshot import GlbArtifactSnapshot
 from unit_mockup import UnitMockupInputError
 
 
@@ -23,7 +22,7 @@ class CompleteAssemblyReviewReport:
         parts: tuple,
         feature_states: dict[str, str],
     ) -> Path:
-        artifact = self._validated_artifact(glb_path)
+        artifact = GlbArtifactSnapshot.load(glb_path)
         self._validate_feature_states(feature_states)
         report_path = glb_path.with_suffix(".review.json")
         items = self._validated_items(parts)
@@ -34,7 +33,7 @@ class CompleteAssemblyReviewReport:
             "manufacturing_authority": False,
             "assembly_id": assembly_id,
             "artifact": str(glb_path),
-            "artifact_sha256": sha256(artifact).hexdigest(),
+            "artifact_sha256": artifact.sha256,
             "part_count": len(items),
             "feature_states": feature_states,
             "items": items,
@@ -44,19 +43,6 @@ class CompleteAssemblyReviewReport:
             encoding="utf-8",
         )
         return report_path
-
-    def _validated_artifact(self, path: Path) -> bytes:
-        try:
-            content = path.read_bytes()
-        except OSError as error:
-            raise UnitMockupInputError([f"review GLB cannot be read: {path}"]) from error
-        header = content[:12]
-        if len(header) != 12:
-            raise UnitMockupInputError([f"review GLB has an invalid header: {path}"])
-        magic, version, declared_length = struct.unpack("<4sII", header)
-        if magic != b"glTF" or version != 2 or declared_length != len(content):
-            raise UnitMockupInputError([f"review GLB has an invalid header: {path}"])
-        return content
 
     def _validated_items(self, parts: tuple) -> list[dict[str, object]]:
         names = tuple(getattr(part, "name", None) for part in parts)
