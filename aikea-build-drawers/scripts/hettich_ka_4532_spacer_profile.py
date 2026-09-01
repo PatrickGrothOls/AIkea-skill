@@ -22,10 +22,12 @@ class HettichKa4532SpacerProfile:
     runner_height_mm: float
     spacer_height_mm: float
     spacer_length_mm: float
+    minimum_cabinet_depth_mm: float
+    combined_load_capacity_kg: float
     runner_center_from_drawer_bottom_mm: float
     runner_front_from_drawer_front_mm: float
     spacer_bottom_from_drawer_bottom_mm: float
-    spacer_front_from_drawer_front_mm: float
+    spacer_front_from_cabinet_front_mm: float
 
     @property
     def hardware_width_per_side_mm(self) -> float:
@@ -47,10 +49,12 @@ HETTICH_KA_4532_500_WITH_13952 = HettichKa4532SpacerProfile(
     runner_height_mm=46.0,
     spacer_height_mm=50.0,
     spacer_length_mm=486.0,
+    minimum_cabinet_depth_mm=504.0,
+    combined_load_capacity_kg=20.0,
     runner_center_from_drawer_bottom_mm=23.0,
     runner_front_from_drawer_front_mm=2.0,
     spacer_bottom_from_drawer_bottom_mm=-2.0,
-    spacer_front_from_drawer_front_mm=10.0,
+    spacer_front_from_cabinet_front_mm=10.0,
 )
 
 

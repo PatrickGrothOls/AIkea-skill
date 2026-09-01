@@ -29,9 +29,16 @@ its own side thickness is considered. With 15 mm drawer sides, the generic
 inside-width reduction is 105.4 mm.
 
 The approved proof placed the runner centre 23 mm above the drawer bottom. The
-runner begins 2 mm behind the drawer front. The spacer begins 10 mm behind the
-drawer front and extends from 2 mm below the wooden drawer bottom to 48 mm above
-it. These are saved construction observations, not client-project dimensions.
+fixed runner begins 2 mm behind the cabinet front; its moving member begins 2 mm
+behind the wooden drawer front. The spacer begins 10 mm behind the cabinet front
+and extends from 2 mm below the wooden drawer bottom to 48 mm above it. These are
+saved construction observations, not client-project dimensions.
+
+The exact 500 mm runner requires at least 504 mm cabinet depth. With article
+`13952`, the combined application is limited to 20 kg even though the runner on
+its own is rated higher. Runtime generation must reject shallower cabinets and
+record the 20 kg limit. Declared-load validation is also required before the set
+can be fabrication-ready.
 
 The left and right installations use the same unchanged spacer STEP. The right
 instance is rigidly reoriented into the opposite cabinet-side frame; it is not

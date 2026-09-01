@@ -49,6 +49,8 @@ class TestHettichKa4532SpacerDrawerSizing:
         assert profile.hardware_width_per_side_mm == 37.7
         assert profile.spacer_item_number == "13952"
         assert profile.runner_item_number == "9114276"
+        assert profile.minimum_cabinet_depth_mm == 504.0
+        assert profile.combined_load_capacity_kg == 20.0
 
     def test_approved_opening_resolves_the_proven_drawer_width(self) -> None:
         sizing = HettichKa4532SpacerDrawerBoxProfileAdapter().build(

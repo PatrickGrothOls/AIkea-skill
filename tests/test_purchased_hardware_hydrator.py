@@ -110,6 +110,8 @@ class TestPurchasedHardwareHydrator(AssemblyCompositionTestCase):
         resolver = ProjectHardwareGeometryResolver()
         assets = (
             "movento-760h5000s-runner-left",
+            "hettich-ka-4532-500-runner-pair",
+            "hettich-13952-spacer-profile",
             "hettich-ka-5332-500-runner-pair",
             "riex-nc70-f000001-closed",
         )

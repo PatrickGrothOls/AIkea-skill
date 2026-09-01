@@ -46,11 +46,15 @@ class ProjectHardwareGeometryResolver:
 
     def _default_providers(self) -> tuple[ProjectHardwareGeometryProvider, ...]:
         from blum_movento_geometry_provider import BlumMoventoGeometryProvider
+        from hettich_ka_4532_spacer_geometry_provider import (
+            HettichKa4532SpacerGeometryProvider,
+        )
         from hettich_ka_5332_geometry_provider import HettichKa5332GeometryProvider
         from riex_nc70_geometry_provider import RiexNc70GeometryProvider
 
         return (
             BlumMoventoGeometryProvider(),
+            HettichKa4532SpacerGeometryProvider(),
             HettichKa5332GeometryProvider(),
             RiexNc70GeometryProvider(),
         )
