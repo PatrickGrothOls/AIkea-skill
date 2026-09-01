@@ -21,26 +21,40 @@ class TestDrawerAssemblyReviewPlan:
             DrawerReviewState.REMOVED,
         ),
     )
-    def test_hides_only_hardware_replaced_by_the_drawer_overlay(self, state) -> None:
+    @pytest.mark.parametrize(
+        "runner_ids",
+        (
+            ("runner_left", "runner_right"),
+            ("drawer_01_runner_left", "drawer_01_runner_right"),
+        ),
+    )
+    def test_hides_only_hardware_replaced_by_the_drawer_overlay(
+        self,
+        state,
+        runner_ids,
+    ) -> None:
         plan = DrawerAssemblyReviewPlanBuilder().build(
-            self._cabinet(),
+            self._cabinet(runner_ids),
             state,
             ("drawer overlay",),
         )
         cabinet = ("wardrobe_01", "cabinet_01")
         drawer = cabinet + ("drawer_01",)
 
-        assert plan.hides(cabinet + ("hardware:runner_left",))
-        assert plan.hides(cabinet + ("hardware:runner_right",))
+        assert all(
+            plan.hides(cabinet + (f"hardware:{runner_id}",))
+            for runner_id in runner_ids
+        )
         assert plan.hides(drawer + ("hardware:locking_device_left",))
         assert plan.hides(drawer + ("hardware:locking_device_right",))
         assert not plan.hides(cabinet + ("hardware:door_hinge_left",))
         assert not plan.hides(cabinet + ("hardware:light_driver",))
+        assert not plan.hides(cabinet + ("hardware:drawer_02_runner_left",))
         assert plan.hides(drawer + ("hardware:drawer_sensor",)) is (
             state is DrawerReviewState.REMOVED
         )
 
-    def _cabinet(self):
+    def _cabinet(self, runner_ids):
         drawer = SimpleNamespace(
             spec=SimpleNamespace(
                 assembly_id="drawer_01",
@@ -61,10 +75,10 @@ class TestDrawerAssemblyReviewPlan:
             spec=SimpleNamespace(assembly_id="cabinet_01"),
             child_assemblies=(drawer,),
             purchased_hardware=self._hardware(
-                "runner_left",
-                "runner_right",
+                *runner_ids,
                 "door_hinge_left",
                 "light_driver",
+                "drawer_02_runner_left",
             ),
         )
 
