@@ -81,20 +81,6 @@ class AssemblyFabricationChecker:
             )
         return self._check("tree.joint_machining", tuple(problems))
 
-    def part_paths(self, visits: tuple[Any, ...]) -> tuple[str, ...]:
-        return tuple(
-            self.path(item.path)
-            for item in visits
-            if type(item).__name__ == "AssemblyTreePart"
-        )
-
-    def hardware_paths(self, visits: tuple[Any, ...]) -> tuple[str, ...]:
-        return tuple(
-            self.path(item.path)
-            for item in visits
-            if type(item).__name__ == "AssemblyTreeHardware"
-        )
-
     def path(self, path: tuple[str, ...]) -> str:
         return "/".join(segment.split(":", 1)[-1] for segment in path)
 

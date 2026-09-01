@@ -8,6 +8,7 @@ from typing import Any
 from assembly_fabrication_checker import AssemblyFabricationChecker
 from fabrication_artifact_checker import FabricationArtifactChecker
 from fabrication_readiness_report import FabricationReadinessReport
+from fabrication_tree_evidence import FabricationTreeEvidenceBuilder
 
 
 class FabricationReadinessGate:
@@ -16,16 +17,17 @@ class FabricationReadinessGate:
     def __init__(self) -> None:
         self.assembly = AssemblyFabricationChecker()
         self.artifacts = FabricationArtifactChecker()
+        self.evidence = FabricationTreeEvidenceBuilder()
 
     def evaluate(
         self,
         project_root: Path,
         visits: tuple[Any, ...],
     ) -> FabricationReadinessReport:
+        evidence = self.evidence.build(visits)
         checks = self.assembly.check(visits) + self.artifacts.check(
             project_root,
-            self.assembly.part_paths(visits),
-            self.assembly.hardware_paths(visits),
+            evidence,
         )
         return FabricationReadinessReport(checks)
 

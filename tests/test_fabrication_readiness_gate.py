@@ -7,17 +7,9 @@ import json
 from pathlib import Path
 from types import SimpleNamespace
 
+import cadquery as cq
+
 from fabrication_readiness_gate import FabricationReadinessGate
-
-
-class SolidProbe:
-    """Expose one positive-volume manufactured solid without CadQuery."""
-
-    def val(self):
-        return self
-
-    def Volume(self) -> float:
-        return 1.0
 
 
 class AssemblyTreeAssembly:
@@ -54,7 +46,18 @@ class TestFabricationReadinessGate:
         assert report.as_dict()["status"] == "fabrication-ready"
 
     def _visits(self):
-        built_part = SimpleNamespace(solid=SolidProbe())
+        built_part = SimpleNamespace(
+            spec=SimpleNamespace(
+                part_id="left_side",
+                local_size_mm=(500.0, 2000.0, 18.0),
+            ),
+            solid=cq.Workplane("XY").box(
+                500.0,
+                2000.0,
+                18.0,
+                centered=(False, False, False),
+            ),
+        )
         assembly = AssemblyTreeAssembly()
         assembly.path = ("wardrobe_01",)
         assembly.local_to_root = object()
@@ -73,8 +76,12 @@ class TestFabricationReadinessGate:
         parts = root / "manufacturing/parts"
         parts.mkdir(parents=True)
         slug = self._PART_PATH.replace("/", "__")
-        (parts / f"{slug}.step").write_bytes(b"step")
-        (parts / f"{slug}.dxf").write_bytes(b"dxf")
+        built_part = self._visits()[1].part
+        cq.exporters.export(built_part.solid, str(parts / f"{slug}.step"))
+        cq.exporters.export(
+            built_part.solid.faces(">Z"),
+            str(parts / f"{slug}.dxf"),
+        )
         self._json(
             root / "manufacturing/bom.json",
             {

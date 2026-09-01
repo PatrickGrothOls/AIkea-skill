@@ -6,7 +6,9 @@ from hashlib import sha256
 from pathlib import Path
 
 from fabrication_record_validator import FabricationRecordValidator
+from fabrication_part_artifact_checker import FabricationPartArtifactChecker
 from fabrication_readiness_report import FabricationReadinessCheck
+from fabrication_tree_evidence import FabricationTreeEvidence
 
 
 class FabricationArtifactChecker:
@@ -14,15 +16,17 @@ class FabricationArtifactChecker:
 
     def __init__(self) -> None:
         self.records = FabricationRecordValidator()
+        self.part_artifacts = FabricationPartArtifactChecker()
 
     def check(
         self,
         project_root: Path,
-        part_paths: tuple[str, ...],
-        hardware_paths: tuple[str, ...],
+        evidence: FabricationTreeEvidence,
     ) -> tuple[FabricationReadinessCheck, ...]:
+        part_paths = tuple(item.path for item in evidence.parts)
+        hardware_paths = tuple(item.path for item in evidence.hardware)
         return (
-            self._part_exports(project_root, part_paths),
+            self.part_artifacts.check(project_root, evidence.parts),
             self._bom(project_root, part_paths, hardware_paths),
             self._cut_list(project_root, part_paths),
             self._machining(project_root, part_paths),
@@ -30,16 +34,6 @@ class FabricationArtifactChecker:
             self._validation(project_root),
             self._visual_approval(project_root),
         )
-
-    def _part_exports(self, root, part_paths) -> FabricationReadinessCheck:
-        missing = tuple(
-            str(path.relative_to(root))
-            for part_path in part_paths
-            for suffix in (".step", ".dxf")
-            for path in (root / "manufacturing/parts" / f"{self._slug(part_path)}{suffix}",)
-            if not self._nonempty(path)
-        )
-        return self._check("pack.part_step_and_drawings", missing)
 
     def _bom(self, root, part_paths, hardware_paths) -> FabricationReadinessCheck:
         path = root / "manufacturing/bom.json"
@@ -137,9 +131,6 @@ class FabricationArtifactChecker:
 
     def _nonempty(self, path: Path) -> bool:
         return path.is_file() and path.stat().st_size > 0
-
-    def _slug(self, path: str) -> str:
-        return path.replace("/", "__")
 
     def _check(self, code, problems) -> FabricationReadinessCheck:
         return FabricationReadinessCheck(code, not problems, tuple(problems))
