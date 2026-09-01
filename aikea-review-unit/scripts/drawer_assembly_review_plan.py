@@ -32,12 +32,19 @@ class DrawerAssemblyReviewPlanBuilder:
         )
         cabinet_path = ("wardrobe_01", built_cabinet.spec.assembly_id)
         drawer_path = cabinet_path + (child.spec.assembly_id,)
+        runner_ids = {
+            f"{child.spec.assembly_id}_runner_left",
+            f"{child.spec.assembly_id}_runner_right",
+        }
+        locking_device_ids = {"locking_device_left", "locking_device_right"}
         hidden_hardware = tuple(
             cabinet_path + (f"hardware:{item.spec.hardware_id}",)
             for item in built_cabinet.purchased_hardware
+            if item.spec.hardware_id in runner_ids
         ) + tuple(
             drawer_path + (f"hardware:{item.spec.hardware_id}",)
             for item in child.assembly.purchased_hardware
+            if item.spec.hardware_id in locking_device_ids
         )
         motions = (
             (

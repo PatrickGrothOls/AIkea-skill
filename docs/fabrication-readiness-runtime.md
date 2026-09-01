@@ -120,6 +120,8 @@ validate the complete wardrobe, and bind approval to its exact closed GLB.
 - 2026-09-01: Patrick directed repair of every failed independent review.
   Extracted feature discovery from builder execution and resolved manifests by
   generated assembly lineage, closing sibling-cabinet and repeated-ID gaps.
+- 2026-09-01: Limited the legacy drawer overlay to replacing its own runners and
+  locking devices. Door and lighting hardware now remain in combined reviews.
 
 1. 2026-08-31 - Kept runtime locks and viewer source tooling repository-only;
    the downloadable skill will receive prebuilt static viewer assets.
