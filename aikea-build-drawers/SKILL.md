@@ -21,6 +21,15 @@ the intended cabinet and drawer arrangement, runs the deterministic builders,
 and discusses the physical result with the client. It does not recreate drawer
 geometry from prose.
 
+## Select the runner profile
+
+Preserve an exact runner choice already saved in the active project or stated by
+the client. Otherwise, when the client asks for verified Hettich runners without
+naming a product, select Hettich KA 4532 Silent System article `9114276` together
+with one exact purchased article `13952` spacer on each cabinet side. Do not fall
+back to KA 5332 merely because it was implemented earlier. Use KA 5332 only when
+the active project or client explicitly selects it.
+
 ## Build drawer children from verified source CAD
 
 1. Resolve the active AIkea project and require its completed `aikea.yaml` and

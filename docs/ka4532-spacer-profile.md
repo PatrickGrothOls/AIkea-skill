@@ -28,6 +28,12 @@ values without copying vendor CAD or client-project geometry.
 - [x] Save the spacer machining blocker, hardware reservations, movement, and collision evidence.
 - [ ] Prove one complete generated cabinet before enabling repetition.
 
+### WP4 — Default workflow routing
+
+- [x] Make an unspecified request for verified Hettich runners select KA 4532 article 9114276 with exact article 13952 spacers.
+- [x] Preserve an existing or explicit runner choice instead of replacing it.
+- [ ] Confirm the corrected selection in three isolated cold-start runs.
+
 ## Current state
 
 The exact project-local STEP set now loads through checksum-gated public
@@ -54,6 +60,10 @@ The current proof cabinet's 741 mm fitted door also exceeds its selected Riex
 profile's 600 mm limit. Repetition remains disabled until both blockers are
 resolved and the complete cabinet passes independently.
 
+The drawer skill now treats KA 4532 plus article 13952 as the default when a
+client requests verified Hettich runners without naming a product. KA 5332
+remains available only for an existing project or an explicit client choice.
+
 ## Audit log
 
 1. 2026-09-01 — Patrick approved promoting the exact KA 4532 plus article 13952 spacer proof into the standalone AIkea skill repository. The promotion stores product authority and reusable physical relationships while keeping downloaded vendor files project-local, because the repository is intended for public use.
@@ -62,3 +72,4 @@ resolved and the complete cabinet passes independently.
 4. 2026-09-01 — WP3 movement and collision evidence was generated from the recursive complete-assembly path. It reuses the hydrated exact CAD, compares the drawer closed and open with the fitted door open in both states, excludes only the two documented same-hand runner articulation pairs, and records swept AABB intersections as conservative conflicts rather than exact collisions.
 5. 2026-09-01 — The first drawer movement-and-collision proof passed with no failed checks. The complete-cabinet gate remains open because the spacer fixing authority is unresolved and the current 741 mm door exceeds the selected profile's 600 mm limit; no repetition was enabled.
 6. 2026-09-01 — Independent stability review reproduced equal-volume spacer substitution and stale-proof launcher attacks. The proof now compares all six purchased members against independently loaded checksum-gated source solids, rejects the substitute, invalidates old evidence before full argument validation and runtime discovery, and remains importable through macOS Python 3.9 for CadQuery handoff.
+7. 2026-09-01 — Three clean runs exposed that an unspecified request for verified Hettich runners still selected the older KA 5332 path. Patrick had already directed the workflow to use the spacer system, so the drawer skill now selects exact KA 4532 article 9114276 with purchased article 13952 spacers by default while preserving any explicit or existing runner choice.
