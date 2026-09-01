@@ -67,9 +67,19 @@ class FabricationFeatureScopeResolver:
         candidates = tuple(
             path
             for path in assembly_paths
-            if lineage and tuple(path.split("/"))[-len(lineage) :] == lineage
+            if lineage and self._lineage_matches(lineage, tuple(path.split("/")))
         )
         return candidates[0] if len(candidates) == 1 else None
+
+    def _lineage_matches(
+        self,
+        lineage: tuple[str, ...],
+        physical_path: tuple[str, ...],
+    ) -> bool:
+        valid_lineages = {physical_path}
+        if len(physical_path) > 1:
+            valid_lineages.add(physical_path[1:])
+        return lineage in valid_lineages
 
     def _lineage(self, assemblies_root, manifest_path) -> tuple[str, ...]:
         lineage = []

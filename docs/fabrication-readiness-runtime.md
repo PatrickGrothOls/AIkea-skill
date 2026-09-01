@@ -177,5 +177,8 @@ GLB.
   product IDs must be propagated separately instead of inferred or generalized.
 - 2026-09-01: The required 157-line drawer generator test review separated
   `DrawerLayout` identifier validation from the generator integration contract.
+- 2026-09-01: The repeated independent review found fabrication feature scope
+  still accepted one unique shallow suffix. Matched its owner rule to the review
+  loader: only full lineage or one explicit outer-root segment may be omitted.
 - 2026-08-31: Kept runtime locks and viewer source tooling repository-only;
    the downloadable skill will receive prebuilt static viewer assets.
