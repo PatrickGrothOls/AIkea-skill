@@ -43,8 +43,8 @@ reservations and recursive closed, open, and removed review behavior are
 implemented and tested. The promoted first cabinet now has checksum-linked
 closed/open GLBs and a saved proof showing the complete drawer subtree and both
 moving runner members travel 500 mm, both exact spacers and fixed members stay in
-the cabinet, both endpoints are collision-free, and the conservative linear
-swept envelopes report no conflict.
+the cabinet, both endpoints have no unintended collision pairs, and the
+conservative linear swept envelopes report no conflict.
 
 The complete-cabinet and fabrication gates remain closed. Neither the promoted
 proof nor Hettich's available product data defines one approved
@@ -61,4 +61,4 @@ resolved and the complete cabinet passes independently.
 3. 2026-09-01 — The approved proof and current Hettich material were checked for spacer fixing authority. They establish product identity, envelope, runner mounting relationships, minimum depth, and load limit, but not a unique spacer-to-cabinet screw and pilot plan. The implementation records this as an explicit fabrication blocker instead of choosing holes from CAD by inference.
 4. 2026-09-01 — WP3 movement and collision evidence was generated from the recursive complete-assembly path. It reuses the hydrated exact CAD, compares the drawer closed and open with the fitted door open in both states, excludes only the two documented same-hand runner articulation pairs, and records swept AABB intersections as conservative conflicts rather than exact collisions.
 5. 2026-09-01 — The first drawer movement-and-collision proof passed with no failed checks. The complete-cabinet gate remains open because the spacer fixing authority is unresolved and the current 741 mm door exceeds the selected profile's 600 mm limit; no repetition was enabled.
-6. 2026-09-01 — Independent stability review reproduced equal-volume spacer substitution and stale-proof launcher attacks. The proof now compares all six purchased members against independently loaded checksum-gated source solids, rejects the substitute, invalidates old evidence before runtime discovery, and remains importable through macOS Python 3.9 for CadQuery handoff.
+6. 2026-09-01 — Independent stability review reproduced equal-volume spacer substitution and stale-proof launcher attacks. The proof now compares all six purchased members against independently loaded checksum-gated source solids, rejects the substitute, invalidates old evidence before full argument validation and runtime discovery, and remains importable through macOS Python 3.9 for CadQuery handoff.

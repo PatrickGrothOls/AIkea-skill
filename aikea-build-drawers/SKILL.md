@@ -69,9 +69,11 @@ geometry from prose.
    drawer child rather than reconstructing either assembly. Later proposals may
    regenerate files still owned by AIkea, while a locally changed file stops the
    complete revision for client review.
-   Require the resolved runner center to occupy a real shared System 32 row and
-   save its cabinet and drawer machining plus physical hardware reservation with
-   the generated child.
+   For MOVENTO and KA 5332, require the resolved runner center to occupy a real
+   shared System 32 row and save its cabinet and drawer machining plus physical
+   hardware reservation with the generated child. For KA 4532 with article
+   13952, require both panel reservations and the explicit spacer machining
+   blocker; do not infer spacer holes, fasteners, or pilots.
 6. For MOVENTO and KA 5332, run:
 
    `python <aikea-review-unit-directory>/scripts/generate_drawer_wardrobe_review.py <project>/aikea.yaml --assembly <cabinet-id> --drawer-state open --hardware-directory <download-directory>`
@@ -84,14 +86,17 @@ geometry from prose.
    `--state <cabinet-id>/door_hinges=open` so the door is held open in both
    compared drawer states.
 
-7. Require both the drawer position report and the complete wardrobe position
-   report to pass. Present the close-up first, then the complete furniture run
-   containing that same composed cabinet. Use closed, open, and removed review
-   states when the client needs to compare the fitted box, its movement, and the
-   cabinet-owned runner locations. Require the runner movement report when the
-   drawer is shown open. For KA 4532 with article 13952, require the saved
-   `ka4532-spacer-movement-collision-check.json` to have no failed checks instead;
-   it remains explicitly non-authoritative for fabrication.
+7. For MOVENTO and KA 5332, require both the drawer position report and the
+   complete wardrobe position report to pass. Present the close-up first, then
+   the complete furniture run containing that same composed cabinet. Use closed,
+   open, and removed review states when needed, and require the runner movement
+   report when the drawer is shown open.
+
+   For KA 4532 with article 13952, require only the saved recursive
+   `ka4532-spacer-movement-collision-check.json`: it must have no failed checks
+   and must retain `manufacturing_authority: false`. Do not substitute the
+   legacy position reports for this proof or treat its machining blocker as a
+   requirement to invent missing fixing data.
 8. Explain the useful physical result in client-facing language and end with one
    concrete visual decision about the drawer's size or position.
 
