@@ -14,6 +14,7 @@ class HettichKa4532SpacerHardwareReservations:
 
     HARDWARE_KIND = "drawer_runner_with_spacer"
     _SIDES = ("left", "right")
+    _PLACEMENT_TOLERANCE_MM = 0.01
 
     def build(
         self,
@@ -103,8 +104,12 @@ class HettichKa4532SpacerHardwareReservations:
         offset_mm: float = 0.0,
     ) -> tuple[float, float]:
         return (
-            min(getattr(bound, minimum_name) for bound in bounds) + offset_mm,
-            max(getattr(bound, maximum_name) for bound in bounds) + offset_mm,
+            min(getattr(bound, minimum_name) for bound in bounds)
+            + offset_mm
+            - self._PLACEMENT_TOLERANCE_MM,
+            max(getattr(bound, maximum_name) for bound in bounds)
+            + offset_mm
+            + self._PLACEMENT_TOLERANCE_MM,
         )
 
 

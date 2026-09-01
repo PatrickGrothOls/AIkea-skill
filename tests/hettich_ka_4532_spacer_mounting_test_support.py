@@ -1,16 +1,6 @@
-"""Scope: Provide explicit cabinet-part frames and runner bounds for KA 4532 tests."""
+"""Scope: Provide explicit cabinet and exact-envelope KA 4532 test geometry."""
 
 from types import SimpleNamespace
-
-
-class _RunnerMember:
-    """Expose native member bounds through the CadQuery shape contract."""
-
-    def __init__(self, xmin: float, xmax: float) -> None:
-        self._bounds = SimpleNamespace(xmin=xmin, xmax=xmax, ymin=-9.5)
-
-    def BoundingBox(self):
-        return self._bounds
 
 
 class HettichKa4532SpacerMountingTestSupport:
@@ -36,6 +26,8 @@ class HettichKa4532SpacerMountingTestSupport:
         )
 
     def step_set(self):
+        fixed_length_mm = 502.483917
+        moving_length_mm = 505.04
         return SimpleNamespace(
             runner_source=SimpleNamespace(
                 bounds_mm=SimpleNamespace(zmin=-22.85, zmax=22.85),
@@ -45,18 +37,30 @@ class HettichKa4532SpacerMountingTestSupport:
                 asset=SimpleNamespace(sha256="spacer-sha256")
             ),
             runner_left=SimpleNamespace(
-                fixed_member=self._member(0.0, 12.7),
-                moving_member=self._member(0.0, 12.7),
+                fixed_member=self._member(0.0, fixed_length_mm),
+                moving_member=self._member(0.0, moving_length_mm),
             ),
             runner_right=SimpleNamespace(
-                fixed_member=self._member(188.3, 201.0),
-                moving_member=self._member(188.3, 201.0),
+                fixed_member=self._member(188.3, fixed_length_mm),
+                moving_member=self._member(188.3, moving_length_mm),
             ),
-            spacer_solid=object(),
+            spacer_solid=self._box(0.0, 25.0, 486.0, 50.0, 0.0),
         )
 
-    def _member(self, xmin, xmax):
-        return _RunnerMember(xmin, xmax)
+    def _member(self, xmin, length_mm):
+        return self._box(xmin, 12.7, length_mm, 45.7, -9.5)
+
+    def _box(self, xmin, width_mm, depth_mm, height_mm, ymin):
+        import cadquery as cq
+
+        solid = cq.Solid.makeBox(
+            width_mm,
+            depth_mm,
+            height_mm,
+            cq.Vector(xmin, 0.0, 0.0),
+        )
+        zmin = -22.85 if height_mm == 45.7 else 0.0
+        return solid.located(cq.Location(cq.Vector(0.0, ymin, zmin)))
 
     def _side_part(self, x_mm, y_mm, local_z):
         local_x = (0.0, 1.0 if local_z[0] > 0.0 else -1.0, 0.0)
@@ -80,4 +84,18 @@ class HettichKa4532SpacerMountingTestSupport:
         return SimpleNamespace(x=values[0], y=values[1], z=values[2])
 
 
-__all__ = ["HettichKa4532SpacerMountingTestSupport"]
+class HettichKa4532StepSetLoaderProbe:
+    """Return recognizable exact-envelope geometry without vendor files in Git."""
+
+    def __init__(self) -> None:
+        self.hardware_roots = []
+
+    def load(self, hardware_root):
+        self.hardware_roots.append(hardware_root)
+        return HettichKa4532SpacerMountingTestSupport().step_set()
+
+
+__all__ = [
+    "HettichKa4532SpacerMountingTestSupport",
+    "HettichKa4532StepSetLoaderProbe",
+]

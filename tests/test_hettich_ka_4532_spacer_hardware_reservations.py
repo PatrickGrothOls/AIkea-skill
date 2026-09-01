@@ -39,8 +39,8 @@ class TestHettichKa4532SpacerHardwareReservations:
         assert all(
             item.hardware_kind == "drawer_runner_with_spacer"
             and item.system_32_node_rows_mm == ()
-            and item.depth_interval_mm == pytest.approx((2.0, 525.04))
-            and item.height_interval_mm == (98.0, 148.0)
+            and item.depth_interval_mm == pytest.approx((1.99, 525.05))
+            and item.height_interval_mm == pytest.approx((97.99, 148.01))
             for item in reservations
         )
 
@@ -52,7 +52,7 @@ class TestHettichKa4532SpacerHardwareReservations:
         )
 
         assert all(
-            item.depth_interval_mm == pytest.approx((2.0, 525.04))
+            item.depth_interval_mm == pytest.approx((1.99, 525.05))
             for item in reservations
         )
 
