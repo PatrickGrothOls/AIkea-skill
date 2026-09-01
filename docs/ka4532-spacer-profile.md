@@ -34,6 +34,12 @@ values without copying vendor CAD or client-project geometry.
 - [x] Preserve an existing or explicit runner choice instead of replacing it.
 - [ ] Confirm the corrected selection in three isolated cold-start runs.
 
+### WP5 — Fresh-project runtime handoff
+
+- [x] Defer project-model and CadQuery generator imports until after runtime discovery.
+- [x] Prove the launcher can start from Python with site packages disabled.
+- [ ] Confirm a fresh cold-start run reaches drawer generation without a local dependency install.
+
 ## Current state
 
 The exact project-local STEP set now loads through checksum-gated public
@@ -64,6 +70,11 @@ The drawer skill now treats KA 4532 plus article 13952 as the default when a
 client requests verified Hettich runners without naming a product. KA 5332
 remains available only for an existing project or an explicit client choice.
 
+The spacer drawer launcher now reaches the shared CadQuery runtime resolver
+before importing its project model or geometry implementation. A fresh project
+therefore reuses the installed AIkea runtime instead of requiring project-local
+integration code or its own dependency installation.
+
 ## Audit log
 
 1. 2026-09-01 — Patrick approved promoting the exact KA 4532 plus article 13952 spacer proof into the standalone AIkea skill repository. The promotion stores product authority and reusable physical relationships while keeping downloaded vendor files project-local, because the repository is intended for public use.
@@ -73,3 +84,4 @@ remains available only for an existing project or an explicit client choice.
 5. 2026-09-01 — The first drawer movement-and-collision proof passed with no failed checks. The complete-cabinet gate remains open because the spacer fixing authority is unresolved and the current 741 mm door exceeds the selected profile's 600 mm limit; no repetition was enabled.
 6. 2026-09-01 — Independent stability review reproduced equal-volume spacer substitution and stale-proof launcher attacks. The proof now compares all six purchased members against independently loaded checksum-gated source solids, rejects the substitute, invalidates old evidence before full argument validation and runtime discovery, and remains importable through macOS Python 3.9 for CadQuery handoff.
 7. 2026-09-01 — Three clean runs exposed that an unspecified request for verified Hettich runners still selected the older KA 5332 path. Patrick had already directed the workflow to use the spacer system, so the drawer skill now selects exact KA 4532 article 9114276 with purchased article 13952 spacers by default while preserving any explicit or existing runner choice.
+8. 2026-09-02 — The corrected cold-start runs selected KA 4532 plus article 13952, then one reproduced a fresh-project `ModuleNotFoundError` before `CadQueryRuntime` could run. Independent stability review also reproduced the earlier project-model import failing under macOS Python 3.9. The command now defers both imports until after runtime handoff; no dependency or project-local script was added.

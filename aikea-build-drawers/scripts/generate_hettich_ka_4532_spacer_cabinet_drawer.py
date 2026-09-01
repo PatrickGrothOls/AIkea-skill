@@ -11,11 +11,7 @@ SKILL_ROOT = Path(__file__).resolve().parents[2]
 for skill_name in ("aikea-build-units", "aikea-review-unit"):
     sys.path.insert(0, str(SKILL_ROOT / skill_name / "scripts"))
 
-from cabinet_drawer_plan import DrawerLayout
 from cadquery_runtime import CadQueryRuntime, CadQueryRuntimeError
-from hettich_ka_4532_spacer_cabinet_drawer_generator import (
-    HettichKa4532SpacerCabinetDrawerGenerator,
-)
 
 
 class GenerateHettichKa4532SpacerCabinetDrawerCommand:
@@ -37,6 +33,11 @@ class GenerateHettichKa4532SpacerCabinetDrawerCommand:
         return parser
 
     def run(self, arguments: argparse.Namespace) -> int:
+        from cabinet_drawer_plan import DrawerLayout
+        from hettich_ka_4532_spacer_cabinet_drawer_generator import (
+            HettichKa4532SpacerCabinetDrawerGenerator,
+        )
+
         try:
             result = HettichKa4532SpacerCabinetDrawerGenerator().generate(
                 arguments.aikea_yaml.resolve().parent,
