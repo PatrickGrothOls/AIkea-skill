@@ -30,8 +30,8 @@ class TestDrawerAssemblyReviewPlan:
         cabinet = ("wardrobe_01", "cabinet_01")
         drawer = cabinet + ("drawer_01",)
 
-        assert plan.hides(cabinet + ("hardware:drawer_01_runner_left",))
-        assert plan.hides(cabinet + ("hardware:drawer_01_runner_right",))
+        assert plan.hides(cabinet + ("hardware:runner_left",))
+        assert plan.hides(cabinet + ("hardware:runner_right",))
         assert plan.hides(drawer + ("hardware:locking_device_left",))
         assert plan.hides(drawer + ("hardware:locking_device_right",))
         assert not plan.hides(cabinet + ("hardware:door_hinge_left",))
@@ -61,8 +61,8 @@ class TestDrawerAssemblyReviewPlan:
             spec=SimpleNamespace(assembly_id="cabinet_01"),
             child_assemblies=(drawer,),
             purchased_hardware=self._hardware(
-                "drawer_01_runner_left",
-                "drawer_01_runner_right",
+                "runner_left",
+                "runner_right",
                 "door_hinge_left",
                 "light_driver",
             ),

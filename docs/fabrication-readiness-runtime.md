@@ -142,6 +142,9 @@ validate the complete wardrobe, and bind approval to its exact closed GLB.
   The loopback POST now requires its ephemeral token, exact same-origin request,
   and JSON media type; atomic persistence records the served checksum and refuses
   stale or already-decided proposals.
+- 2026-09-01: Full regression exposed the legacy Blum runner IDs as
+  `runner_left` and `runner_right`, not drawer-prefixed IDs. Corrected the
+  drawer overlay ownership filter while retaining door and lighting hardware.
 
 1. 2026-08-31 - Kept runtime locks and viewer source tooling repository-only;
    the downloadable skill will receive prebuilt static viewer assets.
