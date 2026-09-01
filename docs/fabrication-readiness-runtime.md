@@ -122,6 +122,8 @@ validate the complete wardrobe, and bind approval to its exact closed GLB.
   generated assembly lineage, closing sibling-cabinet and repeated-ID gaps.
 - 2026-09-01: Limited the legacy drawer overlay to replacing its own runners and
   locking devices. Door and lighting hardware now remain in combined reviews.
+- 2026-09-01: Made every motion, hidden item, hidden subtree, and overlay owner
+  prove its path against the closed tree before hardware or review geometry runs.
 
 1. 2026-08-31 - Kept runtime locks and viewer source tooling repository-only;
    the downloadable skill will receive prebuilt static viewer assets.

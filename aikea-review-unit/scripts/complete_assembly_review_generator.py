@@ -9,6 +9,7 @@ from assembly_feature_review import AssemblyFeatureReviewContext
 from assembly_review_feature_loader import AssemblyReviewFeatureLoader
 from assembly_review_plan_composer import AssemblyReviewPlanComposer
 from assembly_tree_review_geometry import AssemblyTreeReviewGeometry
+from assembly_tree_review_plan_validator import AssemblyTreeReviewPlanValidator
 from cadquery_glb_exporter import CadQueryGlbExporter
 from complete_assembly_review_report import CompleteAssemblyReviewReport
 from generated_assembly_builder_loader import GeneratedAssemblyBuilderLoader
@@ -40,6 +41,7 @@ class CompleteAssemblyReviewGenerator:
         exporter=None,
         composer=None,
         reporter=None,
+        plan_validator=None,
     ) -> None:
         self.loader = loader or GeneratedAssemblyBuilderLoader()
         self.features = feature_loader or AssemblyReviewFeatureLoader()
@@ -50,6 +52,7 @@ class CompleteAssemblyReviewGenerator:
         self.exporter = exporter or CadQueryGlbExporter()
         self.composer = composer or AssemblyReviewPlanComposer()
         self.reporter = reporter or CompleteAssemblyReviewReport()
+        self.plan_validator = plan_validator or AssemblyTreeReviewPlanValidator()
 
     def generate(
         self,
@@ -88,6 +91,7 @@ class CompleteAssemblyReviewGenerator:
                 ["unknown assembly feature state: " + ", ".join(unknown)]
             )
         plan = self.composer.compose(tuple(plans))
+        self.plan_validator.validate(visits, plan)
         hydrated = self.hydrator.hydrate(project_root, built, plan.hides)
         rendered = self.geometry.build(
             self.loader.walk(project_root, hydrated),

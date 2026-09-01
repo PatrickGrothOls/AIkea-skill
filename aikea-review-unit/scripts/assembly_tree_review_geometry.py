@@ -106,13 +106,6 @@ class AssemblyTreeReviewGeometry:
         )
 
     def _overlays(self, plan, posed_assemblies) -> tuple[MockupPart, ...]:
-        unknown = [
-            overlay.owner_path
-            for overlay in plan.overlays
-            if overlay.owner_path not in posed_assemblies
-        ]
-        if unknown:
-            raise UnitMockupInputError(["review overlay targets an unknown assembly"])
         return tuple(
             MockupPart(
                 self._name(overlay.owner_path + (f"overlay:{part.name}",)),

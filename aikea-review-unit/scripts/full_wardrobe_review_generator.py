@@ -9,6 +9,7 @@ from typing import Any
 from assembly_run import AssemblyRunReader
 from assembly_tree_review_geometry import AssemblyTreeReviewGeometry
 from assembly_tree_review_plan import AssemblyTreeReviewPlan
+from assembly_tree_review_plan_validator import AssemblyTreeReviewPlanValidator
 from base_mockup_geometry import BaseMockupGeometry
 from cabinet_review_geometry import CabinetReviewGeometry
 from cadquery_glb_exporter import CadQueryGlbExporter
@@ -35,6 +36,7 @@ class FullWardrobeReviewGenerator:
         self.cabinet_geometry = CabinetReviewGeometry()
         self.position_checker = FullWardrobePositionChecker()
         self.tree_geometry = AssemblyTreeReviewGeometry()
+        self.review_plan_validator = AssemblyTreeReviewPlanValidator()
         self.hardware = PurchasedHardwareHydrator(
             ProjectHardwareGeometryResolver()
         )
@@ -62,6 +64,10 @@ class FullWardrobeReviewGenerator:
         door_states = resolved_door_plan.states_for(assembly_ids)
         resolved_review_plan = review_plan or AssemblyTreeReviewPlan()
         wardrobe = self.loader.load_assembly(project_root, self._ROOT_ASSEMBLY_ID)
+        self.review_plan_validator.validate(
+            self.loader.walk(project_root, wardrobe),
+            resolved_review_plan,
+        )
         built_base, built_cabinets = self._children(wardrobe, assembly_ids)
         base_parts = self.base_geometry.build(built_base)
         physical_cabinet_parts = tuple(

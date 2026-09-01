@@ -7,7 +7,7 @@ from types import SimpleNamespace
 import pytest
 
 from assembly_feature_review import RegisteredAssemblyFeatureReview
-from assembly_tree_review_plan import AssemblyTreeReviewPlan
+from assembly_tree_review_plan import AssemblyReviewMotion, AssemblyTreeReviewPlan
 from complete_assembly_review_generator import CompleteAssemblyReviewGenerator
 from generate_complete_assembly_review import FeatureStateArguments
 from unit_mockup import UnitMockupInputError
@@ -23,6 +23,13 @@ class AssemblyTreeAssembly:
         )
 
 
+class AssemblyTreePart:
+    """Represent the hidden door part referenced by the feature plan."""
+
+    def __init__(self) -> None:
+        self.path = ("cabinet_01", "part:door")
+
+
 class ReviewFeatureProbe:
     """Expose the requested state as one hidden path for observable composition."""
 
@@ -36,6 +43,17 @@ class ReviewFeatureProbe:
         )
 
 
+class InvalidReviewFeatureProbe:
+    """Return one motion targeting an assembly absent from the closed tree."""
+
+    def plan(self, _context, _state):
+        return AssemblyTreeReviewPlan(
+            motions=(
+                AssemblyReviewMotion(("cabinet_01", "missing_01"), object()),
+            )
+        )
+
+
 class ReviewLoaderProbe:
     """Return one root for both generated tree walks."""
 
@@ -43,7 +61,8 @@ class ReviewLoaderProbe:
         return "built"
 
     def walk(self, _root, _assembly):
-        return (AssemblyTreeAssembly(),)
+        return AssemblyTreeAssembly(), AssemblyTreePart()
+
 
 class ReviewFeatureLoaderProbe:
     """Return one registered feature independently of builder execution."""
@@ -61,6 +80,13 @@ class HydratorProbe:
     def hydrate(self, _root, _built, skip_path):
         assert skip_path(("cabinet_01", "part:door"))
         return "hydrated"
+
+
+class HydratorMustNotRun:
+    """Fail if an invalid review plan reaches hardware resolution."""
+
+    def hydrate(self, *_arguments):
+        raise AssertionError("invalid review plan reached hardware hydration")
 
 
 class GeometryProbe:
@@ -153,3 +179,23 @@ class TestCompleteAssemblyReviewGenerator:
 
         with pytest.raises(ValueError, match="assembly-id"):
             FeatureStateArguments().parse(["door_hinges=open"])
+
+    def test_rejects_invalid_feature_plan_before_hardware_hydration(
+        self,
+        tmp_path,
+    ) -> None:
+        generator = CompleteAssemblyReviewGenerator(
+            loader=ReviewLoaderProbe(),
+            feature_loader=ReviewFeatureLoaderProbe(InvalidReviewFeatureProbe()),
+            hydrator=HydratorMustNotRun(),
+            geometry=GeometryProbe(),
+            exporter=ExporterProbe(),
+            reporter=ReporterProbe(),
+        )
+
+        with pytest.raises(UnitMockupInputError, match="unknown path"):
+            generator.generate(
+                tmp_path,
+                "cabinet_01",
+                tmp_path / "review.glb",
+            )
