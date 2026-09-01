@@ -43,6 +43,10 @@ class CabinetDoorFeatureGenerator:
             "door_hinges.feature",
             20,
             review_module="door_hinges.review",
+            affected_manufactured_part_paths=(
+                "door_panel",
+                plan.hinge_side.side_part_id,
+            ),
         )
         return written + ((manifest.relative_to(project_root),) if manifest else ())
 

@@ -103,6 +103,15 @@ class HettichKa5332CabinetDrawersGenerator:
             parent_assembly_id,
             "drawers.feature",
             10,
+            affected_manufactured_part_paths=(
+                "left_side",
+                "right_side",
+                *(
+                    f"{drawer.drawer.assembly_id}/{part.part_id}"
+                    for drawer in plan.drawers
+                    for part in drawer.drawer.parts
+                ),
+            ),
         )
         return HettichKa5332DrawersGenerationResult(
             plan,

@@ -12,6 +12,7 @@ class CabinetFeatureManifest:
 
     _ASSEMBLY_ID = re.compile(r"^[a-z][a-z0-9_]*_[0-9]{2}$")
     _MODULE = re.compile(r"^[a-z][a-z0-9_]*(?:\.[a-z][a-z0-9_]*)*$")
+    _PART_PATH = re.compile(r"^[a-z][a-z0-9_]*(?:/[a-z][a-z0-9_]*)*$")
 
     def register(
         self,
@@ -20,14 +21,28 @@ class CabinetFeatureManifest:
         module: str,
         order: int,
         review_module: str | None = None,
+        affected_manufactured_part_paths: tuple[str, ...] = (),
     ) -> Path | None:
         self._validate(assembly_id, module, order)
         if review_module is not None and not self._MODULE.fullmatch(review_module):
             raise ValueError("review module must be a stable dotted name")
+        if len(set(affected_manufactured_part_paths)) != len(
+            affected_manufactured_part_paths
+        ) or any(
+            not self._PART_PATH.fullmatch(path)
+            for path in affected_manufactured_part_paths
+        ):
+            raise ValueError("affected manufactured part paths must be unique and stable")
         path = project_root / "assemblies" / assembly_id / "features.json"
         features = self._load(path)
         by_module = {item["module"]: item for item in features}
-        registration = {"module": module, "order": order}
+        registration = {
+            "module": module,
+            "order": order,
+            "affected_manufactured_part_paths": list(
+                affected_manufactured_part_paths
+            ),
+        }
         if review_module is not None:
             registration["review_module"] = review_module
         by_module[module] = registration

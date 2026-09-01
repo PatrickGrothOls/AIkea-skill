@@ -70,6 +70,10 @@ class CabinetDrawerGenerator:
             parent_assembly_id,
             "drawers.feature",
             10,
+            affected_manufactured_part_paths=tuple(
+                f"{plan.drawer.assembly_id}/{part.part_id}"
+                for part in plan.drawer.parts
+            ),
         )
         return CabinetDrawerGenerationResult(
             plan,

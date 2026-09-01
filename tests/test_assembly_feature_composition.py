@@ -52,9 +52,21 @@ class TestAssemblyFeatureComposition(AssemblyCompositionTestCase):
         path = tmp_path / "assemblies/cabinet_01/features.json"
         data = json.loads(path.read_text(encoding="utf-8"))
         assert data["features"] == [
-            {"module": "drawers.feature", "order": 10},
-            {"module": "door_hinges.feature", "order": 20},
-            {"module": "lighting.feature", "order": 30},
+            {
+                "module": "drawers.feature",
+                "order": 10,
+                "affected_manufactured_part_paths": [],
+            },
+            {
+                "module": "door_hinges.feature",
+                "order": 20,
+                "affected_manufactured_part_paths": [],
+            },
+            {
+                "module": "lighting.feature",
+                "order": 30,
+                "affected_manufactured_part_paths": [],
+            },
         ]
 
     def test_manifest_can_register_an_optional_review_adapter(self, tmp_path) -> None:
@@ -74,6 +86,7 @@ class TestAssemblyFeatureComposition(AssemblyCompositionTestCase):
                 "module": "door_hinges.feature",
                 "order": 20,
                 "review_module": "door_hinges.review",
+                "affected_manufactured_part_paths": [],
             }
         ]
 

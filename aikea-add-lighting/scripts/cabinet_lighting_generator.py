@@ -59,6 +59,7 @@ class CabinetLightingGenerator:
             assembly_id,
             "lighting.feature",
             30,
+            affected_manufactured_part_paths=(part_id,),
         )
         return CabinetLightingGenerationResult(
             plan,

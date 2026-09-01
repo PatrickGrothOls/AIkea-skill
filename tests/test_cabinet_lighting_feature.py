@@ -47,6 +47,10 @@ class TestCabinetLightingFeature:
         )
         manifest = json.loads((root / "features.json").read_text(encoding="utf-8"))
         assert manifest["features"] == [
-            {"module": "lighting.feature", "order": 30}
+            {
+                "module": "lighting.feature",
+                "order": 30,
+                "affected_manufactured_part_paths": ["top_panel_01"],
+            }
         ]
         assert Path("assemblies/tall_storage_01/features.json") in result.written_paths

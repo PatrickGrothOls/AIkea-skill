@@ -53,6 +53,10 @@ class TestDoorFeatureGeneration:
                 "module": "door_hinges.feature",
                 "order": 20,
                 "review_module": "door_hinges.review",
+                "affected_manufactured_part_paths": [
+                    "door_panel",
+                    "left_side",
+                ],
             }
         ]
         specification, hardware, loaded_plan, tree = self._load_generated(tmp_path)
