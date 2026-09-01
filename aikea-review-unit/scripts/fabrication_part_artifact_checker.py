@@ -2,11 +2,11 @@
 
 from __future__ import annotations
 
-from math import isclose
 from pathlib import Path
 
 import cadquery as cq
 
+from blank_sheet_builder import BlankSheetBuilder
 from fabrication_readiness_report import FabricationReadinessCheck
 from fabrication_tree_evidence import FabricationPartEvidence
 
@@ -78,23 +78,40 @@ class FabricationPartArtifactChecker:
         except (OSError, RuntimeError, ValueError):
             return ("unreadable DXF drawing",)
         faces = tuple(shape for shape in shapes if shape.ShapeType() == "Face")
-        if not faces:
-            return ("DXF has no closed drawing face",)
-        drawing_bounds = cq.Compound.makeCompound(faces).BoundingBox()
-        source_bounds = evidence.part.solid.val().BoundingBox()
-        matches = all(
-            isclose(
-                actual,
-                expected,
-                rel_tol=0.0,
-                abs_tol=self._ABSOLUTE_TOLERANCE_MM,
-            )
-            for actual, expected in (
-                (drawing_bounds.xlen, source_bounds.xlen),
-                (drawing_bounds.ylen, source_bounds.ylen),
-            )
+        if len(faces) != 1:
+            return ("DXF must contain one closed drawing face",)
+        drawing_bounds = faces[0].BoundingBox()
+        if drawing_bounds.zlen > self._ABSOLUTE_TOLERANCE_MM:
+            return ("DXF drawing is not planar",)
+        drawing = faces[0].moved(
+            cq.Location(cq.Vector(0.0, 0.0, -drawing_bounds.zmin))
         )
-        return () if matches else ("DXF footprint differs from built geometry",)
+        source = self._source_footprint(evidence)
+        difference_area = source.cut(drawing).Area() + drawing.cut(source).Area()
+        tolerance = max(
+            self._ABSOLUTE_TOLERANCE_MM**2,
+            source.Area() * 1e-9,
+        )
+        return (
+            ()
+            if difference_area <= tolerance
+            else ("DXF footprint differs from built geometry",)
+        )
+
+    def _source_footprint(self, evidence: FabricationPartEvidence):
+        spec = evidence.part.spec
+        declared = getattr(spec, "outline_mm", ())
+        outline = tuple(
+            (float(point.x_mm), float(point.height_mm)) for point in declared
+        )
+        if not outline:
+            width_mm, height_mm, _thickness_mm = spec.local_size_mm
+            outline = BlankSheetBuilder.rectangle(
+                float(width_mm),
+                float(height_mm),
+                1.0,
+            ).outline_mm
+        return BlankSheetBuilder(outline, 1.0).build().faces("<Z").val()
 
     def _slug(self, path: str) -> str:
         return path.replace("/", "__")

@@ -49,6 +49,43 @@ class TestFabricationPartArtifactChecker:
         assert not check.passed
         assert "differs from built geometry" in check.problems[0]
 
+    def test_rejects_a_same_bounds_dxf_with_the_wrong_outline(self, tmp_path) -> None:
+        evidence = self._evidence()
+        self._write_matching_exports(tmp_path, evidence)
+        _step_path, dxf_path = self._paths(tmp_path)
+        wrong = (
+            cq.Workplane("XY")
+            .polyline(((0.0, 0.0), (500.0, 0.0), (500.0, 2000.0)))
+            .close()
+            .extrude(1.0)
+        )
+        cq.exporters.export(wrong.faces(">Z"), str(dxf_path))
+
+        check = FabricationPartArtifactChecker().check(tmp_path, (evidence,))
+
+        assert not check.passed
+        assert "DXF footprint differs" in check.problems[0]
+
+    def test_rejects_a_dxf_with_an_unexpected_internal_hole(self, tmp_path) -> None:
+        evidence = self._evidence()
+        self._write_matching_exports(tmp_path, evidence)
+        _step_path, dxf_path = self._paths(tmp_path)
+        wrong = (
+            cq.Workplane("XY")
+            .box(500.0, 2000.0, 1.0, centered=(False, False, False))
+            .faces(">Z")
+            .workplane()
+            .center(-250.0, -1000.0)
+            .circle(25.0)
+            .cutThruAll()
+        )
+        cq.exporters.export(wrong.faces(">Z"), str(dxf_path))
+
+        check = FabricationPartArtifactChecker().check(tmp_path, (evidence,))
+
+        assert not check.passed
+        assert "DXF footprint differs" in check.problems[0]
+
     def _evidence(self) -> FabricationPartEvidence:
         part = SimpleNamespace(
             spec=SimpleNamespace(
