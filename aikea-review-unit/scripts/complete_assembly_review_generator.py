@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from assembly_feature_review import AssemblyFeatureReviewContext
+from assembly_review_feature_loader import AssemblyReviewFeatureLoader
 from assembly_review_plan_composer import AssemblyReviewPlanComposer
 from assembly_tree_review_geometry import AssemblyTreeReviewGeometry
 from cadquery_glb_exporter import CadQueryGlbExporter
@@ -33,6 +34,7 @@ class CompleteAssemblyReviewGenerator:
     def __init__(
         self,
         loader=None,
+        feature_loader=None,
         hydrator=None,
         geometry=None,
         exporter=None,
@@ -40,6 +42,7 @@ class CompleteAssemblyReviewGenerator:
         reporter=None,
     ) -> None:
         self.loader = loader or GeneratedAssemblyBuilderLoader()
+        self.features = feature_loader or AssemblyReviewFeatureLoader()
         self.hydrator = hydrator or PurchasedHardwareHydrator(
             ProjectHardwareGeometryResolver()
         )
@@ -64,10 +67,7 @@ class CompleteAssemblyReviewGenerator:
         for item in visits:
             if type(item).__name__ != "AssemblyTreeAssembly":
                 continue
-            owner_id = item.assembly.spec.assembly_id
-            for registration in self.loader.load_review_features(
-                project_root, item.path
-            ):
+            for registration in self.features.load(project_root, item.path):
                 selector = "/".join((*item.path, registration.feature_id))
                 selectors.append(selector)
                 resolved_states[selector] = requested.get(selector, "closed")

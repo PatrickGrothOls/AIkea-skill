@@ -37,10 +37,7 @@ class ReviewFeatureProbe:
 
 
 class ReviewLoaderProbe:
-    """Return one root and one registered feature for both tree walks."""
-
-    def __init__(self, feature) -> None:
-        self.feature = feature
+    """Return one root for both generated tree walks."""
 
     def load_assembly(self, _root, _assembly_id):
         return "built"
@@ -48,7 +45,13 @@ class ReviewLoaderProbe:
     def walk(self, _root, _assembly):
         return (AssemblyTreeAssembly(),)
 
-    def load_review_features(self, _root, _assembly_id):
+class ReviewFeatureLoaderProbe:
+    """Return one registered feature independently of builder execution."""
+
+    def __init__(self, feature) -> None:
+        self.feature = feature
+
+    def load(self, _root, _owner_path):
         return (RegisteredAssemblyFeatureReview("door", self.feature),)
 
 
@@ -98,7 +101,8 @@ class TestCompleteAssemblyReviewGenerator:
         reporter = ReporterProbe()
         output = tmp_path / "review.glb"
         generator = CompleteAssemblyReviewGenerator(
-            loader=ReviewLoaderProbe(feature),
+            loader=ReviewLoaderProbe(),
+            feature_loader=ReviewFeatureLoaderProbe(feature),
             hydrator=HydratorProbe(),
             geometry=GeometryProbe(),
             exporter=exporter,
@@ -126,7 +130,8 @@ class TestCompleteAssemblyReviewGenerator:
 
     def test_rejects_unknown_feature_selector(self, tmp_path) -> None:
         generator = CompleteAssemblyReviewGenerator(
-            loader=ReviewLoaderProbe(ReviewFeatureProbe()),
+            loader=ReviewLoaderProbe(),
+            feature_loader=ReviewFeatureLoaderProbe(ReviewFeatureProbe()),
             hydrator=HydratorProbe(),
             geometry=GeometryProbe(),
             exporter=ExporterProbe(),

@@ -111,8 +111,8 @@ class TestAssemblyFeatureComposition(AssemblyCompositionTestCase):
         )
         loader = GeneratedAssemblyBuilderLoader()
         monkeypatch.setattr(
-            loader,
-            "_feature_runtime_paths",
+            loader.runtime,
+            "_skill_runtime_paths",
             lambda: (str(runtime_root),),
         )
         try:

@@ -54,8 +54,9 @@ The clean proof run completed the first cabinet through the recursive physical
 tree: three drawer children, six exact Hettich runner assemblies, three shelves,
 one recessed light, one machined left-hand door, and five exact Riex hinge/plate
 pairs. The packaged command exported 40-item closed and exact door-open GLBs and
-opened both interactive viewers. Feature-state selectors use the full assembly-
-tree path, so repeated child IDs in different branches remain unambiguous.
+opened both interactive viewers. Feature-state selectors and manifest resolution
+now use the full generated assembly lineage. Wardrobe-root reviews find sibling
+cabinet packages, while repeated child IDs resolve through their parent paths.
 The command now writes a checksum-bound `.review.json` beside each GLB with every
 rendered item and its placed bounds. This moves the final generic inspection out
 of client projects; registered feature reports remain the fit evidence until the
@@ -116,6 +117,9 @@ validate the complete wardrobe, and bind approval to its exact closed GLB.
   produced checksum-matched closed and open reports for all 40 rendered items,
   and opened both interactive viewers. This completes the first-cabinet visual
   gate; it does not grant fabrication authority to the unrepeated wardrobe.
+- 2026-09-01: Patrick directed repair of every failed independent review.
+  Extracted feature discovery from builder execution and resolved manifests by
+  generated assembly lineage, closing sibling-cabinet and repeated-ID gaps.
 
 1. 2026-08-31 - Kept runtime locks and viewer source tooling repository-only;
    the downloadable skill will receive prebuilt static viewer assets.
