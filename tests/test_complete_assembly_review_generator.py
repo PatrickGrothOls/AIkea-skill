@@ -152,6 +152,7 @@ class TestCompleteAssemblyReviewGenerator:
         )
         assert result.feature_selectors == ("cabinet_01/door",)
         assert result.part_count == 1
+        assert result.rendered_parts == ("rendered",)
         assert result.report_path == output.with_suffix(".review.json")
 
     def test_rejects_unknown_feature_selector(self, tmp_path) -> None:

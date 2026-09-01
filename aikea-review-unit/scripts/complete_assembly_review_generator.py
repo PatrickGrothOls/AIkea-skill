@@ -15,7 +15,7 @@ from complete_assembly_review_report import CompleteAssemblyReviewReport
 from generated_assembly_builder_loader import GeneratedAssemblyBuilderLoader
 from project_hardware_geometry_resolver import ProjectHardwareGeometryResolver
 from purchased_hardware_hydrator import PurchasedHardwareHydrator
-from unit_mockup import UnitMockupInputError
+from unit_mockup import MockupPart, UnitMockupInputError
 
 
 @dataclass(frozen=True, slots=True)
@@ -27,6 +27,7 @@ class CompleteAssemblyReviewResult:
     part_count: int
     feature_selectors: tuple[str, ...]
     report_path: Path
+    rendered_parts: tuple[MockupPart, ...]
 
 
 class CompleteAssemblyReviewGenerator:
@@ -112,6 +113,7 @@ class CompleteAssemblyReviewGenerator:
             len(rendered),
             tuple(selectors),
             report_path,
+            rendered,
         )
 
 
