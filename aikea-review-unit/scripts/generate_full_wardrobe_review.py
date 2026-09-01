@@ -30,6 +30,9 @@ class GenerateFullWardrobeReviewCommand:
     ) -> int:
         try:
             from full_wardrobe_review_generator import FullWardrobeReviewGenerator
+            from fabrication_review_proposal_writer import (
+                FabricationReviewProposalWriter,
+            )
 
             project = yaml.safe_load(path.read_text(encoding="utf-8"))
             if not isinstance(project, dict):
@@ -42,6 +45,10 @@ class GenerateFullWardrobeReviewCommand:
                 path.parent,
                 project,
                 door_plan,
+            )
+            fabrication_review = FabricationReviewProposalWriter().write_for_result(
+                path.parent,
+                result,
             )
         except (OSError, yaml.YAMLError) as error:
             return self._invalid([str(error)])
@@ -59,6 +66,9 @@ class GenerateFullWardrobeReviewCommand:
                     "full_wardrobe_glb": str(result.glb_path),
                     "assembly_position_check": str(result.position_report_path),
                     "doors": dict(result.door_states),
+                    "fabrication_review": (
+                        str(fabrication_review) if fabrication_review else None
+                    ),
                 },
                 indent=2,
             )

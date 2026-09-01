@@ -14,7 +14,6 @@ from base_mockup_geometry import BaseMockupGeometry
 from cabinet_review_geometry import CabinetReviewGeometry
 from cadquery_glb_exporter import CadQueryGlbExporter
 from door_review_state import DoorReviewState
-from fabrication_assembly_review_record import FabricationAssemblyReviewRecord
 from full_wardrobe_door_plan import FullWardrobeDoorPlan
 from full_wardrobe_position_checker import FullWardrobePositionChecker
 from full_wardrobe_review import FullWardrobeReviewResult
@@ -41,7 +40,6 @@ class FullWardrobeReviewGenerator:
             ProjectHardwareGeometryResolver()
         )
         self.exporter = CadQueryGlbExporter()
-        self.fabrication_review = FabricationAssemblyReviewRecord()
 
     def generate(
         self,
@@ -103,10 +101,6 @@ class FullWardrobeReviewGenerator:
         filename = output_filename or resolved_door_plan.filename_for(assembly_ids)
         glb_path = project_root / f"assemblies/{filename}"
         self.exporter.export("full_wardrobe", placed_parts, glb_path)
-        if review_plan is None and set(door_states.values()) == {
-            DoorReviewState.CLOSED
-        }:
-            self.fabrication_review.write_proposal(project_root, glb_path)
         return FullWardrobeReviewResult(
             tuple(built.spec.assembly_id for built in built_cabinets),
             glb_path,

@@ -50,6 +50,9 @@ class TestFullWardrobeReview(unittest.TestCase):
             },
         )
         self.assertEqual(result.glb_path.name, "full_wardrobe_review.glb")
+        self.assertFalse(
+            (self.project_root / "reviews/fabrication-assembly.json").exists()
+        )
         self.assertTrue(
             {
                 "base_01__deck_01",

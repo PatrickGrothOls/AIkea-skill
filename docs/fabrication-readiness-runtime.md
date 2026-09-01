@@ -135,6 +135,9 @@ validate the complete wardrobe, and bind approval to its exact closed GLB.
   extras, wrong quantities, dimensions, hardware identity, and unresolved joint
   operations now block. Position reports require real checks and recursive
   feature evidence must checksum-bind its affected STEP artifacts.
+- 2026-09-01: Removed approval persistence from the generic wardrobe renderer.
+  Only the explicit full-wardrobe command now issues a proposal, and only for
+  its canonical all-closed result.
 
 1. 2026-08-31 - Kept runtime locks and viewer source tooling repository-only;
    the downloadable skill will receive prebuilt static viewer assets.
