@@ -37,8 +37,15 @@ class GenerateHettichKa4532SpacerProofCommand:
         from hettich_ka_4532_spacer_proof_generator import (
             HettichKa4532SpacerProofGenerator,
         )
+        from hettich_ka_4532_spacer_proof_report import (
+            HettichKa4532SpacerProofReport,
+        )
         from unit_mockup import UnitMockupInputError
 
+        report_path = (
+            arguments.output_directory.resolve()
+            / "ka4532-spacer-movement-collision-check.json"
+        )
         try:
             result = HettichKa4532SpacerProofGenerator().generate(
                 arguments.aikea_yaml.resolve().parent,
@@ -47,6 +54,7 @@ class GenerateHettichKa4532SpacerProofCommand:
                 FeatureStateArguments().parse(arguments.state),
             )
         except (OSError, KeyError, TypeError, UnitMockupInputError, ValueError) as error:
+            HettichKa4532SpacerProofReport.invalidate(report_path, str(error))
             print(json.dumps({"status": "invalid", "problems": [str(error)]}))
             return 2
         payload = {

@@ -14,6 +14,7 @@ from hettich_ka_4532_spacer_proof_checker import (
     HettichKa4532SpacerProofChecker,
 )
 from hettich_ka_4532_spacer_proof_report import HettichKa4532SpacerProofReport
+from hettich_ka_4532_spacer_step_set import HettichKa4532SpacerStepSetLoader
 
 
 @dataclass(frozen=True, slots=True)
@@ -29,9 +30,10 @@ class HettichKa4532SpacerProofResult:
 class HettichKa4532SpacerProofGenerator:
     """Run the generic recursive review twice and compare its exact solids."""
 
-    def __init__(self, review=None, checker=None) -> None:
+    def __init__(self, review=None, checker=None, step_loader=None) -> None:
         self.review = review or CompleteAssemblyReviewGenerator()
         self.checker = checker or HettichKa4532SpacerProofChecker()
+        self.steps = step_loader or HettichKa4532SpacerStepSetLoader()
 
     def generate(
         self,
@@ -40,6 +42,8 @@ class HettichKa4532SpacerProofGenerator:
         output_directory: Path,
         feature_states: dict[str, str] | None = None,
     ) -> HettichKa4532SpacerProofResult:
+        report_path = output_directory / "ka4532-spacer-movement-collision-check.json"
+        HettichKa4532SpacerProofReport.invalidate(report_path)
         layout_path = project_root / "assemblies" / assembly_id / "drawer-layout.yaml"
         layout = yaml.safe_load(layout_path.read_text(encoding="utf-8"))
         drawer_id = layout["drawer"]["id"]
@@ -72,6 +76,7 @@ class HettichKa4532SpacerProofGenerator:
             if item["hardware_kind"] == "drawer_runner_with_spacer"
             and item["owner_id"].startswith(f"{drawer_id}_")
         )
+        step_set = self.steps.load(project_root / "hardware")
         report = self.checker.check(
             assembly_id,
             drawer_id,
@@ -79,6 +84,7 @@ class HettichKa4532SpacerProofGenerator:
             closed.rendered_parts,
             opened.rendered_parts,
             layout["purchased_set"],
+            step_set,
             {
                 "closed": self._review_artifact(closed),
                 "open": self._review_artifact(opened),
@@ -88,7 +94,6 @@ class HettichKa4532SpacerProofGenerator:
             machining,
             reservations,
         )
-        report_path = output_directory / "ka4532-spacer-movement-collision-check.json"
         report.write(report_path)
         return HettichKa4532SpacerProofResult(
             closed.glb_path,

@@ -21,6 +21,9 @@ class MockupPart:
     solid: Any
     location: Any
     color: tuple[float, float, float, float]
+    source_hardware_asset_id: str | None = None
+    source_geometry_selector: str | None = None
+    source_solid: Any | None = None
 
     def placed_shape(self) -> Any:
         """Return this local part transformed into assembly coordinates."""

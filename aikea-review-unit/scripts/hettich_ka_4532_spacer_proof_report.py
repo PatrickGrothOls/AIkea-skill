@@ -48,10 +48,30 @@ class HettichKa4532SpacerProofReport:
         }
 
     def write(self, path: Path) -> None:
-        path.write_text(json.dumps(self.as_dict(), indent=2) + "\n", encoding="utf-8")
+        self._replace(path, self.as_dict())
+
+    @classmethod
+    def invalidate(cls, path: Path, problem: str | None = None) -> None:
+        payload = {
+            "schema_version": 1,
+            "status": "invalidated-before-run",
+            "manufacturing_authority": False,
+            "problems": [problem] if problem else [],
+        }
+        cls._replace(path, payload)
 
     def failed_check_names(self) -> tuple[str, ...]:
         return tuple(check["name"] for check in self.checks if not check["passed"])
+
+    @staticmethod
+    def _replace(path: Path, payload: dict[str, Any]) -> None:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        temporary = path.with_name(f"{path.name}.tmp")
+        temporary.write_text(
+            json.dumps(payload, indent=2) + "\n",
+            encoding="utf-8",
+        )
+        temporary.replace(path)
 
 
 __all__ = ["HettichKa4532SpacerProofReport"]

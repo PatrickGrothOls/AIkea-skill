@@ -53,6 +53,7 @@ class TestHettichKa4532SpacerGeneratedHardwareOwnership:
             assembly_loader.walk(tmp_path, hydrated),
             {},
         )
+        by_name = {part.name: part for part in rendered}
         bounds = {part.name: part.placed_shape().BoundingBox() for part in rendered}
 
         fixed = bounds["drawer_01_runner_left_fixed"]
@@ -62,3 +63,12 @@ class TestHettichKa4532SpacerGeneratedHardwareOwnership:
         reserved = result.plan.hardware_reservations[0].depth_interval_mm
         assert reserved[0] <= min(fixed.ymin, moving.ymin)
         assert reserved[1] >= max(fixed.ymax, moving.ymax)
+        for name in (
+            "drawer_01_spacer_left",
+            "drawer_01_spacer_right",
+            "drawer_01_runner_left_fixed",
+            "drawer_01__drawer_01_runner_left_moving",
+        ):
+            part = by_name[name]
+            assert part.source_hardware_asset_id.startswith("hettich-")
+            assert part.solid.val().isSame(part.source_solid.val())

@@ -102,6 +102,9 @@ class AssemblyTreeReviewGeometry:
                 item.hardware.solid,
                 self.poses.item_location(item, assemblies, posed_assemblies),
                 self._HARDWARE,
+                item.hardware.spec.hardware_asset_id,
+                item.hardware.spec.geometry_selector,
+                item.hardware.solid,
             ),
         )
 
