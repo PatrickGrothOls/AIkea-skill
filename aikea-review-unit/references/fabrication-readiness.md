@@ -28,7 +28,9 @@ The gate requires all of the following:
 9. The complete closed wardrobe position report has versioned, non-empty passed
    checks and covers every direct child of the wardrobe root.
 10. The client has approved the exact checksum of the current closed wardrobe
-    GLB. Rebuilding different bytes automatically requires a new approval.
+    GLB. The viewer serves an immutable startup snapshot and records that same
+    checksum at decision time. Rebuilding different bytes automatically requires
+    a new approval.
 
 Run the gate with:
 

@@ -17,22 +17,46 @@ test("missing review data keeps an ordinary visual review decision-free", async 
 
 test("visual approval is submitted to the bounded local endpoint", async () => {
   const originalFetch = global.fetch;
-  let request;
+  const requests = [];
   global.fetch = async (url, options) => {
-    request = { url, options };
+    requests.push({ url, options });
+    if (url === "/review-data.json") {
+      return {
+        ok: true,
+        json: async () => ({
+          review_type: "fabrication_assembly",
+          status: "proposed",
+          decision_token: "session-token",
+        }),
+      };
+    }
     return {
       ok: true,
       json: async () => ({ status: "approved" }),
     };
   };
   try {
-    const result = await new ReviewDecisionClient().submit("approved");
+    const client = new ReviewDecisionClient();
+    const review = await client.load();
+    const result = await client.submit("approved");
 
+    assert.equal(review.decision_token, undefined);
     assert.equal(result.status, "approved");
-    assert.equal(request.url, "/api/review-decision");
-    assert.equal(request.options.method, "POST");
-    assert.deepEqual(JSON.parse(request.options.body), { decision: "approved" });
+    assert.equal(requests[1].url, "/api/review-decision");
+    assert.equal(requests[1].options.method, "POST");
+    assert.equal(
+      requests[1].options.headers["X-AIkea-Review-Token"],
+      "session-token",
+    );
+    assert.deepEqual(JSON.parse(requests[1].options.body), { decision: "approved" });
   } finally {
     global.fetch = originalFetch;
   }
+});
+
+test("a decision cannot be submitted before its session is loaded", async () => {
+  await assert.rejects(
+    new ReviewDecisionClient().submit("approved"),
+    /loaded before deciding/,
+  );
 });

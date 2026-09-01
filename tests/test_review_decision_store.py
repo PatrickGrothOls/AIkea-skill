@@ -1,77 +1,129 @@
-"""Scope: Verify door-opening approval is persisted by the local review boundary."""
+"""Scope: Verify local decisions are atomic and bound to served artifacts."""
 
+from __future__ import annotations
+
+from hashlib import sha256
 import json
-from pathlib import Path
-from tempfile import TemporaryDirectory
-import unittest
 
-from review_decision_store import ReviewDecisionStore
+import cadquery as cq
+import pytest
+
+from cadquery_glb_exporter import CadQueryGlbExporter
+from glb_artifact_snapshot import GlbArtifactSnapshot
+from review_decision_store import ReviewDecisionConflict, ReviewDecisionStore
+from unit_mockup import MockupPart
 
 
-class TestReviewDecisionStore(unittest.TestCase):
-    def setUp(self) -> None:
-        self.temporary_directory = TemporaryDirectory()
-        self.addCleanup(self.temporary_directory.cleanup)
-        self.path = Path(self.temporary_directory.name) / "opening-review.json"
-        self.path.write_text(
-            json.dumps(
-                {
-                    "review_type": "door_openings",
-                    "status": "proposed",
-                    "message": "All single doors hinge on the left unless marked otherwise.",
-                    "doors": [
-                        {
-                            "assembly_id": "tall_storage_01",
-                            "hinge_side": "left",
-                            "exception": False,
-                            "opens_90_degrees": True,
-                        }
-                    ],
-                }
-            ),
-            encoding="utf-8",
+class TestReviewDecisionStore:
+    """Protect the single proposal transition and exact fabrication binding."""
+
+    def test_approval_confirms_the_proposed_local_opening(self, tmp_path) -> None:
+        path = self._door_record(tmp_path)
+
+        result = ReviewDecisionStore(path).decide("approved")
+
+        assert result["status"] == "approved"
+        assert "decided_at" in result
+        assert json.loads(path.read_text(encoding="utf-8"))["doors"][0][
+            "hinge_side"
+        ] == "left"
+
+    def test_unknown_decision_does_not_change_the_record(self, tmp_path) -> None:
+        path = self._door_record(tmp_path)
+        before = path.read_text(encoding="utf-8")
+
+        with pytest.raises(ValueError, match="unsupported"):
+            ReviewDecisionStore(path).decide("maybe")
+
+        assert path.read_text(encoding="utf-8") == before
+
+    def test_fabrication_approval_records_the_served_checksum(self, tmp_path) -> None:
+        model = self._model(tmp_path, "review.glb", 10.0)
+        path = self._fabrication_record(tmp_path, model)
+        artifact = GlbArtifactSnapshot.load(model)
+
+        result = ReviewDecisionStore(path).decide("approved", artifact)
+
+        assert result["status"] == "approved"
+        assert result["artifact_sha256"] == artifact.sha256
+        assert result["decision_artifact_sha256"] == artifact.sha256
+
+    def test_rejects_a_different_served_model_without_writing(self, tmp_path) -> None:
+        proposed = self._model(tmp_path, "proposed.glb", 10.0)
+        served = self._model(tmp_path, "served.glb", 20.0)
+        path = self._fabrication_record(tmp_path, proposed)
+        before = path.read_text(encoding="utf-8")
+
+        with pytest.raises(ReviewDecisionConflict, match="served GLB"):
+            ReviewDecisionStore(path).decide(
+                "approved",
+                GlbArtifactSnapshot.load(served),
+            )
+
+        assert path.read_text(encoding="utf-8") == before
+
+    def test_a_second_decision_cannot_overwrite_the_first(self, tmp_path) -> None:
+        path = self._door_record(tmp_path)
+        store = ReviewDecisionStore(path)
+        store.decide("approved")
+
+        with pytest.raises(ReviewDecisionConflict, match="no longer pending"):
+            store.decide("change_requested")
+
+        assert json.loads(path.read_text(encoding="utf-8"))["status"] == "approved"
+
+    def _door_record(self, root):
+        path = root / "reviews/door-openings.json"
+        self._write_json(
+            path,
+            {
+                "review_type": "door_openings",
+                "status": "proposed",
+                "message": "Review the door.",
+                "doors": [
+                    {
+                        "assembly_id": "cabinet_01",
+                        "hinge_side": "left",
+                    }
+                ],
+            },
         )
+        return path
 
-    def test_approval_confirms_the_proposed_local_opening(self) -> None:
-        result = ReviewDecisionStore(self.path).decide("approved")
-
-        self.assertEqual(result["status"], "approved")
-        self.assertIn("decided_at", result)
-        saved = json.loads(self.path.read_text(encoding="utf-8"))
-        self.assertEqual(saved["doors"][0]["hinge_side"], "left")
-
-    def test_change_request_keeps_the_proposal_available_for_revision(self) -> None:
-        result = ReviewDecisionStore(self.path).decide("change_requested")
-
-        self.assertEqual(result["status"], "change_requested")
-        self.assertEqual(result["doors"][0]["assembly_id"], "tall_storage_01")
-
-    def test_unknown_decision_is_rejected_without_changing_the_record(self) -> None:
-        before = self.path.read_text(encoding="utf-8")
-
-        with self.assertRaisesRegex(ValueError, "unsupported"):
-            ReviewDecisionStore(self.path).decide("maybe")
-
-        self.assertEqual(self.path.read_text(encoding="utf-8"), before)
-
-    def test_accepts_a_fabrication_assembly_decision(self) -> None:
-        self.path.write_text(
-            json.dumps(
-                {
-                    "review_type": "fabrication_assembly",
-                    "status": "proposed",
-                    "message": "Approve this exact assembly.",
-                    "artifact_sha256": "abc123",
-                }
-            ),
-            encoding="utf-8",
+    def _fabrication_record(self, root, model):
+        path = root / "reviews/fabrication-assembly.json"
+        self._write_json(
+            path,
+            {
+                "review_type": "fabrication_assembly",
+                "status": "proposed",
+                "message": "Approve this exact assembly.",
+                "artifact": str(model.relative_to(root)),
+                "artifact_sha256": sha256(model.read_bytes()).hexdigest(),
+            },
         )
+        return path
 
-        result = ReviewDecisionStore(self.path).decide("approved")
+    def _model(self, root, name, size):
+        path = root / "assemblies" / name
+        path.parent.mkdir(parents=True, exist_ok=True)
+        CadQueryGlbExporter().export(
+            "wardrobe_01",
+            (
+                MockupPart(
+                    "panel",
+                    cq.Workplane("XY").box(size, 10.0, 10.0),
+                    cq.Location(),
+                    (0.8, 0.7, 0.6, 1.0),
+                ),
+            ),
+            path,
+        )
+        return path
 
-        self.assertEqual(result["status"], "approved")
-        self.assertEqual(result["artifact_sha256"], "abc123")
+    def _write_json(self, path, value) -> None:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps(value), encoding="utf-8")
 
 
-if __name__ == "__main__":
-    unittest.main()
+__all__ = ["TestReviewDecisionStore"]

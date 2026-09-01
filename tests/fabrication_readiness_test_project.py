@@ -117,6 +117,7 @@ class FabricationReadinessTestProject:
                 "status": "approved",
                 "artifact": "assemblies/full_wardrobe_review.glb",
                 "artifact_sha256": sha256(model.read_bytes()).hexdigest(),
+                "decision_artifact_sha256": sha256(model.read_bytes()).hexdigest(),
             },
         )
 

@@ -26,7 +26,10 @@ class ServeUnitReviewCommand:
             return self._invalid("the bundled viewer asset is missing")
         if review_data_path is not None and not review_data_path.is_file():
             return self._invalid(f"review data does not exist: {review_data_path}")
-        server = UnitReviewServer(viewer_root, model_path, port, review_data_path)
+        try:
+            server = UnitReviewServer(viewer_root, model_path, port, review_data_path)
+        except ValueError as error:
+            return self._invalid(str(error))
         print(json.dumps({"status": "serving", "url": server.url}), flush=True)
         if open_browser:
             server.open_browser()

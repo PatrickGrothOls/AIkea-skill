@@ -1,5 +1,7 @@
 """Scope: Verify saved position and feature evidence proves real scoped checks."""
 
+import json
+
 from fabrication_readiness_gate import FabricationReadinessGate
 from fabrication_readiness_test_project import FabricationReadinessTestProject
 
@@ -40,6 +42,19 @@ class TestFabricationSavedEvidence:
         )
         assert not check.passed
         assert "drawer-feature.json" in check.problems[0]
+
+    def test_rejects_approval_without_the_decided_artifact_hash(self, tmp_path) -> None:
+        project = FabricationReadinessTestProject()
+        project.write_complete_pack(tmp_path)
+        record_path = tmp_path / "reviews/fabrication-assembly.json"
+        record = json.loads(record_path.read_text(encoding="utf-8"))
+        del record["decision_artifact_sha256"]
+        project.write_json(record_path, record)
+
+        report = FabricationReadinessGate().evaluate(tmp_path, project.visits())
+
+        failed = {check.code for check in report.checks if not check.passed}
+        assert "approval.current_closed_assembly" in failed
 
 
 __all__ = ["TestFabricationSavedEvidence"]

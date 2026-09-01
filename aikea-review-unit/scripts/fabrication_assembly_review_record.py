@@ -2,9 +2,10 @@
 
 from __future__ import annotations
 
-from hashlib import sha256
 import json
 from pathlib import Path
+
+from glb_artifact_snapshot import GlbArtifactSnapshot
 
 
 class FabricationAssemblyReviewRecord:
@@ -18,18 +19,22 @@ class FabricationAssemblyReviewRecord:
         model_path: Path,
     ) -> Path:
         record_path = project_root / "reviews/fabrication-assembly.json"
-        relative_model = model_path.resolve().relative_to(project_root.resolve())
+        model = GlbArtifactSnapshot.load(model_path)
+        relative_model = model.path.relative_to(project_root.resolve())
         proposal = {
             "review_type": "fabrication_assembly",
             "status": "proposed",
             "message": self._MESSAGE,
             "artifact": str(relative_model),
-            "artifact_sha256": sha256(model_path.read_bytes()).hexdigest(),
+            "artifact_sha256": model.sha256,
         }
         existing = self._read(record_path)
         if (
             existing.get("status") == "approved"
+            and existing.get("artifact") == proposal["artifact"]
             and existing.get("artifact_sha256") == proposal["artifact_sha256"]
+            and existing.get("decision_artifact_sha256")
+            == proposal["artifact_sha256"]
         ):
             return record_path
         record_path.parent.mkdir(parents=True, exist_ok=True)

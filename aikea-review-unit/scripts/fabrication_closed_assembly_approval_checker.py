@@ -33,6 +33,7 @@ class FabricationClosedAssemblyApprovalChecker:
             and data.get("review_type") == "fabrication_assembly"
             and data.get("status") == "approved"
             and data.get("artifact_sha256") == model.sha256
+            and data.get("decision_artifact_sha256") == model.sha256
         )
         problems = () if approved else (str(record_path.relative_to(root)),)
         return FabricationReadinessCheck(

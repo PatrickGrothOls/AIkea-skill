@@ -46,7 +46,7 @@ tree geometry, hardware, joints, machining, STEP and DXF exports, BOM, cut list,
 feature evidence, validation, or stale visual approval. The exact Python,
 CadQuery, VTK, PyYAML,
 pytest, Node, and npm versions are declared. The repository-local Python command
-path, 22 viewer tests, and production viewer build pass. A completely isolated
+path, 23 viewer tests, and production viewer build pass. A completely isolated
 Python install could not be retained on this machine because the volume has
 less than 1 GiB free; the declarations were validated against the matching
 existing CadQuery runtime through a repository-local virtual environment.
@@ -138,6 +138,10 @@ validate the complete wardrobe, and bind approval to its exact closed GLB.
 - 2026-09-01: Removed approval persistence from the generic wardrobe renderer.
   Only the explicit full-wardrobe command now issues a proposal, and only for
   its canonical all-closed result.
+- 2026-09-01: Bound viewer decisions to one validated immutable GLB snapshot.
+  The loopback POST now requires its ephemeral token, exact same-origin request,
+  and JSON media type; atomic persistence records the served checksum and refuses
+  stale or already-decided proposals.
 
 1. 2026-08-31 - Kept runtime locks and viewer source tooling repository-only;
    the downloadable skill will receive prebuilt static viewer assets.
