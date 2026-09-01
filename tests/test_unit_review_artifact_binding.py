@@ -26,7 +26,7 @@ class TestUnitReviewArtifactBinding:
         with pytest.raises(ReviewDecisionConflict, match="served GLB"):
             support.start(served, review)
 
-    def test_serves_and_approves_the_startup_snapshot_after_source_changes(
+    def test_model_routes_serve_the_startup_snapshot_after_source_changes(
         self,
         tmp_path,
     ) -> None:
@@ -39,7 +39,10 @@ class TestUnitReviewArtifactBinding:
             token = self._token(support, server)
             support.write_model(size=20.0)
 
-            model_status, served_bytes = support.request(server, "model.glb")
+            served_models = tuple(
+                support.request(server, path)
+                for path in ("model.glb", "model%2Eglb", "model%252Eglb")
+            )
             decision_status, _content = support.request(
                 server,
                 "api/review-decision",
@@ -51,8 +54,8 @@ class TestUnitReviewArtifactBinding:
             server.close()
 
         saved = json.loads(review.read_text(encoding="utf-8"))
-        assert model_status == 200
-        assert served_bytes == startup_bytes
+        assert tuple(status for status, _content in served_models) == (200, 200, 200)
+        assert all(content == startup_bytes for _status, content in served_models)
         assert model.read_bytes() != startup_bytes
         assert decision_status == 200
         assert saved["decision_artifact_sha256"] == sha256(startup_bytes).hexdigest()

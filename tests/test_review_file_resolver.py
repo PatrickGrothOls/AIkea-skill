@@ -1,4 +1,4 @@
-"""Scope: Verify the local review server exposes only its viewer and chosen GLB."""
+"""Scope: Verify static review-file resolution stays inside the viewer bundle."""
 
 from pathlib import Path
 
@@ -8,44 +8,37 @@ from review_file_resolver import ReviewFileResolver
 class TestReviewFileResolver:
     """Keep local HTTP paths explicit and contained."""
 
-    def test_resolves_viewer_root_and_model(self, tmp_path: Path) -> None:
+    def test_resolves_viewer_root(self, tmp_path: Path) -> None:
         viewer = tmp_path / "viewer"
         viewer.mkdir()
         index = viewer / "index.html"
         index.write_text("viewer", encoding="utf-8")
-        model = tmp_path / "cabinet.glb"
-        model.write_bytes(b"glb")
-        resolver = ReviewFileResolver(viewer, model)
+        resolver = ReviewFileResolver(viewer)
 
         assert resolver.resolve("/") == index
-        assert resolver.resolve("/model.glb") == model
 
     def test_resolves_bundled_assets(self, tmp_path: Path) -> None:
         viewer = tmp_path / "viewer"
         asset = viewer / "assets" / "viewer.js"
         asset.parent.mkdir(parents=True)
         asset.write_text("viewer", encoding="utf-8")
-        resolver = ReviewFileResolver(viewer, tmp_path / "cabinet.glb")
+        resolver = ReviewFileResolver(viewer)
 
         assert resolver.resolve("/assets/viewer.js") == asset
 
-    def test_exposes_only_the_selected_review_record(self, tmp_path: Path) -> None:
+    def test_does_not_resolve_files_outside_the_viewer(self, tmp_path: Path) -> None:
         viewer = tmp_path / "viewer"
         viewer.mkdir()
-        review = tmp_path / "opening-review.json"
-        review.write_text("{}", encoding="utf-8")
-        resolver = ReviewFileResolver(
-            viewer,
-            tmp_path / "cabinet.glb",
-            review,
-        )
+        model = tmp_path / "model.glb"
+        model.write_bytes(b"mutable")
+        resolver = ReviewFileResolver(viewer)
 
-        assert resolver.resolve("/review-data.json") == review
+        assert resolver.resolve("/model.glb") is None
 
     def test_rejects_unknown_and_escaping_paths(self, tmp_path: Path) -> None:
         viewer = tmp_path / "viewer"
         viewer.mkdir()
-        resolver = ReviewFileResolver(viewer, tmp_path / "cabinet.glb")
+        resolver = ReviewFileResolver(viewer)
 
         assert resolver.resolve("/missing.js") is None
         assert resolver.resolve("/../secret") is None

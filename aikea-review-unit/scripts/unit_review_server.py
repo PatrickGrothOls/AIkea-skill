@@ -7,7 +7,7 @@ import json
 import mimetypes
 from pathlib import Path
 from typing import Type
-from urllib.parse import urlsplit
+from urllib.parse import unquote, urlsplit
 import webbrowser
 
 from review_decision_store import ReviewDecisionConflict
@@ -23,7 +23,7 @@ class ReviewRequestHandler(BaseHTTPRequestHandler):
     origin: str
 
     def do_GET(self) -> None:
-        request_path = urlsplit(self.path).path
+        request_path = self._decoded_path()
         if request_path == "/model.glb":
             self._send_bytes(200, self.session.artifact.content, "model/gltf-binary")
             return
@@ -33,7 +33,7 @@ class ReviewRequestHandler(BaseHTTPRequestHandler):
             except ReviewDecisionConflict as error:
                 self._send_json(409, {"error": str(error)})
             return
-        path = self.resolver.resolve(self.path)
+        path = self.resolver.resolve(request_path)
         if path is None:
             self.send_error(404)
             return
@@ -46,7 +46,7 @@ class ReviewRequestHandler(BaseHTTPRequestHandler):
         self._send_bytes(200, content, content_type)
 
     def do_POST(self) -> None:
-        if urlsplit(self.path).path != "/api/review-decision" or not self.session.store:
+        if self._decoded_path() != "/api/review-decision" or not self.session.store:
             self.send_error(404)
             return
         content_type = self.headers.get("Content-Type", "").partition(";")[0].lower()
@@ -76,6 +76,10 @@ class ReviewRequestHandler(BaseHTTPRequestHandler):
             self._send_json(400, {"error": str(error)})
             return
         self._send_json(200, response)
+
+    def _decoded_path(self) -> str:
+        encoded_path = urlsplit(self.path).path
+        return unquote(unquote(encoded_path))
 
     def _send_json(self, status: int, value: dict) -> None:
         self._send_bytes(
@@ -114,7 +118,7 @@ class UnitReviewServer:
         port: int = 0,
         review_data_path: Path | None = None,
     ) -> None:
-        resolver = ReviewFileResolver(viewer_root, model_path, review_data_path)
+        resolver = ReviewFileResolver(viewer_root)
         session = ReviewServerSession(model_path, review_data_path)
         handler: Type[ReviewRequestHandler] = type(
             "BoundReviewRequestHandler",

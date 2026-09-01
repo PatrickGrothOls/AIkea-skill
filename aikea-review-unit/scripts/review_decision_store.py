@@ -5,10 +5,10 @@ from __future__ import annotations
 from datetime import datetime, timezone
 import json
 from pathlib import Path
-from threading import Lock
 from uuid import uuid4
 
 from glb_artifact_snapshot import GlbArtifactSnapshot
+from review_decision_file_lock import ReviewDecisionFileLock
 
 
 class ReviewDecisionConflict(ValueError):
@@ -23,7 +23,6 @@ class ReviewDecisionStore:
 
     def __init__(self, path: Path) -> None:
         self.path = path.resolve()
-        self._lock = Lock()
 
     def read(self, artifact: GlbArtifactSnapshot | None = None) -> dict:
         record = self._read_record()
@@ -37,7 +36,7 @@ class ReviewDecisionStore:
     ) -> dict:
         if decision not in self._DECISIONS:
             raise ValueError("unsupported review decision")
-        with self._lock:
+        with ReviewDecisionFileLock(self.path):
             record = self.read(artifact)
             if record.get("status") != "proposed":
                 raise ReviewDecisionConflict("the review proposal is no longer pending")

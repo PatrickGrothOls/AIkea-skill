@@ -67,6 +67,72 @@ class GlbArtifactSnapshot:
             or scene not in range(len(scenes))
         ):
             raise UnitMockupInputError([f"GLB has no valid default scene: {path}"])
+        if not GlbArtifactSnapshot._default_scene_has_reachable_mesh(
+            document,
+            scenes[scene],
+        ):
+            raise UnitMockupInputError(
+                [f"GLB has no renderable default scene: {path}"]
+            )
+
+    @staticmethod
+    def _default_scene_has_reachable_mesh(document: dict, scene: object) -> bool:
+        nodes = document.get("nodes")
+        meshes = document.get("meshes")
+        roots = scene.get("nodes") if isinstance(scene, dict) else None
+        if (
+            not isinstance(nodes, list)
+            or not isinstance(meshes, list)
+            or not isinstance(roots, list)
+            or not roots
+        ):
+            return False
+        pending = list(roots)
+        visited: set[int] = set()
+        has_mesh = False
+        while pending:
+            node_index = pending.pop()
+            if (
+                type(node_index) is not int
+                or node_index not in range(len(nodes))
+            ):
+                return False
+            if node_index in visited:
+                continue
+            visited.add(node_index)
+            node = nodes[node_index]
+            if not isinstance(node, dict):
+                return False
+            mesh_index = node.get("mesh")
+            if mesh_index is not None:
+                if (
+                    type(mesh_index) is not int
+                    or mesh_index not in range(len(meshes))
+                    or not GlbArtifactSnapshot._has_mesh_primitives(
+                        meshes[mesh_index]
+                    )
+                ):
+                    return False
+                has_mesh = True
+            children = node.get("children", [])
+            if not isinstance(children, list):
+                return False
+            pending.extend(children)
+        return has_mesh
+
+    @staticmethod
+    def _has_mesh_primitives(mesh: object) -> bool:
+        primitives = mesh.get("primitives") if isinstance(mesh, dict) else None
+        return (
+            isinstance(primitives, list)
+            and bool(primitives)
+            and all(
+                isinstance(primitive, dict)
+                and isinstance(primitive.get("attributes"), dict)
+                and type(primitive["attributes"].get("POSITION")) is int
+                for primitive in primitives
+            )
+        )
 
 
 __all__ = ["GlbArtifactSnapshot"]
