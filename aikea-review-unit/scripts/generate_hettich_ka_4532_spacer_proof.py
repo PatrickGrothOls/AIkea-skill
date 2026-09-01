@@ -24,6 +24,11 @@ from hettich_ka_4532_spacer_proof_report import HettichKa4532SpacerProofReport
 class GenerateHettichKa4532SpacerProofCommand:
     """Create closed/open GLBs and one machine-readable physical proof."""
 
+    def target_parser(self) -> argparse.ArgumentParser:
+        parser = argparse.ArgumentParser(add_help=False)
+        parser.add_argument("--output-directory", type=Path)
+        return parser
+
     def parser(self) -> argparse.ArgumentParser:
         parser = argparse.ArgumentParser(
             description="Generate one exact KA 4532 plus 13952 cabinet proof."
@@ -76,8 +81,10 @@ class GenerateHettichKa4532SpacerProofCommand:
 # This small adapter keeps runtime handoff outside the command object.
 def main() -> int:
     command = GenerateHettichKa4532SpacerProofCommand()
+    target, _unknown = command.target_parser().parse_known_args()
+    if target.output_directory is not None:
+        command.invalidate(target)
     arguments = command.parser().parse_args()
-    command.invalidate(arguments)
     runtime = CadQueryRuntime.from_environment()
     if not runtime.current_is_ready():
         try:
