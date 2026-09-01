@@ -28,6 +28,7 @@ class FabricationReadinessGate:
         checks = self.assembly.check(visits) + self.artifacts.check(
             project_root,
             evidence,
+            visits,
         )
         return FabricationReadinessReport(checks)
 

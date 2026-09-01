@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 import json
 from pathlib import Path
 from typing import Any
@@ -17,6 +17,8 @@ class AssemblyPositionReport:
     assemblies: dict[str, Any]
     relationships: dict[str, Any]
     checks: tuple[dict[str, Any], ...]
+    closed_tree_placement_sha256: str = ""
+    closed_tree_item_count: int = 0
 
     @staticmethod
     def assembly_values(
@@ -42,7 +44,7 @@ class AssemblyPositionReport:
         return all(check["passed"] for check in self.checks)
 
     def as_dict(self) -> dict[str, Any]:
-        return {
+        data = {
             "schema_version": 1,
             "status": "valid" if self.is_valid else "invalid",
             "global_coordinates": {
@@ -55,6 +57,19 @@ class AssemblyPositionReport:
             "relationships": self.relationships,
             "checks": list(self.checks),
         }
+        if self.closed_tree_placement_sha256:
+            data["closed_tree_placement_sha256"] = (
+                self.closed_tree_placement_sha256
+            )
+            data["closed_tree_item_count"] = self.closed_tree_item_count
+        return data
+
+    def bind_closed_tree(self, fingerprint) -> "AssemblyPositionReport":
+        return replace(
+            self,
+            closed_tree_placement_sha256=fingerprint.sha256,
+            closed_tree_item_count=fingerprint.item_count,
+        )
 
     def write(self, path: Path) -> None:
         path.write_text(json.dumps(self.as_dict(), indent=2) + "\n", encoding="utf-8")

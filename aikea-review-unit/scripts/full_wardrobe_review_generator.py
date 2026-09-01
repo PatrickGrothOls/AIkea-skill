@@ -10,6 +10,7 @@ from assembly_run import AssemblyRunReader
 from assembly_tree_review_geometry import AssemblyTreeReviewGeometry
 from assembly_tree_review_plan import AssemblyTreeReviewPlan
 from assembly_tree_review_plan_validator import AssemblyTreeReviewPlanValidator
+from assembly_tree_placement_fingerprint import AssemblyTreePlacementFingerprinter
 from base_mockup_geometry import BaseMockupGeometry
 from cabinet_review_geometry import CabinetReviewGeometry
 from cadquery_glb_exporter import CadQueryGlbExporter
@@ -35,6 +36,7 @@ class FullWardrobeReviewGenerator:
         self.cabinet_geometry = CabinetReviewGeometry()
         self.position_checker = FullWardrobePositionChecker()
         self.tree_geometry = AssemblyTreeReviewGeometry()
+        self.tree_fingerprint = AssemblyTreePlacementFingerprinter()
         self.review_plan_validator = AssemblyTreeReviewPlanValidator()
         self.hardware = PurchasedHardwareHydrator(
             ProjectHardwareGeometryResolver()
@@ -78,8 +80,6 @@ class FullWardrobeReviewGenerator:
             built_cabinets,
             physical_cabinet_parts,
         )
-        report_path = project_root / "assemblies/full-wardrobe-position-check.json"
-        report.write(report_path)
         if not report.is_valid:
             raise UnitMockupInputError(
                 [
@@ -93,6 +93,9 @@ class FullWardrobeReviewGenerator:
             resolved_review_plan.hides,
         )
         visits = self.loader.walk(project_root, hydrated)
+        report = report.bind_closed_tree(self.tree_fingerprint.build(visits))
+        report_path = project_root / "assemblies/full-wardrobe-position-check.json"
+        report.write(report_path)
         placed_parts = self.tree_geometry.build(
             visits,
             door_states,
