@@ -51,7 +51,8 @@ class FabricationRecordValidator:
         valid_records = tuple(item for item in records if isinstance(item, dict))
         record_paths = tuple(item.get("path") for item in valid_records)
         counts = Counter(item for item in record_paths if isinstance(item, str))
-        expected = set(expected_paths)
+        expected_counts = Counter(expected_paths)
+        expected = set(expected_counts)
         actual = set(counts)
         problems = tuple(
             sorted(
@@ -59,6 +60,11 @@ class FabricationRecordValidator:
                 | {f"{item}: missing" for item in expected - actual}
                 | {f"{item}: unexpected" for item in actual - expected}
                 | {f"{item}: duplicate" for item, count in counts.items() if count != 1}
+                | {
+                    f"{item}: duplicate tree path"
+                    for item, count in expected_counts.items()
+                    if count != 1
+                }
             )
         )
         return {

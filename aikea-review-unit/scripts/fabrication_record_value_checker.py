@@ -16,7 +16,8 @@ class FabricationRecordValueChecker:
             for item in evidence.parts
             if item.path in rows
             and not (
-                self._text(rows[item.path].get("material"))
+                self._text(getattr(item.part.spec, "material_id", None))
+                and rows[item.path].get("material") == item.part.spec.material_id
                 and self._same(
                     rows[item.path].get("thickness_mm"),
                     item.part.spec.local_size_mm[2],
@@ -57,9 +58,12 @@ class FabricationRecordValueChecker:
 
     def _valid_cut_row(self, item, row, bom_row) -> bool:
         width_mm, height_mm, thickness_mm = item.part.spec.local_size_mm
+        material_id = getattr(item.part.spec, "material_id", None)
         return bool(
             bom_row
-            and row.get("material") == bom_row.get("material")
+            and self._text(material_id)
+            and row.get("material") == material_id
+            and bom_row.get("material") == material_id
             and self._same(row.get("thickness_mm"), thickness_mm)
             and self._quantity_one(row.get("quantity"))
             and self._same(row.get("blank_width_mm"), width_mm)
