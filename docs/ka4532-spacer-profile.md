@@ -26,6 +26,8 @@ values without copying vendor CAD or client-project geometry.
 - [x] Load and classify both exact STEP assets during drawer generation.
 - [x] Generate both spacer placements and both runner placements from cabinet-local faces.
 - [x] Save the spacer machining blocker, hardware reservations, movement, and collision evidence.
+- [x] Encode the official KA 4532/500 cabinet fixing axes and prove them against both exact STEP assets.
+- [x] Leave only the exact longer screw and cabinet pilot specification unresolved.
 - [ ] Prove one complete generated cabinet before enabling repetition.
 
 ### WP4 — Default workflow routing
@@ -58,13 +60,30 @@ moving runner members travel 500 mm, both exact spacers and fixed members stay i
 the cabinet, both endpoints have no unintended collision pairs, and the
 conservative linear swept envelopes report no conflict.
 
-The complete-cabinet and fabrication gates remain closed. Neither the promoted
-proof nor Hettich's available product data defines one approved
-spacer-to-cabinet fixing subset, fastener identity, pilot diameter, or pilot
-depth. Those values will not be inferred from candidate holes in the exact STEP.
-The current proof cabinet's 741 mm fitted door also exceeds its selected Riex
-profile's 600 mm limit. Repetition remains disabled until both blockers are
-resolved and the complete cabinet passes independently.
+The official KA 4532/500 cabinet fixing pattern is now resolved. Hettich drawing
+`MS 10547.00.000` locates four fixed-member axes at 37, 165, 261, and 325 mm
+from the cabinet front. Those are the 37 mm front offset followed by the chained
+128, 96, and 64 mm spacings. The exact article 9114276 STEP has one 6.4 mm
+opening at each axis. With the saved placement, every axis crosses uninterrupted
+material through the complete 25 mm width of the exact article 13952 STEP. The
+axes therefore define new through-spacer fixing paths; they do not select or
+claim alignment with the spacer's separate preformed openings.
+
+The saved-proof gate now derives the cabinet faces, drawer box, and exact
+source-normalized runner frames from the recursively built assembly. It rejects
+shifted, tilted, outward-facing, wrong-handed, or separated rail-and-spacer
+placements while accepting a coherent inset of the complete drawer subtree.
+
+The complete-cabinet and fabrication gates remain closed only on the spacer
+fixing's exact longer screw identity and length plus the cabinet-material pilot
+diameter and depth. Hettich documents 6 x 14 mm and 4 x 14 mm direct-mounting
+options without the 25 mm spacer, but the reviewed Hettich material does not
+publish the required longer fixing or its cabinet pilot. Neither value will be
+inferred. The current project records 18 mm panel thickness but not the panel
+material required to select a pilot. The current proof cabinet's 741 mm fitted
+door also exceeds its
+selected Riex profile's 600 mm limit. Repetition remains disabled until both
+blockers are resolved and the complete cabinet passes independently.
 
 The drawer skill now treats KA 4532 plus article 13952 as the default when a
 client requests verified Hettich runners without naming a product. KA 5332
@@ -85,3 +104,6 @@ integration code or its own dependency installation.
 6. 2026-09-01 — Independent stability review reproduced equal-volume spacer substitution and stale-proof launcher attacks. The proof now compares all six purchased members against independently loaded checksum-gated source solids, rejects the substitute, invalidates old evidence before full argument validation and runtime discovery, and remains importable through macOS Python 3.9 for CadQuery handoff.
 7. 2026-09-01 — Three clean runs exposed that an unspecified request for verified Hettich runners still selected the older KA 5332 path. Patrick had already directed the workflow to use the spacer system, so the drawer skill now selects exact KA 4532 article 9114276 with purchased article 13952 spacers by default while preserving any explicit or existing runner choice.
 8. 2026-09-02 — The corrected cold-start runs selected KA 4532 plus article 13952, then one reproduced a fresh-project `ModuleNotFoundError` before `CadQueryRuntime` could run. Independent stability review also reproduced the earlier project-model import failing under macOS Python 3.9. The command now defers both imports until after runtime handoff; no dependency or project-local script was added.
+9. 2026-09-02 — Patrick approved using the rail's official fixing pattern, verifying those axes against the exact spacer CAD, and treating only the longer screw and cabinet pilot as unresolved. Hettich drawing `MS 10547.00.000` and the checksum-gated runner STEP establish four fixed-member axes at 37, 165, 261, and 325 mm from the cabinet front. The spacer's preformed openings are vertically separate; the checksum-gated spacer STEP proves that each official rail axis instead crosses a complete solid 6.4 mm-diameter corridor through its central web. Runtime evidence must preserve this distinction and must not invent spacer geometry or a fastener specification.
+10. 2026-09-04 — The complete suite passed with 407 tests, 72 subtests, and 5 expected skips. Independent stability review reloaded both licensed project-local STEP files and confirmed the four 6.4 mm runner openings, zero missing spacer volume across every full 25 mm corridor, and all eight left/right records. That review also found that the saved-proof gate initially trusted its summary labels without validating every dimension and axis record. The gate now validates the complete evidence, mutation tests reject every altered field, and independent simplicity, stability, and 151-line planner separation-of-concerns reviews passed before commit.
+11. 2026-09-04 — Exact-commit stability review rejected `2bd5672` because coordinated geometry changes and deleted identity fields could still leave its proof green. Its replacement binds all eight axes to cabinet and drawer datums, signed 25 mm inward spacer paths, exact source-normalized fixed/moving runner frames, and the saved spacer checksum, source, ownership, schema, and blocker identity. Independent exact-CAD attacks now reject coordinated X/Y/Z shifts, wrong hand, outward placement, rail tilt, moving-member drift, and separated drawer geometry while accepting a valid complete-drawer inset. Independent stability and simplicity reviews pass. The complete suite passes with 445 tests, 72 subtests, 5 expected skips, and 23 viewer tests; exact-commit review remains mandatory before publication.

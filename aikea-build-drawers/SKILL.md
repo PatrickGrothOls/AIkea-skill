@@ -71,7 +71,8 @@ the active project or client explicitly selects it.
    `python <skill-directory>/scripts/generate_hettich_ka_4532_spacer_cabinet_drawer.py <project>/aikea.yaml --assembly <cabinet-id> --drawer <drawer-id> --bottom-height-mm <height-above-carcass-bottom> --box-height-mm <height> --box-depth-mm <depth> --drawer-front-mm <drawer-front> --hardware-directory <hardware-directory>`
 
    Do not repeat it yet. This command preserves one unchanged spacer STEP on
-   each cabinet side and records the unresolved spacer fixing authority.
+   each cabinet side, verifies the official rail axes against both purchased
+   STEPs, and records only the unresolved longer screw and cabinet pilot.
 
 5. Treat the generated cabinet-local files as the source for this drawer. The
    composed cabinet builder must load the original cabinet builder and its saved
@@ -81,8 +82,10 @@ the active project or client explicitly selects it.
    For MOVENTO and KA 5332, require the resolved runner center to occupy a real
    shared System 32 row and save its cabinet and drawer machining plus physical
    hardware reservation with the generated child. For KA 4532 with article
-   13952, require both panel reservations and the explicit spacer machining
-   blocker; do not infer spacer holes, fasteners, or pilots.
+   13952, require both panel reservations, the four official fixed-member axes,
+   exact-CAD evidence that every axis crosses the spacer's solid centre web, and
+   the remaining screw-and-pilot blocker. Do not select the spacer's separate
+   preformed openings or infer a fastener or pilot.
 6. For MOVENTO and KA 5332, run:
 
    `python <aikea-review-unit-directory>/scripts/generate_drawer_wardrobe_review.py <project>/aikea.yaml --assembly <cabinet-id> --drawer-state open --hardware-directory <download-directory>`
@@ -128,9 +131,11 @@ checksum-gates their project-local STEP files, classifies every runner member,
 places the same unchanged spacer solid on both cabinet sides, and saves exact
 hardware ownership and panel reservations. Recursive review now checks closed
 and open movement, exact endpoint intersections, and conservative linear swept
-envelopes. Repetition and fabrication readiness remain blocked until one
-complete cabinet passes and an approved spacer fixing plan supplies the missing
-hole subset, fastener, pilot diameter, and pilot depth.
+envelopes. The official 37, 165, 261, and 325 mm cabinet fixing axes are checked
+against the exact runner openings and the exact spacer's complete 25 mm support
+corridors on both hands. Repetition and fabrication readiness remain blocked
+until one complete cabinet passes and an approved longer screw plus
+cabinet-material pilot diameter and depth are supplied.
 
 ## Responsibility boundary
 

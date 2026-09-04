@@ -18,6 +18,9 @@ from hettich_ka_4532_spacer_drawer_box_profile import (
 from hettich_ka_4532_spacer_hardware_reservations import (
     HettichKa4532SpacerHardwareReservations,
 )
+from hettich_ka_4532_spacer_fixing_alignment_checker import (
+    HettichKa4532SpacerFixingAlignmentChecker,
+)
 from hettich_ka_4532_spacer_mounting_planner import (
     HettichKa4532SpacerMountingPlanner,
 )
@@ -27,7 +30,7 @@ from panel_hardware_reservation import (
     PanelHardwareReservationPlan,
 )
 
-MACHINING_AUTHORITY_BLOCKED = "blocked_missing_13952_fixing_authority"
+MACHINING_AUTHORITY_BLOCKED = "blocked_missing_longer_screw_and_cabinet_pilot"
 SOURCE_CAD_PLACED = "exact_source_cad_placed"
 
 
@@ -38,6 +41,7 @@ class HettichKa4532SpacerCabinetDrawerPlanner:
         self.box_profile = HettichKa4532SpacerDrawerBoxProfileAdapter()
         self.box_planner = DrawerBoxPlanner()
         self.mounting = HettichKa4532SpacerMountingPlanner()
+        self.fixing_alignment = HettichKa4532SpacerFixingAlignmentChecker()
         self.reservations = HettichKa4532SpacerHardwareReservations()
         self.compatibility = PanelHardwareReservationPlan()
         self.fit = CabinetDrawerFitChecker()
@@ -63,6 +67,7 @@ class HettichKa4532SpacerCabinetDrawerPlanner:
             drawer_bottom_mm=drawer_bottom_mm,
             hardware=profile,
         )
+        fixing_alignment = self.fixing_alignment.verify(hardware_step, mounting)
         opening = CabinetDrawerOpening(
             clear_width_mm=(
                 mounting.drawer_outside_width_mm
@@ -107,6 +112,7 @@ class HettichKa4532SpacerCabinetDrawerPlanner:
             drawer,
             mounting.drawer_origin_mm,
             mounting,
+            fixing_alignment,
             hardware_step,
             reservations,
             MACHINING_AUTHORITY_BLOCKED,

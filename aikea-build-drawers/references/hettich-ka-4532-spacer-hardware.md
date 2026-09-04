@@ -45,10 +45,35 @@ instance is rigidly reoriented into the opposite cabinet-side frame; it is not
 geometrically mirrored or scaled. The runner STEP contains both hands as four
 native solids.
 
+## Official cabinet fixing axes
+
+Use Hettich installation drawing
+[`MS 10547.00.000`](https://web2.hettich.com/hbh/addon/montage/MS_10547_00_Montageanleitung_KA4532-SiSy.pdf)
+as the fixing-pattern authority for article `9114276`. For the 500 mm fixed
+member, the first 6.4 mm opening is 37 mm behind the cabinet front. The following
+spans from that first opening are 128, 224, and 288 mm. The resulting cabinet
+axes are 37, 165, 261, and 325 mm from the front, with successive spacings of
+128, 96, and 64 mm. This also agrees with the [official product data](https://shop.hettich.com/md_EN/Runner-systems/Ball-bearing-runners/Side-installation/KA-4532-Silent-System-ball-bearing-runner%2C-side-installation%2C-dimensions-%28H-x-W%29-46-x-12-7-mm%2C-500/p/9114276).
+
+The exact runner STEP contains all four openings. Under the approved placement,
+their axes cross the exact spacer at native depths 27, 155, 251, and 315 mm and
+native height 25 mm. A complete 6.4 mm-diameter corridor is solid plastic through
+the full 25 mm spacer width at every axis on both hands. These are therefore new
+through-spacer fixing paths in the spacer's central web. They are not the
+spacer's vertically offset preformed openings. Do not substitute those openings
+or modify the purchased CAD.
+
+Hettich's direct-mounting sheet permits 6 x 14 mm or 4 x 14 mm cabinet-side
+fixings without a spacer. The reviewed Hettich material does not specify the
+longer through-spacer screw or a cabinet pilot. Keep manufacturing authority
+false until an exact purchased longer screw and a panel-material-specific pilot
+diameter and depth are approved.
+
 ## Current integration boundary
 
 The public skill now owns the exact product identities, checksums, native STEP
-observations, paired spacer requirement, and drawer-width calculation. Project
-generation, cabinet machining, hardware reservations, movement, and collision
-proof must be wired through the normal drawer feature pipeline before this set
-is fabrication-ready.
+observations, paired spacer requirement, drawer-width calculation, official
+fixed-member pattern, exact spacer-support verification, project generation,
+hardware reservations, movement, and collision proof. The longer screw and
+cabinet pilot remain the only spacer-fixing inputs required before cabinet
+machining can be fabrication-ready.

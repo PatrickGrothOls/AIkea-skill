@@ -7,6 +7,9 @@ from typing import Any
 from hettich_ka_4532_spacer_collision_checker import (
     HettichKa4532SpacerCollisionChecker,
 )
+from hettich_ka_4532_spacer_fixing_evidence_checker import (
+    HettichKa4532SpacerFixingEvidenceChecker,
+)
 from hettich_ka_4532_spacer_motion_checker import HettichKa4532SpacerMotionChecker
 from hettich_ka_4532_spacer_proof_report import HettichKa4532SpacerProofReport
 from hettich_ka_4532_spacer_source_checker import (
@@ -17,15 +20,9 @@ from hettich_ka_4532_spacer_source_checker import (
 class HettichKa4532SpacerProofChecker:
     """Compare exact closed and open trees, including conservative sweep bounds."""
 
-    _MISSING_AUTHORITY = {
-        "spacer_to_cabinet_fixing_hole_subset",
-        "spacer_to_cabinet_fastener_identity",
-        "cabinet_pilot_diameter_mm",
-        "cabinet_pilot_depth_mm",
-    }
-
     def __init__(self) -> None:
         self.collisions = HettichKa4532SpacerCollisionChecker()
+        self.fixings = HettichKa4532SpacerFixingEvidenceChecker()
         self.motion = HettichKa4532SpacerMotionChecker()
         self.sources = HettichKa4532SpacerSourceChecker()
 
@@ -83,10 +80,14 @@ class HettichKa4532SpacerProofChecker:
                 == {"left_side", "right_side"},
             ),
             self._check(
-                "unresolved spacer machining remains an explicit blocker",
-                machining_blocker.get("manufacturing_authority") is False
-                and set(machining_blocker.get("missing_authority", ()))
-                == self._MISSING_AUTHORITY,
+                "official rail axes and remaining blocker match installed hardware",
+                self.fixings.matches(
+                    machining_blocker,
+                    assembly_id,
+                    drawer_id,
+                    closed,
+                    step_set,
+                ),
             ),
         )
         return HettichKa4532SpacerProofReport(

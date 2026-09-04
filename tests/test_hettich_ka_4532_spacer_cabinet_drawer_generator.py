@@ -77,7 +77,23 @@ class TestHettichKa4532SpacerCabinetDrawerGenerator:
         assert layout["purchased_set"]["combined_load_capacity_kg"] == 20.0
         assert layout["purchased_set"]["minimum_cabinet_depth_mm"] == 504.0
         assert authority["manufacturing_authority"] is False
-        assert authority["reason"] == "blocked_missing_13952_fixing_authority"
+        assert authority["cabinet_id"] == "tall_storage_01"
+        assert authority["reason"] == (
+            "blocked_missing_longer_screw_and_cabinet_pilot"
+        )
+        resolved = authority["resolved_authority"]
+        assert resolved["rail_fixed_member_hole_pattern"][
+            "cabinet_depth_axes_from_front_mm"
+        ] == [37.0, 165.0, 261.0, 325.0]
+        assert resolved["spacer_support_corridor"][
+            "preformed_spacer_openings_used"
+        ] is False
+        assert authority["missing_authority"] == [
+            "longer_rail_through_spacer_screw_identity",
+            "longer_rail_through_spacer_screw_length_mm",
+            "cabinet_pilot_diameter_mm",
+            "cabinet_pilot_depth_mm",
+        ]
         assert features["features"][0]["module"] == "drawers.feature"
         assert features["features"][0]["review_module"] == "drawers.review"
         assert "drawer_01/left_side" in features["features"][0][
