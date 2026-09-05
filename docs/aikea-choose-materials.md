@@ -36,7 +36,7 @@ per-part material assignment.
 
 - [x] Run skill-package validation and the focused material tests.
 - [x] Run the complete Python suite with the repository's pinned Python 3.10 and
-  CadQuery environment: 454 tests and 72 subtests passed; 5 tests were skipped.
+  CadQuery environment: 402 tests and 72 subtests passed; 5 tests were skipped.
 - [x] Run the localhost review-server tests with socket permission.
 
 ## Current state
@@ -44,7 +44,7 @@ per-part material assignment.
 The advisor, main-skill route, material-selection reference, deterministic
 unresolved-material gate, and twelve-case inference eval set are complete. Skill
 validation and all 26 focused tests pass. The complete repository suite passes
-with 454 tests, 5 expected skips, and 72 subtests.
+with 402 tests, 5 expected skips, and 72 subtests.
 
 ## Audit log
 
@@ -66,5 +66,5 @@ with 454 tests, 5 expected skips, and 72 subtests.
    deterministically, material validation to precede completeness, and project
    file creation to cover fully supplied new projects. The calculator gate,
    routing order, and recovery-case tests now enforce those boundaries.
-7. 2026-09-05 - The complete Python suite passed with 454 tests, 5 expected
+7. 2026-09-05 - The complete Python suite passed with 402 tests, 5 expected
    skips, and 72 subtests.
