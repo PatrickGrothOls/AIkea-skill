@@ -56,7 +56,14 @@ per-part material assignment.
   expected answer and all new material fixtures used the wrong lifecycle shape.
 - [x] Move the expected answer outside the copied project and convert every new
   material fixture to the calculator's `cabinet_run` shape.
-- [ ] Commit the fixture correction with the Codex agent signature.
+- [x] Commit fixture correction `fb521ae` with the Codex agent signature.
+- [x] Pass its independent stability review.
+- [x] Record its simplicity-review failure: tests did not explicitly reject a
+  lifecycle regression in every seed or an oracle elsewhere in the fixture tree.
+- [x] Lock both corrected boundaries with direct assertions.
+- [x] Split fixture-lifecycle checks from inference scoring when the combined
+  test file crossed the 150-line separation-of-concerns review threshold.
+- [ ] Commit the regression assertions with the Codex agent signature.
 - [ ] Rerun independent simplicity and stability reviews on that exact commit.
 
 ## Current state
@@ -115,3 +122,12 @@ reviews remain.
     enforce both isolation and calculator validity.
 14. 2026-09-05 - The corrected unrestricted suite passed 409 tests, 5 expected
     skips, and 72 subtests, including the localhost viewer checks.
+15. 2026-09-05 - Independent review of signed commit `fb521ae` passed stability
+    and failed simplicity because its tests did not directly reject lifecycle
+    regressions in every seed or oracle placement elsewhere in the fixture tree.
+16. 2026-09-05 - The eval contract now asserts `cabinet_run` and rejects
+    `assembly_run` in every starting fixture, and keeps every expected answer
+    outside the entire copied material-fixture tree.
+17. 2026-09-05 - Adding those assertions pushed the combined eval test over the
+    150-line review threshold. Fixture and lifecycle checks were extracted into
+    their own focused test file; inference scoring remains separate.
