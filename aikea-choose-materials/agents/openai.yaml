@@ -1,0 +1,4 @@
+interface:
+  display_name: "AIkea Choose Materials"
+  short_description: "Compare cabinet materials and current costs"
+  default_prompt: "Use $aikea-choose-materials to recommend the right material system for my AIkea project."
