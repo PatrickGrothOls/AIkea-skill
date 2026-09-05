@@ -37,3 +37,32 @@ class TestAikeaMaterialRouterContract:
 
         assert "Numeric thicknesses alone are legacy inputs" in skill_text
         assert "reference's stable marker" in skill_text
+
+    def test_generated_legacy_project_stops_instead_of_routing_in_a_loop(self) -> None:
+        skill_text = " ".join(
+            (
+                Path(__file__).parents[1]
+                / "aikea-choose-materials"
+                / "SKILL.md"
+            ).read_text().split()
+        )
+
+        assert "stop with a material-migration blocker" in skill_text
+        assert "Do not mutate `aikea.yaml`" in skill_text
+        assert "Return to `$aikea` only after the stage is complete" in skill_text
+
+    def test_drawer_builder_keeps_drawer_material_ownership(self) -> None:
+        skill_text = " ".join(
+            (
+                Path(__file__).parents[1]
+                / "aikea-choose-materials"
+                / "SKILL.md"
+            ).read_text().split()
+        )
+
+        assert "`$aikea-build-drawers` owns drawer-box and drawer-front materials" in (
+            skill_text
+        )
+        assert "Never apply the global door choice to drawer fronts implicitly" in (
+            skill_text
+        )

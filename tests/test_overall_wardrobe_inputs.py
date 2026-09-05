@@ -89,18 +89,22 @@ class TestOverallWardrobeInputs:
 
     def test_client_statement_is_preserved_as_design_decision_evidence(self) -> None:
         data = self.project.load_flat()
-        data["design_decisions"] = [
+        data["design_decisions"].append(
             {
                 "subject": "front_outline.edge_C",
                 "decision": "straight",
                 "design_effect": "use_measured_endpoints",
                 "client_statement": "Edge C is straight; use its endpoints.",
             }
-        ]
+        )
 
         inputs = OverallWardrobeInputReader().read(data)
 
-        decision = inputs.design_decisions[0]
+        decision = next(
+            item
+            for item in inputs.design_decisions
+            if item.subject == "front_outline.edge_C"
+        )
         assert decision.subject == "front_outline.edge_C"
         assert decision.decision == "straight"
         assert decision.design_effect == "use_measured_endpoints"
@@ -108,13 +112,14 @@ class TestOverallWardrobeInputs:
 
     def test_design_decision_requires_a_client_statement(self) -> None:
         data = self.project.load_flat()
-        data["design_decisions"] = [
+        data["design_decisions"].insert(
+            0,
             {
                 "subject": "front_outline.edge_C",
                 "decision": "straight",
                 "design_effect": "use_measured_endpoints",
             }
-        ]
+        )
 
         with pytest.raises(OverallWardrobeInputError) as raised:
             OverallWardrobeInputReader().read(data)

@@ -6,7 +6,7 @@ A cabinet is not one material decision. Compare the groups that create different
 visible or structural demands:
 
 - carcass, fixed panels, and shelves;
-- doors and drawer fronts;
+- doors;
 - back panels;
 - wet, high-wear, long-span, or otherwise exceptional parts.
 
@@ -165,7 +165,9 @@ directs the design. Neither substitutes for per-part material identity in the
 fabrication bill of materials.
 
 The current global schema assigns one thickness to carcass and shelf panels, one
-to visible fronts, and one to back panels. If an exceptional part requires a
+to doors, and one to back panels. `$aikea-build-drawers` owns drawer-box and
+drawer-front materials; never interpret `door_thickness` as drawer-front
+authority. If an exceptional part requires a
 different material or thickness, save a decision with
 `subject: unresolved_material_requirement`, `decision: blocked`, and the unmet
 construction in `design_effect`. The calculator rejects this stable marker until

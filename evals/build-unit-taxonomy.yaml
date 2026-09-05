@@ -5,6 +5,20 @@ run_mode: manual_fresh_chat
 purpose: Score whether AIkea automatically creates populated local unit folders from a complete project.
 environment_guide: manual-eval-environment.md
 
+fixture_material_decisions: &fixture_material_decisions
+  - subject: cabinet_carcass_material
+    decision: Evaluation fixture cabinet panel
+    design_effect: Use the approved fixture product at the project thickness.
+    client_statement: The exact fixture product and sample are already approved.
+  - subject: door_front_material
+    decision: Evaluation fixture door panel
+    design_effect: Use the approved fixture product at the project thickness.
+    client_statement: The exact fixture product and sample are already approved.
+  - subject: back_panel_material
+    decision: Evaluation fixture back panel
+    design_effect: Use the approved fixture product at the project thickness.
+    client_statement: The exact fixture product and sample are already approved.
+
 scoring:
   pass_when:
     - The bundled generator is run without another client question.
@@ -35,7 +49,7 @@ cases:
             - {distance_from_left: 0, height_from_floor: 240}
             - {distance_from_left: 150, height_from_floor: 239.8}
             - {distance_from_left: 300, height_from_floor: 239.6}
-        design_decisions: []
+        design_decisions: *fixture_material_decisions
         design_settings:
           fit_allowance: 0.2
           fitted_dimensions: {width: true, depth: false, height: true}
@@ -136,7 +150,7 @@ cases:
             - {distance_from_left: 0, height_from_floor: 240}
             - {distance_from_left: 150, height_from_floor: 239.8}
             - {distance_from_left: 300, height_from_floor: 239.6}
-        design_decisions: []
+        design_decisions: *fixture_material_decisions
         design_settings:
           fit_allowance: 0.2
           fitted_dimensions: {width: true, depth: false, height: true}

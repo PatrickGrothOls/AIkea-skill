@@ -155,7 +155,9 @@ reaches the material or thickness stage, or is about to calculate a supplied
 project, load `$aikea-choose-materials`. That subskill owns approval validity,
 legacy thickness-only inputs, representability, current product research, and
 the confirmed decision. Return here only when it reports the material stage
-complete.
+complete. The calculator requires exactly one confirmed decision for the
+carcass-and-shelf, door, and back-panel groups and rejects unresolved material
+requirements.
 
 When the client adds drawers to generated cabinets, load
 `$aikea-build-drawers`. Let that subskill calculate the drawer from its owning

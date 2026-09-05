@@ -1,4 +1,4 @@
-schema_version: 8
+schema_version: 9
 units: mm
 
 measured_space:
@@ -12,33 +12,33 @@ measured_space:
 
 design_decisions:
   - subject: cabinet_carcass_material
-    decision: Test white cabinet panel, 18 mm
-    design_effect: Use the test fixture cabinet construction.
-    client_statement: Use the test white cabinet panel.
+    decision: EvalBoard Existing White MFC, 18 mm
+    design_effect: Existing generated carcasses and shelves use this exact fixture product.
+    client_statement: Use the existing white material.
   - subject: door_front_material
-    decision: Test white door panel, 18 mm
-    design_effect: Use the test fixture door construction.
-    client_statement: Use the test white door panel.
+    decision: EvalBoard Existing White MFC, 18 mm
+    design_effect: Existing generated doors use this exact fixture product.
+    client_statement: Use the existing white material.
   - subject: back_panel_material
-    decision: Test white back panel, 6 mm
-    design_effect: Use the test fixture back-panel construction.
-    client_statement: Use the test white back panel.
+    decision: EvalBoard Existing White HDF, 9 mm
+    design_effect: Existing generated back panels use this exact fixture product.
+    client_statement: Use the existing white material.
 
 design_settings:
   fit_allowance: 2
   fitted_dimensions: {width: true, depth: false, height: true}
   assembly_run:
-    left_clearance: 5
-    right_clearance: 5
-    gap: 0
-    ceiling_clearance: 0
+    left_clearance: 10
+    right_clearance: 10
+    gap: 2
+    ceiling_clearance: 10
     assemblies:
       - {id: tall_storage_01, purpose: tall_storage, width_share: 1}
       - {id: tall_storage_02, purpose: tall_storage, width_share: 1}
       - {id: tall_storage_03, purpose: tall_storage, width_share: 1}
-  base: {height: 100}
-  doors: {gap: 2}
+  base: {height: 100, front: recessed, recess: 60}
+  doors: {gap: 2, bottom: plinth}
   materials:
     cabinet_panel_thickness: 18
     door_thickness: 18
-    back_panel_thickness: 6
+    back_panel_thickness: 9

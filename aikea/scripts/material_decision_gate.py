@@ -6,14 +6,30 @@ from design_decisions import DesignDecision
 
 
 class MaterialDecisionGate:
-    """Reject the stable marker for a material need the schema cannot represent."""
+    """Require the supported material groups and reject unresolved exceptions."""
 
-    SUBJECT = "unresolved_material_requirement"
-    DECISION = "blocked"
+    REQUIRED_SUBJECTS = (
+        "cabinet_carcass_material",
+        "door_front_material",
+        "back_panel_material",
+    )
+    BLOCKER_SUBJECT = "unresolved_material_requirement"
+    BLOCKER_DECISION = "blocked"
 
     def problems(self, decisions: tuple[DesignDecision, ...]) -> tuple[str, ...]:
-        return tuple(
+        counts = {
+            subject: sum(decision.subject == subject for decision in decisions)
+            for subject in self.REQUIRED_SUBJECTS
+        }
+        problems = [
+            f"exactly one confirmed material decision is required: {subject}"
+            for subject, count in counts.items()
+            if count != 1
+        ]
+        problems.extend(
             "material construction is blocked: " + decision.design_effect
             for decision in decisions
-            if decision.subject == self.SUBJECT and decision.decision == self.DECISION
+            if decision.subject == self.BLOCKER_SUBJECT
+            and decision.decision == self.BLOCKER_DECISION
         )
+        return tuple(problems)

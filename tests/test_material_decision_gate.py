@@ -7,7 +7,7 @@ from overall_wardrobe_test_project import OverallWardrobeTestProject
 
 
 class TestMaterialDecisionGate:
-    """Keep unsupported part-specific material choices out of generation."""
+    """Keep missing, duplicate, and unsupported material choices out of generation."""
 
     def setup_method(self) -> None:
         self.project = OverallWardrobeTestProject().load_flat()
@@ -28,14 +28,32 @@ class TestMaterialDecisionGate:
         ):
             OverallWardrobeInputReader().read(self.project)
 
-    def test_resolved_material_decisions_do_not_block_calculation(self) -> None:
+    def test_missing_material_decisions_block_calculation(self) -> None:
+        self.project["design_decisions"] = []
+
+        with pytest.raises(OverallWardrobeInputError) as raised:
+            OverallWardrobeInputReader().read(self.project)
+
+        assert len(raised.value.problems) == 3
+        for subject in (
+            "cabinet_carcass_material",
+            "door_front_material",
+            "back_panel_material",
+        ):
+            assert f"exactly one confirmed material decision is required: {subject}" in (
+                raised.value.problems
+            )
+
+    def test_duplicate_material_decision_blocks_calculation(self) -> None:
         self.project["design_decisions"].append(
-            {
-                "subject": "cabinet_carcass_material",
-                "decision": "confirmed product A",
-                "design_effect": "use the confirmed face and edge treatment",
-                "client_statement": "Use product A for the cabinet.",
-            }
+            dict(self.project["design_decisions"][0])
         )
 
+        with pytest.raises(
+            OverallWardrobeInputError,
+            match="exactly one confirmed material decision is required",
+        ):
+            OverallWardrobeInputReader().read(self.project)
+
+    def test_complete_material_decisions_allow_calculation(self) -> None:
         OverallWardrobeInputReader().read(self.project)

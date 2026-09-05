@@ -8,7 +8,23 @@ import yaml
 class TestChooseMaterialsEvalSet:
     """Keep ordinary-language inference cases complete and independently scorable."""
 
-    _EVAL_PATH = Path(__file__).parents[1] / "evals" / "choose-materials.yaml"
+    _EVAL_DIR = Path(__file__).parents[1] / "evals"
+    _EVAL_PATH = _EVAL_DIR / "choose-materials.yaml"
+    _EXPECTED_CASE_IDS = {
+        "appearance_reference_image",
+        "bathroom_splash_exposure",
+        "built_legacy_material_migration",
+        "built_project_revision",
+        "cheapest_missing_market",
+        "confirm_split_material_system",
+        "family_entryway_wear",
+        "hostile_supplier_source",
+        "large_art_book_load",
+        "legacy_thicknesses_unapproved",
+        "ordinary_bedroom_appearance",
+        "split_painted_doors",
+        "tight_stair_access",
+    }
     _REQUIRED_COVERAGE = {
         "appearance",
         "bounded_inference",
@@ -37,6 +53,48 @@ class TestChooseMaterialsEvalSet:
             assert inference_key["forbidden"]
             assert case["answer_key"]["response_required"]
             assert case["answer_key"]["response_forbidden"]
+
+    def test_case_identities_are_locked(self) -> None:
+        cases = self._load()["cases"]
+
+        assert {case["id"] for case in cases} == self._EXPECTED_CASE_IDS
+        assert len({case["name"] for case in cases}) == len(cases)
+
+    def test_every_case_has_replayable_inputs(self) -> None:
+        for case in self._load()["cases"]:
+            assert "starting_project" not in case
+            setup = case["setup"]
+            project = self._EVAL_DIR / setup["project_fixture"]
+            assert project.is_dir()
+            yaml.safe_load((project / "aikea.yaml").read_text(encoding="utf-8"))
+
+            expected = setup["expected_aikea_yaml"]
+            if expected != "unchanged":
+                yaml.safe_load(
+                    (self._EVAL_DIR / expected).read_text(encoding="utf-8")
+                )
+            for evidence in setup.get("evidence_files", []):
+                assert (self._EVAL_DIR / evidence["source"]).is_file()
+            for attachment in setup.get("attachments", []):
+                assert (self._EVAL_DIR / attachment).is_file()
+
+    def test_confirmation_case_locks_exact_supported_materials(self) -> None:
+        case = self._cases_by_id()["confirm_split_material_system"]
+        expected_path = self._EVAL_DIR / case["setup"]["expected_aikea_yaml"]
+        expected = yaml.safe_load(expected_path.read_text(encoding="utf-8"))
+
+        assert [
+            decision["subject"] for decision in expected["design_decisions"]
+        ] == [
+            "cabinet_carcass_material",
+            "door_front_material",
+            "back_panel_material",
+        ]
+        assert expected["design_settings"]["materials"] == {
+            "cabinet_panel_thickness": 18,
+            "door_thickness": 19,
+            "back_panel_thickness": 9,
+        }
 
     def test_cases_cover_the_material_decisions_the_model_must_infer(self) -> None:
         coverage = {
@@ -74,6 +132,14 @@ class TestChooseMaterialsEvalSet:
         book_case = cases["large art books imply a shelf-structure check"]
         required = " ".join(book_case["answer_key"]["response_required"])
         assert "unresolved-material blocker" in required
+        assert (
+            self._cases_by_id()["built_legacy_material_migration"]["answer_key"]
+            ["expected_project_state"]
+            == "material_migration_blocked"
+        )
+
+    def _cases_by_id(self) -> dict[str, dict]:
+        return {case["id"]: case for case in self._load()["cases"]}
 
     def _load(self) -> dict:
         return yaml.safe_load(self._EVAL_PATH.read_text(encoding="utf-8"))

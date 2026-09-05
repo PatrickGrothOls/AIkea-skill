@@ -27,24 +27,40 @@ per-part material assignment.
 
 ### WP3 - Evaluation
 
-- [x] Add realistic natural-language cases with hidden required and forbidden inferences.
-- [x] Cover dry use, water exposure, shelf load, appearance, wear, handling, price, images, and confirmation.
-- [x] Add structural tests for inference keys, scoring rules, and coverage.
-- [x] Run skill validation and the focused automated tests.
+- [x] Add thirteen stable natural-language cases with hidden required and forbidden inferences.
+- [x] Cover dry use, water exposure, shelf load, appearance, wear, handling,
+  price, hostile sources, images, confirmation, revision, and legacy migration.
+- [x] Provide concrete project fixtures, evidence files, an actual image
+  attachment, and an exact expected YAML for the mutating case.
+- [x] Document an isolated fresh-chat run and exact file scoring.
+- [x] Lock case identities, fixture paths, attachments, and expected values in tests.
 
 ### WP4 - Repository verification
 
-- [x] Run skill-package validation and the focused material tests.
-- [x] Run the complete Python suite with the repository's pinned Python 3.10 and
-  CadQuery environment: 402 tests and 72 subtests passed; 5 tests were skipped.
-- [x] Run the localhost review-server tests with socket permission.
+- [x] Validate the main and material-advice skill packages.
+- [x] Pass all 32 focused material, routing, and compatibility tests.
+- [x] Correct the three legacy eval fixtures exposed by the first full-suite run.
+- [x] Rerun the complete Python suite: 409 tests and 72 subtests passed; 5 skipped.
+- [x] Run the localhost review-server tests with socket permission as part of that suite.
+
+### WP5 - Review closure
+
+- [x] Retain inherited commit `53364a7` as the discovery, routing, and
+  unresolved-material checkpoint.
+- [x] Require exactly one confirmed decision for each supported global material group.
+- [x] Stop generated legacy projects at a material-migration blocker instead of looping.
+- [x] Keep drawer-box and drawer-front material ownership with `$aikea-build-drawers`.
+- [ ] Commit the corrective checkpoint with the Codex agent signature.
+- [ ] Run independent simplicity and stability reviews on the exact commit.
 
 ## Current state
 
-The advisor, main-skill route, material-selection reference, deterministic
-unresolved-material gate, and twelve-case inference eval set are complete. Skill
-validation and all 26 focused tests pass. The complete repository suite passes
-with 402 tests, 5 expected skips, and 72 subtests.
+Implementation is complete but final verification is still running. The advisor
+now has a replayable thirteen-case inference eval, an explicit drawer-material
+boundary, safe handling for generated legacy projects, and a deterministic gate
+requiring the three globally supported material decisions. Both skills validate,
+32 focused and compatibility tests pass. The unrestricted full suite passes with
+409 tests, 5 expected skips, and 72 subtests, including the localhost viewer tests.
 
 ## Audit log
 
@@ -68,3 +84,15 @@ with 402 tests, 5 expected skips, and 72 subtests.
    routing order, and recovery-case tests now enforce those boundaries.
 7. 2026-09-05 - The complete Python suite passed with 402 tests, 5 expected
    skips, and 72 subtests.
+8. 2026-09-05 - Patrick identified that commit `53364a7` came from a message sent
+   to the wrong task and approved retaining its useful discovery, routing, gate,
+   and test work in this plan.
+9. 2026-09-05 - Patrick approved continuing with the listed closure work. The
+   supported global groups are therefore enforced before calculation; generated
+   legacy projects stop for migration; drawer-front materials remain owned by
+   the drawer builder because the global schema has no drawer-material field.
+10. 2026-09-05 - The material eval was made replayable with concrete isolated
+    project fixtures, evidence, an actual image, stable case IDs, and exact file
+    outcomes. A thirteenth case covers the generated legacy-project deadlock.
+11. 2026-09-05 - The final unrestricted verification passed 409 tests, 5
+    expected skips, and 72 subtests, including the localhost viewer checks.
