@@ -235,7 +235,7 @@ cases:
     coverage: [confirmation, persistence]
     setup:
       project_fixture: fixtures/choose-materials/confirmation
-      expected_aikea_yaml: fixtures/choose-materials/confirmation/expected-aikea.yaml
+      expected_aikea_yaml: expected/choose-materials/confirmation-aikea.yaml
     next_user_message: Yes, use that recommendation for this wardrobe. I have checked the samples and approve the finishes too.
     answer_key:
       inference_key:

@@ -50,8 +50,14 @@ per-part material assignment.
 - [x] Require exactly one confirmed decision for each supported global material group.
 - [x] Stop generated legacy projects at a material-migration blocker instead of looping.
 - [x] Keep drawer-box and drawer-front material ownership with `$aikea-build-drawers`.
-- [ ] Commit the corrective checkpoint with the Codex agent signature.
-- [ ] Run independent simplicity and stability reviews on the exact commit.
+- [x] Commit checkpoint `6d48407` with the Codex agent signature.
+- [x] Pass the independent simplicity review on that exact commit.
+- [x] Record the stability review failure: its confirmation fixture exposed the
+  expected answer and all new material fixtures used the wrong lifecycle shape.
+- [x] Move the expected answer outside the copied project and convert every new
+  material fixture to the calculator's `cabinet_run` shape.
+- [ ] Commit the fixture correction with the Codex agent signature.
+- [ ] Rerun independent simplicity and stability reviews on that exact commit.
 
 ## Current state
 
@@ -61,6 +67,10 @@ boundary, safe handling for generated legacy projects, and a deterministic gate
 requiring the three globally supported material decisions. Both skills validate,
 32 focused and compatibility tests pass. The unrestricted full suite passes with
 409 tests, 5 expected skips, and 72 subtests, including the localhost viewer tests.
+After the stability review, the two corrected eval defects pass 24 focused tests
+and the confirmed expected YAML passes the real calculator. The corrected full
+suite also passes with the same counts; the signed fix commit and its exact-commit
+reviews remain.
 
 ## Audit log
 
@@ -96,3 +106,12 @@ requiring the three globally supported material decisions. Both skills validate,
     outcomes. A thirteenth case covers the generated legacy-project deadlock.
 11. 2026-09-05 - The final unrestricted verification passed 409 tests, 5
     expected skips, and 72 subtests, including the localhost viewer checks.
+12. 2026-09-05 - Independent review of signed commit `6d48407` passed
+    simplicity and failed stability because the confirmation seed copied its
+    expected answer and every new material fixture used post-arrangement
+    `assembly_run` fields before arrangement occurred.
+13. 2026-09-05 - The expected answer moved outside every copied fixture. The
+    fixtures now use the valid pre-arrangement `cabinet_run` shape, and tests
+    enforce both isolation and calculator validity.
+14. 2026-09-05 - The corrected unrestricted suite passed 409 tests, 5 expected
+    skips, and 72 subtests, including the localhost viewer checks.

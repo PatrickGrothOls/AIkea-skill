@@ -4,6 +4,8 @@ from pathlib import Path
 
 import yaml
 
+from overall_wardrobe_inputs import OverallWardrobeInputReader
+
 
 class TestChooseMaterialsEvalSet:
     """Keep ordinary-language inference cases complete and independently scorable."""
@@ -70,6 +72,7 @@ class TestChooseMaterialsEvalSet:
 
             expected = setup["expected_aikea_yaml"]
             if expected != "unchanged":
+                assert project not in (self._EVAL_DIR / expected).parents
                 yaml.safe_load(
                     (self._EVAL_DIR / expected).read_text(encoding="utf-8")
                 )
@@ -82,6 +85,7 @@ class TestChooseMaterialsEvalSet:
         case = self._cases_by_id()["confirm_split_material_system"]
         expected_path = self._EVAL_DIR / case["setup"]["expected_aikea_yaml"]
         expected = yaml.safe_load(expected_path.read_text(encoding="utf-8"))
+        OverallWardrobeInputReader().read(expected)
 
         assert [
             decision["subject"] for decision in expected["design_decisions"]

@@ -15,15 +15,13 @@ design_decisions: []
 design_settings:
   fit_allowance: 2
   fitted_dimensions: {width: true, depth: false, height: true}
-  assembly_run:
+  cabinet_run:
+    cabinet_count: 3
+    cabinet_width_shares: [1, 1, 1]
     left_clearance: 10
     right_clearance: 10
-    gap: 2
+    cabinet_gap: 2
     ceiling_clearance: 10
-    assemblies:
-      - {id: tall_storage_01, purpose: tall_storage, width_share: 1}
-      - {id: tall_storage_02, purpose: tall_storage, width_share: 1}
-      - {id: tall_storage_03, purpose: tall_storage, width_share: 1}
   base: {height: 100, front: recessed, recess: 60}
   doors: {gap: 2, bottom: plinth}
   materials:
