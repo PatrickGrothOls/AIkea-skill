@@ -91,7 +91,7 @@ cases:
           - Apply a heavier construction to every cabinet part without justification.
       response_required:
         - Explain that the two book shelves need a stronger checked construction while the rest need not automatically follow it.
-        - If a separate shelf material or thickness is needed, preserve it as unresolved construction work and block generation rather than claiming it is supported.
+        - If a separate shelf material or thickness is needed, save the stable unresolved-material blocker and stop before calculation or generation rather than claiming it is supported.
         - Ask only for the missing book quantity or approximate loaded weight if it is needed to distinguish the credible options.
       response_forbidden:
         - Ask the client for modulus of elasticity, load class, or allowable deflection.

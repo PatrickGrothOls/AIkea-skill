@@ -42,26 +42,30 @@ outside those groups as unresolved construction work, not an implemented choice.
 
 ## Confirm and save
 
-1. Present the recommendation as a proposal and ask one concrete confirmation
+1. Treat the material stage as complete only when the carcass and shelves,
+   visible fronts, and back panels each have a confirmed `design_decisions` entry
+   and no `unresolved_material_requirement` is blocked. Numeric thicknesses alone
+   are legacy inputs, not evidence of material approval.
+2. Present the recommendation as a proposal and ask one concrete confirmation
    question. Do not write the choice as approved before the client confirms it.
-2. Keep dated comparison evidence in
+3. Keep dated comparison evidence in
    `<project>/materials/material-comparison.md`; this research record is not the
    global design authority.
-3. When no generated parts or review or fabrication evidence exists, update the
+4. When no generated parts or review or fabrication evidence exists, update the
    existing `aikea.yaml` without adding schema fields: record one
    `design_decisions` entry per representable material group and set each numeric
    thickness only in its dedicated cabinet, door, or back-panel field.
-4. If the project already has generated downstream artifacts, do not change its
+5. If the project already has generated downstream artifacts, do not change its
    approved material decision or `aikea.yaml`. Save the new choice as a proposal
    only and explain that a revision workflow must invalidate and regenerate the
    affected artifacts before the material can change safely.
-5. If an exceptional part needs a material or thickness the global groups cannot
-   represent, preserve that requirement as a build-blocking design decision. Do
-   not claim that the current construction will generate it.
-6. If only a material family is confirmed, say that exact product sourcing is
+6. If an exceptional part needs a material or thickness the global groups cannot
+   represent, preserve the build-blocking requirement using the reference's
+   stable marker. Do not claim that the current construction will generate it.
+7. If only a material family is confirmed, say that exact product sourcing is
    still open. Do not claim fabrication readiness until every manufactured part
    receives a verified material identity in the manufacturing records.
-7. Return to `$aikea`. It resumes the first unfinished global choice and runs its
+8. Return to `$aikea`. It resumes the first unfinished global choice and runs its
    calculator only after the complete specification is valid.
 
 ## Responsibility boundary

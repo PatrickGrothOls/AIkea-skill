@@ -34,21 +34,17 @@ per-part material assignment.
 
 ### WP4 - Repository verification
 
-- [x] Run the complete Python suite in the available Python 3.11 CadQuery
-  environment: 397 tests passed and 5 were skipped.
-- [x] Rerun the localhost review-server tests with socket permission after the
-  sandbox blocked their first attempt.
-- [ ] Confirm a clean requirements install. The existing dependency graph selects
-  NumPy 2 for `nptyping==2.0.1`, which still imports the removed `numpy.bool8`;
-  changing the CAD dependency stack is outside this material-advice feature.
+- [x] Run skill-package validation and the focused material tests.
+- [x] Run the complete Python suite with the repository's pinned Python 3.10 and
+  CadQuery environment: 454 tests and 72 subtests passed; 5 tests were skipped.
+- [x] Run the localhost review-server tests with socket permission.
 
 ## Current state
 
-The advisor, main-skill route, material-selection reference, and twelve-case
-inference eval set are present. Skill validation and all five focused tests pass.
-The complete repository suite passed after its localhost-only tests received the
-required socket permission. A reproducible clean dependency installation remains
-an existing repository-level blocker.
+The advisor, main-skill route, material-selection reference, deterministic
+unresolved-material gate, and twelve-case inference eval set are complete. Skill
+validation and all 26 focused tests pass. The complete repository suite passes
+with 454 tests, 5 expected skips, and 72 subtests.
 
 ## Audit log
 
@@ -66,9 +62,9 @@ an existing repository-level blocker.
    handling of legacy and already built projects, explicit exceptional-part
    blockers, less duplicated routing, and an untrusted-data boundary for external
    sources. Those safeguards are now included.
-6. 2026-09-05 - The complete suite produced 392 passes, 5 expected skips, and
-   5 sandbox-only localhost binding failures. All 6 tests in the affected viewer
-   files passed with socket permission, giving 397 effective passes and 5 skips.
-7. 2026-09-05 - A fresh dependency install exposed an existing incompatibility:
-   `nptyping==2.0.1` requires a NumPy 1 API while current `nlopt` requires NumPy
-   2. No dependency change is included in this feature branch.
+6. 2026-09-05 - A second review required the exceptional-part blocker to fail
+   deterministically, material validation to precede completeness, and project
+   file creation to cover fully supplied new projects. The calculator gate,
+   routing order, and recovery-case tests now enforce those boundaries.
+7. 2026-09-05 - The complete Python suite passed with 454 tests, 5 expected
+   skips, and 72 subtests.

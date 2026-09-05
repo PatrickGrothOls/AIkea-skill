@@ -112,12 +112,22 @@ that contract active through every routed AIkea stage.
 
 1. Read `references/overall-wardrobe-measurements-and-settings.md` completely.
 2. Read only the user's messages, user-identified attachments, and the active project's AIkea files for project values.
-3. Classify the current inputs as missing, contradictory, or complete.
+3. Classify the measured space and non-material inputs as missing,
+   contradictory, or complete. Do not classify the project complete until the
+   material adviser reports a confirmed, globally representable material stage.
 4. If measured-space values are missing, remain in this phase and ask only for the missing measurements in client-facing language.
-5. Once the measured space is complete, ask for the remaining wardrobe choices in client-facing language. When the next missing topic is material or thickness, create the schema-shaped partial `aikea.yaml` from the template if it does not exist, fill every already confirmed value, and follow the material route below. Do not calculate the partial file, ask for values already supplied, or expose internal field names.
+5. Once the measured space is complete, create the schema-shaped partial
+   `aikea.yaml` from the template if it does not exist and fill every already
+   confirmed value. Ask for the remaining wardrobe choices in client-facing
+   language. At the material or thickness stage, and before classifying any
+   project complete or running the calculator, follow the material route below.
+   Do not calculate the partial file, ask for values already supplied, or expose
+   internal field names.
 6. Preserve every confirmed design decision and its client statement in the global specification. Replace the earlier record when the client changes the same decision.
 7. For contradictory inputs, remain in this phase, identify the exact conflict, and ask only for the correction needed. Never repair a measurement silently.
-8. For complete inputs, fill the exact schema and run `python <skill-directory>/scripts/calculate_overall_wardrobe.py <project>/aikea.yaml`.
+8. After the material adviser reports that its stage is complete, fill the exact
+   schema and run
+   `python <skill-directory>/scripts/calculate_overall_wardrobe.py <project>/aikea.yaml`.
 9. If the calculator rejects the file, explain the specific problem in client-facing language and return to the missing or contradictory state.
 10. If the calculator accepts the file, present the calculated cabinet widths,
     positions, heights, and depths. Frame them as the clear physical dimensions
@@ -140,14 +150,12 @@ and positions, then lead directly into unit arrangement.
 
 When the overall space is checked, load `$aikea-arrange-units` immediately rather than waiting for the client to request the next stage. Keep unit arrangement out of this entry skill instead of duplicating its questions or saved-result rules here.
 
-An approved material choice requires confirmed `design_decisions` entries for
-the carcass and shelves, visible fronts, and back panels; numeric thicknesses
-alone do not prove approval. When the client asks what material to use, compares
-material quality or price, or reaches this topic without those approvals, load
-`$aikea-choose-materials`. This includes legacy projects that contain thicknesses
-but no material decisions. Let the subskill research current local products and
-save only the client's confirmed, globally representable choice before returning
-here.
+When the client asks what material to use, compares material quality or price,
+reaches the material or thickness stage, or is about to calculate a supplied
+project, load `$aikea-choose-materials`. That subskill owns approval validity,
+legacy thickness-only inputs, representability, current product research, and
+the confirmed decision. Return here only when it reports the material stage
+complete.
 
 When the client adds drawers to generated cabinets, load
 `$aikea-build-drawers`. Let that subskill calculate the drawer from its owning

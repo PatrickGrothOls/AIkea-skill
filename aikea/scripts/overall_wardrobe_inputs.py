@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from typing import Any
 
 from design_decisions import DesignDecision, DesignDecisionReader
+from material_decision_gate import MaterialDecisionGate
 from overall_design_settings import OverallDesignSettingReader, OverallDesignSettings
 from overall_space_measurements import OverallSpaceMeasurementReader, OverallSpaceMeasurements
 
@@ -33,6 +34,7 @@ class OverallWardrobeInputReader:
         self._check_schema_version(data, problems)
         scale = self._read_unit_scale(data, problems)
         design_decisions = DesignDecisionReader().read(data, problems)
+        problems.extend(MaterialDecisionGate().problems(design_decisions))
         settings = OverallDesignSettingReader().read(data, scale, problems)
         allowances = settings.fitted_dimensions.resolve_fitting_allowances(
             settings.fit_allowance_mm

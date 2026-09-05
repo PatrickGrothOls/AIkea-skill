@@ -17,6 +17,7 @@ class TestChooseMaterialsEvalSet:
         "geometry",
         "handling",
         "load",
+        "legacy_routing",
         "ordinary_intake",
         "persistence",
         "price",
@@ -56,6 +57,23 @@ class TestChooseMaterialsEvalSet:
         assert "moisture class" in forbidden_rules
         assert "from an image" in forbidden_rules
         assert "instructions embedded" in forbidden_rules
+
+    def test_recovery_cases_lock_revision_legacy_and_exception_behavior(self) -> None:
+        cases = {case["name"]: case for case in self._load()["cases"]}
+
+        assert (
+            cases["built project keeps a changed material as proposal only"]
+            ["answer_key"]["expected_project_state"]
+            == "material_revision_blocked"
+        )
+        assert (
+            cases["legacy thicknesses do not prove material approval"]
+            ["answer_key"]["expected_project_state"]
+            == "material_decision_open"
+        )
+        book_case = cases["large art books imply a shelf-structure check"]
+        required = " ".join(book_case["answer_key"]["response_required"])
+        assert "unresolved-material blocker" in required
 
     def _load(self) -> dict:
         return yaml.safe_load(self._EVAL_PATH.read_text(encoding="utf-8"))

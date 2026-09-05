@@ -166,9 +166,12 @@ fabrication bill of materials.
 
 The current global schema assigns one thickness to carcass and shelf panels, one
 to visible fronts, and one to back panels. If an exceptional part requires a
-different material or thickness, record the requirement as unresolved and block
-construction until a part-specific owner can represent and verify it. Do not
-silently widen that exception to every panel.
+different material or thickness, save a decision with
+`subject: unresolved_material_requirement`, `decision: blocked`, and the unmet
+construction in `design_effect`. The calculator rejects this stable marker until
+a part-specific owner can represent and verify the requirement. Do not silently
+widen that exception to every panel. Remove the marker only after a representable
+alternative is confirmed or the required part-specific construction exists.
 
 If generated parts, visual approvals, or fabrication evidence already exist,
 keep a revised choice as a proposal in the comparison record. Do not change the
