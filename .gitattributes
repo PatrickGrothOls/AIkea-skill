@@ -1,3 +1,2 @@
-aikea-build-units/assets/cabineo/*.step binary
 # Preserve the line endings supplied by upstream dependency license files.
 aikea-review-unit/assets/viewer/THIRD_PARTY_LICENSES.md whitespace=cr-at-eol

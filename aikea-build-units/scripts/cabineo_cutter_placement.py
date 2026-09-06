@@ -43,15 +43,6 @@ class CabineoCutterPlacement:
         "<X": ("X", 1),
         ">X": ("X", -1),
     }
-    _EDGE_AXIS_SIGN = {
-        "<X": ("X", -1),
-        ">X": ("X", 1),
-        "<Y": ("Y", -1),
-        ">Y": ("Y", 1),
-        "<Z": ("Z", -1),
-        ">Z": ("Z", 1),
-    }
-    _FLANGE_STANDOFF_MM = 0.5
 
     def orient(self, shape: cq.Shape, face: str, edge: str) -> cq.Shape:
         rotations = self._ROTATIONS.get((face, edge))
@@ -71,20 +62,18 @@ class CabineoCutterPlacement:
         face: str,
         edge: str,
         primary_offset_mm: float,
-        face_inset_mm: float,
         panel_thickness_mm: float,
         edge_position_mm: float,
     ) -> cq.Shape:
         depth_axis, depth_sign = self._FACE_DEPTH[face]
-        edge_axis, edge_sign = self._EDGE_AXIS_SIGN[edge]
+        edge_axis = edge[-1]
         slide_axis = ({"X", "Y", "Z"} - {depth_axis, edge_axis}).pop()
         face_position = panel_thickness_mm if depth_sign < 0 else 0.0
-        depth_coord = face_position - depth_sign * self._FLANGE_STANDOFF_MM
-        opening_coord = edge_position_mm + edge_sign * face_inset_mm
-        coordinates = {"X": 0.0, "Y": 0.0, "Z": 0.0}
-        coordinates[depth_axis] = depth_coord
-        coordinates[edge_axis] = opening_coord
-        coordinates[slide_axis] = primary_offset_mm
+        coordinates = {
+            depth_axis: face_position,
+            edge_axis: edge_position_mm,
+            slide_axis: primary_offset_mm,
+        }
         return shape.translate(
             (coordinates["X"], coordinates["Y"], coordinates["Z"])
         )

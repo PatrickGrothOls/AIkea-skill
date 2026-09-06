@@ -64,10 +64,10 @@ Open Source Initiative open-source software.
 
 AIkea is an independent project. It is not affiliated with or endorsed by IKEA,
 Lamello, Hettich, or other referenced manufacturers. Product names and
-trademarks belong to their respective owners. Bundled Cabineo STEP files are
-machining cutter inputs rather than complete manufacturer product CAD; their
-provenance and hashes are documented in
-`aikea-build-units/assets/cabineo/README.md`.
+trademarks belong to their respective owners. AIkea's authored Cabineo machining
+volumes preserve its custom brass-insert receiver without importing STEP files.
+Their dimensions and regression proof are documented in
+[Cabineo machining](aikea-build-units/references/cabineo-machining.md).
 
 ## Python setup
 

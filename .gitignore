@@ -14,7 +14,6 @@ env/
 
 # Generated CAD and review outputs
 *.step
-!aikea-build-units/assets/cabineo/*.step
 *.stp
 *.glb
 *.gltf

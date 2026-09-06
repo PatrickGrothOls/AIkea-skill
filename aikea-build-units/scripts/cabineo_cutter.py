@@ -18,7 +18,7 @@ class CabineoCutter:
         geometry: CabineoCutterGeometry | None = None,
     ) -> None:
         self.profile = profile
-        self.geometry = geometry or CabineoCutterGeometry.packaged()
+        self.geometry = geometry or CabineoCutterGeometry()
         self.placement = CabineoCutterPlacement()
 
     def cutout(
@@ -29,14 +29,13 @@ class CabineoCutter:
         panel_thickness_mm: float,
         edge_position_mm: float,
     ) -> cq.Shape:
-        shape = self.geometry.load(self.profile)
+        shape = self.geometry.build(self.profile)
         oriented = self.placement.orient(shape, face, edge)
         return self.placement.translate(
             oriented,
             face,
             edge,
             primary_offset_mm,
-            self.profile.face_inset_mm,
             panel_thickness_mm,
             edge_position_mm,
         )
