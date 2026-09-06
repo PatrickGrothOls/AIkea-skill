@@ -1,0 +1,4 @@
+interface:
+  display_name: "AIkea"
+  short_description: "Plan wardrobe dimensions from a measured space"
+  default_prompt: "Use $aikea to plan my wardrobe overall measurements and cabinet sizes."

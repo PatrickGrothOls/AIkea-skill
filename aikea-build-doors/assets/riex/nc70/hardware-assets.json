@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "vendor": "Riex",
+  "family": "NC70",
+  "source_urls": [
+    "https://www.hranipex.com/en/product/riex-nc70-hinge-clip-on-full-overlay-soft-close-fwf000001/",
+    "https://www.hranipex.com/en/product/riex-nc50-nc70-mounting-plate-for-hinge-clip-on-h0-with-euroscrews-fwf000049/"
+  ],
+  "assets": [
+    {
+      "asset_id": "riex-nc70-f000001-closed",
+      "relative_path": "F000001/source/nc70-closed.step",
+      "download_url": "https://www.hranipex.com/en/api/download/43961/CAD0000406",
+      "sha256": "1d98ba2271b4ee068dd567f8b82e9cccc91fec5834e39d1cb39478a496fea33b",
+      "solid_count": 12,
+      "bounds_mm": [-80.6, 0.0, -6.376, 31.324, -31.0, 31.0]
+    },
+    {
+      "asset_id": "riex-nc70-f000001-open",
+      "relative_path": "F000001/source/nc70-open.step",
+      "download_url": "https://www.hranipex.com/en/api/download/43962/CAD0000407",
+      "sha256": "207aa9091e9b000c5ba3d56b06f92abc03ea506bd3960165414dcf782167584b",
+      "solid_count": 12,
+      "bounds_mm": [-112.917, 0.0, -3.632, 37.344, -31.0, 31.0]
+    },
+    {
+      "asset_id": "riex-nc70-f000049-h0-euroscrew-plate",
+      "relative_path": "F000049/source/h0-euroscrew-plate.step",
+      "download_url": "https://www.hranipex.com/en/api/download/44277/CAD0000440",
+      "sha256": "631c94f980fa1c9584a22d4c944273d517df289ff989053db57fd62a5c8f38a8",
+      "solid_count": 3,
+      "bounds_mm": [-1.306123, 50.693877, 25.388391, 42.844536, -20.47389, 23.52611]
+    }
+  ]
+}

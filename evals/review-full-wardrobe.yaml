@@ -1,0 +1,83 @@
+name: review-full-wardrobe
+type: eval_set
+skill: aikea-review-unit
+run_mode: manual_fresh_chat
+purpose: Score whether AIkea builds and verifies the complete wardrobe after the first cabinet and base are approved.
+environment_guide: manual-eval-environment.md
+
+scoring:
+  pass_when:
+    - The agent executes every generated cabinet builder and the complete generated base builder.
+    - The completed facade is shown with the doors closed for overall visual review.
+    - Every assembly is placed from its saved local zero into the shared project coordinates.
+    - A deterministic full-wardrobe position report passes before the GLB is presented.
+    - A requested door state is applied independently to each named cabinet module.
+    - The response explains the finished proportions in client language and ends with one concrete visual decision.
+  always_forbidden:
+    - Rebuild simplified cabinet boxes outside the generated assembly builders.
+    - Repeat the first cabinet geometry at guessed positions.
+    - Export the full wardrobe after a failed position check.
+
+cases:
+  - name: three equal approved cabinets on one recessed structural base
+    starting_project:
+      fixture: tests/fixtures/review-unit-aikea.yaml
+      first_cabinet_approved: true
+      structural_base_approved: true
+      generated_taxonomy: true
+    next_user_message: This looks great! Now lets try the full wardrobe.
+    answer_key:
+      expected_status: valid
+      expected_artifact: assemblies/full_wardrobe_review.glb
+      expected_report: assemblies/full-wardrobe-position-check.json
+      expected_base_global_x_mm: [10, 2988]
+      expected_cabinets:
+        - {id: tall_storage_01, global_x_mm: [10, 1001.333333], z_mm: [100, 2384], door_z_mm: [82, 2384]}
+        - {id: tall_storage_02, global_x_mm: [1003.333333, 1994.666667], z_mm: [100, 2384], door_z_mm: [82, 2384]}
+        - {id: tall_storage_03, global_x_mm: [1996.666667, 2988], z_mm: [100, 2384], door_z_mm: [82, 2384]}
+      expected_gaps_mm: [2, 2]
+      expected_plinth: {front: recessed, recess_mm: 60, top_z_mm: 100}
+      response_required:
+        - Present one full three-cabinet wardrobe with closed doors on the complete base.
+        - Explain that all three cabinets share one level 2284 mm carcass height above the 100 mm base.
+        - Confirm that both cabinet gaps are 2 mm and the plinth front remains recessed 60 mm.
+        - Ask whether the complete wardrobe's overall proportions and facade look right.
+  - name: inspect the approved complete wardrobe with every door open
+    starting_project:
+      fixture: tests/fixtures/review-unit-aikea.yaml
+      full_wardrobe_approved: true
+      generated_taxonomy: true
+    next_user_message: And with open doors?
+    answer_key:
+      expected_status: valid
+      expected_artifact: assemblies/full_wardrobe_open_review.glb
+      expected_report: assemblies/full-wardrobe-position-check.json
+      expected_door_state: open
+      expected_open_doors:
+        - tall_storage_01__door_panel
+        - tall_storage_02__door_panel
+        - tall_storage_03__door_panel
+      response_required:
+        - Show the same complete wardrobe with all three doors open.
+        - Preserve the approved cabinet, base, and manufacturing geometry.
+        - Ask whether the open-door view gives the client the access and separation they expect.
+  - name: inspect one open door without the other doors obscuring the cabinet
+    starting_project:
+      fixture: tests/fixtures/review-unit-aikea.yaml
+      full_wardrobe_approved: true
+      generated_taxonomy: true
+    next_user_message: Open only the back door and remove the other two.
+    answer_key:
+      expected_status: valid
+      expected_artifact: assemblies/full_wardrobe_door_states_review.glb
+      expected_report: assemblies/full-wardrobe-position-check.json
+      expected_door_states:
+        tall_storage_01: open
+        tall_storage_02: removed
+        tall_storage_03: removed
+      expected_visible_doors:
+        - tall_storage_01__door_panel
+      response_required:
+        - Show the complete wardrobe with only the requested door present and open.
+        - Keep the other two doors in the physical position report while omitting them from this review view.
+        - Ask whether this unobstructed view makes the cabinet construction and shelves clear.

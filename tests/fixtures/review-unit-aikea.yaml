@@ -1,0 +1,44 @@
+schema_version: 9
+units: cm
+
+measured_space:
+  top_boundary: flat
+  width_measurements: {bottom: 300, middle: 300, top: 300}
+  depth_measurements: {single: 60}
+  height_measurements:
+    - {distance_from_left: 0, height_from_floor: 240}
+    - {distance_from_left: 150, height_from_floor: 239.8}
+    - {distance_from_left: 300, height_from_floor: 239.6}
+
+design_decisions:
+  - subject: cabinet_carcass_material
+    decision: Test white cabinet panel, 18 mm
+    design_effect: Use the test fixture cabinet construction.
+    client_statement: Use the test white cabinet panel.
+  - subject: door_front_material
+    decision: Test white door panel, 18 mm
+    design_effect: Use the test fixture door construction.
+    client_statement: Use the test white door panel.
+  - subject: back_panel_material
+    decision: Test white back panel, 18 mm
+    design_effect: Use the test fixture back-panel construction.
+    client_statement: Use the test white back panel.
+
+design_settings:
+  fit_allowance: 0.2
+  fitted_dimensions: {width: true, depth: false, height: true}
+  assembly_run:
+    left_clearance: 1
+    right_clearance: 1
+    gap: 0.2
+    ceiling_clearance: 1
+    assemblies:
+      - {id: tall_storage_01, purpose: tall_storage, width_share: 1}
+      - {id: tall_storage_02, purpose: tall_storage, width_share: 1}
+      - {id: tall_storage_03, purpose: tall_storage, width_share: 1}
+  base: {height: 10, front: recessed, recess: 6}
+  doors: {gap: 0.2, bottom: plinth}
+  materials:
+    cabinet_panel_thickness: 1.8
+    door_thickness: 1.8
+    back_panel_thickness: 1.8

@@ -1,0 +1,68 @@
+{
+  "schema_version": 2,
+  "vendor": "Hettich",
+  "source_urls": [
+    "https://shop.hettich.com/de_EN/Runner-systems/Ball-bearing-runners/Side-installation/KA-4532-Silent-System-ball-bearing-runner%2C-side-installation%2C-dimensions-%28H-x-W%29-46-x-12-7-mm%2C-500/p/9114276",
+    "https://hettich-embedded.partcommunity.com/3d-cad-models/sso/?varset=%7BARTICLENO%3D9114276%7D&languageIso=en&info=hettich%2Fdrawer_runners%2Fball_bearing_slides%2Fmounted_on_sides%2Fka_4532_sisy%2Fka_4532_sisy_asmtab.prj",
+    "https://shop.hettich.com/de_EN/Drawer-systems/Accessories/Spacer-profile%2C-25-x-486-x-50%2C-white/p/13952",
+    "https://hettich-embedded.partcommunity.com/3d-cad-models/sso/?varset=%7BARTICLENO%3D13952%7D&languageIso=en&info=hettich%2Fcabinet_interiors%2Fkitchens%2Finterior_fitting_base_unit%2Finternal_ppd%2Facces_internal_ppd%2F13952.prj",
+    "https://www.cadenas.de/en/partcommunity-terms-of-use/"
+  ],
+  "assets": [
+    {
+      "asset_id": "hettich-ka-4532-500-runner-pair",
+      "component_type": "runner-pair-assembly",
+      "product_code": "KA 4532 Silent System",
+      "catalog_item_number": "9114276",
+      "local_filename": "9114276.stp",
+      "download_filename": "9114276.stp",
+      "expected_sha256": "bbc769c02aa3729f345cd957beaa2b5e21df1659609d9e4e1eff7ed97e80a806",
+      "state": "ready",
+      "embedded_product_codes": [
+        "KA 4532 Silent System",
+        "9114276"
+      ],
+      "handedness": "pair",
+      "handedness_basis": "official-paired-hettich-step-assembly",
+      "unresolved_reason": null,
+      "native_step_observation": {
+        "solid_count": 4,
+        "bounds_mm": {
+          "xmin": 0.0,
+          "xmax": 201.0,
+          "ymin": -9.5,
+          "ymax": 495.54,
+          "zmin": -22.85,
+          "zmax": 22.85
+        }
+      }
+    },
+    {
+      "asset_id": "hettich-13952-spacer-profile",
+      "component_type": "runner-spacer-profile",
+      "product_code": "KA 4532 spacer profile",
+      "catalog_item_number": "13952",
+      "local_filename": "13952.stp",
+      "download_filename": "13952.stp",
+      "expected_sha256": "d753d47a3cf8713440ef1d97ff4497cd24fb033221b9f1084f5dde7d3426d1cc",
+      "state": "ready",
+      "embedded_product_codes": [
+        "13952"
+      ],
+      "handedness": null,
+      "handedness_basis": null,
+      "unresolved_reason": null,
+      "native_step_observation": {
+        "solid_count": 1,
+        "bounds_mm": {
+          "xmin": 0.0,
+          "xmax": 25.0,
+          "ymin": 0.0,
+          "ymax": 486.0,
+          "zmin": 0.0,
+          "zmax": 50.0
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+name: build-structural-base
+type: eval_set
+skill: aikea-build-units
+run_mode: manual_fresh_chat
+purpose: Score whether AIkea derives a CNC-sized structural base from a resolved cabinet run.
+environment_guide: manual-eval-environment.md
+
+scoring:
+  pass_when:
+    - The base footprint inherits the resolved cabinet run.
+    - Every deck and rail segment fits the selected CNC working area.
+    - Preferred module breaks use cabinet gaps when they satisfy the machine limit.
+    - Support height plus deck thickness equals the chosen overall base height.
+    - Brace lengths close between the front and back rails.
+    - Every brace-to-rail seam produces paired Cabineo machining on both participants.
+    - Every module seam remains an explicit assembly relationship.
+  always_forbidden:
+    - Store CNC travel or cutter diameter as wardrobe measurements.
+    - Produce an oversize deck or rail and leave splitting to the manufacturer.
+    - Hide a module seam without an assembly relationship.
+
+manufacturing_profile:
+  profile_id: cnc-2500x2000-8mm
+  x_travel_mm: 2500
+  y_travel_mm: 2000
+  cutter_diameter_mm: 8
+  usable_x_mm: 2496
+  usable_y_mm: 1996
+
+cases:
+  - name: current three-cabinet run
+    resolved_input:
+      cabinet_spans_mm:
+        - [10, 1001.333333]
+        - [1003.333333, 1994.666667]
+        - [1996.666667, 2988]
+      depth_mm: 582
+      height_mm: 100
+      panel_thickness_mm: 18
+    answer_key:
+      width_mm: 2978
+      support_height_mm: 82
+      clear_depth_mm: 546
+      modules:
+        - {id: base_module_01, start_x_mm: 0, end_x_mm: 992.333333}
+        - {id: base_module_02, start_x_mm: 992.333333, end_x_mm: 2978}
+      deck_count: 2
+      rail_count: 4
+      brace_count: 13
+      brace_to_rail_joint_count: 26
+      connector_positions_mm: [20.5, 61.5]
+      cuts_per_connector: 2
+      module_seam_count: 1
+
+  - name: six-metre cabinet run
+    resolved_input:
+      cabinet_spans_mm:
+        - [0, 2000]
+        - [2002, 4002]
+        - [4004, 6004]
+      depth_mm: 650
+      height_mm: 120
+      panel_thickness_mm: 18
+    answer_key:
+      width_mm: 6004
+      support_height_mm: 102
+      clear_depth_mm: 614
+      modules:
+        - {id: base_module_01, start_x_mm: 0, end_x_mm: 2001}
+        - {id: base_module_02, start_x_mm: 2001, end_x_mm: 4003}
+        - {id: base_module_03, start_x_mm: 4003, end_x_mm: 6004}
+      deck_count: 3
+      rail_count: 6
+      brace_count: 24
+      brace_to_rail_joint_count: 48
+      connector_positions_mm: [25.5, 76.5]
+      cuts_per_connector: 2
+      module_seam_count: 2

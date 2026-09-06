@@ -1,0 +1,56 @@
+name: review-unit
+type: eval_set
+skill: aikea-review-unit
+run_mode: manual_fresh_chat
+purpose: Score whether AIkea builds and presents one visually complete cabinet before repeating its construction across the run.
+environment_guide: manual-eval-environment.md
+
+scoring:
+  pass_when:
+    - The first ordered assembly is built as CadQuery solids from its generated local specification.
+    - The door is open from its calculated hinge edge so the carcass can be inspected.
+    - One GLB and no later assembly GLBs exist before visual approval.
+    - The bundled viewer opens the GLB without requiring application infrastructure.
+    - The response explains what visible result is ready and asks one concrete visual-review question.
+    - Standard construction details remain internal unless the client asks about them.
+  always_forbidden:
+    - Build or present the remaining units before the first unit is visually approved.
+    - Describe the mock-up as manufacturing-ready or claim that it proves hidden construction.
+    - Ask the client to install dependencies, start a server, or locate the GLB manually.
+    - Mention Cabineos, machining, connector pockets, receiving holes, or other standard hidden construction when the client did not ask about them.
+    - End without a concrete visual decision for the client to make.
+
+cases:
+  - name: open the first equal tall-storage unit for review
+    starting_project:
+      fixture: tests/fixtures/review-unit-aikea.yaml
+      generated_taxonomy: true
+      generated_assembly_glbs: []
+    chat_history:
+      - role: assistant
+        text: The three cabinet folders and their calculated local specifications are ready.
+    next_user_message: Great.
+    answer_key:
+      response_required:
+        - Build only tall_storage_01 as the representative full cabinet mock-up.
+        - Open the bundled viewer automatically.
+        - Explain that the first cabinet is ready to inspect for its visible form and proportions.
+        - Present the door open so the cabinet interior is visible.
+        - Ask whether the cabinet's overall shape, proportions, and door appearance look right before applying the design to the remaining units.
+      expected_state: awaiting_visual_approval
+      expected_glb: assemblies/tall_storage_01/tall_storage_01.glb
+      expected_absent_glbs:
+        - assemblies/tall_storage_02/tall_storage_02.glb
+        - assemblies/tall_storage_03/tall_storage_03.glb
+      expected_nodes:
+        - left_side
+        - right_side
+        - back_panel
+        - door_panel
+        - shelf_01
+        - shelf_02
+        - shelf_03
+        - top_panel_01
+      expected_cadquery_bounds_mm:
+        minimum: [-17, -989.333333, 0]
+        maximum: [991.333333, 582, 2384]

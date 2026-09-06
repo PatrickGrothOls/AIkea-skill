@@ -1,0 +1,762 @@
+name: overall-wardrobe-measurements-and-settings
+type: eval_set
+skill: aikea
+run_mode: manual_fresh_chat
+purpose: Score how AIkea guides a client through wardrobe measurements and choices while privately writing the global project file.
+environment_guide: manual-eval-environment.md
+
+fixture_material_decisions: &fixture_material_decisions
+  - subject: cabinet_carcass_material
+    decision: Evaluation fixture cabinet panel
+    design_effect: Use the approved fixture product at the project thickness.
+    client_statement: The exact fixture product and sample are already approved.
+  - subject: door_front_material
+    decision: Evaluation fixture door panel
+    design_effect: Use the approved fixture product at the project thickness.
+    client_statement: The exact fixture product and sample are already approved.
+  - subject: back_panel_material
+    decision: Evaluation fixture back panel
+    design_effect: Use the approved fixture product at the project thickness.
+    client_statement: The exact fixture product and sample are already approved.
+
+manual_run:
+  - Start a fresh Claude or Codex chat with the AIkea skill available.
+  - Prepend this shared fact to the first user message in every case: "The exact Evaluation fixture cabinet panel, Evaluation fixture door panel, and Evaluation fixture back panel are already approved for this project, including their visible samples; preserve those choices at the thicknesses I provide."
+  - Send each user message in order and save the response from every turn.
+  - Compare the response and project file with that turn's answer key.
+  - Record the model, pass or fail result, and short failure notes separately.
+
+scoring:
+  required_item_points: 1
+  forbidden_item_result: fail_case
+  project_file_result: exact_semantic_match
+  calculated_result: numeric_match
+  pass_when:
+    - Every required response item is satisfied.
+    - No forbidden response item occurs.
+    - Every requested reading appears on its own numbered line and can be answered by item number and value.
+    - Every measurement group has a Width, Height, or Depth headline and a compact ASCII guide whose numbered paths match the requested readings.
+    - Every measurement line uses the form measurement description, colon, and where to measure, without a blank value field.
+    - Every design question uses numbered choices or one numbered value line and can be answered by number.
+    - Every client-facing edge letter is paired with its plain name in parentheses.
+    - The final aikea.yaml semantically matches expected_aikea_yaml.
+    - The three shared, already approved fixture material decisions are preserved exactly.
+    - The calculator succeeds and matches expected_calculated.
+    - The model completes and validates aikea.yaml before beginning later cabinet design.
+    - Every response ends with one concrete next action; it asks the client a question only when their answer can change the design, otherwise it proceeds automatically.
+    - Progress updates describe the current physical-design task and why its result matters to the client, using natural wording grounded in the active project.
+  always_forbidden:
+    - Invent measurements or typical cabinet defaults.
+    - Reuse measurements from skill assets, eval cases, development docs, legacy code, or another project.
+    - Ask the client to provide width shares or a numeric width-share list.
+    - Mention aikea.yaml, the global specification, schemas, field names, calculators, validation mechanics, or the built-in fitting allowance unless the client asks for technical details.
+    - Present a raw data-entry template unless the client asks for a site measurement sheet.
+    - Ask about more than one missing measurement or design topic in a response unless providing the requested site measurement sheet.
+    - Ask how the wardrobe is fitted before establishing and labelling its front-view shape.
+    - Split the labelled-edge fit question into separate questions about individual sides.
+    - Drop the edge labels after drawing the outline and ask for a measurement using ambiguous positions alone.
+    - Use a bare edge letter in a client-facing question without its plain name in parentheses.
+    - Request measurements in prose or unnumbered bullets instead of numbered lines.
+    - Ask for a measurement without a direction headline or matching ASCII guide.
+    - Mix width, height, and depth paths in one ASCII guide.
+    - Add underscores, blanks, or pretend value fields after a numbered measurement description.
+    - Present design alternatives without numbered reply choices.
+    - Request a repeated reading that reaches a different boundary or reveals no useful fit information merely to complete a standard count.
+    - Ask whether the wardrobe front is enclosed; it remains open even when its finished face must align with a fixed line.
+    - Subtract the fitting allowance from a dimension that is not fitted at both ends.
+    - Treat one wall and one open side as a fitted width.
+    - Ask for three width or height readings after the client established an open end, or three depth readings after establishing a freely chosen depth.
+    - Ask for only one width or height reading when fitted at both ends, or one depth reading when the front must finish at a fixed flush line.
+    - Begin a new-project conversation with a blunt data request instead of a warm, service-minded acknowledgement.
+    - Announce that it is using an AIkea skill or workflow, quote or summarize its instructions, or narrate internal operations such as saving YAML, validating, loading a skill, or recording assembly_run.
+    - Reuse canned example wording instead of composing a project-specific update.
+    - End with a passive invitation such as ready when you are, let me know, or tell me when to continue.
+
+cases:
+  - name: flat two-bay freestanding wardrobe
+    wardrobe_type: freestanding, flat top, equal-width bays
+    turns:
+      - user: >-
+          Design a rectangular freestanding two-door wardrobe with open space at both sides,
+          above it, and in front. All measurements are in centimetres.
+          The intended overall width is 240, the depth from the back to the front is
+          60, the front does not need to align with a fixed line, and the intended
+          wardrobe height is 220.
+          Use two equal cabinets, 1 cm clearance on both sides and above, a 0.2 cm
+          cabinet gap, a 10 cm base, a 0.2 cm door gap, 1.8 cm cabinet and door
+          panels, and a 0.6 cm back panel.
+        answer_key:
+          response_required:
+            - Recognize that every required overall input has been supplied.
+            - Write a complete aikea.yaml using centimetres without changing the measurements.
+            - Run the overall wardrobe calculator privately and present the checked cabinet dimensions in client-facing language.
+          response_forbidden:
+            - Ask a follow-up measurement question.
+          expected_aikea_yaml:
+            schema_version: 8
+            units: cm
+            measured_space:
+              top_boundary: flat
+              width_measurements: {single: 240}
+              depth_measurements: {single: 60}
+              height_measurements:
+                - {distance_from_left: 0, height_from_floor: 220}
+            design_decisions: *fixture_material_decisions
+            design_settings:
+              fit_allowance: 0.2
+              fitted_dimensions: {width: false, depth: false, height: false}
+              cabinet_run:
+                cabinet_count: 2
+                cabinet_width_shares: [1, 1]
+                left_clearance: 1
+                right_clearance: 1
+                cabinet_gap: 0.2
+                ceiling_clearance: 1
+              base: {height: 10}
+              doors: {gap: 0.2}
+              materials:
+                cabinet_panel_thickness: 1.8
+                door_thickness: 1.8
+                back_panel_thickness: 0.6
+          expected_calculated:
+            minimum_measured_width_mm: 2400
+            minimum_measured_depth_mm: 600
+            width_fitting_allowance_mm: 0
+            depth_fitting_allowance_mm: 0
+            height_fitting_allowance_mm: 0
+            usable_width_mm: 2400
+            usable_depth_mm: 600
+            cabinet_depth_mm: 582
+            inside_depth_mm: 576
+            cabinets:
+              - {cabinet_number: 1, left_position_mm: 10, right_position_mm: 1199, width_mm: 1189, left_height_mm: 2090, right_height_mm: 2090, door_width_mm: 1187}
+              - {cabinet_number: 2, left_position_mm: 1201, right_position_mm: 2390, width_mm: 1189, left_height_mm: 2090, right_height_mm: 2090, door_width_mm: 1187}
+
+  - name: flat three-bay wardrobe supplied one topic at a time
+    wardrobe_type: built-in, flat top, equal-width bays, supplied in stages
+    turns:
+      - user: I want to build a built-in wardrobe for a bedroom wall. I have not measured anything yet. Help me start.
+        answer_key:
+          response_required:
+            - Warmly acknowledge that the client is starting a wardrobe project.
+            - Ask which unit the client will use and offer centimetres, millimetres, and inches.
+          response_forbidden:
+            - Ask for dimensions or wardrobe choices in the same response.
+            - Create a project file before any project value has been supplied.
+          expected_project_state: absent
+      - user: Millimetres.
+        answer_key:
+          response_required:
+            - Retain millimetres as the unit.
+            - Ask only for the shape of the available space as viewed from the front.
+          response_forbidden:
+            - Ask how the wardrobe is fitted or ask for dimensions in the same response.
+          expected_project_state: incomplete_or_absent
+      - user: It is a rectangle.
+        answer_key:
+          response_required:
+            - Show a compact rectangular outline labelled clockwise as A left, B top, C right, and D floor.
+            - Ask one question covering whether every labelled edge is fitted and, if not, which letters are open.
+          response_forbidden:
+            - Ask about the left, right, top, or floor as separate placement questions.
+            - Ask for dimensions in the same response.
+          expected_project_state: incomplete_or_absent
+      - user: All four labelled edges are fitted against the room.
+        answer_key:
+          response_required:
+            - Retain that the left, top, right, and floor edges are all fitted.
+            - Ask only whether the wardrobe front must finish flush with a wall or another fixed line.
+          response_forbidden:
+            - Ask whether the wardrobe front is enclosed.
+            - Mention internal fitted-dimension fields or the fitting allowance.
+          expected_project_state: incomplete_or_absent
+      - user: No, the wardrobe can use a freely chosen depth.
+        answer_key:
+          response_required:
+            - Retain that the depth is freely chosen.
+            - Ask for widths between labelled side edges A and C just above floor edge D, midway up their shared height, and just below top edge B.
+            - Make clear that the three lines compare the same two walls and can reveal lean, bow, or taper.
+          response_forbidden:
+            - Ask for the depth or height in the same response.
+          expected_project_state: incomplete_or_absent
+      - user: The bottom, middle, and top widths are all 2730 mm.
+        answer_key:
+          response_required:
+            - Retain all three width readings.
+            - Ask for one depth from the back wall to the intended wardrobe front at a labelled location, such as midway along floor edge D between A and C.
+          response_forbidden:
+            - Ask for three depth readings after the client said the depth is freely chosen.
+          expected_project_state: incomplete_or_absent
+      - user: Make the wardrobe 620 mm deep from the back wall to the front.
+        answer_key:
+          response_required:
+            - Retain the single depth reading.
+            - Ask for vertical heights from floor edge D to top edge B beside A, midway between A and C, and beside C, with their distances from A, plus any labelled top junction where the ceiling changes.
+          response_forbidden:
+            - Ask for wardrobe choices yet.
+          expected_project_state: incomplete_or_absent
+      - user: Heights are 2400 mm at 0, 1365, and 2730 mm from the left. There are no changes between them.
+        answer_key:
+          response_required:
+            - Retain all three heights and recognize that the measured space is complete.
+            - Ask how many wardrobe sections the client wants.
+          response_forbidden:
+            - Ask again how the wardrobe will sit.
+          expected_project_state: incomplete_or_absent
+      - user: Three sections.
+        answer_key:
+          response_required:
+            - Ask whether the sections should be equal or whether any should be wider or narrower.
+          response_forbidden:
+            - Ask the client for numeric width shares.
+            - Ask about clearances or other choices in the same response.
+          expected_project_state: incomplete_or_absent
+      - user: Make all three the same width.
+        answer_key:
+          response_required:
+            - Translate the answer to three equal internal width relationships.
+            - Ask about the intended room at the left wall, right wall, and below the ceiling.
+          response_forbidden:
+            - Explain width shares to the client.
+            - Ask about cabinet gaps or other choices in the same response.
+          expected_project_state: incomplete_or_absent
+      - user: Use 10 mm at both walls and 20 mm below the ceiling.
+        answer_key:
+          response_required:
+            - Retain the three supplied outer clearances.
+            - Ask for the gap between neighbouring cabinets.
+          response_forbidden:
+            - Ask about the base or other choices in the same response.
+          expected_project_state: incomplete_or_absent
+      - user: Use 5 mm between cabinets.
+        answer_key:
+          response_required:
+            - Ask how high the base should be.
+          response_forbidden:
+            - Ask about doors or materials in the same response.
+          expected_project_state: incomplete_or_absent
+      - user: Make the base 100 mm high.
+        answer_key:
+          response_required:
+            - Ask for the visible gap around or between the doors.
+          response_forbidden:
+            - Ask about materials in the same response.
+          expected_project_state: incomplete_or_absent
+      - user: Use a 2 mm door gap.
+        answer_key:
+          response_required:
+            - Ask for cabinet-panel, door-panel, and back-panel thicknesses as one material topic.
+          response_forbidden:
+            - Ask again for an earlier answer.
+          expected_project_state: incomplete_or_absent
+      - user: Cabinet panels are 18 mm, doors are 20 mm, and the back is 6 mm.
+        answer_key:
+          response_required:
+            - Write the complete aikea.yaml using values retained from the entire conversation.
+            - Run the overall wardrobe calculator privately and present the checked cabinet dimensions in client-facing language.
+          response_forbidden:
+            - Ask for a value supplied in an earlier turn.
+            - Begin later cabinet or construction design.
+          expected_aikea_yaml:
+            schema_version: 8
+            units: mm
+            measured_space:
+              top_boundary: flat
+              width_measurements: {bottom: 2730, middle: 2730, top: 2730}
+              depth_measurements: {single: 620}
+              height_measurements:
+                - {distance_from_left: 0, height_from_floor: 2400}
+                - {distance_from_left: 1365, height_from_floor: 2400}
+                - {distance_from_left: 2730, height_from_floor: 2400}
+            design_decisions: *fixture_material_decisions
+            design_settings:
+              fit_allowance: 2
+              fitted_dimensions: {width: true, depth: false, height: true}
+              cabinet_run:
+                cabinet_count: 3
+                cabinet_width_shares: [1, 1, 1]
+                left_clearance: 10
+                right_clearance: 10
+                cabinet_gap: 5
+                ceiling_clearance: 20
+              base: {height: 100}
+              doors: {gap: 2}
+              materials:
+                cabinet_panel_thickness: 18
+                door_thickness: 20
+                back_panel_thickness: 6
+          expected_calculated:
+            minimum_measured_width_mm: 2730
+            minimum_measured_depth_mm: 620
+            width_fitting_allowance_mm: 2
+            depth_fitting_allowance_mm: 0
+            height_fitting_allowance_mm: 2
+            usable_width_mm: 2728
+            usable_depth_mm: 620
+            cabinet_depth_mm: 600
+            inside_depth_mm: 594
+            cabinets:
+              - {cabinet_number: 1, left_position_mm: 10, right_position_mm: 909.333333, width_mm: 899.333333, left_height_mm: 2278, right_height_mm: 2278, door_width_mm: 897.333333}
+              - {cabinet_number: 2, left_position_mm: 914.333333, right_position_mm: 1813.666667, width_mm: 899.333333, left_height_mm: 2278, right_height_mm: 2278, door_width_mm: 897.333333}
+              - {cabinet_number: 3, left_position_mm: 1818.666667, right_position_mm: 2718, width_mm: 899.333333, left_height_mm: 2278, right_height_mm: 2278, door_width_mm: 897.333333}
+
+  - name: flat three-bay wall-to-wall wardrobe using a measurement sheet
+    wardrobe_type: wall-to-wall, flat top, equal-width bays, requested site sheet
+    turns:
+      - user: I am visiting the room tomorrow. Give me one simple sheet I can fill in while I measure.
+        answer_key:
+          response_required:
+            - Provide a client-facing site sheet adapted from the skill asset.
+            - Put the front-view shape and labelled-edge fit before the measurement tables.
+            - Tell the client to label outline edges A, B, C, and onward clockwise from the left edge.
+            - Ask one fit question covering every labelled edge and which letters are not fitted.
+            - Use the actual outline labels in every measurement row and identify the two boundaries and labelled location for each line.
+            - Explain that repeated lines must compare the same surfaces and should be moved when a slope or obstruction makes a standard position unhelpful.
+            - Include centimetres, millimetres, and inches as unit choices.
+            - Provide room for height change points and site notes.
+            - Ask whether the wardrobe front must finish flush with a wall or another fixed line.
+            - Include one intended-depth row for a freely chosen depth and left, centre, and right rows for a required flush depth.
+            - Tell the client to record actual measurements without subtracting fitting room.
+          response_forbidden:
+            - Ask the client about internal representations or construction joinery.
+            - Claim any project measurement is known.
+          expected_project_state: absent
+      - user: >-
+          I used mm. Width is 3000 at the bottom, middle, and top. The single depth
+          from the back to the intended front is 600. Heights are 2400 at 0, 1500, and 3000 from the
+          left, with no other changes. The front-view shape is rectangle A-D and all
+          four labelled edges are fitted. The front does not need to finish at a fixed
+          flush line. Make three equal cabinets with zero room at the
+          left and right walls and zero gaps between cabinets, 10 mm below the ceiling,
+          a 100 mm base, 2 mm door gaps, 18 mm cabinet and door panels, and a 6 mm back.
+        answer_key:
+          response_required:
+            - Retain the completed site readings and intentional zero clearances.
+            - Write the complete aikea.yaml and run the overall wardrobe calculator privately.
+            - Present the checked cabinet dimensions in client-facing language.
+          response_forbidden:
+            - Replace an intentional zero with a typical clearance or gap.
+          expected_aikea_yaml:
+            schema_version: 8
+            units: mm
+            measured_space:
+              top_boundary: flat
+              width_measurements: {bottom: 3000, middle: 3000, top: 3000}
+              depth_measurements: {single: 600}
+              height_measurements:
+                - {distance_from_left: 0, height_from_floor: 2400}
+                - {distance_from_left: 1500, height_from_floor: 2400}
+                - {distance_from_left: 3000, height_from_floor: 2400}
+            design_decisions: *fixture_material_decisions
+            design_settings:
+              fit_allowance: 2
+              fitted_dimensions: {width: true, depth: false, height: true}
+              cabinet_run:
+                cabinet_count: 3
+                cabinet_width_shares: [1, 1, 1]
+                left_clearance: 0
+                right_clearance: 0
+                cabinet_gap: 0
+                ceiling_clearance: 10
+              base: {height: 100}
+              doors: {gap: 2}
+              materials:
+                cabinet_panel_thickness: 18
+                door_thickness: 18
+                back_panel_thickness: 6
+          expected_calculated:
+            minimum_measured_width_mm: 3000
+            minimum_measured_depth_mm: 600
+            width_fitting_allowance_mm: 2
+            depth_fitting_allowance_mm: 0
+            height_fitting_allowance_mm: 2
+            usable_width_mm: 2998
+            usable_depth_mm: 600
+            cabinet_depth_mm: 582
+            inside_depth_mm: 576
+            cabinets:
+              - {cabinet_number: 1, left_position_mm: 0, right_position_mm: 999.333333, width_mm: 999.333333, left_height_mm: 2288, right_height_mm: 2288, door_width_mm: 997.333333}
+              - {cabinet_number: 2, left_position_mm: 999.333333, right_position_mm: 1998.666667, width_mm: 999.333333, left_height_mm: 2288, right_height_mm: 2288, door_width_mm: 997.333333}
+              - {cabinet_number: 3, left_position_mm: 1998.666667, right_position_mm: 2998, width_mm: 999.333333, left_height_mm: 2288, right_height_mm: 2288, door_width_mm: 997.333333}
+
+  - name: flat mixed-width built-in wardrobe with uneven walls
+    wardrobe_type: built-in, flat top, one narrow bay, uneven measured space
+    turns:
+      - user: >-
+          All values are mm. The front-view outline is rectangular: A is the fitted
+          left edge, B is the fitted top, C is the open right edge, and D is the fitted
+          floor edge. Widths at the bottom, middle, and top are 2600, 2597,
+          and 2595. The intended depth is 598 and does not need to align with a
+          fixed line.
+          Floor-to-ceiling heights are 2350 at distances 0, 1297.5, and 2595 from
+          the left. I want three cabinets: the left and middle should match and the
+          right should be half their width. Use 5 mm at each side, 2 mm between
+          cabinets, 10 mm above, an 80 mm base, 2 mm door gaps, 18 mm cabinet and
+          door panels, and a 6 mm back.
+        answer_key:
+          response_required:
+            - Preserve every raw site reading and present the checked unit widths returned by the calculator.
+            - Preserve the client's confirmed installation arrangement.
+            - Translate the relative cabinet widths into internal shares [1, 1, 0.5].
+            - Run the overall wardrobe calculator privately and present the checked cabinet dimensions in client-facing language.
+          response_forbidden:
+            - Ask the client to calculate each cabinet width.
+          expected_aikea_yaml:
+            schema_version: 8
+            units: mm
+            measured_space:
+              top_boundary: flat
+              width_measurements: {bottom: 2600, middle: 2597, top: 2595}
+              depth_measurements: {single: 598}
+              height_measurements:
+                - {distance_from_left: 0, height_from_floor: 2350}
+                - {distance_from_left: 1297.5, height_from_floor: 2350}
+                - {distance_from_left: 2595, height_from_floor: 2350}
+            design_decisions: *fixture_material_decisions
+            design_settings:
+              fit_allowance: 2
+              fitted_dimensions: {width: false, depth: false, height: true}
+              cabinet_run:
+                cabinet_count: 3
+                cabinet_width_shares: [1, 1, 0.5]
+                left_clearance: 5
+                right_clearance: 5
+                cabinet_gap: 2
+                ceiling_clearance: 10
+              base: {height: 80}
+              doors: {gap: 2}
+              materials:
+                cabinet_panel_thickness: 18
+                door_thickness: 18
+                back_panel_thickness: 6
+          expected_calculated:
+            minimum_measured_width_mm: 2595
+            minimum_measured_depth_mm: 598
+            width_fitting_allowance_mm: 0
+            depth_fitting_allowance_mm: 0
+            height_fitting_allowance_mm: 2
+            usable_width_mm: 2595
+            usable_depth_mm: 598
+            cabinet_depth_mm: 580
+            inside_depth_mm: 574
+            cabinets:
+              - {cabinet_number: 1, left_position_mm: 5, right_position_mm: 1037.4, width_mm: 1032.4, left_height_mm: 2258, right_height_mm: 2258, door_width_mm: 1030.4}
+              - {cabinet_number: 2, left_position_mm: 1039.4, right_position_mm: 2071.8, width_mm: 1032.4, left_height_mm: 2258, right_height_mm: 2258, door_width_mm: 1030.4}
+              - {cabinet_number: 3, left_position_mm: 2073.8, right_position_mm: 2590, width_mm: 516.2, left_height_mm: 2258, right_height_mm: 2258, door_width_mm: 514.2}
+
+  - name: four-bay wardrobe under one slope
+    wardrobe_type: built-in, continuously sloped top, equal-width bays
+    turns:
+      - user: >-
+          All measurements are mm. Width is 3200 at the bottom, middle, and top.
+          The intended depth is 650 and can stop freely. Floor-to-ceiling heights are
+          2600 at 0 from the left, 2280 at 1600, and 1960 at 3200, forming one straight
+          slope. The run is between both side walls and reaches the ceiling; its front
+          is open. Use four equal cabinets, no side room or cabinet gaps, 20 mm above,
+          a 100 mm base, 2 mm door gaps, 18 mm cabinet panels, 20 mm doors, and a 6 mm back.
+        answer_key:
+          response_required:
+            - Preserve the left-to-right slope and all three readings.
+            - Run the overall wardrobe calculator privately and present the checked cabinet dimensions in client-facing language.
+          response_forbidden:
+            - Replace the slope with an average or minimum height.
+          expected_aikea_yaml:
+            schema_version: 8
+            units: mm
+            measured_space:
+              top_boundary: measured_profile
+              width_measurements: {bottom: 3200, middle: 3200, top: 3200}
+              depth_measurements: {single: 650}
+              height_measurements:
+                - {distance_from_left: 0, height_from_floor: 2600}
+                - {distance_from_left: 1600, height_from_floor: 2280}
+                - {distance_from_left: 3200, height_from_floor: 1960}
+            design_decisions: *fixture_material_decisions
+            design_settings:
+              fit_allowance: 2
+              fitted_dimensions: {width: true, depth: false, height: true}
+              cabinet_run:
+                cabinet_count: 4
+                cabinet_width_shares: [1, 1, 1, 1]
+                left_clearance: 0
+                right_clearance: 0
+                cabinet_gap: 0
+                ceiling_clearance: 20
+              base: {height: 100}
+              doors: {gap: 2}
+              materials:
+                cabinet_panel_thickness: 18
+                door_thickness: 20
+                back_panel_thickness: 6
+          expected_calculated:
+            minimum_measured_width_mm: 3200
+            minimum_measured_depth_mm: 650
+            width_fitting_allowance_mm: 2
+            depth_fitting_allowance_mm: 0
+            height_fitting_allowance_mm: 2
+            usable_width_mm: 3198
+            usable_depth_mm: 650
+            cabinet_depth_mm: 630
+            inside_depth_mm: 624
+            cabinets:
+              - {cabinet_number: 1, left_position_mm: 0, right_position_mm: 799.5, width_mm: 799.5, left_height_mm: 2478, right_height_mm: 2318.1, door_width_mm: 797.5}
+              - {cabinet_number: 2, left_position_mm: 799.5, right_position_mm: 1599, width_mm: 799.5, left_height_mm: 2318.1, right_height_mm: 2158.2, door_width_mm: 797.5}
+              - {cabinet_number: 3, left_position_mm: 1599, right_position_mm: 2398.5, width_mm: 799.5, left_height_mm: 2158.2, right_height_mm: 1998.3, door_width_mm: 797.5}
+              - {cabinet_number: 4, left_position_mm: 2398.5, right_position_mm: 3198, width_mm: 799.5, left_height_mm: 1998.3, right_height_mm: 1838.4, door_width_mm: 797.5}
+
+  - name: three-bay wardrobe under a flat section and slope
+    wardrobe_type: built-in, flat section followed by a slope
+    turns:
+      - user: >-
+          All values are mm. The three width readings are 3000 and the intended
+          depth is 600 with no required flush line. Heights are 2400 at 0 from the left, 2400 at 1000, and
+          1200 at 3000. The ceiling is flat to 1000, then slopes to the right.
+          The run is enclosed between side walls and from floor to ceiling, with an
+          open front. Use three equal cabinets with no side room or cabinet gaps, 10 mm above,
+          a 100 mm base, 2 mm door gaps, 18 mm cabinet and door panels, and a 6 mm back.
+        answer_key:
+          response_required:
+            - Save all three width readings and the single intended depth.
+            - Keep the flat section and slope as separate measured segments.
+            - Run the overall wardrobe calculator privately and present the checked cabinet dimensions in client-facing language.
+          response_forbidden:
+            - Reduce the ceiling to one generic slope.
+          expected_aikea_yaml:
+            schema_version: 8
+            units: mm
+            measured_space:
+              top_boundary: measured_profile
+              width_measurements: {bottom: 3000, middle: 3000, top: 3000}
+              depth_measurements: {single: 600}
+              height_measurements:
+                - {distance_from_left: 0, height_from_floor: 2400}
+                - {distance_from_left: 1000, height_from_floor: 2400}
+                - {distance_from_left: 3000, height_from_floor: 1200}
+            design_decisions: *fixture_material_decisions
+            design_settings:
+              fit_allowance: 2
+              fitted_dimensions: {width: true, depth: false, height: true}
+              cabinet_run:
+                cabinet_count: 3
+                cabinet_width_shares: [1, 1, 1]
+                left_clearance: 0
+                right_clearance: 0
+                cabinet_gap: 0
+                ceiling_clearance: 10
+              base: {height: 100}
+              doors: {gap: 2}
+              materials:
+                cabinet_panel_thickness: 18
+                door_thickness: 18
+                back_panel_thickness: 6
+          expected_calculated:
+            minimum_measured_width_mm: 3000
+            minimum_measured_depth_mm: 600
+            width_fitting_allowance_mm: 2
+            depth_fitting_allowance_mm: 0
+            height_fitting_allowance_mm: 2
+            usable_width_mm: 2998
+            usable_depth_mm: 600
+            cabinet_depth_mm: 582
+            inside_depth_mm: 576
+            cabinets:
+              - {cabinet_number: 1, left_position_mm: 0, right_position_mm: 999.333333, width_mm: 999.333333, left_height_mm: 2288, right_height_mm: 2288, door_width_mm: 997.333333}
+              - {cabinet_number: 2, left_position_mm: 999.333333, right_position_mm: 1998.666667, width_mm: 999.333333, left_height_mm: 2288, right_height_mm: 1688.8, door_width_mm: 997.333333}
+              - {cabinet_number: 3, left_position_mm: 1998.666667, right_position_mm: 2998, width_mm: 999.333333, left_height_mm: 1688.8, right_height_mm: 1089.2, door_width_mm: 997.333333}
+
+  - name: four-bay wardrobe under a multi-point ceiling
+    wardrobe_type: built-in, piecewise-linear top with flats and slopes
+    turns:
+      - user: >-
+          All values are mm. Width is 3600 at the bottom, middle, and top. The
+          wardrobe front must finish flush with a fixed wall line; depths from the
+          back to that line are 700 at the left, 699 in the middle, and 701 at the
+          right. From the left, floor-to-ceiling readings
+          are 0 at 2500 high, 600 at 2500, 1400 at 2300, 2200 at 2300, 3000 at 1900,
+          and 3500 at 1900. Every edge of the front-view outline is fitted against
+          the room. Use four equal cabinets, no side room or cabinet gaps,
+          20 mm above, a 120 mm base, 3 mm door gaps, 18 mm cabinet panels, 20 mm doors,
+          and an 8 mm back.
+        answer_key:
+          response_required:
+            - Identify that the last height reading does not reach the usable right edge.
+            - Ask only for the corrected right-edge distance or an additional right-edge reading.
+          response_forbidden:
+            - Silently extend the final flat section.
+            - Report that the overall check passed.
+          expected_project_state: incomplete_or_invalid
+      - user: The last reading should be 3600 mm from the left and 1900 mm high.
+        answer_key:
+          response_required:
+            - Correct only the final height reading and retain every other supplied value.
+            - Run the overall wardrobe calculator privately and present the checked cabinet dimensions in client-facing language.
+          response_forbidden:
+            - Reduce or reorder the measured height readings.
+          expected_aikea_yaml:
+            schema_version: 8
+            units: mm
+            measured_space:
+              top_boundary: measured_profile
+              width_measurements: {bottom: 3600, middle: 3600, top: 3600}
+              depth_measurements: {left: 700, middle: 699, right: 701}
+              height_measurements:
+                - {distance_from_left: 0, height_from_floor: 2500}
+                - {distance_from_left: 600, height_from_floor: 2500}
+                - {distance_from_left: 1400, height_from_floor: 2300}
+                - {distance_from_left: 2200, height_from_floor: 2300}
+                - {distance_from_left: 3000, height_from_floor: 1900}
+                - {distance_from_left: 3600, height_from_floor: 1900}
+            design_decisions: *fixture_material_decisions
+            design_settings:
+              fit_allowance: 2
+              fitted_dimensions: {width: true, depth: true, height: true}
+              cabinet_run:
+                cabinet_count: 4
+                cabinet_width_shares: [1, 1, 1, 1]
+                left_clearance: 0
+                right_clearance: 0
+                cabinet_gap: 0
+                ceiling_clearance: 20
+              base: {height: 120}
+              doors: {gap: 3}
+              materials:
+                cabinet_panel_thickness: 18
+                door_thickness: 20
+                back_panel_thickness: 8
+          expected_calculated:
+            minimum_measured_width_mm: 3600
+            minimum_measured_depth_mm: 699
+            width_fitting_allowance_mm: 2
+            depth_fitting_allowance_mm: 2
+            height_fitting_allowance_mm: 2
+            usable_width_mm: 3598
+            usable_depth_mm: 697
+            cabinet_depth_mm: 677
+            inside_depth_mm: 669
+            cabinets:
+              - {cabinet_number: 1, left_position_mm: 0, right_position_mm: 899.5, width_mm: 899.5, left_height_mm: 2358, right_height_mm: 2283.125, door_width_mm: 896.5}
+              - {cabinet_number: 2, left_position_mm: 899.5, right_position_mm: 1799, width_mm: 899.5, left_height_mm: 2283.125, right_height_mm: 2158, door_width_mm: 896.5}
+              - {cabinet_number: 3, left_position_mm: 1799, right_position_mm: 2698.5, width_mm: 899.5, left_height_mm: 2158, right_height_mm: 1908.75, door_width_mm: 896.5}
+              - {cabinet_number: 4, left_position_mm: 2698.5, right_position_mm: 3598, width_mm: 899.5, left_height_mm: 1908.75, right_height_mm: 1758, door_width_mm: 896.5}
+
+  - name: long six-bay wardrobe
+    wardrobe_type: wall-to-wall, flat top, long run
+    turns:
+      - user: >-
+          All values are mm. Width is 6000 at the bottom, middle, and top; the
+          intended depth is 650 with no required flush line; and floor-to-ceiling height is 2500 at
+          distances 0, 3000, and 6000 from the left. The run is wall-to-wall and
+          floor-to-ceiling with an open front. Use six equal cabinets, no side
+          room or cabinet gaps, 15 mm above, a 120 mm base, 2 mm door gaps, 18 mm
+          cabinet panels, 20 mm doors, and a 6 mm back.
+        answer_key:
+          response_required:
+            - Complete and check the overall wardrobe measurements and choices for all six cabinets.
+            - Present the checked overall cabinet dimensions and lead directly into the first unanswered unit-arrangement question.
+          response_forbidden:
+            - End by asking the client to say when they are ready to continue.
+          expected_aikea_yaml:
+            schema_version: 8
+            units: mm
+            measured_space:
+              top_boundary: flat
+              width_measurements: {bottom: 6000, middle: 6000, top: 6000}
+              depth_measurements: {single: 650}
+              height_measurements:
+                - {distance_from_left: 0, height_from_floor: 2500}
+                - {distance_from_left: 3000, height_from_floor: 2500}
+                - {distance_from_left: 6000, height_from_floor: 2500}
+            design_decisions: *fixture_material_decisions
+            design_settings:
+              fit_allowance: 2
+              fitted_dimensions: {width: true, depth: false, height: true}
+              cabinet_run:
+                cabinet_count: 6
+                cabinet_width_shares: [1, 1, 1, 1, 1, 1]
+                left_clearance: 0
+                right_clearance: 0
+                cabinet_gap: 0
+                ceiling_clearance: 15
+              base: {height: 120}
+              doors: {gap: 2}
+              materials:
+                cabinet_panel_thickness: 18
+                door_thickness: 20
+                back_panel_thickness: 6
+          expected_calculated:
+            minimum_measured_width_mm: 6000
+            minimum_measured_depth_mm: 650
+            width_fitting_allowance_mm: 2
+            depth_fitting_allowance_mm: 0
+            height_fitting_allowance_mm: 2
+            usable_width_mm: 5998
+            usable_depth_mm: 650
+            cabinet_depth_mm: 630
+            inside_depth_mm: 624
+            cabinets:
+              - {cabinet_number: 1, left_position_mm: 0, right_position_mm: 999.666667, width_mm: 999.666667, left_height_mm: 2363, right_height_mm: 2363, door_width_mm: 997.666667}
+              - {cabinet_number: 2, left_position_mm: 999.666667, right_position_mm: 1999.333333, width_mm: 999.666667, left_height_mm: 2363, right_height_mm: 2363, door_width_mm: 997.666667}
+              - {cabinet_number: 3, left_position_mm: 1999.333333, right_position_mm: 2999, width_mm: 999.666667, left_height_mm: 2363, right_height_mm: 2363, door_width_mm: 997.666667}
+              - {cabinet_number: 4, left_position_mm: 2999, right_position_mm: 3998.666667, width_mm: 999.666667, left_height_mm: 2363, right_height_mm: 2363, door_width_mm: 997.666667}
+              - {cabinet_number: 5, left_position_mm: 3998.666667, right_position_mm: 4998.333333, width_mm: 999.666667, left_height_mm: 2363, right_height_mm: 2363, door_width_mm: 997.666667}
+              - {cabinet_number: 6, left_position_mm: 4998.333333, right_position_mm: 5998, width_mm: 999.666667, left_height_mm: 2363, right_height_mm: 2363, door_width_mm: 997.666667}
+
+  - name: flat fitted ceiling with small measurement variation
+    wardrobe_type: wall-to-wall, flat top, limiting-height calculation
+    turns:
+      - user: >-
+          Use centimetres. Viewed from the front, the available space is rectangular
+          and fitted between both side walls and between the finished floor and flat
+          ceiling. Width is 300 at the bottom, middle, and top. The intended depth is
+          60 with no required flush line. Floor-to-ceiling heights are 240 at 0 from
+          the left, 239.8 at 150, and 239.6 at 300. Build three equal full-height
+          storage units. Use 1 cm at each side wall, 0.2 cm between units, 1 cm above,
+          a 10 cm base, 0.2 cm door gaps, 1.8 cm cabinet and door panels, and a 0.6 cm back.
+        answer_key:
+          response_required:
+            - Preserve all three raw height readings and the client's confirmed flat top.
+            - Present the calculator's 228.4 cm unit heights and continue the project.
+          response_forbidden:
+            - Explain the arithmetic used to resolve the final height.
+          expected_aikea_yaml:
+            schema_version: 8
+            units: cm
+            measured_space:
+              top_boundary: flat
+              width_measurements: {bottom: 300, middle: 300, top: 300}
+              depth_measurements: {single: 60}
+              height_measurements:
+                - {distance_from_left: 0, height_from_floor: 240}
+                - {distance_from_left: 150, height_from_floor: 239.8}
+                - {distance_from_left: 300, height_from_floor: 239.6}
+            design_decisions: *fixture_material_decisions
+            design_settings:
+              fit_allowance: 0.2
+              fitted_dimensions: {width: true, depth: false, height: true}
+              cabinet_run:
+                cabinet_count: 3
+                cabinet_width_shares: [1, 1, 1]
+                left_clearance: 1
+                right_clearance: 1
+                cabinet_gap: 0.2
+                ceiling_clearance: 1
+              base: {height: 10}
+              doors: {gap: 0.2}
+              materials:
+                cabinet_panel_thickness: 1.8
+                door_thickness: 1.8
+                back_panel_thickness: 0.6
+          expected_calculated:
+            minimum_measured_width_mm: 3000
+            minimum_measured_depth_mm: 600
+            width_fitting_allowance_mm: 2
+            depth_fitting_allowance_mm: 0
+            height_fitting_allowance_mm: 2
+            usable_width_mm: 2998
+            usable_depth_mm: 600
+            cabinet_depth_mm: 582
+            inside_depth_mm: 576
+            cabinets:
+              - {cabinet_number: 1, left_position_mm: 10, right_position_mm: 1001.333333, width_mm: 991.333333, left_height_mm: 2284, right_height_mm: 2284, door_width_mm: 989.333333}
+              - {cabinet_number: 2, left_position_mm: 1003.333333, right_position_mm: 1994.666667, width_mm: 991.333333, left_height_mm: 2284, right_height_mm: 2284, door_width_mm: 989.333333}
+              - {cabinet_number: 3, left_position_mm: 1996.666667, right_position_mm: 2988, width_mm: 991.333333, left_height_mm: 2284, right_height_mm: 2284, door_width_mm: 989.333333}

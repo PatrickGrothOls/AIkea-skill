@@ -1,0 +1,87 @@
+name: review-assembly-positioning
+type: eval_set
+skill: aikea-review-unit
+run_mode: manual_fresh_chat
+purpose: Score whether AIkea verifies local and project positions before judging assembled fit.
+environment_guide: manual-eval-environment.md
+
+scoring:
+  pass_when:
+    - The agent reruns or reads the deterministic assembly position check before reaching a verdict.
+    - The agent distinguishes each assembly's local zero from where that zero lands in the measured space.
+    - The agent verifies the local zero and axis directions of the assembled parts instead of relying only on outer bounds.
+    - The agent checks width, depth, height, contact, and material overlap from the built geometry.
+    - The combined review contains only the base module supporting the first cabinet.
+    - The agent identifies any neighbouring-module part that leaked into the reviewed assembly.
+    - The agent distinguishes an intentional base-module break inside a cabinet gap from a material-thickness placement error.
+    - The response explains the physical result clearly and ends with one concrete visual decision.
+  always_forbidden:
+    - Judge the fit from the screenshot alone.
+    - Treat an open-door review pose as the cabinet carcass position.
+    - Invent or hand-adjust a transform without correcting its deterministic owner.
+    - Continue to later construction when the assembly position check is invalid.
+
+cases:
+  - name: question the first cabinet on its base module
+    starting_project:
+      fixture: tests/fixtures/review-unit-aikea.yaml
+      generated_taxonomy: true
+      generated_base_review: true
+    chat_history:
+      - role: assistant
+        text: The base and first cabinet are ready to inspect together.
+    next_user_message: The right side looks as though something projects past the cabinet, and I am not sure their heights are positioned correctly. Recheck the local and global positions.
+    answer_key:
+      expected_status: valid
+      expected_global_coordinates:
+        zero: front-left floor point of the measured space
+        positive_x: right
+        positive_y: back
+        positive_z: up
+      expected_assembly_positions:
+        base_01:
+          local_zero_mm: [0, 0, 0]
+          global_zero_mm: [10, 0, 0]
+          global_x_bounds_mm: [10, 2988]
+          global_z_bounds_mm: [0, 100]
+        tall_storage_01:
+          local_zero_mm: [0, 0, 0]
+          global_zero_mm: [10, 0, 0]
+          global_x_bounds_mm: [10, 1001.333333]
+          carcass_z_bounds_mm: [100, 2384]
+      expected_relationships:
+        base_top_z_mm: 100
+        cabinet_side_bottom_z_mm: 100
+        door_bottom: plinth
+        door_bottom_z_mm: 82
+        plinth_front: recessed
+        plinth_recess_mm: 60
+        plinth_front_y_mm: 60
+        base_deck_bottom_z_mm: 82
+        first_cabinet_right_x_global_mm: 1001.333333
+        first_base_module_end_x_global_mm: 1002.333333
+        first_base_module_projection_into_gap_mm: 1
+        review_base_right_x_global_mm: 1002.333333
+        next_cabinet_gap_mm: 2
+      expected_absent_combined_nodes:
+        - deck_02
+        - front_rail_02
+        - back_rail_02
+        - brace_02_01
+      expected_part_position:
+        assembly_id: tall_storage_01
+        part_id: left_side
+        local_zero_mm: [0, 0, 0]
+        assembly_zero_mm: [0, 0, 100]
+        global_zero_mm: [10, 0, 100]
+        local_axes_in_assembly:
+          x: [0, 1, 0]
+          y: [0, 0, 1]
+          z: [1, 0, 0]
+      response_required:
+        - Explain that the carcass meets the base at 100 mm without overlap.
+        - Explain that the visible 18 mm protrusion was brace_02_01 from the neighbouring module and that the corrected review excludes it.
+        - Explain that the remaining base edge is 1 mm into the 2 mm cabinet gap because the base module breaks at the gap centre.
+        - Confirm that no part from the second base module appears in the corrected first-cabinet review.
+        - Explain that the door reaches the selected plinth line at 82 mm, while the carcass begins on the base at 100 mm.
+        - Ask whether the verified cabinet-to-base silhouette looks right before continuing.

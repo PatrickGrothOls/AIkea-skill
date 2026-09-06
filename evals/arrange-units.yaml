@@ -1,0 +1,228 @@
+name: arrange-units
+type: eval_set
+skill: aikea-arrange-units
+run_mode: manual_fresh_chat
+purpose: Score whether AIkea turns a client's furniture arrangement into one exact ordered assembly run without entering local design.
+environment_guide: manual-eval-environment.md
+
+scoring:
+  required_item_points: 1
+  forbidden_item_result: fail_case
+  pass_when:
+    - Every required response item is satisfied.
+    - No forbidden response item occurs.
+    - The saved assembly_run exactly matches the answer key when the arrangement is complete.
+    - Every response ends with one concrete next action; it asks the client a question only when their answer can change the design, otherwise it proceeds automatically.
+    - Progress updates describe the current physical-design task and why its result matters to the client, using natural wording grounded in the active project.
+    - A complete arrangement starts local unit taxonomy generation automatically.
+  always_forbidden:
+    - Ask the client for internal IDs, width shares, percentages, YAML fields, or folder names.
+    - Treat a bench or another unit purpose as a fixed geometric shape.
+    - Introduce a client choice that does not change the physical design or manufacturing result.
+    - Change measured-space values or unrelated shared settings.
+    - Generate assembly folders before the arrangement is complete and checked.
+    - Keep cabinet_run after writing its assembly_run replacement.
+    - Invent a unit purpose, order, or width relationship that the client did not provide or confirm.
+    - Announce that it is using an AIkea skill or workflow, quote or summarize its instructions, or narrate internal operations such as saving YAML, validating, loading a skill, or recording assembly_run.
+    - Reuse canned example wording instead of composing a project-specific update.
+    - Stop by reporting that a later generator, skill, or capability is not implemented.
+    - End with a passive invitation such as ready when you are, let me know, or tell me when to continue.
+
+cases:
+  - name: three equal tall-storage units
+    starting_project:
+      measured_space_status: checked
+      design_settings:
+        cabinet_run:
+          cabinet_count: 3
+          cabinet_width_shares: [1, 1, 1]
+          left_clearance: 10
+          right_clearance: 10
+          cabinet_gap: 2
+          ceiling_clearance: 10
+    chat_history: []
+    next_user_message: I want three equal full-height storage units from left to right.
+    answer_key:
+      response_required:
+        - Recognize that purpose, order, and width relationships are complete.
+        - Replace cabinet_run with the exact assembly_run answer while preserving all other project values.
+        - Summarize three equal tall-storage units from left to right in client-facing language.
+        - Begin generating the local unit taxonomy automatically.
+      response_forbidden:
+        - Ask another arrangement question.
+      expected_assembly_run:
+        left_clearance: 10
+        right_clearance: 10
+        gap: 2
+        ceiling_clearance: 10
+        assemblies:
+          - {id: tall_storage_01, purpose: tall_storage, width_share: 1}
+          - {id: tall_storage_02, purpose: tall_storage, width_share: 1}
+          - {id: tall_storage_03, purpose: tall_storage, width_share: 1}
+      expected_next_stage: aikea-build-units
+
+  - name: bench between matching tall-storage units
+    starting_project:
+      measured_space_status: checked
+      design_settings:
+        cabinet_run:
+          cabinet_count: 3
+          cabinet_width_shares: [1, 1, 1]
+          left_clearance: 0
+          right_clearance: 0
+          cabinet_gap: 2
+          ceiling_clearance: 10
+    chat_history:
+      - role: user
+        text: I want tall storage on the left, a bench in the middle, and tall storage on the right.
+      - role: assistant
+        text: How should their widths relate?
+    next_user_message: Make the two tall units the same width. The bench should be half as wide as either tall unit.
+    answer_key:
+      response_required:
+        - Retain the previously supplied purpose and left-to-right order.
+        - Translate the relationship privately into the exact assembly_run answer.
+        - Describe the two matching tall units and half-width bench without exposing width shares.
+        - Begin generating the local unit taxonomy automatically.
+      response_forbidden:
+        - Ask for the bench height or construction.
+      expected_assembly_run:
+        left_clearance: 0
+        right_clearance: 0
+        gap: 2
+        ceiling_clearance: 10
+        assemblies:
+          - {id: tall_storage_01, purpose: tall_storage, width_share: 1}
+          - {id: bench_01, purpose: bench, width_share: 0.5}
+          - {id: tall_storage_02, purpose: tall_storage, width_share: 1}
+      expected_next_stage: aikea-build-units
+
+  - name: mixed arrangement beneath a sloped room boundary
+    starting_project:
+      measured_space_status: checked
+      front_outline: flat-then-slope
+      design_settings:
+        cabinet_run:
+          cabinet_count: 3
+          cabinet_width_shares: [1, 1, 1]
+          left_clearance: 8
+          right_clearance: 12
+          cabinet_gap: 3
+          ceiling_clearance: 10
+    chat_history: []
+    next_user_message: From the left I want tall storage, then a bench, then another tall-storage unit. The bench should be half the left unit's width, and the right unit should be three quarters of the left unit's width.
+    answer_key:
+      response_required:
+        - Recognize that purpose, order, and width relationships are complete.
+        - Preserve the checked sloped room boundary without turning it into a unit shape choice.
+        - Write the exact assembly_run answer and begin generating the local unit taxonomy automatically.
+        - Summarize the arrangement in client-facing language without exposing width shares.
+      response_forbidden:
+        - Change a width relationship because the room boundary slopes.
+        - Ask which pre-defined cabinet shape each unit uses.
+      expected_assembly_run:
+        left_clearance: 8
+        right_clearance: 12
+        gap: 3
+        ceiling_clearance: 10
+        assemblies:
+          - {id: tall_storage_01, purpose: tall_storage, width_share: 1}
+          - {id: bench_01, purpose: bench, width_share: 0.5}
+          - {id: tall_storage_02, purpose: tall_storage, width_share: 0.75}
+      expected_next_stage: aikea-build-units
+
+  - name: ask only for the missing width relationship
+    starting_project:
+      measured_space_status: checked
+      design_settings:
+        cabinet_run:
+          cabinet_count: 3
+          cabinet_width_shares: [1, 1, 1]
+          left_clearance: 0
+          right_clearance: 0
+          cabinet_gap: 0
+          ceiling_clearance: 0
+    chat_history: []
+    next_user_message: Put tall storage on the left, a bench in the middle, and tall storage on the right.
+    answer_key:
+      response_required:
+        - Retain the three purposes and their left-to-right order.
+        - Ask only how the three widths should relate.
+        - Offer numbered client-facing choices for equal widths, matching tall units with a narrower or wider bench, or help choosing a balanced relationship from the available width.
+        - Say the client can reply with the option number.
+      response_forbidden:
+        - Save assembly_run before the width relationship is known.
+        - Ask for exact width shares or percentages.
+      expected_project_state: arrangement_incomplete
+
+  - name: revise one width relationship without replacing stable IDs
+    starting_project:
+      measured_space_status: checked
+      design_settings:
+        assembly_run:
+          left_clearance: 0
+          right_clearance: 0
+          gap: 2
+          ceiling_clearance: 10
+          assemblies:
+            - {id: tall_storage_01, purpose: tall_storage, width_share: 1}
+            - {id: bench_01, purpose: bench, width_share: 0.5}
+            - {id: tall_storage_02, purpose: tall_storage, width_share: 1}
+    chat_history: []
+    next_user_message: Keep the same order, but make the bench the same width as the two tall units.
+    answer_key:
+      response_required:
+        - Preserve every existing ID, purpose, order, clearance, and gap.
+        - Change only the bench width relationship and write the exact assembly_run answer.
+        - Summarize three equal-width units without exposing the internal representation.
+        - Begin generating the local unit taxonomy automatically.
+      response_forbidden:
+        - Renumber or rename any assembly.
+        - Recreate unrelated project values.
+      expected_assembly_run:
+        left_clearance: 0
+        right_clearance: 0
+        gap: 2
+        ceiling_clearance: 10
+        assemblies:
+          - {id: tall_storage_01, purpose: tall_storage, width_share: 1}
+          - {id: bench_01, purpose: bench, width_share: 1}
+          - {id: tall_storage_02, purpose: tall_storage, width_share: 1}
+      expected_next_stage: aikea-build-units
+
+  - name: acknowledgement continues a completed arrangement
+    starting_project:
+      measured_space_status: checked
+      design_settings:
+        cabinet_run:
+          cabinet_count: 3
+          cabinet_width_shares: [1, 1, 1]
+          left_clearance: 1
+          right_clearance: 1
+          cabinet_gap: 0.2
+          ceiling_clearance: 1
+    chat_history:
+      - role: user
+        text: I want three equal full-height storage units from left to right. Here are all the room measurements and shared choices.
+      - role: assistant
+        text: The available space gives three equal units; their dimensions are shown in the results table.
+    next_user_message: great
+    answer_key:
+      response_required:
+        - Treat the acknowledgement as permission to continue the active wardrobe design without asking whether the client is ready.
+        - Retain the previously supplied three equal full-height storage units and save the exact assembly_run answer without repeating an arrangement question.
+        - Summarize the saved three-unit arrangement in client-facing language.
+        - Begin generating the local unit taxonomy automatically because no further client choice is required at this stage.
+      response_forbidden:
+        - Say ready when you are, let me know when to continue, or ask whether the client wants to proceed.
+        - Repeat a question about unit purpose, order, or width relationship.
+      expected_assembly_run:
+        left_clearance: 1
+        right_clearance: 1
+        gap: 0.2
+        ceiling_clearance: 1
+        assemblies:
+          - {id: tall_storage_01, purpose: tall_storage, width_share: 1}
+          - {id: tall_storage_02, purpose: tall_storage, width_share: 1}
+          - {id: tall_storage_03, purpose: tall_storage, width_share: 1}
+      expected_next_stage: aikea-build-units

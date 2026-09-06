@@ -1,0 +1,42 @@
+schema_version: 9
+units: mm
+
+measured_space:
+  top_boundary: flat
+  width_measurements: {bottom: 3000, middle: 3000, top: 3000}
+  depth_measurements: {single: 600}
+  height_measurements:
+    - {distance_from_left: 0, height_from_floor: 2400}
+    - {distance_from_left: 1500, height_from_floor: 2400}
+    - {distance_from_left: 3000, height_from_floor: 2400}
+
+design_decisions:
+  - subject: cabinet_carcass_material
+    decision: EvalBoard Practical White MFC, 18 mm
+    design_effect: Use white faces with matching durable edges for carcasses and shelves.
+    client_statement: Yes, use that recommendation for this wardrobe. I have checked the samples and approve the finishes too.
+  - subject: door_front_material
+    decision: EvalBoard Smooth-Paint MDF, 19 mm
+    design_effect: Use the shop-painted warm-white finish with every visible edge sealed.
+    client_statement: Yes, use that recommendation for this wardrobe. I have checked the samples and approve the finishes too.
+  - subject: back_panel_material
+    decision: EvalBoard White HDF, 9 mm
+    design_effect: Use the sealed white face for every back panel.
+    client_statement: Yes, use that recommendation for this wardrobe. I have checked the samples and approve the finishes too.
+
+design_settings:
+  fit_allowance: 2
+  fitted_dimensions: {width: true, depth: false, height: true}
+  cabinet_run:
+    cabinet_count: 3
+    cabinet_width_shares: [1, 1, 1]
+    left_clearance: 10
+    right_clearance: 10
+    cabinet_gap: 2
+    ceiling_clearance: 10
+  base: {height: 100, front: recessed, recess: 60}
+  doors: {gap: 2, bottom: plinth}
+  materials:
+    cabinet_panel_thickness: 18
+    door_thickness: 19
+    back_panel_thickness: 9

@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# macOS
+.DS_Store
+
+# Generated CAD and review outputs
+*.step
+*.stp
+*.glb
+*.gltf
+*.bgcode
+
+# Local viewer dependencies and intermediate builds
+viewer/node_modules/
+viewer/dist/
