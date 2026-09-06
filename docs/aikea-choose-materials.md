@@ -85,21 +85,21 @@ per-part material assignment.
   be a symlink into copied fixtures.
 - [x] Require `evals/expected` to resolve to its own real directory entry and
   reproduce the root-alias attack in a regression test.
-- [ ] Commit the isolated-root assertion with the Codex agent signature.
-- [ ] Rerun independent simplicity and stability reviews on that exact commit.
+- [x] Commit isolated-root assertion `a16e989` with the Codex agent signature.
+- [x] Pass independent code simplicity and stability reviews on that exact commit.
 
 ## Current state
 
-Implementation is complete but final verification is still running. The advisor
+Implementation and verification are complete. The advisor
 now has a replayable thirteen-case inference eval, an explicit drawer-material
 boundary, safe handling for generated legacy projects, and a deterministic gate
 requiring the three globally supported material decisions. Both skills validate,
 32 focused and compatibility tests pass. The unrestricted full suite passes with
 409 tests, 5 expected skips, and 72 subtests, including the localhost viewer tests.
-After the stability review, the two corrected eval defects pass 24 focused tests
-and the confirmed expected YAML passes the real calculator. The corrected full
-suite also passes with the same counts; the signed fix commit and its exact-commit
-reviews remain.
+Independent review of exact commit `a16e989` passed simplicity and stability.
+The immutable-archive stability run passed 44 focused checks, rejected every
+requested traversal, case-alias, and symlink attack, and confirmed the expected
+YAML remains valid in the real calculator.
 
 ## Audit log
 
@@ -176,3 +176,7 @@ reviews remain.
     be a symlink into copied fixtures.
 25. 2026-09-06 - The allow-list root must now resolve to its own real directory
     entry. A direct root-alias regression case protects that requirement.
+26. 2026-09-06 - Independent code reviews of signed commit `a16e989` passed
+    simplicity and stability. The stability review passed 44 focused checks,
+    rejected the requested path attacks, and validated the expected YAML with
+    the real calculator.
