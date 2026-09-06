@@ -25,11 +25,10 @@ Python tests, local skill discovery, viewer tests, and committed build output.
 
 The workflow is prepared for Ubuntu 24.04 with the repository's declared runtime
 versions. The skill verifier checks metadata, both discovery link sets, and
-local documentation links. The full suite passed 466 tests and 72 subtests with
-5 expected skips; one approval-concurrency test encountered an explicit disk-full
-write error. After deleting only this run's completed temporary outputs, that
-test passed separately. All 23 viewer tests pass and rebuilding preserves the
-committed package. GitHub execution remains unverified until pushed.
+local documentation links. After the authored cutter replacement, the complete
+suite passes 467 tests and 72 subtests with 5 expected skips. All 23 viewer tests
+pass and rebuilding preserves the committed package. GitHub execution remains
+unverified until pushed.
 
 ## Audit log
 
@@ -41,3 +40,5 @@ committed package. GitHub execution remains unverified until pushed.
 3. 2026-09-06 - The full-suite failure was `OSError: No space left on device` in
    the subprocess's temporary record write. Its isolated rerun passed after
    temporary-output cleanup; no production or test behavior was changed.
+4. 2026-09-06 - The complete suite subsequently passed in one run after the
+   authored cutter replacement: 467 tests, 72 subtests, and 5 expected skips.

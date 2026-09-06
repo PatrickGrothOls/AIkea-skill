@@ -29,7 +29,8 @@ Public documentation describes the existing implementation and its known gaps.
 The large architecture record now retains its reusable design contracts without
 the old personal room and workstation handovers. The existing historical Git
 objects remain local and are not suitable for the eventual public snapshot.
-The two cutter files and their enlarged brass-insert receiver are unchanged.
+The subsequent cutter replacement preserves the enlarged brass-insert receiver
+while removing the imported STEP inputs; see `authored-cabineo-cutter.md`.
 
 ## Audit log
 
@@ -41,3 +42,6 @@ The two cutter files and their enlarged brass-insert receiver are unchanged.
 3. 2026-09-06 - Generated `PartSpec` still lacks `material_id` while the fabrication
    checker requires it. The guide records that observable gap rather than
    implying that invoking the checker completes manufacturing work.
+4. 2026-09-06 - The authored cutter now reproduces the existing panel cuts.
+   The release snapshot will contain neither the imported inputs nor the old
+   private development history.
