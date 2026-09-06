@@ -19,20 +19,31 @@ development history in a private repository.
 
 ### WP2 - Publication
 
-- [ ] Prepare a fresh Git history with the verified tree and a public identity.
-- [ ] Run GitHub Actions against the fresh private release candidate.
-- [ ] Preserve the former repository privately and publish the clean alpha.
-- [ ] Tag the alpha and verify its public tree, history, and visibility.
-- [ ] Bring the original local source folder up to the verified release.
+- [x] Prepare a fresh Git history with the verified tree and a public identity.
+- [x] Run GitHub Actions against the fresh private release candidate.
+- [x] Preserve the former repository privately.
+- [x] Tag the alpha and verify its clean tree, history, and private release.
+- [ ] Obtain explicit publication approval and change visibility to public.
+- [x] Bring the original local source folder up to the verified release.
 
 ## Current state
 
-The release fixes are committed as separate, reviewable changes. Local
-verification passes 467 Python tests, 72 subtests, and 23 viewer tests, with 5
-expected Python skips. The receiver remains diameter 9.1 mm and depth 12.5 mm.
-The current private repository still contains the old history; a fresh release
-repository is needed so earlier personal details and imported STEP objects are
-not part of the public Git history.
+The release fixes are committed as separate, reviewable changes. The fresh
+alpha's exact code commit `ccb8f03`, tagged `v0.1.0-alpha.1`, passes 469 Python
+tests, 72 subtests, and 23 viewer tests on GitHub, with 5 expected Python skips.
+The receiver remains diameter 9.1 mm and depth 12.5 mm. The clean history excludes
+removed personal content and imported CAD; all new commits use a public no-reply
+identity.
+
+`PatrickGrothOls/AIkea-skill` holds the verified alpha and remains private.
+`PatrickGrothOls/AIkea-skill-private-history` retains the former repository and
+development history privately. Automatic approval review rejected changing
+visibility because it requires explicit approval to expose this source tree.
+That visibility change is the only remaining publication action.
+
+The original development folder tracks the private-history remote. Future public
+changes must be based on the clean alpha history; do not merge the old private
+history into the publication repository.
 
 ## Audit log
 
@@ -44,3 +55,21 @@ not part of the public Git history.
 3. 2026-09-06 - A fresh release history avoids exposing removed content through
    old Git objects. The existing repository and local development branches will
    remain private; no old history will be force-rewritten or deleted.
+4. 2026-09-06 - The first Ubuntu run passed 466 tests and found one runtime
+   handoff failure. A separate fix preserves interpreter symlinks and includes
+   two regressions that failed before the correction and now pass.
+5. 2026-09-06 - The original source folder now contains the release changes and
+   a local copy of the verified CadQuery 2.7 environment. Its previous runtime
+   is retained under the ignored `env/` directory. Local discovery selects the
+   intended virtual environment, and skill packaging checks pass there.
+6. 2026-09-06 - The corrected complete Ubuntu workflow and viewer job pass at
+   `ccb8f03`. The private alpha tag points to that exact verified code commit.
+7. 2026-09-06 - The original repository retains its identity under the private
+   history name. The fresh repository now uses the intended AIkea-skill URL.
+   Both remain private; their histories were neither rewritten nor deleted.
+8. 2026-09-06 - Automatic approval review rejected the public-visibility action
+   because the full source payload needs explicit publication authorization.
+   The private tag and release notes were completed without retrying publication.
+9. 2026-09-06 - Final release-record and platform-description changes affect
+   documentation only. Their commits skip duplicate CI; no verified code or
+   workflow changes accompany that record update.

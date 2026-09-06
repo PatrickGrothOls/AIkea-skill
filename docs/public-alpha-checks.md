@@ -19,16 +19,17 @@ Python tests, local skill discovery, viewer tests, and committed build output.
 - [x] Run the full Python suite in the declared environment.
 - [x] Confirm viewer rebuilding preserves the committed package.
 - [x] Review the diff for this configuration checkpoint.
-- [ ] Confirm the first GitHub Actions run after the release is pushed.
+- [x] Confirm GitHub Actions after the release candidate is pushed.
 
 ## Current state
 
 The workflow is prepared for Ubuntu 24.04 with the repository's declared runtime
 versions. The skill verifier checks metadata, both discovery link sets, and
-local documentation links. After the authored cutter replacement, the complete
-suite passes 467 tests and 72 subtests with 5 expected skips. All 23 viewer tests
-pass and rebuilding preserves the committed package. GitHub execution remains
-unverified until pushed.
+local documentation links. The corrected release candidate `ccb8f03` passes
+469 Python tests and 72 subtests with 5 expected skips on Ubuntu 24.04. All 23
+viewer tests pass and rebuilding preserves the committed package.
+The complete [GitHub run](https://github.com/PatrickGrothOls/AIkea-skill/actions/runs/34046085643)
+passes. Later publication-record edits change documentation only.
 
 ## Audit log
 
@@ -42,3 +43,7 @@ unverified until pushed.
    temporary-output cleanup; no production or test behavior was changed.
 4. 2026-09-06 - The complete suite subsequently passed in one run after the
    authored cutter replacement: 467 tests, 72 subtests, and 5 expected skips.
+5. 2026-09-06 - The first Ubuntu run exposed a runtime handoff that dereferenced
+   virtual-environment interpreter symlinks. The fix includes two regressions;
+   the corrected complete workflow passes 469 tests and 72 subtests, with 5
+   expected skips. The viewer job also passes all 23 tests and output comparison.

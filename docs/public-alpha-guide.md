@@ -27,8 +27,9 @@ separate release operation after the final source tree is verified.
 
 Public documentation describes the existing implementation and its known gaps.
 The large architecture record now retains its reusable design contracts without
-the old personal room and workstation handovers. The existing historical Git
-objects remain local and are not suitable for the eventual public snapshot.
+the old personal room and workstation handovers. The historical Git objects
+remain in the retained private development repository. The fresh alpha history
+contains the cleaned source tree without those earlier objects.
 The subsequent cutter replacement preserves the enlarged brass-insert receiver
 while removing the imported STEP inputs; see `authored-cabineo-cutter.md`.
 
