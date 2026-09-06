@@ -1,0 +1,59 @@
+# Scope: Verify the packaged alpha from declared Python and viewer environments.
+name: Verify AIkea
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  python:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version-file: .python-version
+          cache: pip
+      - name: Prepare the declared environment
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y direnv
+          direnv allow .
+          direnv exec . python -m venv .venv
+          direnv exec . python -m pip install -r requirements.txt
+      - name: Verify dependencies and skill discovery
+        run: |
+          direnv exec . python -m pip check
+          direnv exec . python scripts/verify_skill_package.py
+      - name: Run the Python suite
+        run: direnv exec . python -m pytest -q
+
+  viewer:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+          cache-dependency-path: viewer/package-lock.json
+      - name: Prepare viewer dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y direnv
+          direnv allow .
+          direnv exec . npm --prefix viewer ci
+      - name: Test and rebuild the viewer
+        run: |
+          direnv exec . npm --prefix viewer test
+          direnv exec . npm --prefix viewer run build
+      - name: Verify committed viewer output
+        run: |
+          direnv exec . git diff --exit-code -- aikea-review-unit/assets/viewer
+          test -z "$(direnv exec . git ls-files --others --exclude-standard aikea-review-unit/assets/viewer)"
