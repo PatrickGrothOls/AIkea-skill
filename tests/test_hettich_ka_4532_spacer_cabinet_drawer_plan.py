@@ -33,6 +33,12 @@ class TestHettichKa4532SpacerCabinetDrawerPlan:
         assert plan.hardware.runner_item_number == "9114276"
         assert plan.hardware.spacer_item_number == "13952"
         assert plan.hardware.combined_load_capacity_kg == 20.0
+        assert plan.fixing_alignment.cabinet_depth_axes_mm == (
+            37.0,
+            165.0,
+            261.0,
+            325.0,
+        )
         assert plan.machining_authority == MACHINING_AUTHORITY_BLOCKED
         assert tuple(item.hardware_kind for item in plan.hardware_reservations) == (
             "drawer_runner_with_spacer",

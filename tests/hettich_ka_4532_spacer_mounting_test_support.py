@@ -37,11 +37,11 @@ class HettichKa4532SpacerMountingTestSupport:
                 asset=SimpleNamespace(sha256="spacer-sha256")
             ),
             runner_left=SimpleNamespace(
-                fixed_member=self._member(0.0, fixed_length_mm),
+                fixed_member=self._fixed_member(0.0, fixed_length_mm),
                 moving_member=self._member(0.0, moving_length_mm),
             ),
             runner_right=SimpleNamespace(
-                fixed_member=self._member(188.3, fixed_length_mm),
+                fixed_member=self._fixed_member(188.3, fixed_length_mm),
                 moving_member=self._member(188.3, moving_length_mm),
             ),
             spacer_solid=self._box(0.0, 25.0, 486.0, 50.0, 0.0),
@@ -49,6 +49,21 @@ class HettichKa4532SpacerMountingTestSupport:
 
     def _member(self, xmin, length_mm):
         return self._box(xmin, 12.7, length_mm, 45.7, -9.5)
+
+    def _fixed_member(self, xmin, length_mm):
+        import cadquery as cq
+
+        member = self._member(xmin, length_mm)
+        bounds = member.BoundingBox()
+        for depth_mm in (25.5, 153.5, 249.5, 313.5):
+            bore = cq.Solid.makeCylinder(
+                3.2,
+                bounds.xlen + 2.0,
+                cq.Vector(bounds.xmin - 1.0, depth_mm, 0.0),
+                cq.Vector(1.0, 0.0, 0.0),
+            )
+            member = member.cut(bore)
+        return member
 
     def _box(self, xmin, width_mm, depth_mm, height_mm, ymin):
         import cadquery as cq
