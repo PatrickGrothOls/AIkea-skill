@@ -24,7 +24,7 @@ class TestHettichKa4532SpacerFixingEvidenceChecker:
         self.evidence = HettichKa4532FixingEvidenceTestSupport()
 
     def test_accepts_the_complete_verified_record(self) -> None:
-        assert self._matches(self._machining())
+        assert self._matches(self.evidence.build())
 
     @pytest.mark.parametrize(
         ("path", "value"),
@@ -44,7 +44,7 @@ class TestHettichKa4532SpacerFixingEvidenceChecker:
         ),
     )
     def test_rejects_mutated_authority(self, path: tuple[str, ...], value) -> None:
-        machining = self._machining()
+        machining = self.evidence.build()
         self._set(machining, path, value)
 
         assert not self._matches(machining)
@@ -67,7 +67,7 @@ class TestHettichKa4532SpacerFixingEvidenceChecker:
         ),
     )
     def test_rejects_deleted_authority(self, path: tuple[str, ...]) -> None:
-        machining = self._machining()
+        machining = self.evidence.build()
         owner = self._owner(machining, path)
         del owner[path[-1]]
 
@@ -84,14 +84,14 @@ class TestHettichKa4532SpacerFixingEvidenceChecker:
         ),
     )
     def test_rejects_any_mutated_per_hand_axis(self, index: int, field: str) -> None:
-        machining = self._machining()
+        machining = self.evidence.build()
         machining["resolved_authority"]["spacer_support_corridor"]["axes"][index][field] = "mutated"
 
         assert not self._matches(machining)
 
     @pytest.mark.parametrize("height_mm", (999.0, True))
     def test_rejects_coordinated_saved_height_mutation(self, height_mm) -> None:
-        machining = self._machining()
+        machining = self.evidence.build()
         for axis in machining["resolved_authority"]["spacer_support_corridor"]["axes"]:
             axis["cabinet_height_mm"] = height_mm
 
@@ -101,9 +101,6 @@ class TestHettichKa4532SpacerFixingEvidenceChecker:
         return self.checker.matches(
             machining, "cabinet_01", "drawer_01", self.parts, self.source
         )
-
-    def _machining(self) -> dict:
-        return self.evidence.build()
 
     def _set(self, payload: dict, path: tuple[str, ...], value) -> None:
         self._owner(payload, path)[path[-1]] = value
