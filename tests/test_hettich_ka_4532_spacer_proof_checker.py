@@ -1,5 +1,8 @@
 """Scope: Verify exact spacer drawer movement and collision evidence."""
 
+from hettich_ka_4532_fixing_evidence_test_support import (
+    HettichKa4532FixingEvidenceTestSupport,
+)
 from hettich_ka_4532_spacer_proof_test_support import (
     HettichKa4532SpacerProofTestSupport,
 )
@@ -12,6 +15,7 @@ class TestHettichKa4532SpacerProofChecker:
     def setup_method(self) -> None:
         self.support = HettichKa4532SpacerProofTestSupport()
         self.source = self.support.source()
+        self.evidence = HettichKa4532FixingEvidenceTestSupport()
 
     def test_accepts_clear_linear_travel_with_exact_articulation(self) -> None:
         report = self._check(self._parts(0.0), self._parts(-50.0))
@@ -80,61 +84,7 @@ class TestHettichKa4532SpacerProofChecker:
             },
             self.source,
             {"closed": {}, "open": {}},
-            {
-                "schema_version": 1,
-                "status": "blocked",
-                "manufacturing_authority": False,
-                "cabinet_id": "cabinet_01",
-                "drawer_id": "drawer_01",
-                "spacer_item_number": "13952",
-                "reason": "blocked_missing_longer_screw_and_cabinet_pilot",
-                "resolved_authority": {
-                    "rail_fixed_member_hole_pattern": {
-                        "status": "verified_against_exact_runner_cad",
-                        "installation_document": "Hettich MS 10547.00.000",
-                        "installation_url": (
-                            "https://web2.hettich.com/hbh/addon/montage/"
-                            "MS_10547_00_Montageanleitung_KA4532-SiSy.pdf"
-                        ),
-                        "hole_diameter_mm": 6.4,
-                        "cabinet_depth_axes_from_front_mm": [
-                            37.0,
-                            165.0,
-                            261.0,
-                            325.0,
-                        ],
-                    },
-                    "spacer_support_corridor": {
-                        "status": "verified_against_exact_spacer_cad",
-                        "method": "new_fixing_path_through_solid_spacer_web",
-                        "preformed_spacer_openings_used": False,
-                        "width_mm": 25.0,
-                        "asset_id": "hettich-13952-spacer-profile",
-                        "sha256": "spacer-sha256",
-                        "axes": [
-                            {
-                                "side": side,
-                                "cabinet_depth_from_front_mm": cabinet_depth,
-                                "cabinet_height_mm": 23.0,
-                                "runner_native_depth_mm": runner_depth,
-                                "spacer_native_depth_mm": cabinet_depth - 10.0,
-                                "spacer_native_height_mm": 25.0,
-                            }
-                            for side in ("left", "right")
-                            for cabinet_depth, runner_depth in zip(
-                                (37.0, 165.0, 261.0, 325.0),
-                                (25.5, 153.5, 249.5, 313.5),
-                            )
-                        ],
-                    },
-                },
-                "missing_authority": [
-                    "longer_rail_through_spacer_screw_identity",
-                    "longer_rail_through_spacer_screw_length_mm",
-                    "cabinet_pilot_diameter_mm",
-                    "cabinet_pilot_depth_mm",
-                ],
-            },
+            self.evidence.build(),
             (
                 {"side_part_id": "left_side"},
                 {"side_part_id": "right_side"},

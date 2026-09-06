@@ -43,8 +43,9 @@ granted and requires separate permission from the licensor.
 The material-advice and latest KA 4532 spacer branches are integrated without
 merge conflicts. Clean installation exposed an unsatisfiable modern dependency
 set around CadQuery 2.4. The Python-3.10-compatible CadQuery 2.7 and its required
-VTK 9.3.1 install normally and pass the complete suite. No GitHub repository has
-been created or changed yet.
+VTK 9.3.1 install normally and pass the complete suite. The merge review's two
+test-responsibility findings are corrected with shared fixtures and a dedicated
+runner-checker test. No GitHub repository has been created or changed yet.
 
 ## Audit log
 
@@ -64,3 +65,11 @@ been created or changed yet.
 5. 2026-09-06 - CadQuery 2.7.0 and its required VTK 9.3.1 install cleanly on
    Python 3.10.16. The complete repository suite passed with 466 tests, 5
    expected skips, and 72 subtests in that isolated environment.
+6. 2026-09-06 - Independent review of merge commit `978c5a5` passed stability
+   with 141 focused tests and exact feature parity. Simplicity review required
+   one duplicated evidence fixture to be shared and runner-only cases to move
+   out of the installed-spacer checker test. All reviewed production files over
+   150 lines were judged cohesive.
+7. 2026-09-06 - The evidence fixture is now shared and runner articulation has
+   its own test file. The six affected test/support files are each below 150
+   lines, and their focused slice passes 53 tests under CadQuery 2.7.
