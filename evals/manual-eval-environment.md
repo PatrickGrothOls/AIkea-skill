@@ -13,22 +13,22 @@ Keep this folder for every turn in the same conversation. Create a new folder be
 
 ## 2. Start a fresh Codex conversation
 
-On Patrick's Mac, use the Codex executable bundled with the ChatGPT application:
+Use the Codex executable configured on your PATH:
 
 ```bash
-/Applications/ChatGPT.app/Contents/Resources/codex exec \
+codex exec \
   --skip-git-repo-check \
   --disable memories \
-  --approve-for-me \
   '$aikea I want to build a built-in wardrobe for a bedroom wall. I have not taken any measurements or chosen the cabinet settings yet. Help me start.'
 ```
 
-The Homebrew `codex` command may be used when it is healthy. The application path above avoids depending on that separate installation.
+Check `codex exec --help` for the installed version before an automated run.
+Keep the normal permission checks enabled.
 
 Send the next turn from the same temporary folder:
 
 ```bash
-/Applications/ChatGPT.app/Contents/Resources/codex exec resume \
+codex exec resume \
   --last \
   --skip-git-repo-check \
   --disable memories \

@@ -54,7 +54,7 @@ validation pass.
 
 ## Audit log
 
-1. 2026-08-31 - Patrick confirmed that Node.js dependencies, their lockfile, and
+1. 2026-08-31 - the maintainer confirmed that Node.js dependencies, their lockfile, and
    the editable viewer source are repository-only contributor resources. This
    keeps the installed skill smaller and avoids imposing frontend tooling on a
    user who only needs to generate and inspect furniture, while retaining a

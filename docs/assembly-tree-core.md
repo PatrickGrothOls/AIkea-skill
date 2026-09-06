@@ -60,7 +60,7 @@ geometry tests are among the skips because CadQuery is not installed here.
 
 ## Audit log
 
-1. 2026-08-31 - Patrick confirmed that the complete cabinet builder is the
+1. 2026-08-31 - the maintainer confirmed that the complete cabinet builder is the
    assembly spine and that the wardrobe builder must recursively compose and
    position complete cabinet assemblies.
 2. 2026-08-31 - Preserved the existing `BuiltAssembly` contract instead of adding

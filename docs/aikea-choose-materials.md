@@ -103,12 +103,12 @@ YAML remains valid in the real calculator.
 
 ## Audit log
 
-1. 2026-09-05 - Patrick approved a separate advisory skill covering price,
+1. 2026-09-05 - the maintainer approved a separate advisory skill covering price,
    quality, aesthetics, and images.
-2. 2026-09-05 - Patrick required questions that clients can answer. Technical
+2. 2026-09-05 - the maintainer required questions that clients can answer. Technical
    properties are inferred from ordinary descriptions instead of requested from
    the client.
-3. 2026-09-05 - Patrick required an eval set that verifies those inferences. The
+3. 2026-09-05 - the maintainer required an eval set that verifies those inferences. The
    cases therefore contain hidden required and forbidden inference keys, not only
    preferred response wording.
 4. 2026-09-05 - The material advisor and routing contract passed package
@@ -123,10 +123,10 @@ YAML remains valid in the real calculator.
    routing order, and recovery-case tests now enforce those boundaries.
 7. 2026-09-05 - The complete Python suite passed with 402 tests, 5 expected
    skips, and 72 subtests.
-8. 2026-09-05 - Patrick identified that commit `53364a7` came from a message sent
+8. 2026-09-05 - the maintainer identified that commit `53364a7` came from a message sent
    to the wrong task and approved retaining its useful discovery, routing, gate,
    and test work in this plan.
-9. 2026-09-05 - Patrick approved continuing with the listed closure work. The
+9. 2026-09-05 - the maintainer approved continuing with the listed closure work. The
    supported global groups are therefore enforced before calculation; generated
    legacy projects stop for migration; drawer-front materials remain owned by
    the drawer builder because the global schema has no drawer-material field.

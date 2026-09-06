@@ -33,5 +33,5 @@ The active cabinet visual remains a separate approval artifact.
 
 ## Audit log
 
-1. 2026-08-31 — Patrick identified excessive air between drawer boxes as both wasted capacity and a visibly unfinished result. Automatic drawer heights will therefore be derived from the real mounting intervals and a deliberate clear gap; explicit client heights remain authoritative.
+1. 2026-08-31 — the maintainer identified excessive air between drawer boxes as both wasted capacity and a visibly unfinished result. Automatic drawer heights will therefore be derived from the real mounting intervals and a deliberate clear gap; explicit client heights remain authoritative.
 2. 2026-08-31 — The current design target is a 22 mm clear gap. It remains configurable so different handles, fronts, or client preferences can produce a different intentional result without changing the mounting-grid calculation.

@@ -32,7 +32,7 @@ only.
 - [x] Block fabricated parts without an explicit authoritative material ID.
 - [ ] Add exact user-selected cabinet, door, back, base, and drawer material IDs
       to the project input and generated part contracts.
-- [ ] Regenerate the target project after Patrick confirms those products.
+- [ ] Regenerate the target project after the maintainer confirms those products.
 
 ### WP4 - Fresh combined-feature run
 
@@ -134,7 +134,7 @@ GLB.
   produced checksum-matched closed and open reports for all 40 rendered items,
   and opened both interactive viewers. This completes the first-cabinet visual
   gate; it does not grant fabrication authority to the unrepeated wardrobe.
-- 2026-09-01: Patrick directed repair of every failed independent review.
+- 2026-09-01: the maintainer directed repair of every failed independent review.
   Extracted feature discovery from builder execution and resolved manifests by
   generated assembly lineage, closing sibling-cabinet and repeated-ID gaps.
 - 2026-09-01: Limited the legacy drawer overlay to replacing its own runners and
