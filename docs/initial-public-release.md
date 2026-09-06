@@ -37,6 +37,8 @@ granted and requires separate permission from the licensor.
 - [x] Create `PatrickGrothOls/AIkea-skill` as a public repository.
 - [x] Publish the verified release as the default `main` branch.
 - [x] Verify visibility, license text, default branch, and remote HEAD.
+- [x] Change the repository to private pending Patrick's sensitive-content review.
+- [ ] Return the repository to public visibility only after Patrick approves.
 
 ## Current state
 
@@ -47,8 +49,9 @@ VTK 9.3.1 install normally and pass the complete suite. The merge review's two
 test-responsibility findings are corrected with shared fixtures and a dedicated
 runner-checker test. All nine skill entrypoints validate. The viewer tests and
 production build pass without changing its committed static output. Final
-independent simplicity and stability reviews pass. The release is public at
+independent simplicity and stability reviews pass. The release is hosted at
 `https://github.com/PatrickGrothOls/AIkea-skill` on its default `main` branch.
+The repository is currently private pending Patrick's sensitive-content review.
 
 ## Audit log
 
@@ -99,3 +102,7 @@ independent simplicity and stability reviews pass. The release is public at
     repository and published the verified release as `main`. GitHub reports the
     repository as public with `main` as its default branch. The published
     `LICENSE.md` Git blob exactly matches the locally verified PolyForm license.
+14. 2026-09-06 - Patrick requested a private verification gate after the
+    initial publication. The repository was changed to private and GitHub
+    confirmed the new visibility. Returning it to public now requires Patrick's
+    explicit approval.
