@@ -80,7 +80,12 @@ per-part material assignment.
   uppercase `FIXTURES` to alias the copied lowercase directory.
 - [x] Replace fixture exclusion with a strict lowercase `expected/` allow-list
   and require the resolved target to remain inside it.
-- [ ] Commit the allow-list boundary with the Codex agent signature.
+- [x] Commit allow-list boundary `8e5b58f` with the Codex agent signature.
+- [x] Record both independent review failures: the allow-list root itself could
+  be a symlink into copied fixtures.
+- [x] Require `evals/expected` to resolve to its own real directory entry and
+  reproduce the root-alias attack in a regression test.
+- [ ] Commit the isolated-root assertion with the Codex agent signature.
 - [ ] Rerun independent simplicity and stability reviews on that exact commit.
 
 ## Current state
@@ -166,3 +171,8 @@ reviews remain.
 23. 2026-09-06 - The boundary now allows only explicit lowercase `expected/`
     paths without parent traversal and requires their resolved targets to remain
     inside that directory. Case aliases and outward symlinks have direct tests.
+24. 2026-09-06 - Independent review of signed commit `8e5b58f` failed both
+    simplicity and stability because the `expected` allow-list root could itself
+    be a symlink into copied fixtures.
+25. 2026-09-06 - The allow-list root must now resolve to its own real directory
+    entry. A direct root-alias regression case protects that requirement.

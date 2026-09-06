@@ -16,12 +16,14 @@ class OracleFixtureBoundary:
 
     def expected_path(self, relative_path: str) -> Path:
         relative = Path(relative_path)
-        expected_root = (self.eval_dir / "expected").resolve()
+        expected_entry_root = self.eval_dir.resolve() / "expected"
+        expected_root = expected_entry_root.resolve()
         target_path = (self.eval_dir / relative).resolve()
         if (
             relative.is_absolute()
             or relative.parts[:1] != ("expected",)
             or ".." in relative.parts
+            or expected_entry_root != expected_root
             or expected_root not in target_path.parents
         ):
             raise ValueError("expected output must stay inside the expected directory")
@@ -99,6 +101,16 @@ class TestChooseMaterialsFixtureContract:
             OracleFixtureBoundary(eval_dir).expected_path(
                 "expected/oracle-link.yaml"
             )
+
+    def test_expected_directory_cannot_alias_fixture_tree(self, tmp_path) -> None:
+        eval_dir = tmp_path / "evals"
+        fixture = eval_dir / "fixtures" / "choose-materials" / "confirmation"
+        fixture.mkdir(parents=True)
+        (fixture / "oracle.yaml").write_text("status: hidden\n", encoding="utf-8")
+        (eval_dir / "expected").symlink_to(fixture, target_is_directory=True)
+
+        with pytest.raises(ValueError, match="inside the expected directory"):
+            OracleFixtureBoundary(eval_dir).expected_path("expected/oracle.yaml")
 
     def test_confirmation_case_locks_exact_supported_materials(self) -> None:
         case = self._cases_by_id()["confirm_split_material_system"]
