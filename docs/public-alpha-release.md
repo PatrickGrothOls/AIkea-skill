@@ -23,7 +23,7 @@ development history in a private repository.
 - [x] Run GitHub Actions against the fresh private release candidate.
 - [x] Preserve the former repository privately.
 - [x] Tag the alpha and verify its clean tree, history, and private release.
-- [ ] Obtain explicit publication approval and change visibility to public.
+- [x] Obtain explicit publication approval and change visibility to public.
 - [x] Bring the original local source folder up to the verified release.
 
 ## Current state
@@ -35,11 +35,11 @@ The receiver remains diameter 9.1 mm and depth 12.5 mm. The clean history exclud
 removed personal content and imported CAD; all new commits use a public no-reply
 identity.
 
-`PatrickGrothOls/AIkea-skill` holds the verified alpha and remains private.
+`PatrickGrothOls/AIkea-skill` is public with `main` as its default branch and
+`v0.1.0-alpha.1` available as a prerelease.
 `PatrickGrothOls/AIkea-skill-private-history` retains the former repository and
-development history privately. Automatic approval review rejected changing
-visibility because it requires explicit approval to expose this source tree.
-That visibility change is the only remaining publication action.
+development history privately. Publication is complete following the maintainer's
+explicit approval and the final source, history, log, and license-notice checks.
 
 The original development folder tracks the private-history remote. Future public
 changes must be based on the clean alpha history; do not merge the old private
@@ -73,3 +73,12 @@ history into the publication repository.
 9. 2026-09-06 - Final release-record and platform-description changes affect
    documentation only. Their commits skip duplicate CI; no verified code or
    workflow changes accompany that record update.
+10. 2026-09-06 - The maintainer explicitly authorized publication after checking
+    for remaining compliance or exposure issues. The prepared source was unchanged.
+11. 2026-09-06 - The final exposure check covered 633 historical blobs and all
+    three Actions logs. No known personal-project markers or bounded credential
+    patterns were found. The 22 bundled license entries and their supplemental
+    notices were present, with no remaining identified publication blockers.
+12. 2026-09-06 - Changed only the clean repository to public and verified its
+    identity, default branch, and alpha release. The original history repository
+    remains private. This final publication record changes documentation only.
