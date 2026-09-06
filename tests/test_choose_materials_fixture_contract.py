@@ -2,9 +2,24 @@
 
 from pathlib import Path
 
+import pytest
 import yaml
 
 from overall_wardrobe_inputs import OverallWardrobeInputReader
+
+
+class OracleFixtureBoundary:
+    """Resolve an expected output only when copied fixtures cannot expose it."""
+
+    def __init__(self, eval_dir: Path) -> None:
+        self.eval_dir = eval_dir
+
+    def expected_path(self, relative_path: str) -> Path:
+        fixture_root = (self.eval_dir / "fixtures" / "choose-materials").resolve()
+        expected_path = (self.eval_dir / relative_path).resolve()
+        if fixture_root in expected_path.parents:
+            raise ValueError("expected output must be outside copied fixtures")
+        return expected_path
 
 
 class TestChooseMaterialsFixtureContract:
@@ -27,15 +42,22 @@ class TestChooseMaterialsFixtureContract:
 
             expected = setup["expected_aikea_yaml"]
             if expected != "unchanged":
-                fixture_root = self._EVAL_DIR / "fixtures" / "choose-materials"
-                assert fixture_root not in (self._EVAL_DIR / expected).parents
-                yaml.safe_load(
-                    (self._EVAL_DIR / expected).read_text(encoding="utf-8")
+                expected_path = OracleFixtureBoundary(self._EVAL_DIR).expected_path(
+                    expected
                 )
+                yaml.safe_load(expected_path.read_text(encoding="utf-8"))
             for evidence in setup.get("evidence_files", []):
                 assert (self._EVAL_DIR / evidence["source"]).is_file()
             for attachment in setup.get("attachments", []):
                 assert (self._EVAL_DIR / attachment).is_file()
+
+    def test_oracle_path_cannot_traverse_into_fixture_tree(self) -> None:
+        boundary = OracleFixtureBoundary(self._EVAL_DIR)
+
+        with pytest.raises(ValueError, match="outside copied fixtures"):
+            boundary.expected_path(
+                "expected/../fixtures/choose-materials/unapproved/aikea.yaml"
+            )
 
     def test_confirmation_case_locks_exact_supported_materials(self) -> None:
         case = self._cases_by_id()["confirm_split_material_system"]

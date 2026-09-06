@@ -63,7 +63,13 @@ per-part material assignment.
 - [x] Lock both corrected boundaries with direct assertions.
 - [x] Split fixture-lifecycle checks from inference scoring when the combined
   test file crossed the 150-line separation-of-concerns review threshold.
-- [ ] Commit the regression assertions with the Codex agent signature.
+- [x] Commit regression assertions `fd7e9bc` with the Codex agent signature.
+- [x] Pass its independent simplicity review.
+- [x] Record its stability-review failure: lexical path ancestry allowed `..`
+  to hide an expected answer inside the copied fixture tree.
+- [x] Resolve both paths before checking oracle ancestry and reproduce the
+  traversal attempt in a regression test.
+- [ ] Commit the normalized-path assertion with the Codex agent signature.
 - [ ] Rerun independent simplicity and stability reviews on that exact commit.
 
 ## Current state
@@ -131,3 +137,9 @@ reviews remain.
 17. 2026-09-05 - Adding those assertions pushed the combined eval test over the
     150-line review threshold. Fixture and lifecycle checks were extracted into
     their own focused test file; inference scoring remains separate.
+18. 2026-09-06 - Independent review of signed commit `fd7e9bc` passed
+    simplicity and failed stability because an expected path containing `..`
+    could bypass the lexical fixture-tree comparison.
+19. 2026-09-06 - The fixture root and expected path are now resolved before
+    ancestry comparison. A direct `expected/../fixtures/...` regression case
+    proves the boundary rejects traversal into copied fixtures.
