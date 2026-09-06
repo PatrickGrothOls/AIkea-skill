@@ -30,6 +30,7 @@ jobs:
         run: |
           direnv exec . python -m pip check
           direnv exec . python scripts/verify_skill_package.py
+          direnv exec . python scripts/build_portable_package.py --check
       - name: Run the Python suite
         run: direnv exec . python -m pytest -q
 
@@ -57,3 +58,25 @@ jobs:
         run: |
           direnv exec . git diff --exit-code -- aikea-review-unit/assets/viewer
           test -z "$(direnv exec . git ls-files --others --exclude-standard aikea-review-unit/assets/viewer)"
+
+  portable:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    strategy:
+      matrix:
+        python: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+      - name: Install and verify the extracted download
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y direnv
+          direnv allow .
+          direnv exec . python scripts/build_portable_package.py --check
+          direnv exec . python -m zipfile -e dist/aikea-skill.zip dist/extracted
+          direnv exec . python dist/extracted/aikea/setup_aikea.py --install
+          direnv exec . dist/extracted/aikea/.venv/bin/python -m pytest -q tests/test_portable_package.py

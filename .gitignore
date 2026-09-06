@@ -22,3 +22,6 @@ env/
 # Local viewer dependencies and intermediate builds
 viewer/node_modules/
 viewer/dist/
+
+# Generated portable release downloads
+/dist/
