@@ -17,8 +17,8 @@ run. Preserve the selected virtual environment's interpreter path.
 ### WP2 - Release integration
 
 - [x] Commit the fix as a separate checkpoint.
-- [ ] Apply the same change to the clean release history.
-- [ ] Confirm the complete Ubuntu workflow passes before publication.
+- [x] Apply the same change to the clean release history.
+- [x] Confirm the complete Ubuntu workflow passes before publication.
 
 ## Current state
 
@@ -28,8 +28,8 @@ virtual environment's Python symlink to the base interpreter, which has no
 CadQuery package. The macOS base interpreter happened to contain CadQuery and
 masked the environment loss. Two focused regression cases now distinguish the
 virtual-environment path from its base executable. Both failed before the change;
-all 7 runtime and actual command-handoff tests pass after it. The complete Ubuntu
-workflow must still verify the release candidate.
+all 7 runtime and actual command-handoff tests pass after it. The corrected
+complete Ubuntu workflow passes 469 tests and 72 subtests, with 5 expected skips.
 
 ## Audit log
 

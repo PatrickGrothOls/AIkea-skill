@@ -47,7 +47,8 @@ dimensions, local hardware downloads, and approval records belong to you.
 
 The current release has been exercised on macOS with Apple Silicon. Native
 Windows is not supported by the viewer approval lock, which uses POSIX `fcntl`.
-Other operating systems have not received the same complete local verification.
+The complete automated suite also passes on Ubuntu 24.04. Interactive visual
+review on Linux has not received the same local verification as macOS.
 
 ## License and permitted use
 
