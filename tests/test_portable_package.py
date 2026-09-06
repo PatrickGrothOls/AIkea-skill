@@ -2,6 +2,7 @@
 
 import hashlib
 from pathlib import Path
+import re
 import subprocess
 import sys
 import zipfile
@@ -30,6 +31,11 @@ class TestPortablePackage:
         for entry in (first / "SHA256SUMS").read_text().splitlines():
             digest, name = entry.split()
             assert hashlib.sha256((first / name).read_bytes()).hexdigest() == digest
+        source_url = "https://raw.githubusercontent.com/PatrickGrothOls/AIkea-skill/v0.1.0-alpha.2/"
+        for target in re.findall(r"\]\(([^)]+)\)", (first / "AIKEA_CHAT.md").read_text()):
+            assert "://" in target, f"A standalone guide cannot resolve a relative link: {target}"
+            if target.startswith(source_url):
+                assert (self.root / target.removeprefix(source_url).split("#", 1)[0]).is_file()
         with zipfile.ZipFile(first / "aikea-skill.zip") as bundle:
             assert bundle.testzip() is None
             assert all(Path(name).parts[0] == "aikea" for name in bundle.namelist())

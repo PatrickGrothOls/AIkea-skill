@@ -3,12 +3,16 @@
 import argparse
 import hashlib
 from pathlib import Path
+import re
 import subprocess
+from urllib.parse import urljoin
 import zipfile
 
 
 class PortablePackage:
     """Assemble one Claude-compatible skill folder and an ordinary-chat guide."""
+
+    source_url = "https://raw.githubusercontent.com/PatrickGrothOls/AIkea-skill/v0.1.0-alpha.2/"
 
     def __init__(self, root: Path) -> None:
         self.root = root
@@ -18,7 +22,7 @@ class PortablePackage:
         sections = [(self.root / "portable/chat-introduction.md").read_text()]
         sections.append("\n## Canonical stage index\n")
         for name in self.skills:
-            url = f"https://raw.githubusercontent.com/PatrickGrothOls/AIkea-skill/v0.1.0-alpha.2/{name}/SKILL.md"
+            url = f"{self.source_url}{name}/SKILL.md"
             sections.append(f"- [{name}]({url}) — package path: `skills/{name}/SKILL.md`")
         for name in (
             "aikea/references/client-conversation.md",
@@ -29,6 +33,9 @@ class PortablePackage:
             content = (self.root / name).read_text(encoding="utf-8")
             if content.startswith("---\n"):
                 content = content.split("---", 2)[2].lstrip()
+            for target in re.findall(r"\]\(([^)]+)\)", content):
+                resolved = urljoin(self.source_url + name, target)
+                content = content.replace(f"]({target})", f"]({resolved})")
             sections.append(f"\n---\n<!-- Source: {name} -->\n\n{content}")
         template = (self.root / "aikea/assets/aikea.yaml").read_text()
         sections.append(f"\n## Blank project template\n\n```yaml\n{template}```\n")

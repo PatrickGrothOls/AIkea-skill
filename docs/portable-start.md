@@ -87,6 +87,10 @@ CI rejects a stale guide and exercises the extracted package.
    setup and entry commands while Python 3.10 remains the complete-suite baseline.
 6. 2026-09-06 - Conversation-only forward testing preserved the one-topic intake
    flow and the distinction between a draft and checked fabrication evidence.
+7. 2026-09-06 - Standalone-guide inspection exposed one inherited relative link
+   that would resolve outside the source skill. Generation now resolves links
+   against the original source file and release tag; the integration test checks
+   that guide links locate real canonical files.
 
 ## Platform evidence
 

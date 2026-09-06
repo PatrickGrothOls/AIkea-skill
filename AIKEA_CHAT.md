@@ -134,7 +134,7 @@ Use explicit user messages to create or revise the saved measurements and shared
 
 ## Client conversation
 
-Read [references/client-conversation.md](references/client-conversation.md)
+Read [references/client-conversation.md](https://raw.githubusercontent.com/PatrickGrothOls/AIkea-skill/v0.1.0-alpha.2/aikea/references/client-conversation.md)
 completely before any client-facing message, including progress commentary. Keep
 that contract active through every routed AIkea stage.
 
