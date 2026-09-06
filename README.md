@@ -4,9 +4,18 @@ This repository contains the source-available AIkea skills, deterministic furnit
 builders, tests, and editable interactive-viewer source. Generated client
 projects and licensed manufacturer CAD remain local and outside source control.
 
-Open the cloned repository as a Codex or Claude working folder. Its
-`.agents/skills/` and `.claude/skills/` links expose the complete AIkea skill
-set, beginning with `$aikea`.
+**[Start in any chat](START_HERE.md)** ·
+**[Download the skill](https://github.com/PatrickGrothOls/AIkea-skill/releases/download/v0.1.0-alpha.2/aikea-skill.zip)** ·
+**[Download the chat guide](https://github.com/PatrickGrothOls/AIkea-skill/releases/download/v0.1.0-alpha.2/AIKEA_CHAT.md)**
+
+No Codex or Claude Code is needed to begin. Copy this paragraph into a fresh chat:
+
+> Help me design fitted furniture with AIkea. Read and follow https://raw.githubusercontent.com/PatrickGrothOls/AIkea-skill/main/START_HERE.md and load its linked guide. If you can download files and run code, set up its skill package in your own workspace; otherwise begin the guided conversation with the tools you have. Use only measurements and choices I supply for this new project, and ask one topic at a time. Start by asking which units I use: 1. Centimetres, 2. Millimetres, or 3. Inches. Never claim files were saved, software installed, or a design checked unless you actually did it. If you cannot read the guide, ask me to attach AIKEA_CHAT.md from https://github.com/PatrickGrothOls/AIkea-skill/releases/tag/v0.1.0-alpha.2.
+
+The [start page](START_HERE.md) also explains the one-file upload fallback and
+installing the ZIP as a persistent Claude skill. A conversation-only chat can
+guide measurements; checked dimensions and CAD require a working Python/CadQuery
+environment. Loading instructions does not grant a chat new tools.
 
 ## What the alpha can do
 
@@ -30,8 +39,9 @@ screws and cabinet pilot specification unresolved.
 
 ## Try a first project
 
-Install the Python environment below, open this repository as your Codex or
-Claude working folder, and start a fresh conversation with:
+For Codex or Claude Code, install the Python environment below and open the
+cloned repository as a working folder. Its `.agents/skills/` and `.claude/skills/`
+links expose all nine skills. Start a fresh conversation with:
 
 ```text
 $aikea
