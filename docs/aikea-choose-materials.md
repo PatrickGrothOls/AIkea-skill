@@ -69,7 +69,12 @@ per-part material assignment.
   to hide an expected answer inside the copied fixture tree.
 - [x] Resolve both paths before checking oracle ancestry and reproduce the
   traversal attempt in a regression test.
-- [ ] Commit the normalized-path assertion with the Codex agent signature.
+- [x] Commit normalized-path assertion `428ca07` with the Codex agent signature.
+- [x] Pass its independent simplicity review.
+- [x] Record its stability-review failure: resolving only the target allowed a
+  symlink entry stored inside the copied fixture tree to point outward.
+- [x] Check both the normalized entry and resolved target, with a symlink regression test.
+- [ ] Commit the complete path-boundary assertion with the Codex agent signature.
 - [ ] Rerun independent simplicity and stability reviews on that exact commit.
 
 ## Current state
@@ -143,3 +148,9 @@ reviews remain.
 19. 2026-09-06 - The fixture root and expected path are now resolved before
     ancestry comparison. A direct `expected/../fixtures/...` regression case
     proves the boundary rejects traversal into copied fixtures.
+20. 2026-09-06 - Independent review of signed commit `428ca07` passed
+    simplicity and failed stability because a symlink entry inside the copied
+    fixture tree could point to the external expected file.
+21. 2026-09-06 - The oracle boundary now checks both the normalized entry path
+    and resolved target path. A direct symlink-entry regression case protects
+    the copy boundary.
