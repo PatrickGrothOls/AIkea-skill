@@ -22,7 +22,7 @@ class CadQueryRuntime:
         environment_roots: tuple[Path, ...],
         override: Path | None,
     ) -> None:
-        self.current_python = current_python.resolve()
+        self.current_python = current_python
         self.environment_roots = environment_roots
         self.override = override
 
@@ -61,7 +61,8 @@ class CadQueryRuntime:
                     self._environment_python(environment)
                     for environment in sorted(environments.iterdir())
                 )
-        return tuple(candidate.resolve() for candidate in candidates if candidate)
+        # Preserve interpreter symlinks: Python uses that path to select the venv.
+        return tuple(candidate.absolute() for candidate in candidates if candidate)
 
     def _environment_python(self, environment: Path) -> Path:
         posix_python = environment / "bin" / "python"
