@@ -38,7 +38,7 @@ granted and requires separate permission from the licensor.
 - [x] Publish the verified release as the default `main` branch.
 - [x] Verify visibility, license text, default branch, and remote HEAD.
 - [x] Change the repository to private pending the maintainer's sensitive-content review.
-- [ ] Publish the clean replacement repository only after the maintainer approves.
+- [x] Publish the clean replacement repository after the maintainer approves.
 
 ## Current state
 
@@ -52,7 +52,7 @@ production build pass without changing its committed static output. Final
 independent simplicity and stability reviews pass. The release is hosted at
 `https://github.com/PatrickGrothOls/AIkea-skill` on its default `main` branch.
 That initial repository is now retained privately as `AIkea-skill-private-history`.
-A fresh verified alpha at the original URL remains private pending explicit
+A fresh verified alpha at the original URL is now public following explicit
 publication approval; see `public-alpha-release.md` for the current release.
 
 ## Audit log
@@ -111,3 +111,6 @@ publication approval; see `public-alpha-release.md` for the current release.
 15. 2026-09-06 - The reviewed release fixes now have a clean replacement history
     and a verified private alpha tag. The former repository remains private under
     its history name; the replacement awaits explicit public-visibility approval.
+16. 2026-09-06 - The maintainer explicitly approved publication after the final
+    exposure and license-notice checks. The clean alpha is now public, and the
+    former development history remains private.
