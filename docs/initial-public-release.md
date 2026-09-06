@@ -14,8 +14,8 @@ granted and requires separate permission from the licensor.
 
 - [x] Confirm both feature branches descend from the standalone skill mainline.
 - [x] Create a clean publication worktree and release branch.
-- [ ] Integrate the reviewed material-advice and latest KA 4532 spacer work.
-- [ ] Confirm the combined tree has no merge residue or unrelated changes.
+- [x] Integrate the reviewed material-advice and latest KA 4532 spacer work.
+- [x] Confirm the combined tree has no merge residue or unrelated changes.
 
 ### WP2 - Licensing and public documentation
 
@@ -40,9 +40,11 @@ granted and requires separate permission from the licensor.
 
 ## Current state
 
-The publication branch starts from the completed material-advice branch. The
-latest KA 4532 spacer work is ready to integrate. No GitHub repository has been
-created or changed yet.
+The material-advice and latest KA 4532 spacer branches are integrated without
+merge conflicts. Clean installation exposed an unsatisfiable modern dependency
+set around CadQuery 2.4. The Python-3.10-compatible CadQuery 2.7 and its required
+VTK 9.3.1 install normally and pass the complete suite. No GitHub repository has
+been created or changed yet.
 
 ## Audit log
 
@@ -55,3 +57,10 @@ created or changed yet.
 3. 2026-09-06 - The public-release audit found no credential patterns in the
    combined branch history. Two bundled Cabineo cutter STEP assets remain and
    require an explicit provenance caveat in the public documentation.
+4. 2026-09-06 - A fresh Python 3.10.16 environment reproduced an import failure
+   because CadQuery 2.4 pins `nptyping` to a NumPy 1.x API while current NLopt
+   requires NumPy 2.x. Pinning NumPy alone therefore cannot produce a clean
+   dependency solve.
+5. 2026-09-06 - CadQuery 2.7.0 and its required VTK 9.3.1 install cleanly on
+   Python 3.10.16. The complete repository suite passed with 466 tests, 5
+   expected skips, and 72 subtests in that isolated environment.
