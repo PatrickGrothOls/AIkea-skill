@@ -10,7 +10,9 @@ projects and licensed manufacturer CAD remain local and outside source control.
 
 No Codex or Claude Code is needed to begin. Copy this paragraph into a fresh chat:
 
-> Help me design fitted furniture with AIkea. Read and follow https://raw.githubusercontent.com/PatrickGrothOls/AIkea-skill/main/START_HERE.md and load its linked guide. If you can download files and run code, set up its skill package in your own workspace; otherwise begin the guided conversation with the tools you have. Use only measurements and choices I supply for this new project, and ask one topic at a time. Start by asking which units I use: 1. Centimetres, 2. Millimetres, or 3. Inches. Never claim files were saved, software installed, or a design checked unless you actually did it. If you cannot read the guide, ask me to attach AIKEA_CHAT.md from https://github.com/PatrickGrothOls/AIkea-skill/releases/tag/v0.1.0-alpha.2.
+```text
+Help me design fitted furniture with AIkea. Start by asking which units I use: 1. Centimetres, 2. Millimetres, or 3. Inches. Read and follow https://raw.githubusercontent.com/PatrickGrothOls/AIkea-skill/main/START_HERE.md and load its linked guide. If you can download files and run code, set up the skill package in your workspace; otherwise guide me with the tools you have. Use only measurements and choices I supply for this new project, one topic at a time. If the links will not open, still ask the unit question first, then ask me to attach AIKEA_CHAT.md from https://github.com/PatrickGrothOls/AIkea-skill/releases/tag/v0.1.0-alpha.2 before further measurement questions. Never claim files were saved, software installed, or a design checked unless you actually did it.
+```
 
 The [start page](START_HERE.md) also explains the one-file upload fallback and
 installing the ZIP as a persistent Claude skill. A conversation-only chat can

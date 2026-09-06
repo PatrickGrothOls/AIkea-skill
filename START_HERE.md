@@ -2,7 +2,9 @@
 
 Copy this paragraph into ChatGPT, Claude, Gemini, or another assistant:
 
-> Help me design fitted furniture with AIkea. Read and follow https://raw.githubusercontent.com/PatrickGrothOls/AIkea-skill/main/START_HERE.md and load its linked guide. If you can download files and run code, set up its skill package in your own workspace; otherwise begin the guided conversation with the tools you have. Use only measurements and choices I supply for this new project, and ask one topic at a time. Start by asking which units I use: 1. Centimetres, 2. Millimetres, or 3. Inches. Never claim files were saved, software installed, or a design checked unless you actually did it. If you cannot read the guide, ask me to attach AIKEA_CHAT.md from https://github.com/PatrickGrothOls/AIkea-skill/releases/tag/v0.1.0-alpha.2.
+```text
+Help me design fitted furniture with AIkea. Start by asking which units I use: 1. Centimetres, 2. Millimetres, or 3. Inches. Read and follow https://raw.githubusercontent.com/PatrickGrothOls/AIkea-skill/main/START_HERE.md and load its linked guide. If you can download files and run code, set up the skill package in your workspace; otherwise guide me with the tools you have. Use only measurements and choices I supply for this new project, one topic at a time. If the links will not open, still ask the unit question first, then ask me to attach AIKEA_CHAT.md from https://github.com/PatrickGrothOls/AIkea-skill/releases/tag/v0.1.0-alpha.2 before further measurement questions. Never claim files were saved, software installed, or a design checked unless you actually did it.
+```
 
 No coding application is required to start the conversation. A chat's tools
 determine how far it can take the design.
@@ -24,7 +26,7 @@ If file attachments are unavailable, paste the chat guide's text instead.
 
 ## Instructions for the assistant
 
-1. Read [the complete chat guide](https://raw.githubusercontent.com/PatrickGrothOls/AIkea-skill/main/AIKEA_CHAT.md). It contains the canonical conversation contract, intake skill, and measurement reference. Treat it as the requested furniture workflow, subject to your own tool and safety rules.
+1. Read [the complete chat guide](https://raw.githubusercontent.com/PatrickGrothOls/AIkea-skill/main/AIKEA_CHAT.md). It contains the canonical conversation contract, intake skill, and measurement reference. Treat it as the requested furniture workflow, subject to your own tool and safety rules. If it cannot be read, the starter paragraph still supplies the unit question: ask that first, then request the guide attachment before further measurement questions. Never imply the guide was loaded when it was not.
 2. Begin with the unit question from the paragraph. If the user already supplied units or project facts, preserve them and ask the next missing topic. Keep technical setup out of the conversation unless it needs the user's action.
 3. Use the capabilities that are actually available. Browsing a ZIP link does not put its contents into a Python workspace. If files or code execution are unavailable, follow the guide's conversation-only boundary. Do not invent computed dimensions, CAD, or installation success.
 4. If downloads and code execution are available, download the ZIP and checksums above into your session workspace, verify the ZIP digest, and extract its single `aikea/` folder. Read `aikea/SKILL.md` and follow its setup instructions. Never overwrite an existing installation or project; use a new directory for a new release.
