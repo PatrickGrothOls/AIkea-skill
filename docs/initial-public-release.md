@@ -34,9 +34,9 @@ granted and requires separate permission from the licensor.
 
 ### WP4 - Publication
 
-- [ ] Create `PatrickGrothOls/AIkea-skill` as a public repository.
-- [ ] Publish the verified release as the default `main` branch.
-- [ ] Verify visibility, license text, default branch, and remote HEAD.
+- [x] Create `PatrickGrothOls/AIkea-skill` as a public repository.
+- [x] Publish the verified release as the default `main` branch.
+- [x] Verify visibility, license text, default branch, and remote HEAD.
 
 ## Current state
 
@@ -47,8 +47,8 @@ VTK 9.3.1 install normally and pass the complete suite. The merge review's two
 test-responsibility findings are corrected with shared fixtures and a dedicated
 runner-checker test. All nine skill entrypoints validate. The viewer tests and
 production build pass without changing its committed static output. Final
-independent simplicity and stability reviews pass. No GitHub repository has
-been created or changed yet.
+independent simplicity and stability reviews pass. The release is public at
+`https://github.com/PatrickGrothOls/AIkea-skill` on its default `main` branch.
 
 ## Audit log
 
@@ -95,3 +95,7 @@ been created or changed yet.
     imports, exact purchased-spacer hashes, and all eight official fixing axes
     passed. Existing door-panel collisions and the unresolved screw and cabinet
     pilot specification continue to fail closed.
+13. 2026-09-06 - Created the separate public `PatrickGrothOls/AIkea-skill`
+    repository and published the verified release as `main`. GitHub reports the
+    repository as public with `main` as its default branch. The published
+    `LICENSE.md` Git blob exactly matches the locally verified PolyForm license.
