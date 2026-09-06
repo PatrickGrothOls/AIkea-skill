@@ -1,8 +1,32 @@
 # AIkea skill source
 
-This repository contains the public AIkea skills, deterministic furniture
+This repository contains the source-available AIkea skills, deterministic furniture
 builders, tests, and editable interactive-viewer source. Generated client
 projects and licensed manufacturer CAD remain local and outside source control.
+
+Open the cloned repository as a Codex or Claude working folder. Its
+`.agents/skills/` and `.claude/skills/` links expose the complete AIkea skill
+set, beginning with `$aikea`.
+
+## License and permitted use
+
+AIkea is licensed under the [PolyForm Noncommercial License 1.0.0](LICENSE.md).
+Personal furniture, private experiments, study, and hobby projects are permitted.
+
+Commercial use is not granted. This includes using AIkea for paid furniture
+design, manufacture, installation, or sale. Contact the repository owner for a
+separate commercial license. The license text controls if this summary differs
+from it.
+
+Because commercial use is restricted, AIkea is source-available rather than
+Open Source Initiative open-source software.
+
+AIkea is an independent project. It is not affiliated with or endorsed by IKEA,
+Lamello, Hettich, or other referenced manufacturers. Product names and
+trademarks belong to their respective owners. Bundled Cabineo STEP files are
+machining cutter inputs rather than complete manufacturer product CAD; their
+provenance and hashes are documented in
+`aikea-build-units/assets/cabineo/README.md`.
 
 ## Python setup
 

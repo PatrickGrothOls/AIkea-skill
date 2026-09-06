@@ -19,11 +19,11 @@ granted and requires separate permission from the licensor.
 
 ### WP2 - Licensing and public documentation
 
-- [ ] Add the unmodified PolyForm Noncommercial License 1.0.0.
-- [ ] State clearly that personal and noncommercial use is permitted.
-- [ ] State clearly that commercial use requires separate permission.
-- [ ] Avoid describing the noncommercial release as OSI open source.
-- [ ] Record the provenance caveat for bundled Cabineo cutter assets.
+- [x] Add the unmodified PolyForm Noncommercial License 1.0.0.
+- [x] State clearly that personal and noncommercial use is permitted.
+- [x] State clearly that commercial use requires separate permission.
+- [x] Avoid describing the noncommercial release as OSI open source.
+- [x] Record the provenance caveat for bundled Cabineo cutter assets.
 
 ### WP3 - Verification
 
@@ -73,3 +73,8 @@ runner-checker test. No GitHub repository has been created or changed yet.
 7. 2026-09-06 - The evidence fixture is now shared and runner articulation has
    its own test file. The six affected test/support files are each below 150
    lines, and their focused slice passes 53 tests under CadQuery 2.7.
+8. 2026-09-06 - The public release uses the unmodified PolyForm Noncommercial
+   1.0.0 terms. The README permits personal and hobby projects, identifies paid
+   design/build activity as commercial, and states that separate permission is
+   required. It also records the Cabineo cutter provenance boundary and product
+   trademark disclaimer.
