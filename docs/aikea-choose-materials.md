@@ -74,7 +74,13 @@ per-part material assignment.
 - [x] Record its stability-review failure: resolving only the target allowed a
   symlink entry stored inside the copied fixture tree to point outward.
 - [x] Check both the normalized entry and resolved target, with a symlink regression test.
-- [ ] Commit the complete path-boundary assertion with the Codex agent signature.
+- [x] Commit path-boundary assertion `2ea9c39` with the Codex agent signature.
+- [x] Pass its independent simplicity review.
+- [x] Record its stability-review failure: case-insensitive macOS paths allowed
+  uppercase `FIXTURES` to alias the copied lowercase directory.
+- [x] Replace fixture exclusion with a strict lowercase `expected/` allow-list
+  and require the resolved target to remain inside it.
+- [ ] Commit the allow-list boundary with the Codex agent signature.
 - [ ] Rerun independent simplicity and stability reviews on that exact commit.
 
 ## Current state
@@ -154,3 +160,9 @@ reviews remain.
 21. 2026-09-06 - The oracle boundary now checks both the normalized entry path
     and resolved target path. A direct symlink-entry regression case protects
     the copy boundary.
+22. 2026-09-06 - Independent review of signed commit `2ea9c39` passed
+    simplicity and failed stability because case-insensitive APFS allowed an
+    uppercase fixture alias to evade path equality.
+23. 2026-09-06 - The boundary now allows only explicit lowercase `expected/`
+    paths without parent traversal and requires their resolved targets to remain
+    inside that directory. Case aliases and outward symlinks have direct tests.

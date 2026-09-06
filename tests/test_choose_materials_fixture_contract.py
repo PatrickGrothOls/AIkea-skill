@@ -9,18 +9,22 @@ from overall_wardrobe_inputs import OverallWardrobeInputReader
 
 
 class OracleFixtureBoundary:
-    """Resolve an expected output only when copied fixtures cannot expose it."""
+    """Resolve only expected outputs kept in the isolated expected directory."""
 
     def __init__(self, eval_dir: Path) -> None:
         self.eval_dir = eval_dir
 
     def expected_path(self, relative_path: str) -> Path:
-        fixture_root = (self.eval_dir / "fixtures" / "choose-materials").resolve()
-        candidate = self.eval_dir / relative_path
-        entry_path = candidate.parent.resolve() / candidate.name
-        target_path = candidate.resolve()
-        if fixture_root in entry_path.parents or fixture_root in target_path.parents:
-            raise ValueError("expected output must be outside copied fixtures")
+        relative = Path(relative_path)
+        expected_root = (self.eval_dir / "expected").resolve()
+        target_path = (self.eval_dir / relative).resolve()
+        if (
+            relative.is_absolute()
+            or relative.parts[:1] != ("expected",)
+            or ".." in relative.parts
+            or expected_root not in target_path.parents
+        ):
+            raise ValueError("expected output must stay inside the expected directory")
         return target_path
 
 
@@ -56,7 +60,7 @@ class TestChooseMaterialsFixtureContract:
     def test_oracle_path_cannot_traverse_into_fixture_tree(self) -> None:
         boundary = OracleFixtureBoundary(self._EVAL_DIR)
 
-        with pytest.raises(ValueError, match="outside copied fixtures"):
+        with pytest.raises(ValueError, match="inside the expected directory"):
             boundary.expected_path(
                 "expected/../fixtures/choose-materials/unapproved/aikea.yaml"
             )
@@ -69,9 +73,31 @@ class TestChooseMaterialsFixtureContract:
         expected.write_text("status: hidden\n", encoding="utf-8")
         (fixture / "oracle-link.yaml").symlink_to(expected)
 
-        with pytest.raises(ValueError, match="outside copied fixtures"):
+        with pytest.raises(ValueError, match="inside the expected directory"):
             OracleFixtureBoundary(eval_dir).expected_path(
                 "fixtures/choose-materials/confirmation/oracle-link.yaml"
+            )
+
+    def test_oracle_path_rejects_case_insensitive_fixture_alias(self) -> None:
+        boundary = OracleFixtureBoundary(self._EVAL_DIR)
+
+        with pytest.raises(ValueError, match="inside the expected directory"):
+            boundary.expected_path(
+                "FIXTURES/choose-materials/confirmation/oracle-case.yaml"
+            )
+
+    def test_oracle_symlink_cannot_leave_expected_directory(self, tmp_path) -> None:
+        eval_dir = tmp_path / "evals"
+        expected_dir = eval_dir / "expected"
+        fixture = eval_dir / "fixtures" / "choose-materials" / "oracle.yaml"
+        expected_dir.mkdir(parents=True)
+        fixture.parent.mkdir(parents=True)
+        fixture.write_text("status: hidden\n", encoding="utf-8")
+        (expected_dir / "oracle-link.yaml").symlink_to(fixture)
+
+        with pytest.raises(ValueError, match="inside the expected directory"):
+            OracleFixtureBoundary(eval_dir).expected_path(
+                "expected/oracle-link.yaml"
             )
 
     def test_confirmation_case_locks_exact_supported_materials(self) -> None:
