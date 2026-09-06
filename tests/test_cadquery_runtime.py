@@ -18,10 +18,10 @@ class StubCadQueryRuntime(CadQueryRuntime):
         supported: set[Path],
     ) -> None:
         super().__init__(current_python, environment_roots, override)
-        self.supported = {path.resolve() for path in supported}
+        self.supported = {path.absolute() for path in supported}
 
     def _supports_cadquery(self, interpreter: Path) -> bool:
-        return interpreter.resolve() in self.supported
+        return interpreter.absolute() in self.supported
 
 
 class TestCadQueryRuntime:
@@ -61,6 +61,24 @@ class TestCadQueryRuntime:
 
         with pytest.raises(CadQueryRuntimeError, match="No CadQuery Python runtime"):
             runtime.resolve()
+
+    def test_preserves_an_override_virtual_environment_symlink(self, tmp_path: Path) -> None:
+        base = self._python(tmp_path / "base" / "bin" / "python")
+        override = tmp_path / "venv" / "bin" / "python"
+        override.parent.mkdir(parents=True)
+        override.symlink_to(base)
+        runtime = StubCadQueryRuntime(base, (), override, {override})
+
+        assert runtime.resolve() == override
+
+    def test_preserves_the_current_virtual_environment_symlink(self, tmp_path: Path) -> None:
+        base = self._python(tmp_path / "base" / "bin" / "python")
+        current = tmp_path / "venv" / "bin" / "python"
+        current.parent.mkdir(parents=True)
+        current.symlink_to(base)
+        runtime = StubCadQueryRuntime(current, (), None, {current})
+
+        assert runtime.resolve() == current
 
     def _python(self, path: Path) -> Path:
         path.parent.mkdir(parents=True, exist_ok=True)
