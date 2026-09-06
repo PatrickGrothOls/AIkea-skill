@@ -43,7 +43,10 @@ geometry.
 
 1. Read the cabinet's clear width, inside depth, panel thicknesses, shelves, and
    top boundary from its generated local specification.
-2. Select the longest registered runner whose complete required depth fits.
+2. Complete [runner selection](runner-selection.md): source an exact product
+   against the cabinet's requirements and verify its construction support.
+   Reuse a fitting registered profile when suitable; a catalog miss returns to
+   sourcing. Do not select by nominal length alone.
 3. Resolve the complete hardware set owned by that exact runner profile. Verify
    every handed file, paired assembly, and companion component required by that
    profile in its unchanged manufacturer frame before producing drawer files.
