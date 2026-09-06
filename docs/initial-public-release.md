@@ -27,9 +27,9 @@ granted and requires separate permission from the licensor.
 
 ### WP3 - Verification
 
-- [ ] Validate every packaged AIkea skill entrypoint.
-- [ ] Run the complete Python suite.
-- [ ] Run the viewer test and production build.
+- [x] Validate every packaged AIkea skill entrypoint.
+- [x] Run the complete Python suite.
+- [x] Run the viewer test and production build.
 - [ ] Independently review combined code simplicity and stability.
 
 ### WP4 - Publication
@@ -45,7 +45,10 @@ merge conflicts. Clean installation exposed an unsatisfiable modern dependency
 set around CadQuery 2.4. The Python-3.10-compatible CadQuery 2.7 and its required
 VTK 9.3.1 install normally and pass the complete suite. The merge review's two
 test-responsibility findings are corrected with shared fixtures and a dedicated
-runner-checker test. No GitHub repository has been created or changed yet.
+runner-checker test. All nine skill entrypoints validate. The viewer tests and
+production build pass without changing its committed static output. Final
+independent code review is running. No GitHub repository has been created or
+changed yet.
 
 ## Audit log
 
@@ -81,3 +84,8 @@ runner-checker test. No GitHub repository has been created or changed yet.
 9. 2026-09-06 - Final simplicity review of `d3dda7f` found one pure test
    forwarding method after confirming the substantive responsibility fixes.
    Its five callers now use the canonical evidence fixture directly.
+10. 2026-09-06 - All nine packaged skill entrypoints pass the skill validator.
+    The publication environment's complete Python suite passes with 467 tests,
+    5 expected skips, and 72 subtests.
+11. 2026-09-06 - The viewer passes all 23 tests and its Vite production build.
+    Rebuilding produces no tracked changes in the committed static viewer.
