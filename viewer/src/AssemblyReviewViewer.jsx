@@ -44,7 +44,7 @@ function ReviewModel({ onModelMeasured, reviewView }) {
       renderer.capabilities.getMaxAnisotropy(),
     );
     const lightingSurface = new LightingSurface(reviewView.showsLighting());
-    scene.rotation.x = -Math.PI / 2;
+    // CadQuery's GLB export already converts its Z-up model to glTF's Y-up frame.
     scene.traverse((node) => {
       if (node.isMesh) {
         node.castShadow = true;
