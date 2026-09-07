@@ -28,6 +28,12 @@ for client-facing work. Use only this project's measurements and decisions.
   partitions where appropriate. Account for thickness, access, movement,
   fastening, support and assembly order. Keep decisions in local specifications,
   rather than hiding independent dimensions in rendering code.
+- Apply the shop's CNC limits while designing each part, before building blanks.
+  Read [panel construction](../aikea-build-units/references/panel-construction.md):
+  the supplied profile permits 2490 × 1990 mm, with no panel above 2490 mm.
+  Divide oversized spans at suitable supports and design the actual connections.
+  Include joint extensions in each blank. Prototype assumptions do not waive this
+  limit; change shop capabilities only when the user supplies a different machine.
 - Select materials and real hardware that suit those requirements. Use
   `$aikea-choose-materials` for material advice and `$aikea-source-hardware-cad`
   for discovery and exact sources. Keep local material records when a design's
@@ -58,8 +64,8 @@ substitute for it. Keep reusable operations free of dimensions from this project
 
 ## Check the complete result
 
-Build the complete intended assembly tree and run the envelope and exact-solid
-checks. Use failed checks to revise the design and rebuild affected parts. An
+Build the complete intended assembly tree and run the per-part CNC, envelope and
+exact-solid checks. Use failed checks to revise the design and rebuild affected parts. An
 isolated probe can diagnose a problem; return its result to the main design.
 
 Check each requirement against the actual output, including every requested

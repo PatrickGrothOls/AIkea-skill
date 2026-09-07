@@ -85,8 +85,15 @@ python <package>/aikea-review-unit/scripts/serve_unit_review.py <project>/review
 The build command executes the authored tree, accumulates its placements, exports
 real GLB geometry and saves `furniture_01.geometry-check.json`. It reports invalid
 solids, volume outside the envelope and exact volumetric overlaps after a bounding
-box filter. Touching faces are allowed. Invalid geometry returns exit 2; a GLB may
-still be exported for diagnosis. Fix the source and rebuild.
+box filter. Its `cnc_check` examines every manufactured part at every tree depth,
+using the larger of its declared blank dimensions and actual local solid bounds.
+Assembly rotation, a different semantic role or a custom builder cannot bypass
+the supplied 2490 × 1990 mm CNC profile. Purchased hardware is separate.
+Touching faces are allowed. Failed checks return exit 2. Oversized panels block
+GLB export; other valid solids may still be exported for geometric diagnosis.
+An existing GLB is not replaced after a blocked export, so use the new check
+report rather than treating an older viewer artifact as evidence of success.
+Fix the owning specifications and rebuild the whole design.
 
 This is a closed-geometry check. It deliberately keeps `fabrication_ready:false`:
 review the requirement checklist, joint participation, hardware provenance and
