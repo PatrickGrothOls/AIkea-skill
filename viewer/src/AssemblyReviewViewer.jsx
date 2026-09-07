@@ -17,6 +17,7 @@ import { CloseInspectionControls } from "./CloseInspectionControls";
 import { LightingSource } from "./LightingSource";
 import { LightingSurface } from "./LightingSurface";
 import { PlywoodSurface } from "./PlywoodSurface";
+import { PaintedSurface } from "./PaintedSurface";
 import { ReviewGuidanceCard } from "./ReviewGuidanceCard";
 import { ReviewApprovalPanel } from "./ReviewApprovalPanel";
 import { configureReviewRenderer } from "./ReviewRenderer";
@@ -37,7 +38,7 @@ function ReviewModel({ onModelMeasured, reviewView }) {
   const renderer = useThree((state) => state.gl);
 
   useLayoutEffect(() => {
-    const surface = new PlywoodSurface(
+    const surface = reviewView.finish === "white" ? new PaintedSurface() : new PlywoodSurface(
       colorMap,
       normalMap,
       roughnessMap,
@@ -119,7 +120,10 @@ export function AssemblyReviewViewer() {
         camera={{ position: [150, 100, 150], fov: 50 }}
         dpr={[1, 2]}
         gl={{ antialias: true, powerPreference: "high-performance" }}
-        onCreated={configureReviewRenderer}
+        // The callback supplies the selected finish's exposure without changing the model.
+        onCreated={(state) => configureReviewRenderer(
+          state, reviewView.finish === "white" ? 0.55 : 1.15,
+        )}
       >
         <color attach="background" args={["#d8d5ce"]} />
         <CloseInspectionControls
