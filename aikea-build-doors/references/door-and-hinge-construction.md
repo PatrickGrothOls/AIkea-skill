@@ -2,8 +2,14 @@
 
 ## Ownership
 
-The cabinet owns the fitted door assembly. The door panel owns its blank and
-cup-side preparation. The hinged cabinet side owns the shared hardware grid.
+The hinge owns a hardware pattern placed on a supplied mounting datum; use the
+[surface-pattern operation](surface-hinge-patterns.md) independently of the
+door's construction. The owning assembly assigns the resulting machining to
+the actual receiving parts and checks the material and fitted mechanism.
+
+The remaining sections describe the existing complete cabinet adapter. In that
+workflow, the cabinet owns the fitted door assembly, the door panel owns its
+blank and cup-side preparation, and the hinged side owns the shared hardware grid.
 The selected hardware profile owns exact purchased-component identity,
 manufacturer dimensions, the grid interface it requires, supported door
 relationships, source CAD, and movement evidence.

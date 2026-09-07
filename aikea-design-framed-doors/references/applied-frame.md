@@ -86,7 +86,8 @@ plan glue removal, pressing and finishing of the perimeter seam.
 Check hinge cups and screws against the actual layers and nearby frame opening.
 A nominal total thickness alone does not prove adequate retained material or
 screw engagement. Supply the hinge operation with a mounting surface and datum;
-it places the hardware's pattern there. The owning assembly distributes the cuts
+the [surface-pattern tool](../../aikea-build-doors/references/surface-hinge-patterns.md)
+places the hardware's pattern there. The owning assembly distributes the cuts
 to the real backing/frame solids. The pattern does not depend on a door style or
 assume the surface belongs to one slab. Tall-door flatness, weight, hinge support
 and glue strength remain separate from the closed-solid review.
