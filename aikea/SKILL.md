@@ -1,11 +1,24 @@
 ---
 name: aikea
-description: Start and route an AIkea frameless sheet-material furniture project by establishing, revising, and checking the overall measured space and shared design choices. Use when starting an AIkea wardrobe or fitted-furniture project, measuring a flat or sloped space, recalculating overall dimensions, or deciding which AIkea design stage should run next.
+description: Lead an AIkea sheet-material furniture project from its envelope and requirements into a composed, checked design. Use when starting furniture, measuring a flat or sloped space, revising an existing wardrobe, or choosing the next construction stage.
 ---
 
 # AIkea
 
-Use explicit user messages to create or revise the saved measurements and shared design settings. `aikea.yaml` is the global specification and the project source of truth—not chat or prose. Complete and validate it before moving beyond the overall wardrobe design. Use the bundled script to calculate results.
+## Choose the design route
+
+For new furniture or a changed layout, load
+[$aikea-design-furniture](../aikea-design-furniture/SKILL.md). Let the model compose
+the design from its envelope, requirements and construction tools. Existing
+purpose names and cabinet templates do not limit what may be designed. Reuse
+the active project's facts, including any `aikea.yaml`, without forcing arbitrary
+furniture into the legacy cabinet-run schema.
+
+The wardrobe measurement and calculation workflow below remains available for
+existing template-based projects and explicit wardrobe recalculation. Its fixed
+settings are requirements of that route, not universal prerequisites for design.
+Use explicit user messages to revise its saved measurements and settings, and
+use the bundled calculator for its derived dimensions.
 
 ## Client conversation
 
