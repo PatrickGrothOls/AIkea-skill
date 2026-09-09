@@ -11,6 +11,12 @@ completely and apply it throughout this stage.
 
 Settle one ordered furniture arrangement and save it in the global project specification. Ask the client only when their answer can change the design; otherwise continue automatically.
 
+For a new or mixed design, use
+[$aikea-design-furniture](../aikea-design-furniture/SKILL.md) to design the actual
+assembly hierarchy and placements. A single left-to-right run cannot express all
+stacked, rotated, shared-panel or overlapping functional zones. The legacy run
+contract below is an optional template input, not the furniture design language.
+
 ## Goal
 
 Give every unit a confirmed place and proportion within the measured space, then

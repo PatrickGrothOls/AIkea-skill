@@ -10,11 +10,15 @@ set, beginning with `$aikea`.
 
 ## What the alpha can do
 
-AIkea guides measured-space intake and material choices, generates cabinet and
-base parts, adds supported doors, drawers, and recessed lighting, and shows the
-composed result in an interactive 3D viewer. Construction comes from reusable
-CadQuery builders and saved project specifications. Begin with one complete
-cabinet and visually approve it before repeating the design.
+AIkea designs from an envelope and functional requirements through
+[$aikea-design-furniture](aikea-design-furniture/SKILL.md). The model composes
+panels, paired joints, nested assemblies and hardware using reusable CadQuery
+tools and project-authored builders. New furniture purposes need no template
+registration. The whole built tree is checked against its allowed volume and
+for solid intersections, then shown in the interactive viewer. Existing cabinet,
+door, drawer and lighting builders remain available where their interfaces fit.
+Review the overall arrangement and approve finished detailed construction before
+repeating it.
 
 This is an experimental design and review workflow. Exact material choices are
 not yet propagated into generated part specifications, so those parts cannot

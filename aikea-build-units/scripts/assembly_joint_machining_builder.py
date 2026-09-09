@@ -4,17 +4,19 @@ from __future__ import annotations
 
 from typing import Any
 
-from assembly_part_locator import AssemblyPartLocator
+from local_to_parent_location import LocalToParentLocation
 from cabineo_joint import CabineoJoint
 from equal_thickness_miter_joint import EqualThicknessMiterJoint
 from part_cut import AssemblyCuts
+from part_construction_error import PartConstructionError
 
 
 class AssemblyJointMachiningBuilder:
     """Dispatch each physical joint to its deterministic machining builder."""
 
-    def __init__(self) -> None:
-        self.locator = AssemblyPartLocator()
+    def __init__(self, strict: bool = False) -> None:
+        self.locations = LocalToParentLocation()
+        self.strict = strict
         self._joint_builders = {
             "cabineo": self._build_cabineo,
             "equal_thickness_miter": self._build_equal_thickness_miter,
@@ -26,21 +28,17 @@ class AssemblyJointMachiningBuilder:
             builder = self._joint_builders.get(joint.joint_type)
             if builder is not None:
                 cuts.extend(builder(assembly, joint))
+            elif self.strict:
+                raise PartConstructionError(
+                    f"{joint.joint_id}: no machining tool for joint type {joint.joint_type}"
+                )
         return AssemblyCuts(tuple(cuts))
 
     def _build_cabineo(self, assembly: Any, joint: Any) -> tuple[Any, ...]:
         source = assembly.part(joint.source_part_id)
         target = assembly.part(joint.target_part_id)
-        source_location = self.locator.locate(
-            source,
-            assembly,
-            float(assembly.base_height_mm),
-        )
-        target_location = self.locator.locate(
-            target,
-            assembly,
-            float(assembly.base_height_mm),
-        )
+        source_location = self.locations.build(source.local_to_parent)
+        target_location = self.locations.build(target.local_to_parent)
         return CabineoJoint().build(
             joint,
             source,
@@ -54,9 +52,8 @@ class AssemblyJointMachiningBuilder:
     ) -> tuple[Any, ...]:
         part_a = assembly.part(joint.participant_ids[0])
         part_b = assembly.part(joint.participant_ids[1])
-        base_height_mm = float(assembly.base_height_mm)
-        location_a = self.locator.locate(part_a, assembly, base_height_mm)
-        location_b = self.locator.locate(part_b, assembly, base_height_mm)
+        location_a = self.locations.build(part_a.local_to_parent)
+        location_b = self.locations.build(part_b.local_to_parent)
         return EqualThicknessMiterJoint().build(
             joint,
             part_a,

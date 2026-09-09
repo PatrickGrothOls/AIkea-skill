@@ -20,7 +20,16 @@ shared by a joint must fit both participants without unintended breakthrough.
 When the overall project changes, regenerate every affected local result while
 preserving any local file that the client has changed since its last generation.
 
-## Generate the local units
+## Choose authored composition or a template
+
+For model-designed furniture, initialise and build the authored assembly contract
+through [$aikea-design-furniture](../aikea-design-furniture/SKILL.md). It supplies
+geometry-driven panels, explicit placements, paired joints and nested assemblies.
+Use the template generator below only when the chosen template actually describes
+the unit. If a purpose is unregistered, continue with authored composition; do not
+rename the intended furniture or stop the whole design at the registry lookup.
+
+## Generate template-based local units
 
 1. Resolve the active project folder and require its completed `aikea.yaml`.
 2. Read [references/unit-taxonomy.md](references/unit-taxonomy.md) and

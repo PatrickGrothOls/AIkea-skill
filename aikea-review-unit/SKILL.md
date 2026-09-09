@@ -15,7 +15,25 @@ Give the client a clear view of the real generated parts as physical assemblies,
 so visible form, proportions, and contact between approved assemblies can be
 checked before the design is repeated or manufacturing work continues.
 
-## Present the first cabinet
+## Present an authored furniture design
+
+For an authored assembly from
+[$aikea-design-furniture](../aikea-design-furniture/SKILL.md), read
+[references/visual-review.md](references/visual-review.md) and run:
+
+```sh
+python <skill-directory>/scripts/build_furniture_design.py <project> --assembly furniture_01
+python <skill-directory>/scripts/serve_unit_review.py <project>/reviews/furniture_01.glb
+```
+
+Read its `.geometry-check.json`, show the complete root tree and explain any
+unfinished requirements. This route consumes the authored `BUILDER` and `ENVELOPE`
+without requiring a cabinet-run file. Closed geometry checks do not grant
+fabrication readiness. Use the same tree for mechanism states; extend the relevant
+review adapter if a new mechanism has no state implementation. The template-only
+presentation rules below do not prohibit authoring new construction operations.
+
+## Present the first template-based cabinet
 
 1. Resolve the active project and require its completed `aikea.yaml` and generated
    `assemblies/` folders.
