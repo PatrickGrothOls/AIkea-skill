@@ -1,6 +1,6 @@
 ---
 name: aikea-source-hardware-cad
-description: Find exact manufacturer CAD for purchased furniture hardware, guide the user through any required vendor download, and store the untouched files in an AIkea project's local hardware library. Use when a runner, hinge, bracket, lift, or other bought component needs exact CAD before sizing, placement, or visual review.
+description: Find purchased furniture hardware against project requirements or an exact product choice, obtain its official planning evidence and CAD, and store untouched source files locally. Use when a runner, hinge, bracket, lift, or other bought component needs discovery or exact CAD before construction.
 ---
 
 # AIkea source hardware CAD
@@ -16,12 +16,32 @@ around. Match the manufacturer, product family, catalogue item, size, and handed
 set before accepting a file. Preserve the downloaded bytes and their original
 coordinate frame so local construction can verify and place them later.
 
-## Source and store one product
+## Discover a suitable exact product
+
+Accept either the consuming skill's physical requirements or an existing exact
+product choice. An article number is an outcome of discovery, not a prerequisite
+for it. Read [references/sourcing-and-storage.md](references/sourcing-and-storage.md)
+for manufacturer entry points, comparison evidence and download handling.
+
+Use the caller's confirmed installation space, load, movement, material and
+product preferences to search official catalogs. Preserve explicit selections;
+return a conflict to the consuming skill rather than silently replacing one.
+Keep unanswered physical requirements visible. The consuming skill owns the
+fit decision; this skill owns the product evidence and acquisition.
+
+Return the exact manufacturer/family/article/size, official product and planning
+links, applicable installation limits, companion components and available CAD
+route. If source access is blocked, return that concrete state and the next
+download action. Once a suitable product is selected, continue below without
+requiring another request to source it.
+
+## Source and store the selected product
 
 1. Resolve the active project from its completed `aikea.yaml`.
 2. Read [references/sourcing-and-storage.md](references/sourcing-and-storage.md)
    completely.
-3. Start from the manufacturer's official product page and catalogue item. Use
+3. Use the exact product resolved above or supplied by the client. Start from
+   its manufacturer's official product page and catalogue item. Use
    its own CAD link when available; do not select a visually similar component.
 4. Prefer a complete STEP assembly in millimetres. Confirm whether one download
    contains the complete pair or whether separate handed files and accessories
@@ -35,7 +55,8 @@ coordinate frame so local construction can verify and place them later.
 
    `python <skill-directory>/scripts/store_hardware_cad.py <project>/aikea.yaml --manufacturer <name> --product-family <family> --catalog-item <item> --product-url <official-product-url> --cad-page-url <official-cad-url> --terms-url <terms-url> --download <downloaded-file>`
 
-7. Use the returned `hardware_directory` for the relevant AIkea construction
+7. Return `hardware_directory` together with the selected identity, planning
+   evidence and unresolved requirements to the consuming AIkea construction
    skill. Sourcing proves identity, provenance, and unchanged bytes only. The
    consuming skill must still verify solids, native bounds, placement, fit, and
    machining before it can treat the hardware as build-ready.

@@ -1,6 +1,6 @@
 ---
 name: aikea-build-drawers
-description: Add a calculated wooden drawer subassembly to an existing generated AIkea cabinet, select a depth-matched runner profile, save the drawer's local project files, and review that same built child in its cabinet and complete furniture run. Use when adding, checking, opening, or visually reviewing a drawer in an AIkea project.
+description: Find runners that fit an AIkea cabinet, verify the exact purchased hardware, and build and review its wooden drawer children. Use when selecting drawer runners or adding, checking, opening, or visually reviewing drawers in a generated AIkea cabinet.
 ---
 
 # AIkea build drawers
@@ -21,21 +21,37 @@ the intended cabinet and drawer arrangement, runs the deterministic builders,
 and discusses the physical result with the client. It does not recreate drawer
 geometry from prose.
 
-## Select the runner profile
+## Find a runner for this cabinet
 
-Preserve an exact runner choice already saved in the active project or stated by
-the client. Otherwise, when the client asks for verified Hettich runners without
-naming a product, select Hettich KA 4532 Silent System article `9114276` together
-with one exact purchased article `13952` spacer on each cabinet side. Do not fall
-back to KA 5332 merely because it was implemented earlier. Use KA 5332 only when
-the active project or client explicitly selects it.
+Read [references/runner-selection.md](references/runner-selection.md) before
+choosing hardware. Derive the requirements from the owning cabinet and drawer;
+preserve an exact client choice and check its fit. A manufacturer preference does
+not select a particular family, length, article, or spacer.
+
+When no suitable exact selection exists, load
+[$aikea-source-hardware-cad](../aikea-source-hardware-cad/SKILL.md) with those
+requirements. That skill owns where to search, manufacturer evidence, downloads,
+and source storage. Reuse its workflow rather than duplicating vendor directions
+here. An empty fitting-profile catalog triggers discovery, not a claim that no
+runner exists. Existing verified profiles are reusable construction knowledge,
+not the available product range.
+
+On return, follow the verification and construction handoff in
+[runner selection](references/runner-selection.md#verify-and-connect-the-selected-product).
+Continue with a supported verified profile automatically. For a new article,
+identify and complete the required profile integration within the authorized
+implementation scope before calling a product-specific generator. Sourced CAD
+alone does not make that generator compatible with the new product.
 
 ## Build drawer children from verified source CAD
 
 1. Resolve the active AIkea project and require its completed `aikea.yaml` and
    generated `assemblies/` folders.
-2. Read [references/drawer-construction.md](references/drawer-construction.md)
-   completely. For MOVENTO, also read
+2. Complete runner selection above and read
+   [references/drawer-construction.md](references/drawer-construction.md)
+   completely. Load only the construction reference matching the selected
+   product; the following are implemented profiles, not product defaults.
+   For MOVENTO, also read
    [references/movento-760h-hardware.md](references/movento-760h-hardware.md).
    For Hettich KA 5332, instead read
    [references/hettich-ka-5332-hardware.md](references/hettich-ka-5332-hardware.md).
@@ -49,9 +65,11 @@ the active project or client explicitly selects it.
    boundary, then use `DrawerStackHeightPlanner` to turn the available intervals
    into useful box capacity with a deliberate clear gap. Keep explicitly chosen
    heights unchanged.
-4. Resolve the exact source STEP files named by the selected runner profile. If
-   they are absent, load `$aikea-source-hardware-cad` and resume with the returned
-   project-local `hardware_directory`. For the implemented MOVENTO generator, run:
+4. Use the exact selection and project-local `hardware_directory` returned by
+   sourcing, or the matching verified files already in this project. Require the
+   selected identity to match the generator's supported profile; if selection or
+   evidence is incomplete, resume the runner-selection handoff above.
+   For the implemented MOVENTO generator, run:
 
    `python <skill-directory>/scripts/generate_cabinet_drawer.py <project>/aikea.yaml --assembly <cabinet-id> --drawer <drawer-id> --bottom-height-mm <height-above-carcass-bottom> --hardware-directory <download-directory>`
 
