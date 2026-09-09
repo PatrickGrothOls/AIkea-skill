@@ -145,6 +145,12 @@ manufacturing stages.
 
 ## Grant fabrication readiness
 
+After the client accepts the complete design, or asks for a parts breakdown,
+read [references/physical-item-counting.md](references/physical-item-counting.md)
+and run its counter on the closed tree. Present known panel and hardware
+quantities plus unresolved requirements before proceeding to pricing. The draft
+inventory does not grant fabrication readiness or supply a selling price.
+
 Read [references/fabrication-readiness.md](references/fabrication-readiness.md)
 before making any fabrication claim. After the complete closed assembly is
 approved, run

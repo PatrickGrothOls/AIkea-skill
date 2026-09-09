@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from typing import Any, Protocol, TYPE_CHECKING
 
 from .assembly_placement import LocalToParentPlacement
+from purchased_hardware_spec import HardwarePurchaseSpec, PurchasedHardwareSpec
 
 if TYPE_CHECKING:
     from .specification import PartSpec
@@ -22,18 +23,6 @@ class ChildAssemblySpec:
     assembly_id: str
     purpose: str
     local_to_parent: LocalToParentPlacement
-
-
-@dataclass(frozen=True)
-class PurchasedHardwareSpec:
-    """Declare one purchased instance through a registered hardware asset."""
-
-    hardware_id: str
-    manufacturer: str
-    product_code: str
-    hardware_asset_id: str
-    local_to_parent: LocalToParentPlacement | None
-    geometry_selector: str | None = None
 
 
 class AssemblySpecification(Protocol):

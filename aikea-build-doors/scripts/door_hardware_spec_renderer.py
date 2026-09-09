@@ -58,8 +58,8 @@ class DoorHardwareSpecRenderer:
             f'"""Scope: Declare exact purchased hinge instances for {plan.assembly_id}."""\n\n'
             "from assemblies.specification import (\n"
             "    AxisBasis, AxisDirection, LocalToParentPlacement, Point3D,\n"
-            "    PurchasedHardwareSpec,\n"
-            ")\n\n\n"
+            ")\n"
+            "from purchased_hardware_spec import PurchasedHardwareSpec, HardwarePurchaseSpec\n\n\n"
             "DOOR_HARDWARE = (\n"
             + "".join(hardware)
             + ")\n"
@@ -79,6 +79,9 @@ class DoorHardwareSpecRenderer:
             f"        product_code={product_code!r},\n"
             f"        hardware_asset_id={asset_id!r},\n"
             f"        local_to_parent={self._placement(frame)},\n"
+            "        purchase=HardwarePurchaseSpec(\n"
+            f"            {hardware_id!r}, {product_code!r}, 'piece', 'item', ('item',),\n"
+            "        ),\n"
             "    ),\n"
         )
 

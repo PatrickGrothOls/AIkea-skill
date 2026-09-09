@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from drawer_hardware_mounting_plan import HardwarePlacement
 from hardware_placement_renderer import HardwarePlacementRenderer
+from hettich_ka_4532_purchase_renderer import HettichKa4532PurchaseRenderer
 
 
 class HettichKa4532SpacerHardwareSpecRenderer:
@@ -11,6 +12,7 @@ class HettichKa4532SpacerHardwareSpecRenderer:
 
     def __init__(self) -> None:
         self.placements = HardwarePlacementRenderer()
+        self.purchases = HettichKa4532PurchaseRenderer()
 
     def render(self, plan) -> str:
         profile = plan.hardware
@@ -24,6 +26,7 @@ class HettichKa4532SpacerHardwareSpecRenderer:
                 f"{side}-fixed",
                 getattr(mounting, f"fixed_runner_{side}_in_cabinet"),
                 getattr(step, f"runner_{side}").fixed_member,
+                self.purchases.runner(plan, side, moving=False),
             )
             for side in ("left", "right")
         )
@@ -35,6 +38,7 @@ class HettichKa4532SpacerHardwareSpecRenderer:
                 None,
                 getattr(mounting, f"spacer_{side}_in_cabinet"),
                 step.spacer_solid,
+                self.purchases.spacer(plan, side),
             )
             for side in ("left", "right")
         )
@@ -46,6 +50,7 @@ class HettichKa4532SpacerHardwareSpecRenderer:
                 f"{side}-moving",
                 getattr(mounting, f"moving_runner_{side}_in_drawer"),
                 getattr(step, f"runner_{side}").moving_member,
+                self.purchases.runner(plan, side, moving=True),
             )
             for side in ("left", "right")
         )
@@ -71,6 +76,7 @@ class HettichKa4532SpacerHardwareSpecRenderer:
         selector,
         placement,
         shape,
+        purchase,
     ) -> str:
         selector_source = f", geometry_selector={selector!r}" if selector else ""
         installed = self._installed_placement(placement, shape)
@@ -79,6 +85,7 @@ class HettichKa4532SpacerHardwareSpecRenderer:
             f"        {drawer_id + '_' + suffix!r}, 'Hettich', {product!r}, {asset!r},\n"
             "        " + self.placements.render(installed, "        ")
             + selector_source + ",\n"
+            f"        purchase={purchase},\n"
             "    ),\n"
         )
 
