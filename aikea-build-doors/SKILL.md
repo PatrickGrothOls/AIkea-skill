@@ -28,6 +28,12 @@ Resolve the placed pattern into its actual receiving parts, then check material,
 retained thickness and movement. An existing slab adapter is not a requirement
 that all doors be slabs.
 
+For drilling layout or a custom leaf, use the
+[surface-pattern operation](references/surface-hinge-patterns.md) directly.
+It also works before receiving solids exist. The complete-door workflow below
+describes the existing cabinet adapter; its part names and planner constraints
+do not belong to the reusable drilling pattern.
+
 Confirm that the cabinet run can be divided into supported door leaves before
 building any hinge hardware. Read the door-layout section in
 [references/door-and-hinge-construction.md](references/door-and-hinge-construction.md).
