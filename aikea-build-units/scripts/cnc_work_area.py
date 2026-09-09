@@ -11,19 +11,24 @@ class CncWorkAreaError(ValueError):
 
 @dataclass(frozen=True)
 class CncWorkArea:
-    """Keep machine travel and cutter-radius clearance in one profile."""
+    """Keep machine travel, full cutter clearance and extra edge margins together."""
 
     profile_id: str
     x_travel_mm: float
     y_travel_mm: float
     cutter_diameter_mm: float
+    edge_margin_mm: float = 0.0
 
     def __post_init__(self) -> None:
         values = (self.x_travel_mm, self.y_travel_mm, self.cutter_diameter_mm)
         if any(value <= 0 for value in values):
             raise ValueError("CNC travel and cutter diameter must be greater than zero")
-        if self.cutter_radius_mm >= min(self.x_travel_mm, self.y_travel_mm):
-            raise ValueError("cutter radius must be smaller than both CNC axes")
+        if self.edge_margin_mm < 0:
+            raise ValueError("CNC edge margin cannot be negative")
+        if self.cutter_diameter_mm + 2 * self.edge_margin_mm >= min(
+            self.x_travel_mm, self.y_travel_mm
+        ):
+            raise ValueError("cutter and edge clearance must leave a usable CNC area")
 
     @property
     def cutter_radius_mm(self) -> float:
@@ -31,11 +36,11 @@ class CncWorkArea:
 
     @property
     def usable_x_mm(self) -> float:
-        return self.x_travel_mm - self.cutter_radius_mm
+        return self.x_travel_mm - self.cutter_diameter_mm - 2 * self.edge_margin_mm
 
     @property
     def usable_y_mm(self) -> float:
-        return self.y_travel_mm - self.cutter_radius_mm
+        return self.y_travel_mm - self.cutter_diameter_mm - 2 * self.edge_margin_mm
 
     def fits(self, width_mm: float, height_mm: float) -> bool:
         return (
@@ -62,6 +67,7 @@ CNC_2500_X_2000_8MM = CncWorkArea(
     x_travel_mm=2500.0,
     y_travel_mm=2000.0,
     cutter_diameter_mm=8.0,
+    edge_margin_mm=1.0,
 )
 
 

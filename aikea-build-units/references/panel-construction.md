@@ -56,8 +56,12 @@ separate transformations.
 
 Resolve manufacturability before creating a panel blank. The manufacturing
 profile owns the machine travel and cutter diameter; these are shop capabilities,
-not wardrobe measurements. Its usable rectangle subtracts the cutter radius from
-each travel axis and permits rotating a panel when that makes it fit.
+not wardrobe measurements. Its usable rectangle reserves the full cutter diameter
+(radius on both edges) plus the profile's additional edge margin on each side.
+The supplied 2500 × 2000 mm machine with an 8 mm cutter and 1 mm extra margin per
+edge permits **2490 × 1990 mm** blanks, allowing a 90-degree rotation. No panel
+dimension may exceed 2490 mm with this shop profile. This applies to every panel,
+including decks, rails, backs, fronts and trim, in its local manufacturing frame.
 
 If a required span exceeds the usable rectangle, divide it into the fewest
 manufacturable segments. Prefer breaks at structural boundaries such as a cabinet
@@ -66,6 +70,10 @@ segment its own local part specification and builder. The packaged
 `PanelSegmentPlanner` performs this calculation; construction-specific planners
 decide which preferred boundaries and joining method make the segments one stable
 assembly.
+
+Include any lap, tongue or other joint extension in each segment's final blank
+size. A split must preserve real support and joining work on both participants;
+separate mesh names or adjacent unconnected pieces do not resolve construction.
 
 ## Distribute structural connectors
 

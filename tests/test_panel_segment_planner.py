@@ -27,7 +27,7 @@ class TestPanelSegmentPlanner:
         assert len(segments) == 2
         assert segments[0].end_mm == 992.333333
         assert segments[1].start_mm == 992.333333
-        assert all(item.length_mm <= 2496.0 for item in segments)
+        assert all(item.length_mm <= 2490.0 for item in segments)
 
     def test_run_without_a_supported_boundary_splits_evenly(self) -> None:
         segments = self.planner.plan(6000.0, 582.0)

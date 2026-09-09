@@ -12,6 +12,7 @@ sys.path.insert(0, str(BUILD_SCRIPTS))
 
 from assembly_tree_review_geometry import AssemblyTreeReviewGeometry  # noqa: E402
 from cadquery_glb_exporter import CadQueryGlbExporter  # noqa: E402
+from furniture_cnc_check import FurnitureCncCheck  # noqa: E402
 from furniture_geometry_check import FurnitureGeometryCheck  # noqa: E402
 from generated_assembly_builder_loader import GeneratedAssemblyBuilderLoader  # noqa: E402
 
@@ -34,6 +35,9 @@ class FurnitureDesignBuild:
             raise ValueError("assembly tree paths must be unique")
         parts = AssemblyTreeReviewGeometry().build(visits, {})
         report = FurnitureGeometryCheck().check(parts, envelope)
+        report["cnc_check"] = FurnitureCncCheck().check(visits)
+        if report["cnc_check"]["status"] == "invalid":
+            report["status"] = "invalid"
         report["assembly_id"] = assembly_id
         report["assembly_count"] = sum(
             type(item).__name__ == "AssemblyTreeAssembly" for item in visits
@@ -41,7 +45,7 @@ class FurnitureDesignBuild:
         output.parent.mkdir(parents=True, exist_ok=True)
         report_path = output.with_suffix(".geometry-check.json")
         report_path.write_text(json.dumps(report, indent=2) + "\n")
-        if not report["invalid_solids"]:
+        if not report["invalid_solids"] and report["cnc_check"]["status"] == "valid":
             CadQueryGlbExporter().export(assembly_id, parts, output)
             report["glb"] = str(output)
         report["geometry_check"] = str(report_path)
