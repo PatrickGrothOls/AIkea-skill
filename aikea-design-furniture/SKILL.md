@@ -51,7 +51,10 @@ Represent joints once and resolve work for both participants from that joint.
 Semantic labels must never silently choose geometry or drill holes.
 
 Existing cabinet, drawer, door and lighting builders are useful components when
-their real interfaces fit. Adapt a feature's owning panels and clear space to its
+their real interfaces fit. For a requested framed front,
+[$aikea-design-framed-doors](../aikea-design-framed-doors/SKILL.md) supplies an
+optional construction helper; it does not replace the tools for other door designs.
+Adapt a feature's owning panels and clear space to its
 contract; do not pretend an arbitrary assembly is a standard cabinet. Reuse exact
 hardware and machining plans in the final assembly tree.
 

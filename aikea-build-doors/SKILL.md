@@ -16,6 +16,18 @@ placements.
 
 ## Resolve the front first
 
+The model may design any suitable door construction. When a framed appearance
+is requested, [$aikea-design-framed-doors](../aikea-design-framed-doors/SKILL.md)
+offers an optional backing-and-frame helper and guidance for other framed
+constructions. Plain, shaped and custom doors remain available through the
+authored assembly tools; do not route every door through that helper.
+
+Keep the hinge pattern independent of the leaf construction. The hardware
+defines hole offsets and axes; the leaf supplies a mounting surface and datum.
+Resolve the placed pattern into its actual receiving parts, then check material,
+retained thickness and movement. An existing slab adapter is not a requirement
+that all doors be slabs.
+
 Confirm that the cabinet run can be divided into supported door leaves before
 building any hinge hardware. Read the door-layout section in
 [references/door-and-hinge-construction.md](references/door-and-hinge-construction.md).

@@ -177,6 +177,11 @@ When the client adds drawers to generated cabinets, load
 cabinet, save it as a local child assembly, and return the same composed cabinet
 to the complete furniture review.
 
+When the client wants a framed door, drawer front or decorative panel, load
+[$aikea-design-framed-doors](../aikea-design-framed-doors/SKILL.md) as an optional
+construction aid. Keep arbitrary door designs available through the authored
+construction tools; a framed front is not a universal default.
+
 When the client adds recessed lighting to a generated furniture part, load
 `$aikea-add-lighting`. Let that subskill save one part-local run, derive the host
 groove and complete purchased luminaire from it, and show the same assembly lit

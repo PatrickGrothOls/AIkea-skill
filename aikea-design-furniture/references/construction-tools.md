@@ -17,6 +17,7 @@ All paths below are relative to the skill package root, not a client project.
 | System 32 grid when wanted | `aikea-build-units/scripts/system_32_side_panel_grid.py`; request its machining explicitly and satisfy its panel-local dimension/inside-face contract. |
 | Wooden drawer and runners | `$aikea-build-drawers`, especially its `references/runner-selection.md` and `scripts/drawer_box_planner.py`. Discover suitable products from available space and load. Exact new products need their machining, placement and motion integration. |
 | Door and hinges | `$aikea-build-doors` and `references/door-and-hinge-construction.md`; reused templates need matching host-panel and opening contracts. Custom orientations still need paired cup/plate machining and exact closed/open evidence. |
+| Optional framed front | [$aikea-design-framed-doors](../../aikea-design-framed-doors/SKILL.md) installs a configurable backing-and-applied-frame helper. Other outlines, joinery and door styles remain model-authored through the existing primitives. |
 | Lighting | `$aikea-add-lighting`; host-local run drives both groove and purchased luminaire. |
 | Generic built-tree review | `aikea-review-unit/scripts/build_furniture_design.py`; uses the existing tree walker, review geometry and GLB exporter. No cabinet-purpose lookup. |
 
