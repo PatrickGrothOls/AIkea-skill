@@ -122,6 +122,11 @@ The same viewer accepts `view=top`, `view=bottom`, or `view=structure` in its UR
 when a fixed base angle explains the result more clearly than an interactive
 perspective. `title` supplies the short client-facing label shown with that view.
 
+For a white painted appearance, add `finish=white` to the viewer URL. It applies
+a smooth satin warm-white preview to furniture faces and edges, preserving source
+hardware, lighting and review guides. The model geometry is unchanged; this
+screen preview does not certify a physical RAL match or coating performance.
+
 ## Completion state
 
 The stage is complete only when the GLB is open and the client has one clear

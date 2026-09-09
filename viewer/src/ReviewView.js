@@ -10,10 +10,11 @@ export class ReviewView {
       query.get("render") ?? (view === "perspective" ? "photo" : "interactive"),
       query.get("lighting") !== "off",
       query.get("framing") === "close" ? 0.72 : 1,
+      query.get("finish"),
     );
   }
 
-  constructor(view, title, renderMode, lightingEnabled, framingScale) {
+  constructor(view, title, renderMode, lightingEnabled, framingScale, finish) {
     this.view = ["top", "bottom", "structure"].includes(view)
       ? view
       : "perspective";
@@ -21,6 +22,7 @@ export class ReviewView {
     this.renderMode = renderMode === "photo" ? "photo" : "interactive";
     this.lightingEnabled = lightingEnabled;
     this.framingScale = framingScale;
+    this.finish = finish === "white" ? "white" : "plywood";
   }
 
   cameraDirection() {
