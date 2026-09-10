@@ -31,6 +31,11 @@ Local evidence is under local-evidence/ (ignored); a durable report copy is save
   - [x] Save readable results and report limitations.
   - [x] Review diffs and commit coherent checkpoints.
 
+## Merge closure
+- [x] Recheck refreshed origin/main and final diff; no blocking findings.
+- [ ] Pass hosted CI, merge into main and verify remote state.
+- [ ] Preserve local design evidence and remove the completed branch/worktree.
+
 ## Audit log
 1. 2026-09-09: Patrick approved integrating the counting and sheet-estimation tools and verifying the seated-middle wardrobe first. This permits the focused work above; installer, unrelated feature stacks, supplier prices and fabrication fixes are deferred.
 
@@ -41,3 +46,5 @@ Local evidence is under local-evidence/ (ignored); a durable report copy is save
 6. The first broad pytest command also collected the copied project's archived tests. This caused duplicate module/import collection errors; the repository suite was then explicitly limited to tests/. No production-code change was made for this environment issue.
 
 7. Final verification: 512 distinct tests passed, 5 expected skips and 72 subtests passed. The only full-suite failures were sandbox localhost bind denials; six tests across their two files passed with socket access. Package verification passed all nine skills. Source-to-layout reconciliation accounts for every one of the 104 proposed sheet rectangles exactly once; 18 SVG sheets and scenario limitations are present in the HTML. No new model-driven usability eval or physical fabrication test was claimed.
+
+8. 2026-09-10: Patrick authorized final review, merge and cleanup. Refreshed origin/main remains 52f3dbc, so the tested production diff is unchanged. Final review rechecked purchase ownership, paired Cabineo counts, failed-run invalidation, sheet accounting, explicit stock scenarios, source preservation and generated-contract compatibility. No blocking finding. Nine skill/link checks passed again. The scope is the counter/planner; outstanding furniture design work is tracked separately and does not hold this tooling merge open.
