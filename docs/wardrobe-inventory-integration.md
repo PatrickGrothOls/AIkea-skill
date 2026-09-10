@@ -4,6 +4,8 @@
 Integrate the existing physical item counter and sheet estimator onto refreshed main, then reconcile the seated-middle wardrobe with the proposed Korrekt leg base. Preserve the existing design. Establish actual thicknesses and an explicit 16 mm stock scenario; do not disguise a stock scenario as regenerated construction.
 
 ## Current state
+Completed and merged through [PR #8](https://github.com/PatrickGrothOls/AIkea-skill-private-history/pull/8) on 2026-09-10, merge commit `1797af6`. Both hosted Python and viewer CI runs passed. The local and remote feature branches have been deleted. Evaluation evidence is preserved in the original checkout under `dist/wardrobe-inventory-2026-09-09`; the finished worktree is prepared for removal.
+
 Implemented on origin/main 52f3dbc in feat/wardrobe-inventory-integration. Imported the physical counter and sheet planner from db0336d/4988d2c without the unrelated installer stack. Added explicit root selection and labeled stock scenarios/non-sheet selections. Fresh regression evidence: 512 distinct tests pass, 5 expected skips, 72 passing subtests. Nine skill/link checks pass. The full run had 507 passes and five socket-permission failures; rerunning the two viewer files with localhost access passed all six tests and cleared every failure.
 
 Actual furniture_legs_01 was built using its frozen authoring runtime plus four existing Korrekt helpers. Main alone cannot yet build it: its composition runtime lacks strict joint machining and the Korrekt extension. No implementation fallback silently bypasses that dependency. Original source remains unchanged; the evaluated copy adds only explicit purchase metadata for the 28 modeled Hettich items. Generated physical records are equal before and after.
@@ -12,7 +14,7 @@ The inventory has 103 sheet parts and one custom round wooden rod, 128 verified 
 
 The original 1268 × 1550 niche back does not fit 1220 × 2440 stock. Actual mixed-thickness stock places 20 sheets and leaves that back unplaced. All-16 mm stock places 16 sheets and leaves it unplaced. A separately labeled stock scenario splits that back into two 634 × 1550 rectangles, yielding 104 sheet panels plus the rod, all placed on 18 sheets. This retains original face dimensions and does not regenerate construction or validate the seam. The original CAD still has 80 panels at 18 mm, 13 backs at 6.5 mm, eight drawer pieces at 15 mm and two bottoms at 9 mm.
 
-Local evidence is under local-evidence/ (ignored); a durable report copy is saved under the original checkout's dist/wardrobe-inventory-2026-09-09. No supplier CAD or full customer project will be committed.
+Durable local evidence is archived under the original checkout's dist/wardrobe-inventory-2026-09-09; 1,487 files were compared before retiring the evaluation worktree. No supplier CAD or full customer project will be committed.
 
 ## Work packages
 - [x] WP1: Integrate existing counter with its focused regressions.
@@ -33,8 +35,8 @@ Local evidence is under local-evidence/ (ignored); a durable report copy is save
 
 ## Merge closure
 - [x] Recheck refreshed origin/main and final diff; no blocking findings.
-- [ ] Pass hosted CI, merge into main and verify remote state.
-- [ ] Preserve local design evidence and remove the completed branch/worktree.
+- [x] Pass hosted CI, merge into main and verify remote state.
+- [x] Verify the evidence archive, delete merged branch refs and prepare worktree retirement.
 
 ## Audit log
 1. 2026-09-09: Patrick approved integrating the counting and sheet-estimation tools and verifying the seated-middle wardrobe first. This permits the focused work above; installer, unrelated feature stacks, supplier prices and fabrication fixes are deferred.
@@ -48,3 +50,5 @@ Local evidence is under local-evidence/ (ignored); a durable report copy is save
 7. Final verification: 512 distinct tests passed, 5 expected skips and 72 subtests passed. The only full-suite failures were sandbox localhost bind denials; six tests across their two files passed with socket access. Package verification passed all nine skills. Source-to-layout reconciliation accounts for every one of the 104 proposed sheet rectangles exactly once; 18 SVG sheets and scenario limitations are present in the HTML. No new model-driven usability eval or physical fabrication test was claimed.
 
 8. 2026-09-10: Patrick authorized final review, merge and cleanup. Refreshed origin/main remains 52f3dbc, so the tested production diff is unchanged. Final review rechecked purchase ownership, paired Cabineo counts, failed-run invalidation, sheet accounting, explicit stock scenarios, source preservation and generated-contract compatibility. No blocking finding. Nine skill/link checks passed again. The scope is the counter/planner; outstanding furniture design work is tracked separately and does not hold this tooling merge open.
+
+9. 2026-09-10: PR #8 merged as 1797af6 after both push and pull-request CI runs passed (512 tests, 5 skips, 72 passing subtests; viewer checks also passed). The merged tree exactly matches reviewed head 016d91e. Local main was fast-forwarded and both feature-branch refs deleted. All 1,487 non-cache evaluation files match the durable archive; the only other ignored worktree contents are disposable Python caches and a virtual-environment symlink. Worktree removal follows this documentation-only closure commit.
