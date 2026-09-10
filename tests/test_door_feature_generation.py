@@ -86,6 +86,17 @@ class TestDoorFeatureGeneration:
         )
         visits = tree.AssemblyTreeWalker().walk(built)
         assert sum(type(item).__name__ == "AssemblyTreeHardware" for item in visits) == 2
+        from hardware_purchase_counter import HardwarePurchaseCounter
+
+        unresolved = []
+        purchases = HardwarePurchaseCounter().count(
+            [item for item in visits if hasattr(item, "hardware")], unresolved,
+        )
+        assert {item["product_code"]: item["quantity"] for item in purchases} == {
+            "F000001": 1, "F000049": 1,
+        }
+        assert all(item["mounting_fasteners_included"] for item in purchases)
+        assert unresolved == []
 
     def _plan(self, assembly) -> DoorHingePlan:
         door = {name: float(value) for name, value in assembly.part("door_panel").dimensions_mm}

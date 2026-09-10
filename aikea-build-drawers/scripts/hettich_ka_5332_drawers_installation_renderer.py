@@ -28,8 +28,9 @@ class HettichKa5332DrawersInstallationRenderer:
             f'"""Scope: Place drawers and runner hardware owned by {plan.parent_assembly_id}."""\n\n'
             "from assemblies.specification import (\n"
             "    AxisBasis, AxisDirection, ChildAssemblySpec, LocalToParentPlacement,\n"
-            "    Point3D, PurchasedHardwareSpec,\n"
-            ")\n\n\n"
+            "    Point3D,\n"
+            ")\n"
+            "from purchased_hardware_spec import PurchasedHardwareSpec, HardwarePurchaseSpec\n\n\n"
             "SOURCE_MEMBERS_PER_SIDE = (\n"
             "    'cabinet_member', 'middle_member', 'drawer_member',\n"
             ")\n\n"
@@ -75,6 +76,10 @@ class HettichKa5332DrawersInstallationRenderer:
             f"        {drawer.runner.asset_id!r},\n"
             "        " + self._placement_source(origin_mm, "        ") + ",\n"
             f"        geometry_selector={hand!r},\n"
+            "        purchase=HardwarePurchaseSpec(\n"
+            f"            {drawer.drawer.assembly_id + '_runner_pair'!r},\n"
+            f"            {drawer.runner.item_number!r}, 'pair', {hand!r}, ('left', 'right'),\n"
+            "        ),\n"
             "    )"
         )
 

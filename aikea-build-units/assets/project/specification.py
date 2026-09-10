@@ -11,6 +11,7 @@ from .assembly_composition import (
     BuiltPart,
     BuiltPurchasedHardware,
     ChildAssemblySpec,
+    HardwarePurchaseSpec,
     PurchasedHardwareSpec,
 )
 from .assembly_placement import (

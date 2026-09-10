@@ -20,8 +20,9 @@ class HettichKa4532SpacerInstallationRenderer:
             f'"""Scope: Place {plan.drawer.assembly_id} and its exact Hettich set."""\n\n'
             "from assemblies.specification import (\n"
             "    AxisBasis, AxisDirection, ChildAssemblySpec, LocalToParentPlacement,\n"
-            "    Point3D, PurchasedHardwareSpec,\n"
+            "    Point3D,\n"
             ")\n"
+            "from purchased_hardware_spec import PurchasedHardwareSpec, HardwarePurchaseSpec\n"
             "from hettich_ka_4532_spacer_mounting_plan import (\n"
             "    HettichKa4532SpacerMountingPlan,\n"
             ")\n"

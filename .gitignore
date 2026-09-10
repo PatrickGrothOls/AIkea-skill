@@ -22,3 +22,7 @@ env/
 # Local viewer dependencies and intermediate builds
 viewer/node_modules/
 viewer/dist/
+
+# Private local design evaluation and environment symlink
+/local-evidence/
+/.venv
