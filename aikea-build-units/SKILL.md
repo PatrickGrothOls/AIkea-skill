@@ -66,3 +66,5 @@ generated cabinet and base part entry point reads its finished part from the com
 assembly build. The complete assembly builder remains the stable entry point.
 `$aikea-review-unit` consumes that built result without reconstructing its
 geometry.
+
+For selected adjustable feet, reuse the [Korrekt mounting operation](references/korrekt-mounting.md) through shared construction.
