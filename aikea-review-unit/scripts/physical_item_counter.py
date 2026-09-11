@@ -3,6 +3,7 @@
 from dataclasses import asdict
 
 from cabineo_item_counter import CabineoItemCounter
+from cabineo_purchase_reconciler import CabineoPurchaseReconciler
 from hardware_purchase_counter import HardwarePurchaseCounter
 
 
@@ -25,8 +26,9 @@ class PhysicalItemCounter:
                 connectors.extend(CabineoItemCounter().count(visit, unresolved))
         counter = HardwarePurchaseCounter()
         purchases = counter.count(hardware_visits, unresolved)
-        connector_items = self._connector_items(connectors)
-        if connectors:
+        remaining = CabineoPurchaseReconciler().remaining(connectors, purchases, unresolved)
+        connector_items = self._connector_items(remaining)
+        if remaining["connector"]:
             unresolved.append(dict(code="cabineo.purchase_sku_missing", path=visits[0].path[0]))
         return dict(
             schema_version=1,
@@ -73,15 +75,15 @@ class PhysicalItemCounter:
                     asset_id=spec.hardware_asset_id, geometry_selector=spec.geometry_selector,
                     quantity=1)
 
-    def _connector_items(self, connectors) -> list[dict]:
-        if not connectors:
-            return []
-        paths = [item["path"] for item in connectors]
-        return [
+    def _connector_items(self, remaining) -> list[dict]:
+        connectors = [item["path"] for item in remaining["connector"]]
+        inserts = [item["path"] for item in remaining["insert"]]
+        rows = [
             dict(manufacturer="Lamello", product_code=None, description="Cabineo",
-                 unit="piece", quantity=len(paths), occurrence_paths=paths),
+                 unit="piece", quantity=len(connectors), occurrence_paths=connectors),
             dict(manufacturer=None, supplier="Häfele", product_code="267.91.314",
                  description="Brass insert for Cabineo 8 M6", unit="piece",
-                 quantity=len(paths), occurrence_paths=paths, supplier_pack_quantity=100,
+                 quantity=len(inserts), occurrence_paths=inserts, supplier_pack_quantity=100,
                  selection_source="Patrick's supplied product screenshot; compatibility not revalidated"),
         ]
+        return [row for row in rows if row["quantity"]]

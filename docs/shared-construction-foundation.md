@@ -8,7 +8,7 @@ not limit the furniture that can be designed. This document tracks the migration
 implementation progress and evidence are recorded per work package below.
 
 Planning branch: `docs/shared-construction-foundation`.
-Current implementation branch: `feat/shared-construction-inputs`.
+Current implementation branch: `feat/shared-panel-construction`.
 Baseline: `origin/main` at `52facbf73b5ea775975025bb6409ea02ef8560bd`, fetched on
 2026-09-11. The finishing checkout stays at `fc78dfa`; its untracked `dist/`
 artifacts and the other worktrees are preserved.
@@ -20,7 +20,7 @@ artifacts and the other worktrees are preserved.
 - [x] Inspect current main and the existing composition branch against that direction.
 - [x] Identify the shared contracts and the remaining differences in construction.
 - [x] Write work packages, acceptance checks, migration boundaries, and merge sequence.
-- [ ] Implement the first contract and shared construction slice.
+- [x] Implement the first contract and shared construction slice.
 - [ ] Migrate and verify the standard configurators and custom composition route.
 - [ ] Run fresh model-driven evaluations and the saved wardrobe integration.
 
@@ -28,7 +28,8 @@ WP1 now supplies the shared input values, material identity and a source trace o
 the saved wardrobe. Its 29 focused compatibility tests and the per-WP `review` skill
 passed, including an independent testing/compatibility review. See [WP1 evidence](shared-construction-inputs.md). Existing
 construction algorithms, installed skills and private design files are unchanged.
-WP2-WP7 remain open. The earlier composition branch remains unmerged.
+WP2 is implemented and its review findings are fixed; WP3-WP7 remain open. The earlier
+composition branch remains unmerged; useful code is being reused selectively.
 
 ## Confirmed direction and evidence boundary
 
@@ -135,18 +136,18 @@ Every proposed field has an identified producer, consumer and example.
 
 ### WP2 — Build one shared panel and operation path
 
-- [ ] Extract/adapt the useful generic panel and placement work from `5b744f4`
+- [x] Extract/adapt the useful generic panel and placement work from `5b744f4`
   onto refreshed main, preserving newer purchase/inventory contracts.
-- [ ] Build blanks from explicit geometry; make System 32 and other local
+- [x] Build blanks from explicit geometry; make System 32 and other local
   machining explicit requests instead of side effects of semantic role names.
-- [ ] Use the same operation dispatch, coordinate transforms, participant
+- [x] Use the same operation dispatch, coordinate transforms, participant
   ownership and required-cut validation for configured and custom panels.
-- [ ] Distinguish an unsupported requested operation from an explicitly unfinished
+- [x] Distinguish an unsupported requested operation from an explicitly unfinished
   prototype: report the gap, and prevent a complete-construction claim.
-- [ ] Retain the existing Cabineo and miter operations as first consumers; choose
+- [x] Retain the existing Cabineo and miter operations as first consumers; choose
   detailed test cases from their actual supported interfaces, not an assumed
   universal 90-degree operation or a new seating skill.
-- [ ] Carry operation-to-cut and operation-to-hardware identity far enough for
+- [x] Carry operation-to-cut and operation-to-hardware identity far enough for
   inventory to reconcile quantities without counting a modeled item twice.
 
 Acceptance: equivalent configured/custom inputs produce equivalent machined
@@ -332,3 +333,7 @@ stack supplies Korrekt and lighting work when those migrations are reached.
 
 5. 2026-09-11 — Patrick authorized implementation and review using the review
    skill after every work package. WP1 is implemented and reviewed; WP2 is next.
+
+6. 2026-09-11 — WP2 review found incomplete per-occurrence receiver coverage,
+   clipped local grid holes and a stale legacy test fixture. All three were fixed
+   and independently rechecked before continuing to WP3.

@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from typing import Any, Protocol, TYPE_CHECKING
 
 from .assembly_placement import LocalToParentPlacement
-from purchased_hardware_spec import HardwarePurchaseSpec, PurchasedHardwareSpec
+from purchased_hardware_spec import ConnectionPurchaseSpec, HardwarePurchaseSpec, PurchasedHardwareSpec
 
 if TYPE_CHECKING:
     from .specification import PartSpec

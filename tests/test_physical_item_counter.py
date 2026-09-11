@@ -48,10 +48,13 @@ class TestPhysicalItemCounter:
             "    hardware_asset_id: str\n    local_to_parent: Any | None\n"
             "    geometry_selector: str | None = None\n"
         )
-        composition.write_text(composition.read_text().replace(
-            "from purchased_hardware_spec import HardwarePurchaseSpec, PurchasedHardwareSpec", legacy))
+        import_line = "from purchased_hardware_spec import ConnectionPurchaseSpec, HardwarePurchaseSpec, PurchasedHardwareSpec"
+        assert import_line in composition.read_text()
+        composition.write_text(composition.read_text().replace(import_line, legacy))
         specification = root / "assemblies/specification.py"
-        specification.write_text(specification.read_text().replace("    HardwarePurchaseSpec,\n", ""))
+        specification.write_text(specification.read_text().replace("    HardwarePurchaseSpec,\n", "")
+                                 .replace("    ConnectionPurchaseSpec,\n", ""))
+        assert "class PurchasedHardwareSpec:" in composition.read_text()
 
     def test_counts_panels_connectors_and_exact_purchase_sets(self, counted_project):
         _, visits = counted_project

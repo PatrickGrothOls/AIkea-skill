@@ -20,6 +20,13 @@ shared by a joint must fit both participants without unintended breakthrough.
 When the overall project changes, regenerate every affected local result while
 preserving any local file that the client has changed since its last generation.
 
+## Shared construction inputs
+
+Read [shared panel construction](references/shared-construction.md) when composing
+explicit panels, connections and machining or adapting a configurator's output.
+Use its common builder and checks; furniture-purpose names do not select machining.
+The generator below remains the compatibility route for existing template projects.
+
 ## Generate the local units
 
 1. Resolve the active project folder and require its completed `aikea.yaml`.

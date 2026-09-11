@@ -5,6 +5,15 @@ from typing import Any
 
 
 @dataclass(frozen=True)
+class ConnectionPurchaseSpec:
+    """Link one installed purchase to a connection occurrence in its owner frame."""
+
+    joint_id: str
+    connector_index: int
+    component: str
+
+
+@dataclass(frozen=True)
 class HardwarePurchaseSpec:
     """Map a modeled member to one installed unit in a relative owner frame."""
 
@@ -15,6 +24,7 @@ class HardwarePurchaseSpec:
     required_members: tuple[str, ...]
     owner_levels_up: int = 0
     mounting_fasteners_included: bool = True
+    connection: ConnectionPurchaseSpec | None = None
 
 
 @dataclass(frozen=True)

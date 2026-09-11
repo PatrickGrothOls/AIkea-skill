@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from math import isfinite
 from typing import Any
 
 from part_construction_error import PartConstructionError
@@ -65,10 +66,19 @@ class System32SidePanelGrid:
         return setback_mm, panel_depth_mm - setback_mm
 
     def apply(self, part: Any, workpiece: Any) -> Any:
+        dimensions = {name: float(value) for name, value in part.dimensions_mm}
+        return workpiece.cut(self.cutter(
+            dimensions["depth"], dimensions["height"], dimensions["thickness"], part.inside_face,
+        ))
+
+    def cutter(self, panel_depth_mm, panel_height_mm, thickness_mm, inside_face):
+        """Expose the same pattern for explicit, role-independent machining."""
         import cadquery as cq
 
-        dimensions = {name: float(value) for name, value in part.dimensions_mm}
-        thickness_mm = dimensions["thickness"]
+        if any(not isfinite(value) or value <= 0 for value in (
+            panel_depth_mm, panel_height_mm, thickness_mm, self.profile.row_pitch_mm,
+        )):
+            raise PartConstructionError("System 32 requires positive finite panel dimensions and pitch")
         if self.profile.hole_depth_mm >= thickness_mm:
             raise PartConstructionError(
                 f"System 32 grid requires more than {self.profile.hole_depth_mm:g} mm thickness"
@@ -77,23 +87,25 @@ class System32SidePanelGrid:
             ">Z": thickness_mm - self.profile.hole_depth_mm,
             "<Z": 0.0,
         }
-        if part.inside_face not in z_start_by_face:
+        if inside_face not in z_start_by_face:
             raise PartConstructionError(
-                f"unsupported side-panel inside face: {part.inside_face}"
+                f"unsupported side-panel inside face: {inside_face}"
             )
         points = tuple(
             (column_mm, row_mm)
-            for row_mm in self.row_heights_mm(dimensions["height"])
-            for column_mm in self.column_positions_mm(dimensions["depth"])
+            for row_mm in self.row_heights_mm(panel_height_mm)
+            for column_mm in self.column_positions_mm(panel_depth_mm)
         )
+        if not points:
+            raise PartConstructionError("System 32 request has no rows within the panel")
         cutter = (
             cq.Workplane("XY")
             .pushPoints(points)
             .circle(self.profile.hole_diameter_mm / 2.0)
             .extrude(self.profile.hole_depth_mm)
-            .translate((0.0, 0.0, z_start_by_face[part.inside_face]))
+            .translate((0.0, 0.0, z_start_by_face[inside_face]))
         )
-        return workpiece.cut(cutter)
+        return cutter.val()
 
 
 __all__ = ["System32SidePanelGrid", "System32SidePanelGridProfile"]

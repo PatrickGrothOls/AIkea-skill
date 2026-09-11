@@ -26,6 +26,7 @@ class AssemblyTaxonomyRenderer:
         "assembly_tree.py",
         "specification.py",
         "construction_specification.py",
+        "panel_assembly.py",
     )
 
     def __init__(self, asset_root: Path) -> None:

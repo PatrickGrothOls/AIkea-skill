@@ -34,7 +34,8 @@ class HardwarePurchaseCounter:
         first = members[0][2]
         definitions = {
             (spec.manufacturer, purchase.product_code, purchase.unit,
-             tuple(sorted(purchase.required_members)), purchase.mounting_fasteners_included)
+             tuple(sorted(purchase.required_members)), purchase.mounting_fasteners_included,
+             getattr(purchase, "connection", None))
             for _, spec, purchase in members
         }
         required = Counter(first.required_members)
@@ -55,7 +56,7 @@ class HardwarePurchaseCounter:
             return None
         if not first.mounting_fasteners_included:
             unresolved.append(dict(code="hardware.separate_fasteners_required", path=path))
-        return dict(
+        result = dict(
             path=path,
             manufacturer=members[0][1].manufacturer,
             product_code=first.product_code,
@@ -64,6 +65,14 @@ class HardwarePurchaseCounter:
             component_paths=sorted(member[0] for member in members),
             mounting_fasteners_included=first.mounting_fasteners_included,
         )
+        connection = getattr(first, "connection", None)
+        if connection is not None:
+            owner = path.rsplit("/purchase:", 1)[0]
+            result["connection_occurrence_path"] = (
+                f"{owner}/joint:{connection.joint_id}/connector:{connection.connector_index}"
+            )
+            result["connection_component"] = connection.component
+        return result
 
     def summarize(self, purchases: list[dict]) -> list[dict]:
         groups = defaultdict(list)

@@ -15,7 +15,8 @@ class CabineoItemCounter:
         joint_ids = [joint.joint_id for joint in assembly.joints]
         if len(joint_ids) != len(set(joint_ids)):
             raise ValueError(f"duplicate joint IDs in {owner}")
-        unknown = {cut.joint_id for cut in assembly.cuts} - set(joint_ids)
+        local_ids = {item.machining_id for item in getattr(assembly.spec, "machining", ())}
+        unknown = {cut.joint_id for cut in assembly.cuts} - (set(joint_ids) | local_ids)
         for joint_id in sorted(unknown):
             unresolved.append(dict(code="cut.unknown_joint", path=f"{owner}/{joint_id}"))
         occurrences = []
