@@ -1,7 +1,8 @@
 """Scope: Place dimensioned drilling patterns on explicit planar surface datums."""
 
 from dataclasses import dataclass
-from math import isfinite
+from itertools import combinations
+from math import hypot, isfinite
 import cadquery as cq
 
 
@@ -30,6 +31,10 @@ class SurfaceHolePattern:
         identifiers = tuple(hole.hole_id for hole in holes)
         if not identifiers or len(set(identifiers)) != len(identifiers):
             raise ValueError("a drilling pattern requires distinct hole IDs")
+        if any(hypot(left.x_mm-right.x_mm, left.y_mm-right.y_mm)
+               < (left.diameter_mm+right.diameter_mm)/2
+               for left, right in combinations(holes, 2)):
+            raise ValueError("drilling holes must not overlap within a pattern")
         self.holes = holes
 
     def place(self, surface: cq.Plane, entry_clearance_mm=0.1):

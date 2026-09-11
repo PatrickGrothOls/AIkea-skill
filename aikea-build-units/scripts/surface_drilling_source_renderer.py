@@ -9,4 +9,5 @@ class SurfaceDrillingSourceRenderer:
         directions = ", ".join(f"AxisDirection{(axis.x, axis.y, axis.z)!r}"
                                for axis in (axes.local_x_in_parent, axes.local_y_in_parent, axes.local_z_in_parent))
         frame = f"LocalToParentPlacement(Point3D{point!r}, AxisBasis({directions}))"
-        return f"SurfaceDrillingSpec({request.machining_id!r}, {request.part_id!r}, {frame}, {request.holes!r})"
+        return (f"SurfaceDrillingSpec({request.machining_id!r}, {request.part_id!r}, {frame}, "
+                f"{request.holes!r}, reuse_machining_ids={request.reuse_machining_ids!r})")

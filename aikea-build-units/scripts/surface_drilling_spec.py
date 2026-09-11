@@ -17,4 +17,5 @@ class SurfaceDrillingSpec:
     part_id: str
     surface_to_part: Any
     holes: tuple[SurfaceHole, ...]
+    reuse_machining_ids: tuple[str, ...] = ()
     operation_type: str = field(default="surface_holes", init=False)

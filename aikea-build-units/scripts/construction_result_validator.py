@@ -7,6 +7,7 @@ from construction_cut_validator import ConstructionCutValidator
 from panel_blank_builder import PanelBlankBuilder
 from panel_machining_builder import PanelMachiningBuilder
 from part_construction_error import PartConstructionError
+from surface_drilling_reuse import SurfaceDrillingReuse
 
 
 class BuiltConstructionSpecification:
@@ -76,12 +77,12 @@ class ConstructionResultValidator:
             cutter = cut.cutter.located(cut.location)
             blank = blanks[cut.part_id]
             in_blank = blank.intersect(cutter)
+            reuse = SurfaceDrillingReuse().resolve(request, preceding, local_ids)
             clipped = cutter.Volume() - in_blank.Volume() > self.TOLERANCE_MM3
-            collides = any(
-                in_blank.intersect(prior.cutter.located(prior.location)).Volume()
-                > self.TOLERANCE_MM3
-                for prior in preceding if prior.part_id == cut.part_id
-            )
+            overlaps = (in_blank.intersect(prior.cutter.located(prior.location))
+                        for prior in preceding if prior.part_id == cut.part_id)
+            collides = any((overlap.cut(reuse) if reuse is not None else overlap).Volume()
+                           > self.TOLERANCE_MM3 for overlap in overlaps)
             if clipped or collides:
                 raise PartConstructionError(f"{cut.joint_id}: local machining is clipped by the panel or earlier cuts")
             preceding.append(cut)

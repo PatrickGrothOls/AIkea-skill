@@ -6,6 +6,7 @@ from panel_blank_builder import PanelBlankBuilder
 from panel_machining_builder import PanelMachiningBuilder
 from part_construction_error import PartConstructionError
 from part_cut import AssemblyCuts
+from surface_drilling_reuse import SurfaceDrillingReuse
 from .construction_specification import ConstructionSpecification, PanelAssemblySpec, PartMachiningSpec
 from .specification import BuiltAssembly, BuiltPart
 
@@ -35,24 +36,30 @@ class PanelAssemblyBuilder:
         cuts = AssemblyCuts(joints.all + self.machining.build(self.spec).all)
         self.validation.validate_cuts(self.spec, cuts.all)
         local_ids = {request.machining_id for request in self.spec.machining}
+        requests = {request.machining_id: request for request in self.spec.machining}
         parts = []
         for part, solid in zip(self.spec.parts, blanks):
             if len(solid.vals()) != 1:
                 raise PartConstructionError(
                     f"{part.part_id}: return one Shape per Workplane; use a compound for multiple solids"
                 )
+            preceding = []
             for cut in cuts.for_part(part.part_id):
                 cutter = cut.cutter.located(cut.location)
+                reuse = (SurfaceDrillingReuse().resolve(requests[cut.joint_id], preceding, local_ids)
+                         if cut.joint_id in local_ids else None)
+                reused_volume = reuse.Volume() if reuse is not None else 0
                 removed = solid.val().intersect(cutter).Volume()
-                if removed <= 1e-6:
+                if removed + reused_volume <= 1e-6:
                     raise PartConstructionError(
                         f"{cut.joint_id}: cutter does not machine participant {part.part_id}"
                     )
-                if cut.joint_id in local_ids and cutter.Volume() - removed > 1e-6:
+                if cut.joint_id in local_ids and abs(cutter.Volume() - removed - reused_volume) > 1e-5:
                     raise PartConstructionError(
                         f"{cut.joint_id}: local machining is clipped by the panel or earlier cuts"
                     )
                 solid = solid.cut(cutter)
+                preceding.append(cut)
             if not solid.val().isValid() or solid.val().Volume() <= 1e-6:
                 raise PartConstructionError(f"{part.part_id}: machining left no valid material")
             parts.append(BuiltPart(part, solid))

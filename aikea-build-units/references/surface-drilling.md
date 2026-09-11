@@ -26,16 +26,23 @@ an internal datum that creates a sealed cavity is rejected during construction
 and again when validating a raw builder result. The shared operation adds no entry
 overrun. A through-hole ends at the opposite
 surface; a blind hole ends at its declared depth. Every cutter must fit inside
-the panel, actually remove material and remain clear of prior operations. Multiple
+the panel and remove material or explicitly reuse an exact existing hole. Multiple
 holes form one local operation whose complete dimensions and frame are retained
-in the source fingerprint. The cut record stores that frame separately from its
+in the source fingerprint. Individual holes within a pattern must not overlap
+or duplicate one another; a slot or merged opening needs an appropriate separate
+operation. The cut record stores that frame separately from its
 surface-local cutter, preserving the same placement convention as paired joints.
 
-When a mounting interface uses an existing System 32 hole, reference and verify
-that hole in the component's mounting evidence. Emit drilling only for missing
-holes. Do not add a duplicate overlapping operation or enlarge an old hole to
-make a new hardware profile appear compatible. An incompatible interface remains
-an explicit requirement until the appropriate operation is available.
+When a mounting interface uses existing holes, set `reuse_machining_ids` on its
+`SurfaceDrillingSpec` to the earlier local operations providing them, for example
+`("side_grid",)`. Keep the complete mounting pattern in `holes`. Construction
+and independent output validation verify the same part, earlier execution and
+exact whole-hole geometry, including depth and diameter. New holes remove new
+material; matching holes retain both operation records without double removal.
+Missing sources, shifted or partially overlapping holes, different depths and
+unused reuse references fail. Other overlaps remain errors. This also applies to
+a mounting pattern made entirely from existing holes. Product compatibility and
+installed mounting evidence are still the component's responsibility.
 
 The hardware configurator owns product selection, fixing dimensions, mounting
 participants and applicable motion/clearance checks. The shared drilling tool
