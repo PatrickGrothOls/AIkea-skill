@@ -72,9 +72,9 @@ class TestAssemblyTaxonomyGenerator:
             unit / "parts" / "left_side" / "builder.py"
         ).read_text(encoding="utf-8")
         assembly_builder = (unit / "builder.py").read_text(encoding="utf-8")
-        assert "SheetPartBuilder().build(SPEC, cuts)" in part_builder
-        assert "LEFT_SIDE_BUILDER.build(cuts.for_part('left_side'))" in assembly_builder
-        assert "BuiltAssembly" in assembly_builder
+        assert "ASSEMBLY_BUILDER.build().parts" in part_builder
+        assert "PanelAssemblyBuilder(SPEC, allow_unresolved=True)" in assembly_builder
+        assert [request.part_id for request in spec.machining] == ["left_side", "right_side"]
 
         base = result.assemblies[-1]
         assert base.width_mm == 2988

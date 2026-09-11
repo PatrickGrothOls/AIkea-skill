@@ -44,8 +44,9 @@ plane in the assembled frame and returns complementary cuts to the two local pan
 frames. The deterministic panel taxonomy resolves these local blanks; generated
 builders do not recreate that boundary logic.
 
-The generated local part builder owns this call, applies the cuts assigned by the
-assembly's joint definitions, and returns the real local CadQuery part. A joint
+The shared panel executor builds these blanks and applies the cuts assigned by
+the assembly's explicit joint and machining requests. The generated cabinet part
+entry point reads its finished part from that complete build. A joint
 defines its geometry once and transforms that same geometry into each
 participating part's local frame. Verify the finished participants meet with no
 gap or unintended material overlap, and that any blind feature remains within its
@@ -81,10 +82,11 @@ source pocket from its matching receiver cut.
 
 ## Machine the cabinet hardware grid
 
-Every generated side panel owns one versioned System 32 grid before joint cuts
-are applied. The grid is local cabinet construction knowledge, not a client
-choice or a project-wide geometry setting. It uses the panel's own depth, height,
-thickness, and named inside face.
+The standard cabinet recipe explicitly requests one versioned System 32 grid for
+each side panel. The shared builder applies that request after joint cuts and
+checks that every blind bore fits the remaining material. A role name alone never
+requests a grid. Its recipe uses the panel's own depth, height, thickness and named
+inside face; custom arrangements can deliberately include or omit the request.
 
 Rows share one bottom reference so holes remain level across side panels with
 different top heights. The rows repeat every 32 mm; front and rear columns sit

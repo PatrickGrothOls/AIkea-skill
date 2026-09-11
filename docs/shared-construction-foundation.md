@@ -8,7 +8,7 @@ not limit the furniture that can be designed. This document tracks the migration
 implementation progress and evidence are recorded per work package below.
 
 Planning branch: `docs/shared-construction-foundation`.
-Current implementation branch: `feat/shared-panel-construction`.
+Current implementation branch: `feat/standard-configurator-construction`.
 Baseline: `origin/main` at `52facbf73b5ea775975025bb6409ea02ef8560bd`, fetched on
 2026-09-11. The finishing checkout stays at `fc78dfa`; its untracked `dist/`
 artifacts and the other worktrees are preserved.
@@ -28,7 +28,9 @@ WP1 now supplies the shared input values, material identity and a source trace o
 the saved wardrobe. Its 29 focused compatibility tests and the per-WP `review` skill
 passed, including an independent testing/compatibility review. See [WP1 evidence](shared-construction-inputs.md). Existing
 construction algorithms, installed skills and private design files are unchanged.
-WP2 is implemented and its review findings are fixed; WP3-WP7 remain open. The earlier
+WP2 is implemented and its review findings are fixed. WP3 implementation, focused
+regression and independent review pass; the wider Python suite is running before
+landing. See [WP3 evidence](standard-configurator-construction.md). WP4-WP7 remain open. The earlier
 composition branch remains unmerged; useful code is being reused selectively.
 
 ## Confirmed direction and evidence boundary
@@ -157,15 +159,15 @@ as appropriate. Renaming a panel's role does not change its geometry or drilling
 
 ### WP3 — Convert one standard configurator into a recipe
 
-- [ ] Choose the smallest existing carcass configurator covering the WP2 path.
-- [ ] Preserve its useful dimension, clearance and standard-practice calculations.
-- [ ] Emit the common construction inputs and call the shared builder instead
+- [x] Choose the smallest existing carcass configurator covering the WP2 path.
+- [x] Preserve its useful dimension, clearance and standard-practice calculations.
+- [x] Emit the common construction inputs and call the shared builder instead
   of maintaining a second panel/machining implementation.
-- [ ] Make its parts, placements and connections accessible for deliberate
+- [x] Make its parts, placements and connections accessible for deliberate
   customization, including shared panels between neighboring components.
-- [ ] Define saved recipe parameters versus authored overrides. On regeneration,
+- [x] Define saved recipe parameters versus authored overrides. On regeneration,
   preserve local changes or report a conflict; never silently discard them.
-- [ ] Keep a narrow compatibility adapter for existing saved projects and record
+- [x] Keep a narrow compatibility adapter for existing saved projects and record
   when it can be removed. New projects must use the common path.
 
 Acceptance: a standard cabinet retains expected dimensions, cuts, hardware and

@@ -7,6 +7,9 @@ from cabineo_connector_layout import CabineoConnectorLayout
 class ConstructionCutValidator:
     """Apply identical operation-accounting rules to built-in and injected tools."""
 
+    def __init__(self, allow_unresolved=False):
+        self.allow_unresolved = allow_unresolved
+
     def validate_spec(self, spec):
         joint_ids = tuple(joint.joint_id for joint in spec.joints)
         machining_ids = tuple(item.machining_id for item in spec.machining)
@@ -14,7 +17,9 @@ class ConstructionCutValidator:
         if len(set(operation_ids)) != len(operation_ids):
             raise PartConstructionError("machining and joint IDs must be unique")
         known = {part.part_id for part in spec.parts}
-        if any(part not in known for _, part in self.required(spec)):
+        participants = tuple(part for joint in spec.joints for part in joint.participant_ids)
+        targets = participants + tuple(item.part_id for item in spec.machining)
+        if any(part not in known for part in targets):
             raise PartConstructionError("construction operations must reference owned parts")
 
     def validate_cuts(self, spec, cuts):
@@ -43,4 +48,5 @@ class ConstructionCutValidator:
         return {
             (joint.joint_id, participant)
             for joint in spec.joints for participant in joint.participant_ids
+            if not (self.allow_unresolved and joint.joint_type == "unresolved")
         } | {(item.machining_id, item.part_id) for item in spec.machining}

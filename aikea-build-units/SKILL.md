@@ -25,7 +25,8 @@ preserving any local file that the client has changed since its last generation.
 Read [shared panel construction](references/shared-construction.md) when composing
 explicit panels, connections and machining or adapting a configurator's output.
 Use its common builder and checks; furniture-purpose names do not select machining.
-The generator below remains the compatibility route for existing template projects.
+The standard cabinet generator below emits the same editable inputs and calls
+the shared builder. Base and older saved builders retain a compatibility path.
 
 ## Generate the local units
 
@@ -49,17 +50,18 @@ long panels into CNC-sized modules, and owns its decks, rails, braces, and modul
 relationships. Each brace-to-rail relationship resolves the brace pockets and
 matching blind rail receivers together. Every cabinet side also owns one System
 32 hardware grid that shelves, hinges, drawer runners, and later compatible
-fittings can share without recalculating their own panel holes. A different furniture purpose proceeds
-when its own local design facts and construction taxonomy are available; the
-shared boundary calculation and folder writer remain unchanged.
+fittings can share without recalculating their own panel holes. The cabinet recipe
+declares that grid explicitly. An arrangement without a standard recipe can use
+the shared construction inputs directly; no new furniture-purpose registration
+is required for that route.
 
 ## Responsibility boundary
 
 This stage materializes local boundaries, part ownership, executable builders,
 and one joint list per unit. The assembly builder resolves each supported joint
 once, including the matching work required on every participating part. Each
-generated part builder owns its local part and applies the resolved work in that
-part's canonical frame through reusable AIkea construction code. The assembly
-builder is the stable entry point that executes all owned part builders.
+generated cabinet part entry point reads its finished part from the common
+assembly build. Base and saved legacy part builders retain their earlier path
+until migrated. The complete assembly builder remains the stable entry point.
 `$aikea-review-unit` consumes that built result without reconstructing its
 geometry.

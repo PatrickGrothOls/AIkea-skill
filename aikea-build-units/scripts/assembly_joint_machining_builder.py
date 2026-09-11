@@ -14,9 +14,10 @@ from part_construction_error import PartConstructionError
 class AssemblyJointMachiningBuilder:
     """Dispatch each physical joint to its deterministic machining builder."""
 
-    def __init__(self, strict: bool = False) -> None:
+    def __init__(self, strict: bool = False, allow_unresolved: bool = False) -> None:
         self.locations = LocalToParentLocation()
         self.strict = strict
+        self.allow_unresolved = allow_unresolved
         self._joint_builders = {
             "cabineo": self._build_cabineo,
             "equal_thickness_miter": self._build_equal_thickness_miter,
@@ -25,6 +26,8 @@ class AssemblyJointMachiningBuilder:
     def build(self, assembly: Any, joints: tuple[Any, ...]) -> AssemblyCuts:
         cuts = []
         for joint in joints:
+            if self.allow_unresolved and joint.joint_type == "unresolved":
+                continue
             builder = self._joint_builders.get(joint.joint_type)
             if builder is not None:
                 cuts.extend(builder(assembly, joint))

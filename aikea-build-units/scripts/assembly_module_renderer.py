@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from assembly_taxonomy import BaseAssemblyTaxonomy, LocalAssemblyTaxonomy, PartTaxonomy
+from configured_panel_module_renderer import ConfiguredPanelModuleRenderer
 
 
 AssemblyTaxonomy = LocalAssemblyTaxonomy | BaseAssemblyTaxonomy
@@ -12,6 +13,11 @@ class AssemblyModuleRenderer:
     """Create importable entry points around one authoritative local spec."""
 
     def assembly_builder(self, assembly: AssemblyTaxonomy) -> str:
+        if isinstance(assembly, LocalAssemblyTaxonomy):
+            return ConfiguredPanelModuleRenderer().assembly_builder(assembly.assembly_id)
+        return self.legacy_assembly_builder(assembly)
+
+    def legacy_assembly_builder(self, assembly: AssemblyTaxonomy) -> str:
         imports = "\n".join(
             f"from .parts.{part.part_id}.builder import BUILDER as {self._constant(part.part_id)}_BUILDER"
             for part in assembly.parts
@@ -50,7 +56,9 @@ class AssemblyModuleRenderer:
             f"SPEC = ASSEMBLY_SPEC.part({part.part_id!r})\n"
         )
 
-    def part_builder(self, assembly_id: str, part: PartTaxonomy) -> str:
+    def part_builder(self, assembly_id: str, part: PartTaxonomy, configured=False) -> str:
+        if configured:
+            return ConfiguredPanelModuleRenderer().part_builder(assembly_id, part.part_id)
         class_name = f"{self._class_name(part.part_id)}Builder"
         return (
             f'"""Scope: Build the local {part.part_id} part for {assembly_id}."""\n\n'

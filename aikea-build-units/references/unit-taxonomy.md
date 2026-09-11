@@ -28,10 +28,11 @@ assemblies/
 The unit `spec.py` is authoritative for its local boundary, resolved parts, and
 physical joint relationships. Each part `spec.py` exposes only its own finished
 part value from that unit specification. Each part builder returns its real
-CadQuery part in its canonical local frame. The assembly builder resolves the
-machining implied by the unit's supported joints, gives each part builder only
-the work owned by that part, and returns the built parts with the unit's joint
-list and resolved cuts.
+CadQuery part in its canonical local frame. The cabinet assembly builder consumes
+the explicit parts, joint and local-machining requests through the shared panel
+executor. Individual part entry points read from this same finished result.
+Base and older saved builders retain their earlier construction adapter until
+their separate migration. Both return the existing built parts, joints and cuts.
 
 The local top boundary begins at `0` and ends at the unit width. It preserves every
 confirmed project-boundary change that falls inside the unit instead of reducing

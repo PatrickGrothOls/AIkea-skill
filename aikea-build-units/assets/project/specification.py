@@ -33,6 +33,15 @@ class BoundaryPoint:
 
 
 @dataclass(frozen=True)
+class PartMachiningSpec:
+    """Request a supported local operation without relying on a part's role."""
+
+    machining_id: str
+    part_id: str
+    operation_type: str
+
+
+@dataclass(frozen=True)
 class PartSpec:
     part_id: str
     role: str
@@ -97,6 +106,7 @@ class AssemblySpec:
     joints: tuple[JointSpec | CabineoJointSpec, ...]
     child_assemblies: tuple[ChildAssemblySpec, ...] = ()
     purchased_hardware: tuple[PurchasedHardwareSpec, ...] = ()
+    machining: tuple[PartMachiningSpec, ...] = ()
 
     def part(self, part_id: str) -> PartSpec:
         return next(part for part in self.parts if part.part_id == part_id)

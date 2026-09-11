@@ -2,8 +2,9 @@
 
 Use shared construction inputs for an authored assembly or the editable output
 of a component configurator. Each part has explicit local geometry and placement;
-its role is a label, not a request to drill holes. Current template generation
-still has a compatibility path until its configurator migration is complete.
+its role is a label, not a request to drill holes. The tall-storage configurator
+now emits those inputs and uses this builder. Base generation and older saved
+builders retain their compatibility path pending their separate migration.
 
 Initialise contracts with `scripts/init_furniture_design.py <project>` using the
 active CadQuery environment. Author local inputs and a root builder that returns
@@ -32,6 +33,36 @@ cutters that miss a participant fail construction. The current explicit local
 operation (System 32) requires each blind bore to fit completely inside the
 remaining material; clipped holes or collisions with earlier cuts fail. Geometry checks do not establish
 loads, omitted design requirements or fabrication readiness.
+
+## Adapting a standard recipe
+
+`generate_unit_taxonomy.py` retains the standard cabinet calculations and writes
+editable parts, joints and `machining` into `assemblies/<id>/spec.py`. Cabinet
+metadata remains available to existing fitted-door and drawer tools. The generated
+builder executes that specification directly through `PanelAssemblyBuilder`;
+individual part entry points read the result of that same complete build.
+
+Use `dataclasses.replace` to adapt the saved parts or construct a `PanelAssemblySpec`
+from `SPEC.parts`, `SPEC.joints` and `SPEC.machining`. Keep child and purchase
+declarations too when present. Explicit System 32 requests remain independent of
+part names and roles. Update outlines, local sizes, placements and dependent joint
+references together. For a shared panel between adjacent components, give it one
+physical owner and define both connections in that owner's combined assembly;
+do not include the same board in two child inventories.
+
+Generated-file hashes distinguish untouched recipe output from authored changes.
+Regeneration updates untouched files and stops before writing if an authored file
+conflicts. Preserve those edits and deliberately reconcile them with the new
+dimensions; never remove the record or overwrite the edit to force regeneration.
+Older unrecorded files that cannot be identified exactly also require reconciliation.
+Dimension edits require a fresh build/review; previous approval is not permission
+to manufacture the revised assembly.
+
+An unfinished preview can explicitly use `allow_unresolved=True`. Only joints
+declared with `joint_type="unresolved"` omit machining, and they remain in the
+built tree and draft inventory. Missing participants and unsupported named tools
+still fail. The standard recipe uses this mode for unselected attachments; finish
+those requirements through the relevant feature tools before fabrication review.
 
 Existing operations live in `assembly_joint_machining_builder.py`,
 `panel_machining_builder.py`, `cabineo_joint.py` and `equal_thickness_miter_joint.py`.

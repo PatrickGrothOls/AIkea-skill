@@ -1,18 +1,20 @@
 """Scope: Describe explicit panel construction independently of furniture recipes."""
 
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, Protocol
 
-from .specification import ChildAssemblySpec, PartSpec, PurchasedHardwareSpec
+from .specification import (
+    AssemblySpecification, ChildAssemblySpec, PartMachiningSpec, PartSpec, PurchasedHardwareSpec,
+)
 
 
-@dataclass(frozen=True)
-class PartMachiningSpec:
-    """Request a supported local operation without relying on a part's role."""
+class ConstructionSpecification(AssemblySpecification, Protocol):
+    """Accept both configured metadata and directly authored construction."""
 
-    machining_id: str
-    part_id: str
-    operation_type: str
+    joints: tuple[Any, ...]
+    machining: tuple[PartMachiningSpec, ...]
+
+    def part(self, part_id: str) -> PartSpec: ...
 
 
 @dataclass(frozen=True)

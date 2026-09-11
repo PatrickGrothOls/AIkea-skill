@@ -10,6 +10,7 @@ from assembly_taxonomy import (
     LocalAssemblyTaxonomy,
 )
 from part_spec_source_renderer import PartSpecSourceRenderer
+from configured_panel_module_renderer import ConfiguredPanelModuleRenderer
 
 
 class AssemblySpecRenderer:
@@ -38,6 +39,7 @@ class AssemblySpecRenderer:
             "    JointSpec,\n"
             "    LocalToParentPlacement,\n"
             "    PartSpec,\n"
+            "    PartMachiningSpec,\n"
             "    Point3D,\n"
             "    AxisBasis,\n"
             "    AxisDirection,\n"
@@ -61,6 +63,7 @@ class AssemblySpecRenderer:
             "    joints=(\n"
             f"{joints}\n"
             "    ),\n"
+            f"{ConfiguredPanelModuleRenderer().machining(assembly)}"
             ")\n"
         )
 
