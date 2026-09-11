@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from typing import Any, Protocol
 
 from .specification import (
-    AssemblySpecification, ChildAssemblySpec, PartMachiningSpec, PartSpec, PurchasedHardwareSpec,
+    AssemblySpecification, ChildAssemblySpec, PartMachiningSpec, PartSpec, PurchasedHardwareSpec, SurfaceDrillingSpec,
 )
 from .construction_requirement import ConstructionRequirementSpec
 
@@ -13,7 +13,7 @@ class ConstructionSpecification(AssemblySpecification, Protocol):
     """Accept both configured metadata and directly authored construction."""
 
     joints: tuple[Any, ...]
-    machining: tuple[PartMachiningSpec, ...]
+    machining: tuple[PartMachiningSpec | SurfaceDrillingSpec, ...]
 
     def part(self, part_id: str) -> PartSpec: ...
 
@@ -28,7 +28,7 @@ class PanelAssemblySpec:
     joints: tuple[Any, ...] = ()
     child_assemblies: tuple[ChildAssemblySpec, ...] = ()
     purchased_hardware: tuple[PurchasedHardwareSpec, ...] = ()
-    machining: tuple[PartMachiningSpec, ...] = ()
+    machining: tuple[PartMachiningSpec | SurfaceDrillingSpec, ...] = ()
     requirements: tuple[ConstructionRequirementSpec, ...] | None = None
 
     def part(self, part_id: str) -> PartSpec:

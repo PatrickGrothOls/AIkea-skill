@@ -33,9 +33,10 @@ The dimensions above demonstrate the contract; they are not project defaults.
 Leaving `machining=()` produces an undrilled blank. Use explicit `CabineoJointSpec`
 or a supported miter joint to join actual panels. Joint tools derive both cuts
 from their participants' frames. Unknown operations, incorrect ownership and
-cutters that miss a participant fail construction. The current explicit local
-operation (System 32) requires each blind bore to fit completely inside the
-remaining material; clipped holes or collisions with earlier cuts fail. Geometry checks do not establish
+cutters that miss a participant fail construction. Explicit local operations
+(System 32 and [surface drilling](surface-drilling.md)) require their cutters to
+fit completely inside the remaining material; clipped holes or collisions with
+earlier cuts fail. Geometry checks do not establish
 loads, omitted design requirements or fabrication readiness.
 
 ## Adapting a standard recipe
@@ -69,7 +70,7 @@ still fail. The standard recipe uses this mode for unselected attachments; finis
 those requirements through the relevant feature tools before fabrication review.
 
 Existing operations live in `assembly_joint_machining_builder.py`,
-`panel_machining_builder.py`, `cabineo_joint.py` and `equal_thickness_miter_joint.py`.
+`panel_machining_builder.py`, `surface_hole_pattern.py`, `cabineo_joint.py` and `equal_thickness_miter_joint.py`.
 Inspect their contracts before creating a new operation. A custom blank/joint
 builder uses the same single-shape and participant-cut checks. Shape-specific
 extensions remain possible; standard machining should be reused.
