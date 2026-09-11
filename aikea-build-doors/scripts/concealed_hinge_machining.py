@@ -1,4 +1,4 @@
-"""Scope: Cut door-side hinge preparation while preserving the cabinet-owned grid."""
+"""Scope: Adapt the existing slab-door plan to surface-based hinge drilling."""
 
 from __future__ import annotations
 
@@ -10,6 +10,7 @@ import cadquery as cq
 from door_hinge_plan import DoorHingePlan
 from door_hinge_side import DoorHingeSide
 from riex_nc70_hinge_profile import RiexNc70HingeProfile
+from riex_nc70_cup_pattern import RiexNc70CupPattern
 
 
 @dataclass(frozen=True, slots=True)
@@ -53,57 +54,14 @@ class ConcealedHingeMachining:
         hinge_side: DoorHingeSide = DoorHingeSide.LEFT,
         door_width_mm: float = 0.0,
     ) -> cq.Workplane:
-        cup_center_mm = self._edge_position(
-            profile.cup_center_from_edge_mm,
-            hinge_side,
-            door_width_mm,
-        )
-        fixing_line_mm = self._edge_position(
-            profile.cup_fixing_line_from_edge_mm,
-            hinge_side,
-            door_width_mm,
-        )
-        cup = (
-            cq.Workplane("XY", origin=(0.0, 0.0, -0.1))
-            .center(cup_center_mm, center_height_mm)
-            .circle(profile.cup_diameter_mm / 2.0)
-            .extrude(profile.cup_depth_mm + 0.1)
-        )
-        fixing_centers = (
-            center_height_mm - profile.cup_fixing_spacing_mm / 2.0,
-            center_height_mm + profile.cup_fixing_spacing_mm / 2.0,
-        )
-        return cup.union(
-            self._pilot_cylinders(
-                fixing_line_mm,
-                fixing_centers,
-                -0.1,
-                self._PILOT_DEPTH_MM + 0.1,
-            )
-        )
-
-    def _edge_position(
-        self,
-        distance_from_edge_mm: float,
-        hinge_side: DoorHingeSide,
-        door_width_mm: float,
-    ) -> float:
-        if hinge_side is DoorHingeSide.LEFT:
-            return distance_from_edge_mm
-        return door_width_mm - distance_from_edge_mm
-
-    def _pilot_cylinders(
-        self,
-        x_mm: float,
-        y_values_mm: tuple[float, float],
-        origin_z_mm: float,
-        depth_mm: float,
-    ) -> cq.Workplane:
-        return (
-            cq.Workplane("XY", origin=(0.0, 0.0, origin_z_mm))
-            .pushPoints(tuple((x_mm, y_mm) for y_mm in y_values_mm))
-            .circle(self._PILOT_DIAMETER_MM / 2.0)
-            .extrude(depth_mm)
-        )
+        left = hinge_side is DoorHingeSide.LEFT
+        cup_x = (profile.cup_center_from_edge_mm if left else
+                 door_width_mm-profile.cup_center_from_edge_mm)
+        surface = cq.Plane(origin=(cup_x, center_height_mm, 0),
+                           xDir=(1 if left else -1, 0, 0), normal=(0, 0, 1))
+        pattern = RiexNc70CupPattern(profile, self._PILOT_DIAMETER_MM,
+                                     self._PILOT_DEPTH_MM).build()
+        holes = pattern.place(surface)
+        return cq.Workplane(obj=cq.Compound.makeCompound([hole.cutter for hole in holes]))
 
 __all__ = ["ConcealedHingeMachining", "HingedPanelSet"]

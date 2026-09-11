@@ -52,6 +52,7 @@ class TestDoorFeatureGeneration:
             {
                 "module": "door_hinges.feature",
                 "order": 20,
+                "affected_purchased_hardware_paths": ["hinge_01_hinge", "hinge_01_plate"],
                 "review_module": "door_hinges.review",
                 "affected_manufactured_part_paths": [
                     "door_panel",
@@ -110,7 +111,7 @@ class TestDoorFeatureGeneration:
             door_thickness_mm=door["thickness"],
             door_mass_kg=20.0,
             overlay_mm=17.0,
-            placements=(DoorHingePlacement("hinge_01", 500.0, 500.0, (480.0, 512.0)),),
+            placements=(DoorHingePlacement("hinge_01", 500.0, 500.0, (484.0, 516.0)),),
             compatibility_issues=(),
         )
 

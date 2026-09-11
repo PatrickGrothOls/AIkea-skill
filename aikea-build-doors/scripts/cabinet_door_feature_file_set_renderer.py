@@ -9,6 +9,8 @@ from cabinet_feature_builder_wrapper_renderer import (
     CabinetFeatureBuilderWrapperRenderer,
 )
 from door_hardware_spec_renderer import DoorHardwareSpecRenderer
+from door_machining_source_renderer import DoorMachiningSourceRenderer
+from complete_assembly_builder_renderer import CompleteAssemblyBuilderRenderer
 from door_hinge_plan import DoorHingePlan
 from riex_nc70_hinge_profile import RiexNc70HingeProfile
 
@@ -28,6 +30,8 @@ class CabinetDoorFeatureFileSetRenderer:
     ) -> dict[Path, str]:
         root = Path("assemblies") / plan.assembly_id
         return {
+            root / "complete_builder.py": CompleteAssemblyBuilderRenderer().render(plan.assembly_id),
+            root / "door_hinges/machining.py": DoorMachiningSourceRenderer().render(assembly, plan, profile),
             root / "door_hinges/__init__.py": (
                 f'"""Scope: Contain the door feature owned by {plan.assembly_id}."""\n'
             ),
@@ -53,43 +57,18 @@ class CabinetDoorFeatureFileSetRenderer:
 
     def _feature(self, plan: DoorHingePlan) -> str:
         return (
-            f'"""Scope: Apply the fitted door and hinges to {plan.assembly_id}."""\n\n'
+            f'"""Scope: Apply declared hinge machining and owned purchases to {plan.assembly_id}."""\n\n'
             "from dataclasses import replace\n"
-            "from assemblies.specification import (\n"
-            "    BuiltAssembly, BuiltPurchasedHardware,\n"
-            ")\n"
-            "from concealed_hinge_machining import ConcealedHingeMachining\n"
-            "from riex_nc70_hinge_profile import RIEX_NC70_FULL_OVERLAY\n\n"
+            "from assemblies.specification import BuiltPurchasedHardware\n"
+            "from panel_machining_feature import PanelMachiningFeature\n\n"
             "from .hardware import DOOR_HARDWARE\n"
-            "from .plan import PLAN\n\n\n"
+            "from .machining import DOOR_MACHINING, DOOR_REQUIREMENTS\n\n\n"
             "class CabinetDoorFeature:\n"
-            "    \"\"\"Machine the door and retain every purchased hinge instance.\"\"\"\n\n"
-            "    def apply(self, cabinet) -> BuiltAssembly:\n"
-            "        machined = ConcealedHingeMachining().apply(\n"
-            "            cabinet, PLAN, RIEX_NC70_FULL_OVERLAY\n"
-            "        )\n"
-            "        replacements = {\n"
-            "            'door_panel': machined.door,\n"
-            "            PLAN.hinge_side.side_part_id: machined.cabinet_side,\n"
-            "        }\n"
-            "        parts = tuple(\n"
-            "            replace(part, solid=replacements.get(part.spec.part_id, part.solid))\n"
-            "            for part in cabinet.parts\n"
-            "        )\n"
-            "        spec = replace(\n"
-            "            cabinet.spec,\n"
-            "            purchased_hardware=(\n"
-            "                cabinet.spec.purchased_hardware + DOOR_HARDWARE\n"
-            "            ),\n"
-            "        )\n"
-            "        hardware = tuple(\n"
-            "            BuiltPurchasedHardware(item, None) for item in DOOR_HARDWARE\n"
-            "        )\n"
-            "        return BuiltAssembly(\n"
-            "            spec=spec, parts=parts, joints=cabinet.joints, cuts=cabinet.cuts,\n"
-            "            child_assemblies=cabinet.child_assemblies,\n"
-            "            purchased_hardware=cabinet.purchased_hardware + hardware,\n"
-            "        )\n\n\n"
+            "    def apply(self, cabinet):\n"
+            "        machined = PanelMachiningFeature().apply(cabinet, DOOR_MACHINING, DOOR_REQUIREMENTS)\n"
+            "        spec = replace(machined.spec, purchased_hardware=machined.spec.purchased_hardware + DOOR_HARDWARE)\n"
+            "        hardware = tuple(BuiltPurchasedHardware(item, None) for item in DOOR_HARDWARE)\n"
+            "        return replace(machined, spec=spec, purchased_hardware=machined.purchased_hardware + hardware)\n\n\n"
             "FEATURE = CabinetDoorFeature()\n"
         )
 

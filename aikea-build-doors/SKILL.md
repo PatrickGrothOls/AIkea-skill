@@ -82,3 +82,5 @@ visual proof.
 
 Half-overlay and inset relationships, the 26 mm mini-hinge profile, final screw
 selection, repetition across a wardrobe, evals, and toolpaths remain later gates.
+
+Read [shared hinge construction](references/shared-hinge-construction.md) for the generated machining inputs and evidence boundary.

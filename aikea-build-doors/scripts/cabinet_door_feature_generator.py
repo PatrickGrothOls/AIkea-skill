@@ -43,6 +43,9 @@ class CabinetDoorFeatureGenerator:
             "door_hinges.feature",
             20,
             review_module="door_hinges.review",
+            affected_purchased_hardware_paths=tuple(
+                f"{placement.hinge_id}_{item}" for placement in plan.placements for item in ("hinge", "plate")
+            ),
             affected_manufactured_part_paths=(
                 "door_panel",
                 plan.hinge_side.side_part_id,

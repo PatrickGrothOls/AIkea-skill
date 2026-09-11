@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import importlib
+from dataclasses import replace
 from pathlib import Path
 import re
 from typing import Any
@@ -38,6 +39,7 @@ class GeneratedAssemblyBuilderLoader:
         project_root: Path,
         assembly_id: str,
         builder_module: str | None = None,
+        *, exclude_features: tuple[str, ...] = (),
     ) -> Any:
         if not self._ID_PATTERN.fullmatch(assembly_id):
             raise UnitMockupInputError(["the assembly must have a stable id"])
@@ -51,16 +53,29 @@ class GeneratedAssemblyBuilderLoader:
             raise UnitMockupInputError(
                 [f"missing generated local builder: {builder_path}"]
             )
+        if any(not re.fullmatch(r"[a-z][a-z0-9_]*(?:\.[a-z][a-z0-9_]*)*", name) for name in exclude_features):
+            raise UnitMockupInputError(["excluded features must have stable module names"])
         built = self.runtime.execute(
             project_root,
-            lambda: importlib.import_module(
-                f"assemblies.{assembly_id}.{builder_module}"
-            ).BUILDER.build(),
+            lambda: self._build(project_root, assembly_id, builder_module, exclude_features),
         )
         for visit in self.walk(project_root, built):
             if hasattr(visit, "assembly"):
                 ConstructionResultValidator().validate(visit.assembly)
         return built
+
+    def _build(self, project_root, assembly_id, builder_module, excluded):
+        package = f"assemblies.{assembly_id}"
+        builder = importlib.import_module(f"{package}.{builder_module}").BUILDER
+        existing = tuple(name for name in excluded if
+                         (project_root / "assemblies" / assembly_id / Path(*name.split("."))).with_suffix(".py").is_file())
+        if existing:
+            composer = importlib.import_module("assemblies.assembly_feature").FeatureComposedAssemblyBuilder
+            if not isinstance(builder, composer):
+                raise UnitMockupInputError(["feature exclusion needs the shared composed builder; preserve the authored builder"])
+            removed = {id(importlib.import_module(f"{package}.{name}").FEATURE) for name in existing}
+            builder = replace(builder, features=tuple(feature for feature in builder.features if id(feature) not in removed))
+        return builder.build()
 
     def walk(self, project_root: Path, built_assembly: Any) -> tuple[Any, ...]:
         """Traverse one returned assembly through its generated tree contract."""

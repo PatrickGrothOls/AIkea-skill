@@ -62,7 +62,9 @@ class CabinetDoorHingeReviewGenerator:
         assembly_id: str,
         hardware_root: Path,
     ) -> CabinetDoorHingeReviewResult:
-        built = self.loader.load_assembly(project_root, assembly_id)
+        built = self.loader.load_assembly(
+            project_root, assembly_id, exclude_features=("door_hinges.feature",)
+        )
         profile = RIEX_NC70_FULL_OVERLAY
         run = self.assembly_run.read(project)
         opening_run = self.opening_run.resolve(
