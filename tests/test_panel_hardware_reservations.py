@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 import unittest
+from types import SimpleNamespace
 
 from door_hinge_side import DoorHingeSide
 from hettich_ka_5332_hardware_reservations import (
@@ -24,12 +25,25 @@ class _Part:
     role: str
     dimensions_mm: tuple[tuple[str, float], ...]
     local_size_mm: tuple[float, float, float] = ()
+    inside_face: str = ">Z"
+
+    @property
+    def local_to_parent(self):
+        left = self.part_id == "left_side"
+        axes = ((0, 1, 0), (0, 0, 1), (1, 0, 0)) if left else ((0, -1, 0), (0, 0, 1), (-1, 0, 0))
+        directions = tuple(SimpleNamespace(x=x, y=y, z=z) for x, y, z in axes)
+        return SimpleNamespace(
+            origin_in_parent=SimpleNamespace(x_mm=0 if left else 504, y_mm=0 if left else 582, z_mm=0),
+            axis_basis=SimpleNamespace(**dict(zip(("local_x_in_parent", "local_y_in_parent", "local_z_in_parent"), directions))),
+        )
 
 
 class _Assembly:
     assembly_id = "cabinet_01"
     base_height_mm = 0.0
     door_bottom_mm = 0.0
+    inside_depth_mm = 582.0
+    top = (SimpleNamespace(height_mm=1000.0),)
 
     def __init__(self) -> None:
         self.parts = (

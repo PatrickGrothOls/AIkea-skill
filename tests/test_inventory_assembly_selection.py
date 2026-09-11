@@ -14,7 +14,7 @@ class TestInventoryAssemblySelection:
         assemblies = tmp_path / "assemblies"
         assemblies.mkdir()
         (assemblies / "__init__.py").write_text("")
-        for name in ("specification.py", "assembly_composition.py", "assembly_placement.py", "assembly_tree.py"):
+        for name in ("specification.py", "assembly_composition.py", "assembly_placement.py", "assembly_tree.py", "construction_requirement.py"):
             shutil.copy2(templates / name, assemblies / name)
         root = assemblies / "furniture_legs_01"
         root.mkdir()

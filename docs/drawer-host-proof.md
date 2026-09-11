@@ -4,7 +4,8 @@
 
 WP5b proof slice on `feat/drawer-host-proof`, based on reviewed `e72d168`.
 Implementation, focused tests and independent review pass. The full Python
-regression is running because the source-loading fix affects both build routes. The generated KA 4532 proof will load the current
+regression finished with two stale test-fixture failures; their repair is tracked in
+[shared-construction regressions](shared-construction-regressions.md). The generated KA 4532 proof will load the current
 host declaration and check actual named support solids, bay limits, and the eight
 fixing support points. Exact purchased-source, articulation, motion and collision
 checks remain in force. Missing longer screw and pilot authority remains blocked.
@@ -37,9 +38,10 @@ that declaration from stale layout or evidence files.
 - Both inherited checkers received [scope review](reviews/drawer-host-proof-scope.md).
   Their new host-agreement helpers remain within those responsibilities.
 - All nine skill packages and their links validate.
-- [ ] Record the full Python regression result before treating the broader stack
-  as validated. It is running in this worktree while the next component slice
-  proceeds in a separate worktree.
+- [x] Record the full Python run at `87bada6`: 671 passed, 72 subtests passed,
+  five skipped, two failed in 1580.31 seconds. The two failures are a missing
+  copied requirement template and an obsolete frameless host fixture; see the
+  linked follow-up for fixes and rerun evidence.
 
 This is local software evidence with test CAD, not a new physical product trial,
 remote CI result or manufacturing approval.
