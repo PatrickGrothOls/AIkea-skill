@@ -13,41 +13,7 @@ class AssemblyModuleRenderer:
     """Create importable entry points around one authoritative local spec."""
 
     def assembly_builder(self, assembly: AssemblyTaxonomy) -> str:
-        if isinstance(assembly, LocalAssemblyTaxonomy):
-            return ConfiguredPanelModuleRenderer().assembly_builder(assembly.assembly_id)
-        return self.legacy_assembly_builder(assembly)
-
-    def legacy_assembly_builder(self, assembly: AssemblyTaxonomy) -> str:
-        imports = "\n".join(
-            f"from .parts.{part.part_id}.builder import BUILDER as {self._constant(part.part_id)}_BUILDER"
-            for part in assembly.parts
-        )
-        builders = "\n".join(
-            f"                {self._constant(part.part_id)}_BUILDER.build(cuts.for_part({part.part_id!r})),"
-            for part in assembly.parts
-        )
-        class_name = f"{self._class_name(assembly.assembly_id)}Builder"
-        return (
-            f'"""Scope: Build every local part owned by {assembly.assembly_id}."""\n\n'
-            "from assemblies.specification import BuiltAssembly\n"
-            "from assembly_joint_machining_builder import AssemblyJointMachiningBuilder\n\n"
-            "from .joints.spec import JOINTS\n"
-            f"{imports}\n"
-            "from .spec import SPEC\n\n\n"
-            f"class {class_name}:\n"
-            "    \"\"\"Build the unit's local parts and retain its physical joints.\"\"\"\n\n"
-            "    def build(self) -> BuiltAssembly:\n"
-            "        cuts = AssemblyJointMachiningBuilder().build(SPEC, JOINTS)\n"
-            "        return BuiltAssembly(\n"
-            "            spec=SPEC,\n"
-            "            parts=(\n"
-            f"{builders}\n"
-            "            ),\n"
-            "            joints=JOINTS,\n"
-            "            cuts=cuts.all,\n"
-            "        )\n\n\n"
-            f"BUILDER = {class_name}()\n"
-        )
+        return ConfiguredPanelModuleRenderer().assembly_builder(assembly.assembly_id)
 
     def part_spec(self, assembly_id: str, part: PartTaxonomy) -> str:
         return (
@@ -56,21 +22,8 @@ class AssemblyModuleRenderer:
             f"SPEC = ASSEMBLY_SPEC.part({part.part_id!r})\n"
         )
 
-    def part_builder(self, assembly_id: str, part: PartTaxonomy, configured=False) -> str:
-        if configured:
-            return ConfiguredPanelModuleRenderer().part_builder(assembly_id, part.part_id)
-        class_name = f"{self._class_name(part.part_id)}Builder"
-        return (
-            f'"""Scope: Build the local {part.part_id} part for {assembly_id}."""\n\n'
-            "from assemblies.specification import BuiltPart\n\n"
-            "from .spec import SPEC\n\n\n"
-            f"class {class_name}:\n"
-            f"    \"\"\"Construct the {part.role} in its local manufacturing frame.\"\"\"\n\n"
-            "    def build(self, cuts=()) -> BuiltPart:\n"
-            "        from sheet_part_builder import SheetPartBuilder\n\n"
-            "        return BuiltPart(SPEC, SheetPartBuilder().build(SPEC, cuts))\n\n\n"
-            f"BUILDER = {class_name}()\n"
-        )
+    def part_builder(self, assembly_id: str, part: PartTaxonomy) -> str:
+        return ConfiguredPanelModuleRenderer().part_builder(assembly_id, part.part_id)
 
     def joints_spec(self, assembly_id: str) -> str:
         return (

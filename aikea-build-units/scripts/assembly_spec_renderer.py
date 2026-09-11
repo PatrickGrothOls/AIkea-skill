@@ -85,6 +85,7 @@ class AssemblySpecRenderer:
             "from assemblies.specification import (\n"
             "    BaseAssemblySpec,\n"
             "    BaseModuleSpec,\n"
+            "    ConstructionRequirementSpec,\n"
             "    CabineoJointSpec,\n"
             "    JointSpec,\n"
             "    LocalToParentPlacement,\n"
@@ -112,6 +113,8 @@ class AssemblySpecRenderer:
             "    joints=(\n"
             f"{joints}\n"
             "    ),\n"
+            "    machining=(),\n"
+            f"{ConfiguredRequirementRenderer().render(assembly)}"
             ")\n"
         )
 

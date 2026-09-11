@@ -8,7 +8,7 @@ not limit the furniture that can be designed. This document tracks the migration
 implementation progress and evidence are recorded per work package below.
 
 Planning branch: `docs/shared-construction-foundation`.
-Current implementation branch: `feat/construction-position-evidence`.
+Current implementation branch: `feat/base-configurator-construction`.
 Baseline: `origin/main` at `52facbf73b5ea775975025bb6409ea02ef8560bd`, fetched on
 2026-09-11. The finishing checkout stays at `fc78dfa`; its untracked `dist/`
 artifacts and the other worktrees are preserved.
@@ -35,7 +35,8 @@ WP4a operation-result validation is implemented and reviewed. WP4b requirement
 coverage, current input binding and scoped extension qualification are implemented
 and reviewed. WP4c shared position/contact evidence is implemented and reviewed;
 the reproduced envelope-authority finding is fixed and independently rechecked.
-WP5-WP7 remain open. See [WP4c evidence](construction-position-evidence.md).
+WP5a base migration is implemented and reviewed; remaining WP5-WP7 work is open.
+See [WP4c evidence](construction-position-evidence.md) and [base migration](base-configurator-construction.md).
 See [WP4 progress](common-construction-checks.md) and
 [requirement/evidence work](construction-requirement-evidence.md). The earlier
 composition branch remains unmerged; useful code is being reused selectively.
@@ -204,7 +205,7 @@ load, motion or manufacturing evidence. No automatic strength certification is i
 
 ### WP5 — Migrate useful components one at a time
 
-- [ ] Migrate remaining cabinet/base configurators as recipes using the same path.
+- [x] Migrate remaining cabinet/base configurators as recipes using the same path.
 - [ ] Adapt a drawer configurator with its exact selected runners and both host
   and drawer machining; validate ownership and movement in the parent assembly.
 - [ ] Adapt doors/hinges with exact selected mounting interfaces and both sides

@@ -129,7 +129,7 @@ class AssemblyTaxonomyRenderer:
                 assembly.assembly_id, part
             )
             files[part_root / "builder.py"] = self.modules.part_builder(
-                assembly.assembly_id, part, configured=isinstance(assembly, LocalAssemblyTaxonomy),
+                assembly.assembly_id, part,
             )
         return files
 

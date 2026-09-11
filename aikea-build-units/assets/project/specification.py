@@ -139,6 +139,7 @@ class BaseAssemblySpec:
     child_assemblies: tuple[ChildAssemblySpec, ...] = ()
     purchased_hardware: tuple[PurchasedHardwareSpec, ...] = ()
     requirements: tuple[ConstructionRequirementSpec, ...] | None = None
+    machining: tuple[PartMachiningSpec, ...] = ()
 
     @property
     def base_height_mm(self) -> float:

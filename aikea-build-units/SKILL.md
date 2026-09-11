@@ -25,8 +25,10 @@ preserving any local file that the client has changed since its last generation.
 Read [shared panel construction](references/shared-construction.md) when composing
 explicit panels, connections and machining or adapting a configurator's output.
 Use its common builder and checks; furniture-purpose names do not select machining.
-The standard cabinet generator below emits the same editable inputs and calls
-the shared builder. Base and older saved builders retain a compatibility path.
+The standard cabinet and structural-base recipes below emit the same editable
+inputs and call the shared builder. Older saved builders require explicit migration.
+For the base's input, placement and evidence contract, read
+[the base recipe](references/base-recipe.md).
 
 ## Generate the local units
 
@@ -60,8 +62,7 @@ is required for that route.
 This stage materializes local boundaries, part ownership, executable builders,
 and one joint list per unit. The assembly builder resolves each supported joint
 once, including the matching work required on every participating part. Each
-generated cabinet part entry point reads its finished part from the common
-assembly build. Base and saved legacy part builders retain their earlier path
-until migrated. The complete assembly builder remains the stable entry point.
+generated cabinet and base part entry point reads its finished part from the common
+assembly build. The complete assembly builder remains the stable entry point.
 `$aikea-review-unit` consumes that built result without reconstructing its
 geometry.

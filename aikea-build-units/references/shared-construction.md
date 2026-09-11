@@ -3,8 +3,8 @@
 Use shared construction inputs for an authored assembly or the editable output
 of a component configurator. Each part has explicit local geometry and placement;
 its role is a label, not a request to drill holes. The tall-storage configurator
-now emits those inputs and uses this builder. Base generation and older saved
-builders retain their compatibility path pending their separate migration.
+and [structural-base recipes](base-recipe.md) emit those inputs and use this
+builder. Older saved builders need explicit conflict-preserving migration.
 
 Initialise contracts with `scripts/init_furniture_design.py <project>` using the
 active CadQuery environment. Author local inputs and a root builder that returns

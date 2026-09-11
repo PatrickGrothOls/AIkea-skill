@@ -1,4 +1,4 @@
-"""Scope: Render a cabinet recipe's entry points into the shared panel executor."""
+"""Scope: Render configured panel entry points and explicit cabinet shelf-grid requests."""
 
 
 class ConfiguredPanelModuleRenderer:
