@@ -9,6 +9,8 @@ from typing import Any
 
 import yaml
 
+from drawer_host_loader import DrawerHostLoader
+
 from complete_assembly_review_generator import CompleteAssemblyReviewGenerator
 from hettich_ka_4532_spacer_proof_checker import (
     HettichKa4532SpacerProofChecker,
@@ -30,10 +32,11 @@ class HettichKa4532SpacerProofResult:
 class HettichKa4532SpacerProofGenerator:
     """Run the generic recursive review twice and compare its exact solids."""
 
-    def __init__(self, review=None, checker=None, step_loader=None) -> None:
+    def __init__(self, review=None, checker=None, step_loader=None, host_loader=None) -> None:
         self.review = review or CompleteAssemblyReviewGenerator()
         self.checker = checker or HettichKa4532SpacerProofChecker()
         self.steps = step_loader or HettichKa4532SpacerStepSetLoader()
+        self.hosts = host_loader or DrawerHostLoader()
 
     def generate(
         self,
@@ -93,6 +96,7 @@ class HettichKa4532SpacerProofGenerator:
             },
             machining,
             reservations,
+            self.hosts.load(project_root, assembly_id),
         )
         report.write(report_path)
         return HettichKa4532SpacerProofResult(

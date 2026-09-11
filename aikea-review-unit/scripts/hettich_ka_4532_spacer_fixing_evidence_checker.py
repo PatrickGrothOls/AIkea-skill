@@ -34,6 +34,7 @@ class HettichKa4532SpacerFixingEvidenceChecker:
         drawer_id: str,
         installed_parts: dict[str, Any],
         step_set: Any,
+        host=None,
     ) -> bool:
         resolved = machining.get("resolved_authority", {})
         rail = resolved.get("rail_fixed_member_hole_pattern", {})
@@ -66,7 +67,7 @@ class HettichKa4532SpacerFixingEvidenceChecker:
             and spacer.get("sha256") == step_set.spacer_source.asset.sha256
             and self._axes_match(
                 spacer.get("axes", ()),
-                self.installed.axis_height(drawer_id, installed_parts, step_set),
+                self.installed.axis_height(drawer_id, installed_parts, step_set, host),
             )
         )
 

@@ -9,6 +9,7 @@ from hettich_ka_4532_spacer_proof_generator import (
 )
 from hettich_ka_4532_spacer_proof_generator_test_support import (
     CompleteReviewProbe,
+    HostLoaderProbe,
     HettichKa4532SpacerProofProjectFixture,
     ProofCheckerProbe,
     StepLoaderProbe,
@@ -26,6 +27,7 @@ class TestHettichKa4532SpacerProofGenerator:
             review,
             checker,
             StepLoaderProbe(),
+            HostLoaderProbe(),
         )
 
         result = generator.generate(
@@ -43,6 +45,7 @@ class TestHettichKa4532SpacerProofGenerator:
         assert checker.call[4] == ("open",)
         assert checker.call[6] == "exact-step-set"
         assert len(checker.call[9]) == 2
+        assert checker.call[10] == "current-project-host"
         assert result.report_path.is_file()
 
     def test_failed_rerun_invalidates_older_valid_evidence(self, tmp_path) -> None:
@@ -51,6 +54,7 @@ class TestHettichKa4532SpacerProofGenerator:
             CompleteReviewProbe(),
             ProofCheckerProbe(),
             StepLoaderProbe(),
+            HostLoaderProbe(),
         )
         output = tmp_path / "review"
         generator.generate(tmp_path, "cabinet_01", output)

@@ -4,6 +4,10 @@ from __future__ import annotations
 
 from typing import Any
 
+from cadquery import BoundBox
+from OCP.Bnd import Bnd_Box
+from OCP.BRepBndLib import BRepBndLib
+
 from drawer_hardware_overlap_checker import DrawerHardwareOverlapChecker
 
 
@@ -86,7 +90,10 @@ class HettichKa4532SpacerCollisionChecker:
         )
 
     def _shape_bounds(self, shape: Any) -> tuple[float, ...]:
-        bounds = shape.BoundingBox()
+        # Viewer triangulation has deflection margins; use the CAD surfaces themselves.
+        box = Bnd_Box()
+        BRepBndLib.AddOptimal_s(shape.wrapped, box, False)
+        bounds = BoundBox(box)
         return (
             bounds.xmin,
             bounds.xmax,

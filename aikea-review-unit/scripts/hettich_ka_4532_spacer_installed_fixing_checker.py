@@ -13,6 +13,7 @@ from hettich_ka_4532_installed_runner_checker import (
 )
 from hettich_ka_4532_spacer_profile import HETTICH_KA_4532_500_WITH_13952
 from source_normalized_frame import SourceNormalizedFrame
+import cadquery as cq
 
 
 class HettichKa4532SpacerInstalledFixingChecker:
@@ -29,19 +30,20 @@ class HettichKa4532SpacerInstalledFixingChecker:
         drawer_id: str,
         parts: dict[str, Any],
         step_set: Any,
+        host=None,
     ) -> float | None:
         if not {
             f"{drawer_id}_spacer_left",
             f"{drawer_id}_spacer_right",
         } <= parts.keys():
             return None
-        datums = self.runners.check(drawer_id, parts, step_set)
+        datums = self.runners.check(drawer_id, parts, step_set, host)
         if datums is None:
             return None
         heights: list[float] = []
         for side in ("left", "right"):
             side_heights = self._side_heights(
-                side, drawer_id, parts, step_set, datums
+                side, drawer_id, parts, step_set, datums, host
             )
             if side_heights is None:
                 return None
@@ -63,6 +65,7 @@ class HettichKa4532SpacerInstalledFixingChecker:
         parts: dict[str, Any],
         step_set: Any,
         datums: HettichKa4532InstalledRunnerDatums,
+        host,
     ) -> tuple[float, ...] | None:
         pattern = HETTICH_KA_4532_500_FIXED_MEMBER_HOLES
         profile = HETTICH_KA_4532_500_WITH_13952
@@ -121,8 +124,18 @@ class HettichKa4532SpacerInstalledFixingChecker:
                 direction,
             ):
                 return None
+            if host is not None and not self._host_supports(host, side, parts, cabinet_point):
+                return None
             heights.append(runner_point[2])
         return tuple(heights)
+
+    def _host_supports(self, host, side, parts, point):
+        # This is an interior geometry probe, not a pilot-hole or screw specification.
+        step = min(0.1, host.part(side).local_size_mm[2] / 2)
+        direction = 1 if side == "left" else -1
+        probe = cq.Vector(point[0]-direction*step, point[1], point[2])
+        shape = parts[host.part(side).part_id].placed_shape()
+        return any(solid.isInside(probe, 1e-6) for solid in shape.Solids())
 
     def _axis_matches(
         self,

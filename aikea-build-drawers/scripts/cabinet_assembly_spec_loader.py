@@ -5,8 +5,9 @@ from __future__ import annotations
 import importlib
 from pathlib import Path
 import re
-import sys
 from typing import Any
+
+from project_assembly_module_runtime import ProjectAssemblyModuleRuntime
 
 
 class CabinetAssemblySpecError(ValueError):
@@ -29,22 +30,10 @@ class CabinetAssemblySpecLoader:
             raise CabinetAssemblySpecError(
                 f"missing generated cabinet specification: {spec_path}"
             )
-        previous = {
-            name: module
-            for name, module in sys.modules.items()
-            if name == "assemblies" or name.startswith("assemblies.")
-        }
-        for name in previous:
-            sys.modules.pop(name)
-        sys.path.insert(0, str(project_root))
-        try:
-            return importlib.import_module(f"assemblies.{assembly_id}.spec")
-        finally:
-            sys.path.remove(str(project_root))
-            for name in tuple(sys.modules):
-                if name == "assemblies" or name.startswith("assemblies."):
-                    sys.modules.pop(name)
-            sys.modules.update(previous)
+        return ProjectAssemblyModuleRuntime().execute(
+            project_root,
+            lambda: importlib.import_module(f"assemblies.{assembly_id}.spec"),
+        )
 
 
 __all__ = ["CabinetAssemblySpecError", "CabinetAssemblySpecLoader"]

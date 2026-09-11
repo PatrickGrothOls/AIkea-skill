@@ -58,6 +58,14 @@ class ProofCheckerProbe:
         )
 
 
+class HostLoaderProbe:
+    """Expose whether proof receives current project host input."""
+
+    def load(self, project_root, assembly_id):
+        assert assembly_id == "cabinet_01"
+        return "current-project-host"
+
+
 class StepLoaderProbe:
     """Return one recognizable checksum-gated set."""
 

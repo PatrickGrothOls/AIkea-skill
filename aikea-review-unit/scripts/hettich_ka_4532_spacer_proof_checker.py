@@ -38,6 +38,7 @@ class HettichKa4532SpacerProofChecker:
         artifacts: dict[str, Any],
         machining_blocker: dict[str, Any],
         reservations: tuple[dict[str, Any], ...],
+        host=None,
     ) -> HettichKa4532SpacerProofReport:
         closed = self._parts_by_name(closed_parts)
         opened = self._parts_by_name(open_parts)
@@ -54,6 +55,7 @@ class HettichKa4532SpacerProofChecker:
         collision_evidence = self.collisions.check(
             drawer_id, closed, opened, moving_names, static_names
         )
+        host_names = {host.part(side).part_id for side in ("left", "right")} if host is not None else {"left_side", "right_side"}
         checks = (
             *motion_evidence.checks,
             self._check(
@@ -77,7 +79,7 @@ class HettichKa4532SpacerProofChecker:
                 "both panel hardware reservations are saved",
                 len(reservations) == 2
                 and {item["side_part_id"] for item in reservations}
-                == {"left_side", "right_side"},
+                == host_names,
             ),
             self._check(
                 "official rail axes and remaining blocker match installed hardware",
@@ -87,6 +89,7 @@ class HettichKa4532SpacerProofChecker:
                     drawer_id,
                     closed,
                     step_set,
+                    host,
                 ),
             ),
         )

@@ -51,6 +51,11 @@ MOVENTO keeps its selected source hardware and locking-device ownership.
 Changing the host, selected hardware or drawer layout requires regeneration and
 fresh review. Confirm body/host clearance, exact hardware mounting and movement;
 the fit rectangle alone does not certify an unobstructed sweep or sufficient
-load support. Existing KA 4532 proof helpers still need the next host-aware proof
-slice before they can qualify renamed or offset custom supports. Treat that as
-unresolved evidence, not as permission to bypass a failing check.
+load support. The KA 4532 proof command loads the current saved host and checks
+its actual support names, inside planes, bay limits and material at the eight
+source-derived fixing axes. It supports an inset front datum independently of
+panel fronts. A void at a fixing point requires explicit mounting/reuse evidence;
+the point check does not qualify a drilled hole or specify its dimensions.
+The exact source, articulation and movement checks still run, and the proof
+retains the unresolved longer-screw and pilot specification. It never grants
+manufacturing authority.

@@ -32,10 +32,11 @@ class HettichKa4532InstalledRunnerChecker:
         drawer_id: str,
         parts: dict[str, Any],
         step_set: Any,
+        host=None,
     ) -> HettichKa4532InstalledRunnerDatums | None:
+        host_names = tuple(host.part(side).part_id for side in ("left", "right")) if host is not None else ("left_side", "right_side")
         required = {
-            "left_side",
-            "right_side",
+            *host_names,
             *(
                 f"{drawer_id}__{part}"
                 for part in ("left_side", "right_side", "front", "back", "bottom")
@@ -48,10 +49,12 @@ class HettichKa4532InstalledRunnerChecker:
         }
         if not required <= parts.keys():
             return None
-        cabinet_front_mm = self._matching_average(
+        if host is not None and not self._host_matches(host, drawer_id, parts):
+            return None
+        cabinet_front_mm = host.spec.front_mm if host is not None else self._matching_average(
             tuple(
                 float(parts[name].placed_shape().BoundingBox().ymin)
-                for name in ("left_side", "right_side")
+                for name in host_names
             )
         )
         drawer_bottom_mm = self._matching_average(
@@ -97,7 +100,7 @@ class HettichKa4532InstalledRunnerChecker:
         ) is None:
             return None
         inside_x_mm = tuple(
-            self._cabinet_inside_x(side, parts) for side in ("left", "right")
+            self._cabinet_inside_x(side, parts[name]) for side, name in zip(("left", "right"), host_names)
         )
         for side, cabinet_inside_x_mm in zip(("left", "right"), inside_x_mm):
             direction = 1.0 if side == "left" else -1.0
@@ -136,8 +139,25 @@ class HettichKa4532InstalledRunnerChecker:
             inside_x_mm,
         )
 
-    def _cabinet_inside_x(self, side: str, parts: dict[str, Any]) -> float:
-        bounds = parts[f"{side}_side"].placed_shape().BoundingBox()
+    def _host_matches(self, host, drawer_id, parts):
+        names = tuple(host.part(side).part_id for side in ("left", "right"))
+        children = tuple(f"{drawer_id}__{name}" for name in ("left_side", "right_side", "front", "back", "bottom"))
+        for side, name in zip(("left", "right"), names):
+            bounds = parts[name].placed_shape().BoundingBox()
+            inside = bounds.xmax if side == "left" else bounds.xmin
+            if abs(inside-host.inside_x(side)) > self._ENVELOPE_TOLERANCE_MM:
+                return False
+        space = host.spec
+        intervals = (("x", host.inside_x("left"), host.inside_x("right")),
+                     ("y", space.front_mm, space.front_mm+space.inside_depth_mm),
+                     ("z", space.bottom_mm, space.top_mm))
+        return all(getattr(bounds, axis+"min") >= lower-self._ENVELOPE_TOLERANCE_MM and
+                   getattr(bounds, axis+"max") <= upper+self._ENVELOPE_TOLERANCE_MM
+                   for name in children for bounds in (parts[name].placed_shape().BoundingBox(),)
+                   for axis, lower, upper in intervals)
+
+    def _cabinet_inside_x(self, side: str, part: Any) -> float:
+        bounds = part.placed_shape().BoundingBox()
         return float(bounds.xmax if side == "left" else bounds.xmin)
 
     def _matching_average(self, values: tuple[float, ...]) -> float | None:
