@@ -89,3 +89,29 @@ requires current registered feature evidence for these mounting joints, includin
 exact affected panels and plate/foot purchase IDs. Keep the physical-fit, screw,
 filler and access checks unresolved until their evidence exists. A useful negative
 and an inventory-visible purchase do not settle those installation requirements.
+
+## Owned component composition
+
+Use `KorrektComponentFeature(deck_part_ids, stations, minimum_edge_margin_mm)`
+with explicit `KorrektStation(plate, foot)` pairs of PurchasedHardwareSpec values.
+Exact assets are `hettich_korrekt_61854` and `hettich_korrekt_70151`; placements are
+in the owning assembly frame and preserve the native source CAD frames. The model
+selects the layout against the design's support and access requirements.
+
+Save the feature as the local module's `FEATURE`, include it in the existing
+ordered feature builder, then call `feature.register(project_root, built)` to
+register the resulting participant scope. This registration provides no approval.
+The common fabrication gate still requires current, scoped evidence and the
+physical installation checks. Load CAD from `hardware/hettich/korrekt/<article>/
+source/<article>.stp`; the generic viewer verifies the registered bytes.
+
+To remove the component, remove its manifest entry and rebuild from the base.
+The omitted feature then owns no cuts, purchases or requirements. Remove its
+obsolete report as part of the edit; never reuse that report after a layout change.
+
+Each article is one installed purchased piece, separate from supplier pack size.
+Absent purchase metadata gets this explicit one-piece identity; an existing valid
+fastener-inclusion choice is retained. The ordinary physical counter therefore
+reports one plate and one foot per station. The inherited default includes
+mounting fasteners per the project's purchasing assumption; set
+`mounting_fasteners_included=False` when separate screws must be sourced.

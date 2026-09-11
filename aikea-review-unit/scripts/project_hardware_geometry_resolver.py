@@ -50,6 +50,7 @@ class ProjectHardwareGeometryResolver:
             HettichKa4532SpacerGeometryProvider,
         )
         from hettich_ka_5332_geometry_provider import HettichKa5332GeometryProvider
+        from hettich_korrekt_geometry_provider import HettichKorrektGeometryProvider
         from riex_nc70_geometry_provider import RiexNc70GeometryProvider
 
         return (
@@ -57,6 +58,7 @@ class ProjectHardwareGeometryResolver:
             HettichKa4532SpacerGeometryProvider(),
             HettichKa5332GeometryProvider(),
             RiexNc70GeometryProvider(),
+            HettichKorrektGeometryProvider(),
         )
 
 
