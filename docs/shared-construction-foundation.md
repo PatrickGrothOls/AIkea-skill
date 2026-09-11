@@ -8,7 +8,7 @@ not limit the furniture that can be designed. This document tracks the migration
 implementation progress and evidence are recorded per work package below.
 
 Planning branch: `docs/shared-construction-foundation`.
-Current implementation branch: `feat/standard-configurator-construction`.
+Current implementation branch: `feat/common-construction-checks`.
 Baseline: `origin/main` at `52facbf73b5ea775975025bb6409ea02ef8560bd`, fetched on
 2026-09-11. The finishing checkout stays at `fc78dfa`; its untracked `dist/`
 artifacts and the other worktrees are preserved.
@@ -31,7 +31,9 @@ construction algorithms, installed skills and private design files are unchanged
 WP2 is implemented and its review findings are fixed. WP3 implementation and
 independent review pass, with 561 unique Python tests and 72 subtests passed,
 five skipped. See [WP3 evidence](standard-configurator-construction.md).
-WP4-WP7 remain open. The earlier
+WP4a is implementing independent operation-result validation at shared review
+boundaries; WP4b requirement/evidence coverage and WP5-WP7 remain open. See
+[WP4 progress](common-construction-checks.md). The earlier
 composition branch remains unmerged; useful code is being reused selectively.
 
 ## Confirmed direction and evidence boundary

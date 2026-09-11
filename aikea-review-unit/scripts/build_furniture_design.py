@@ -12,6 +12,7 @@ sys.path.insert(0, str(BUILD_SCRIPTS))
 
 from assembly_tree_review_geometry import AssemblyTreeReviewGeometry  # noqa: E402
 from cadquery_glb_exporter import CadQueryGlbExporter  # noqa: E402
+from construction_tree_checker import ConstructionTreeChecker  # noqa: E402
 from furniture_geometry_check import FurnitureGeometryCheck  # noqa: E402
 from generated_assembly_builder_loader import GeneratedAssemblyBuilderLoader  # noqa: E402
 
@@ -23,10 +24,15 @@ class FurnitureDesignBuild:
         self.loader = GeneratedAssemblyBuilderLoader()
 
     def build(self, project_root: Path, assembly_id: str, output: Path) -> dict:
+        output.parent.mkdir(parents=True, exist_ok=True)
+        report_path = output.with_suffix(".geometry-check.json")
+        report_path.write_text(json.dumps({"status": "invalid", "fabrication_ready": False,
+                                          "scope": "Build has not completed."}) + "\n")
         if not re.fullmatch(r"[a-z][a-z0-9_]*_[0-9]{2}", assembly_id):
             raise ValueError("use a stable assembly ID such as furniture_01")
-        built, envelope = self.loader.runtime.execute(
-            project_root, lambda: self._build_definition(assembly_id)
+        built = self.loader.load_assembly(project_root, assembly_id)
+        envelope = self.loader.runtime.execute(
+            project_root, lambda: importlib.import_module(f"assemblies.{assembly_id}.builder").ENVELOPE,
         )
         visits = self.loader.walk(project_root, built)
         paths = tuple(item.path for item in visits)
@@ -34,22 +40,19 @@ class FurnitureDesignBuild:
             raise ValueError("assembly tree paths must be unique")
         parts = AssemblyTreeReviewGeometry().build(visits, {})
         report = FurnitureGeometryCheck().check(parts, envelope)
+        checks = ConstructionTreeChecker().check(visits)
+        report["construction_checks"] = [check.as_dict() for check in checks]
+        report["construction_status"] = "verified_operations" if all(check.passed for check in checks) else "incomplete"
         report["assembly_id"] = assembly_id
         report["assembly_count"] = sum(
             type(item).__name__ == "AssemblyTreeAssembly" for item in visits
         )
-        output.parent.mkdir(parents=True, exist_ok=True)
-        report_path = output.with_suffix(".geometry-check.json")
-        report_path.write_text(json.dumps(report, indent=2) + "\n")
         if not report["invalid_solids"]:
             CadQueryGlbExporter().export(assembly_id, parts, output)
             report["glb"] = str(output)
         report["geometry_check"] = str(report_path)
+        report_path.write_text(json.dumps(report, indent=2) + "\n")
         return report
-
-    def _build_definition(self, assembly_id: str):
-        definition = importlib.import_module(f"assemblies.{assembly_id}.builder")
-        return definition.BUILDER.build(), definition.ENVELOPE
 
 
 class FurnitureDesignBuildCommand:

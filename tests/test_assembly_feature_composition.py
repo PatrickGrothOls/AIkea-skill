@@ -103,7 +103,10 @@ class TestAssemblyFeatureComposition(AssemblyCompositionTestCase):
     def test_review_loader_prefers_complete_builder_with_feature_runtime(
         self, tmp_path, monkeypatch
     ) -> None:
+        from furniture_design_project import FurnitureDesignProject
+
         project_root = tmp_path / "project"
+        FurnitureDesignProject().initialize(project_root)
         assembly_root = project_root / "assemblies/cabinet_01"
         runtime_root = tmp_path / "feature_runtime"
         assembly_root.mkdir(parents=True)
@@ -119,7 +122,10 @@ class TestAssemblyFeatureComposition(AssemblyCompositionTestCase):
             encoding="utf-8",
         )
         (runtime_root / "feature_runtime_probe.py").write_text(
-            "class Builder:\n    def build(self): return 'complete'\nBUILDER = Builder()\n",
+            "from assemblies.panel_assembly import PanelAssemblyBuilder, PanelAssemblySpec\n"
+            "from assemblies.specification import PartSpec, IDENTITY_LOCAL_TO_PARENT\n"
+            "PART = PartSpec('board', 'custom', (), IDENTITY_LOCAL_TO_PARENT, local_size_mm=(10, 10, 10))\n"
+            "BUILDER = PanelAssemblyBuilder(PanelAssemblySpec('cabinet_01', 'complete', (PART,)))\n",
             encoding="utf-8",
         )
         loader = GeneratedAssemblyBuilderLoader()
@@ -129,6 +135,6 @@ class TestAssemblyFeatureComposition(AssemblyCompositionTestCase):
             lambda: (str(runtime_root),),
         )
         try:
-            assert loader.load_assembly(project_root, "cabinet_01") == "complete"
+            assert loader.load_assembly(project_root, "cabinet_01").spec.purpose == "complete"
         finally:
             sys.modules.pop("feature_runtime_probe", None)

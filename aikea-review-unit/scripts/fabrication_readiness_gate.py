@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Any
 
 from assembly_fabrication_checker import AssemblyFabricationChecker
+from construction_tree_checker import ConstructionTreeChecker
 from fabrication_artifact_checker import FabricationArtifactChecker
 from fabrication_readiness_report import FabricationReadinessReport
 from fabrication_tree_evidence import FabricationTreeEvidenceBuilder
@@ -25,7 +26,7 @@ class FabricationReadinessGate:
         visits: tuple[Any, ...],
     ) -> FabricationReadinessReport:
         evidence = self.evidence.build(visits)
-        checks = self.assembly.check(visits) + self.artifacts.check(
+        checks = ConstructionTreeChecker().check(visits) + self.assembly.check(visits) + self.artifacts.check(
             project_root,
             evidence,
             visits,

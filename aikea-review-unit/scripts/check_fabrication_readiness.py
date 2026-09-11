@@ -21,14 +21,12 @@ from unit_mockup import UnitMockupInputError
 
 
 class CheckFabricationReadinessCommand:
-    """Build one wardrobe tree and expose every remaining fabrication blocker."""
+    """Build the selected root tree and expose every remaining fabrication blocker."""
 
-    _ROOT_ASSEMBLY_ID = "wardrobe_01"
-
-    def run(self, path: Path) -> int:
+    def run(self, path: Path, assembly_id: str = "wardrobe_01") -> int:
         output = path.parent / "manufacturing/fabrication-readiness.json"
         try:
-            report = self._evaluate(path)
+            report = self._evaluate(path, assembly_id)
             report.write(output)
         # This is the single CLI boundary: any failed evaluator must revoke stale readiness.
         except Exception as error:
@@ -38,7 +36,7 @@ class CheckFabricationReadinessCommand:
         print(json.dumps(payload, indent=2))
         return 0 if report.is_ready else 2
 
-    def _evaluate(self, path: Path) -> FabricationReadinessReport:
+    def _evaluate(self, path: Path, assembly_id: str = "wardrobe_01") -> FabricationReadinessReport:
         from fabrication_readiness_gate import FabricationReadinessGate
         from generated_assembly_builder_loader import GeneratedAssemblyBuilderLoader
         from project_hardware_geometry_resolver import ProjectHardwareGeometryResolver
@@ -48,12 +46,13 @@ class CheckFabricationReadinessCommand:
         if not isinstance(project, dict):
             raise UnitMockupInputError(["aikea.yaml must contain an object"])
         loader = GeneratedAssemblyBuilderLoader()
-        wardrobe = loader.load_assembly(path.parent, self._ROOT_ASSEMBLY_ID)
-        wardrobe = PurchasedHardwareHydrator(ProjectHardwareGeometryResolver()).hydrate(
-            path.parent,
-            wardrobe,
+        built = loader.load_assembly(path.parent, assembly_id)
+        built = loader.runtime.execute(
+            path.parent, lambda: PurchasedHardwareHydrator(ProjectHardwareGeometryResolver()).hydrate(
+                path.parent, built,
+            ),
         )
-        visits = loader.walk(path.parent, wardrobe)
+        visits = loader.walk(path.parent, built)
         return FabricationReadinessGate().evaluate(path.parent, visits)
 
     def _invalid(self, output: Path, problems: list[str]) -> int:
@@ -83,6 +82,7 @@ def main() -> int:
         description="Check whether one AIkea project is genuinely fabrication ready."
     )
     parser.add_argument("aikea_yaml", type=Path)
+    parser.add_argument("--assembly", default="wardrobe_01")
     arguments = parser.parse_args()
     command = CheckFabricationReadinessCommand()
     runtime = CadQueryRuntime.from_environment()
@@ -91,7 +91,7 @@ def main() -> int:
             return runtime.run_script(Path(__file__).resolve(), sys.argv[1:])
         except CadQueryRuntimeError as error:
             return command.invalidate(arguments.aikea_yaml, [str(error)])
-    return command.run(arguments.aikea_yaml)
+    return command.run(arguments.aikea_yaml, arguments.assembly)
 
 
 if __name__ == "__main__":

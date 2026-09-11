@@ -76,6 +76,17 @@ and a CadQuery `ENVELOPE`. Run
 Its GLB and geometry report remain prototype evidence; use the existing fabrication
 gate for manufacturing claims. Build the complete root, including bought hardware.
 
+Official review loaders also verify the returned tree independently of the chosen
+builder: declared participants/occurrences, selected built-in cutter geometry,
+actual subtraction and valid manufactured solids. A direct `BuiltAssembly` return
+does not bypass these checks. `build_furniture_design.py` honors an existing
+`complete_builder.py`, records construction checks alongside geometry, and revokes
+the previous success report before rebuilding. An old GLB left after a failed
+build is not fresh evidence; the new invalid report contains no GLB reference.
+Run `check_fabrication_readiness.py <project>/aikea.yaml --assembly <root-id>` for
+that same tree. Novel operation types still need separate qualification evidence;
+passing participant and shape checks alone does not provide it.
+
 When exact purchased connector geometry is included, link its `HardwarePurchaseSpec`
 to `ConnectionPurchaseSpec(joint_id, connector_index, component)`. `component` is
 `"connector"` or `"insert"` for a Cabineo connection; the index is one-based and

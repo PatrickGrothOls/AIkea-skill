@@ -1,4 +1,4 @@
-"""Scope: Execute one generated local assembly builder without module leakage."""
+"""Scope: Execute and validate a complete local assembly without module leakage."""
 
 from __future__ import annotations
 
@@ -8,6 +8,7 @@ import re
 from typing import Any
 
 from generated_project_module_runtime import GeneratedProjectModuleRuntime
+from construction_result_validator import ConstructionResultValidator
 from unit_mockup import UnitMockupInputError
 
 
@@ -50,12 +51,16 @@ class GeneratedAssemblyBuilderLoader:
             raise UnitMockupInputError(
                 [f"missing generated local builder: {builder_path}"]
             )
-        return self.runtime.execute(
+        built = self.runtime.execute(
             project_root,
             lambda: importlib.import_module(
                 f"assemblies.{assembly_id}.{builder_module}"
             ).BUILDER.build(),
         )
+        for visit in self.walk(project_root, built):
+            if hasattr(visit, "assembly"):
+                ConstructionResultValidator().validate(visit.assembly)
+        return built
 
     def walk(self, project_root: Path, built_assembly: Any) -> tuple[Any, ...]:
         """Traverse one returned assembly through its generated tree contract."""

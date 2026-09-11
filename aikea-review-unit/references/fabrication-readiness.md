@@ -1,5 +1,14 @@
 # Fabrication readiness
 
+All official assembly loaders validate operation results before review/export.
+They check declared participants, complete built-in cut occurrences, recomputed
+cutter geometry and actual removed material, including for custom root builders.
+The fabrication gate repeats those checks on the supplied current tree and reports
+unqualified custom operations separately. Select a custom root with
+`check_fabrication_readiness.py <project>/aikea.yaml --assembly <root-id>`;
+the default remains `wardrobe_01`. These checks do not establish strength or
+detect design requirements that have not been declared.
+
 `fabrication-ready` is a machine-verifiable release state, not a visual claim.
 The closed recursive assembly is the authority. Open doors, extended drawers,
 lighting effects, and review overlays never grant manufacturing authority.
