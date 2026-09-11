@@ -28,9 +28,10 @@ WP1 now supplies the shared input values, material identity and a source trace o
 the saved wardrobe. Its 29 focused compatibility tests and the per-WP `review` skill
 passed, including an independent testing/compatibility review. See [WP1 evidence](shared-construction-inputs.md). Existing
 construction algorithms, installed skills and private design files are unchanged.
-WP2 is implemented and its review findings are fixed. WP3 implementation, focused
-regression and independent review pass; the wider Python suite is running before
-landing. See [WP3 evidence](standard-configurator-construction.md). WP4-WP7 remain open. The earlier
+WP2 is implemented and its review findings are fixed. WP3 implementation and
+independent review pass, with 561 unique Python tests and 72 subtests passed,
+five skipped. See [WP3 evidence](standard-configurator-construction.md).
+WP4-WP7 remain open. The earlier
 composition branch remains unmerged; useful code is being reused selectively.
 
 ## Confirmed direction and evidence boundary

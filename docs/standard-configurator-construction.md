@@ -10,8 +10,9 @@ WP5. The common executor consumes explicit parts, joints and local machining.
 
 ## Current state
 
-Implementation and focused verification pass. Independent testing/compatibility
-review found no issues. Full Python regression is running. No fabrication claim.
+Implementation, focused verification and independent review pass. The full Python
+regression is clear after rerunning the local HTTP tests with socket permission.
+No fabrication claim; later work packages remain open.
 
 ## Work package and tasks
 
@@ -25,7 +26,7 @@ review found no issues. Full Python regression is running. No fabrication claim.
 - [x] Demonstrate an authored customization without a new purpose or cutter.
 - [x] Run focused regression checks and the `review` skill, fix and recheck findings.
 - [x] Record evidence and commit this coherent slice.
-- [ ] Complete the wider Python regression before landing the stack.
+- [x] Complete the wider Python regression before landing the stack.
 
 ## Audit log
 
@@ -62,4 +63,11 @@ review found no issues. Full Python regression is running. No fabrication claim.
   matched the complete cabinet's specification and volume. No findings.
 - Packaged skill/link verification passed (nine skills). Primary review covers
   the whole WP diff against `9ab790f`; prior slices remain separate checkpoints.
-- Full-suite result and final review completion: pending below.
+- Full Python run: 556 passed, 72 subtests passed, five skipped; five HTTP tests
+  failed solely because the sandbox prevented binding `127.0.0.1`. Re-running
+  both affected files with local socket permission passed all six tests (one
+  overlaps the full run): **561 unique tests passed, 72 subtests passed, five
+  skipped**. No production changes were needed. Dependency checks also pass.
+- `review` completed, logged against `76ce13a`, with the documentation correction
+  above and no outstanding findings. This is local verification, not remote CI
+  or a fresh model-led furniture acceptance run (WP7).
