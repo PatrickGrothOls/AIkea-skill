@@ -20,18 +20,30 @@ class SurfaceDrillingReuse:
                  if cut.part_id == request.part_id and cut.joint_id in local_ids}
         if any(identity not in prior for identity in references):
             raise PartConstructionError(f"{request.machining_id}: reuse requires earlier local machining on the same part")
-        location = LocalToParentLocation().build(request.surface_to_part)
-        holes = tuple(hole.cutter.located(location) for hole in
-                      SurfaceHolePattern(request.holes).place(cq.Plane.XY(), entry_clearance_mm=0))
+        holes = self._holes(request)
         reused = set()
         for identity in references:
-            source = prior[identity].cutter.located(prior[identity].location)
-            matches = {index for index, hole in enumerate(holes)
-                       if any(self._equal(hole, solid) for solid in source.Solids())}
+            matches = self._matches(holes, prior[identity])
             if not matches:
                 raise PartConstructionError(f"{request.machining_id}: {identity} has no exactly matching whole hole")
             reused.update(matches)
         return cq.Compound.makeCompound([holes[index] for index in sorted(reused)])
+
+    def matching_operations(self, request, prior_local_cuts):
+        """Let recipes save discovered exact sources as explicit editable dependencies."""
+        holes = self._holes(request)
+        return tuple(dict.fromkeys(cut.joint_id for cut in prior_local_cuts
+                                   if cut.part_id == request.part_id and self._matches(holes, cut)))
+
+    def _holes(self, request):
+        location = LocalToParentLocation().build(request.surface_to_part)
+        return tuple(hole.cutter.located(location) for hole in
+                     SurfaceHolePattern(request.holes).place(cq.Plane.XY(), entry_clearance_mm=0))
+
+    def _matches(self, holes, cut):
+        source = cut.cutter.located(cut.location)
+        return {index for index, hole in enumerate(holes)
+                if any(self._equal(hole, solid) for solid in source.Solids())}
 
     def _equal(self, hole, source):
         left, right = hole.BoundingBox(), source.BoundingBox()

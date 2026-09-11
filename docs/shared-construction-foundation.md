@@ -8,7 +8,7 @@ not limit the furniture that can be designed. This document tracks the migration
 implementation progress and evidence are recorded per work package below.
 
 Planning branch: `docs/shared-construction-foundation`.
-Current implementation branch: `feat/shared-drilling-reuse`.
+Current implementation branch: `feat/drawer-host-machining`.
 Baseline: `origin/main` at `52facbf73b5ea775975025bb6409ea02ef8560bd`, fetched on
 2026-09-11. The finishing checkout stays at `fc78dfa`; its untracked `dist/`
 artifacts and the other worktrees are preserved.
@@ -38,7 +38,8 @@ the reproduced envelope-authority finding is fixed and independently rechecked.
 WP5a base migration is implemented and reviewed; remaining WP5-WP7 work is open.
 The shared surface-hole operation and drawer-child migration are reviewed.
 Drawer host mounting now has reviewed [explicit reuse of matching holes](shared-drilling-reuse.md);
-its integration is next. See [drilling dependency](shared-surface-drilling.md) and
+its [operation integration](drawer-host-machining.md) is reviewed. The explicit
+drawer host interface remains next. See [drilling dependency](shared-surface-drilling.md) and
 [drawer child slice](drawer-panel-construction.md).
 See [WP4c evidence](construction-position-evidence.md) and [base migration](base-configurator-construction.md).
 See [WP4 progress](common-construction-checks.md) and

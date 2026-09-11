@@ -5,6 +5,7 @@ from __future__ import annotations
 from hettich_ka_5332_cabinet_drawers_plan import (
     HettichKa5332CabinetDrawersPlan,
 )
+from surface_drilling_source_renderer import SurfaceDrillingSourceRenderer
 
 
 class HettichKa5332DrawersInstallationRenderer:
@@ -24,12 +25,19 @@ class HettichKa5332DrawersInstallationRenderer:
             repr(drawer.hardware_mounting.system_32_row_height_mm)
             for drawer in plan.drawers
         )
+        machining = "\n".join(f"    {SurfaceDrillingSourceRenderer().render(request)}," for request in plan.host_machining)
+        requirements = "\n".join(
+            f"    ConstructionRequirementSpec({request.machining_id!r}, 'Verify runner host fixing holes', "
+            f"{('part:' + request.part_id,)!r}, {('machining:' + request.machining_id,)!r}, 'operations'),"
+            for request in plan.host_machining)
         return (
             f'"""Scope: Place drawers and runner hardware owned by {plan.parent_assembly_id}."""\n\n'
             "from assemblies.specification import (\n"
             "    AxisBasis, AxisDirection, ChildAssemblySpec, LocalToParentPlacement,\n"
             "    Point3D,\n"
+            "    ConstructionRequirementSpec, SurfaceDrillingSpec,\n"
             ")\n"
+            "from surface_hole_pattern import SurfaceHole\n"
             "from purchased_hardware_spec import PurchasedHardwareSpec, HardwarePurchaseSpec\n\n\n"
             "SOURCE_MEMBERS_PER_SIDE = (\n"
             "    'cabinet_member', 'middle_member', 'drawer_member',\n"
@@ -38,6 +46,8 @@ class HettichKa5332DrawersInstallationRenderer:
             f"PURCHASED_HARDWARE = (\n{hardware},\n)\n\n"
             f"RUNNER_SYSTEM_32_ROWS_MM = ({rows},)\n\n"
             f"RUNNER_SIDE_PLACEMENTS = {{\n{placements},\n}}\n"
+            f"\nHOST_MACHINING = (\n{machining}\n)\n"
+            f"\nHOST_REQUIREMENTS = (\n{requirements}\n)\n"
         )
 
     def _child_source(self, drawer) -> str:

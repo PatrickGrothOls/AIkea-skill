@@ -11,6 +11,7 @@ from hettich_ka_5332_cabinet_drawer_plan import (
     HettichKa5332CabinetDrawerPlanner,
 )
 from hettich_ka_5332_step_assembly import HettichKa5332StepAssembly
+from hettich_ka_5332_host_drilling_recipe import HettichKa5332HostDrillingRecipe
 from panel_hardware_reservation import PanelHardwareReservation
 
 
@@ -25,6 +26,7 @@ class HettichKa5332CabinetDrawersPlan:
     parent_assembly_id: str
     drawers: tuple[HettichKa5332CabinetDrawerPlan, ...]
     hardware_reservations: tuple[PanelHardwareReservation, ...]
+    host_machining: tuple = ()
 
 
 class HettichKa5332CabinetDrawersPlanner:
@@ -69,6 +71,7 @@ class HettichKa5332CabinetDrawersPlanner:
             cabinet.assembly_id,
             resolved_drawers,
             tuple(reservations),
+            HettichKa5332HostDrillingRecipe().build(cabinet, resolved_drawers),
         )
 
     def _require_separate_vertical_spans(

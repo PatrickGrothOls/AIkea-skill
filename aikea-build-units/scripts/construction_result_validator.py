@@ -81,7 +81,8 @@ class ConstructionResultValidator:
             clipped = cutter.Volume() - in_blank.Volume() > self.TOLERANCE_MM3
             overlaps = (in_blank.intersect(prior.cutter.located(prior.location))
                         for prior in preceding if prior.part_id == cut.part_id)
-            collides = any((overlap.cut(reuse) if reuse is not None else overlap).Volume()
+            collides = any(overlap.Volume() > self.TOLERANCE_MM3
+                           and (overlap.cut(reuse) if reuse is not None else overlap).Volume()
                            > self.TOLERANCE_MM3 for overlap in overlaps)
             if clipped or collides:
                 raise PartConstructionError(f"{cut.joint_id}: local machining is clipped by the panel or earlier cuts")

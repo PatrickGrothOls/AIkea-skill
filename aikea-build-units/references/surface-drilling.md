@@ -47,3 +47,11 @@ installed mounting evidence are still the component's responsibility.
 The hardware configurator owns product selection, fixing dimensions, mounting
 participants and applicable motion/clearance checks. The shared drilling tool
 does not infer a screw, material pilot size or hardware purchase from a hole.
+
+For a removable component applied after the base build, use
+`PanelMachiningFeature().apply(built_assembly, machining, requirements)` with the
+same explicit requests. It cuts the current parts using the shared applicator,
+preserves prior geometry and ownership, and validates the complete result. Build
+again from the base with only the retained features to remove a component; do
+not try to fill old cuts back in. If the parent's requirements are still
+unassessed, adding a feature retains that unresolved state.
