@@ -1,11 +1,10 @@
 """Scope: Verify MOVENTO native frames resolve from cabinet and drawer datums."""
 
-from types import SimpleNamespace
-
 from drawer_box_planner import DrawerBoxPlanner
 from drawer_box_spec import CabinetDrawerOpening, DrawerBoxSizingProfile
 from movento_hardware_mounting_planner import MoventoHardwareMountingPlanner
 from movento_mounting_profile import MOVENTO_760H5000S_MOUNTING
+from hettich_ka_4532_spacer_mounting_test_support import HettichKa4532SpacerMountingTestSupport
 
 
 class TestMoventoHardwareMountingPlan:
@@ -16,10 +15,7 @@ class TestMoventoHardwareMountingPlan:
             CabinetDrawerOpening(707.0, 564.0),
             DrawerBoxSizingProfile(runner_length_mm=500.0),
         )
-        cabinet = SimpleNamespace(
-            width_mm=743.0,
-            part=lambda part_id: SimpleNamespace(local_size_mm=(0.0, 0.0, 18.0)),
-        )
+        cabinet = HettichKa4532SpacerMountingTestSupport().cabinet(right_x_mm=743)
         child_origin = (24.0, 18.0, 456.0)
 
         plan = MoventoHardwareMountingPlanner().plan(

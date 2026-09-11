@@ -26,6 +26,9 @@ The sizing recipes are optional conveniences over shared construction. Read
 adapting their output or using a drawer in a custom parent. Generated child
 builders use the same panel/operation protocol as other furniture. Respect the
 remaining host-interface limits and keep unresolved construction explicit.
+For an authored parent, declare its [drawer host](references/drawer-host-interface.md)
+and use the same selected-runner generator. Read its supported face orientation
+and remaining proof boundary before claiming that a custom installation is verified.
 
 ## Select the runner profile
 

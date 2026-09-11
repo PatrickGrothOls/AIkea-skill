@@ -21,9 +21,10 @@ class HettichKa4532SpacerHardwareReservations:
         drawer_id: str,
         mounting: HettichKa4532SpacerMountingPlan,
         step_set: HettichKa4532SpacerStepSet,
+        *, host=None,
     ) -> tuple[PanelHardwareReservation, ...]:
         return tuple(
-            self._reservation(drawer_id, side, mounting, step_set)
+            self._reservation(drawer_id, side, mounting, step_set, host)
             for side in self._SIDES
         )
 
@@ -36,20 +37,26 @@ class HettichKa4532SpacerHardwareReservations:
         side: str,
         mounting: HettichKa4532SpacerMountingPlan,
         step_set: HettichKa4532SpacerStepSet,
+        host,
     ) -> PanelHardwareReservation:
         bounds = self._side_bounds(side, mounting, step_set)
+        panel_bottom = host.frame(side).origin_mm[2] if host is not None else 0
+        panel_front = mounting.cabinet_front_mm
+        if host is not None:
+            frame = host.frame(side)
+            panel_front = min(frame.origin_mm[1], frame.to_owner((host.part(side).local_size_mm[0], 0, 0))[1])
         return PanelHardwareReservation(
             owner_id=self.owner_id(drawer_id, side),
             hardware_kind=self.HARDWARE_KIND,
-            side_part_id=f"{side}_side",
+            side_part_id=host.part(side).part_id if host is not None else f"{side}_side",
             system_32_node_rows_mm=(),
             depth_interval_mm=self._interval(
                 bounds,
                 "ymin",
                 "ymax",
-                -mounting.cabinet_front_mm,
+                -panel_front,
             ),
-            height_interval_mm=self._interval(bounds, "zmin", "zmax"),
+            height_interval_mm=self._interval(bounds, "zmin", "zmax", -panel_bottom),
         )
 
     def _side_bounds(

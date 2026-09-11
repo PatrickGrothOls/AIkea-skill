@@ -15,6 +15,7 @@ from movento_drawer_box_profile import MoventoDrawerBoxProfileAdapter
 from movento_hardware_mounting_planner import MoventoHardwareMountingPlanner
 from movento_runner_catalog import MOVENTO_RUNNER_CATALOG
 from movento_runner_profile import MoventoRunnerProfile
+from drawer_host import DrawerHost
 
 Vector3D = tuple[float, float, float]
 
@@ -74,6 +75,7 @@ class CabinetDrawerPlanner:
         self.hardware_mounting_planner = MoventoHardwareMountingPlanner()
 
     def plan(self, cabinet: Any, layout: DrawerLayout) -> CabinetDrawerPlan:
+        cabinet = DrawerHost.resolve(cabinet)
         opening = CabinetDrawerOpening.from_assembly_spec(cabinet)
         runner = MOVENTO_RUNNER_CATALOG.select_for_depth(
             opening.inside_depth_mm,
@@ -88,12 +90,11 @@ class CabinetDrawerPlanner:
             box_height_mm=layout.box_height_mm,
         )
         box = self.box_planner.plan(opening, sizing)
-        left_thickness_mm = float(cabinet.part("left_side").local_size_mm[2])
         side_clearance_mm = (opening.clear_width_mm - box.outside_width_mm) / 2.0
         origin = (
-            left_thickness_mm + side_clearance_mm,
-            layout.front_back_thickness_mm + runner.cabinet_depth_clearance_mm,
-            float(cabinet.base_height_mm) + layout.bottom_height_mm,
+            cabinet.inside_x("left") + side_clearance_mm,
+            cabinet.spec.front_mm + layout.front_back_thickness_mm + runner.cabinet_depth_clearance_mm,
+            cabinet.spec.bottom_mm + layout.bottom_height_mm,
         )
         self.fit_checker.require_fit(
             cabinet,

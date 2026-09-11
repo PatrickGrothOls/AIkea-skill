@@ -7,6 +7,7 @@ from typing import Any
 
 from hettich_ka_5332_runner_profile import HettichKa5332RunnerProfile
 from hettich_ka_5332_step_assembly import HettichKa5332StepAssembly
+from drawer_host import DrawerHost
 
 Vector3D = tuple[float, float, float]
 
@@ -38,10 +39,8 @@ class HettichKa5332MountingPlanner:
         drawer_bottom_mm: float,
         system_32_row_height_mm: float,
     ) -> HettichKa5332MountingPlan:
-        left_inside_mm = float(cabinet_spec.part("left_side").local_size_mm[2])
-        right_inside_mm = float(cabinet_spec.width_mm) - float(
-            cabinet_spec.part("right_side").local_size_mm[2]
-        )
+        host = DrawerHost.resolve(cabinet_spec)
+        left_inside_mm, right_inside_mm = host.inside_x("left"), host.inside_x("right")
         clear_width_mm = right_inside_mm - left_inside_mm
         drawer_width_mm = clear_width_mm - (
             2.0 * runner.installed_width_per_side_mm
@@ -71,14 +70,13 @@ class HettichKa5332MountingPlanner:
             right_runner_translation_mm=(right_x_mm, common_y_mm, common_z_mm),
             system_32_row_height_mm=system_32_row_height_mm,
             resolved_drawer_bottom_height_mm=(
-                system_32_row_height_mm
-                - runner.runner_center_from_drawer_bottom_mm
+                drawer_bottom_mm - host.spec.bottom_mm
             ),
             recommended_width_met=(
                 drawer_width_mm <= runner.recommended_maximum_drawer_width_mm
             ),
             minimum_depth_met=(
-                float(cabinet_spec.inside_depth_mm)
+                host.spec.inside_depth_mm
                 >= runner.minimum_cabinet_depth_mm
             ),
         )

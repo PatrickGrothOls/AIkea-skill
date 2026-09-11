@@ -20,6 +20,7 @@ from hettich_ka_5332_drawers_layout_renderer import (
     HettichKa5332DrawersLayoutRenderer,
 )
 from wooden_drawer_child_module_renderer import WoodenDrawerChildModuleRenderer
+from complete_assembly_builder_renderer import CompleteAssemblyBuilderRenderer
 
 
 class HettichKa5332DrawersFileSetRenderer:
@@ -35,6 +36,7 @@ class HettichKa5332DrawersFileSetRenderer:
     def render(self, plan: HettichKa5332CabinetDrawersPlan) -> dict[Path, str]:
         parent = Path("assemblies") / plan.parent_assembly_id
         files = {
+            parent / "complete_builder.py": CompleteAssemblyBuilderRenderer().render(plan.parent_assembly_id),
             parent / "drawer-layout.yaml": self.layout.render(plan),
             parent / "drawers/__init__.py": (
                 f'"""Scope: Contain drawer children owned by {plan.parent_assembly_id}."""\n'

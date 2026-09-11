@@ -4,8 +4,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any
 
-from assembly_part_locator import AssemblyPartLocator
 from drawer_hardware_mounting_plan import HardwarePlacement
+from drawer_host import DrawerHost
 from hettich_ka_4532_spacer_mounting_plan import (
     HettichKa4532SpacerMountingPlan,
     Vector3D,
@@ -14,7 +14,6 @@ from hettich_ka_4532_spacer_profile import (
     HETTICH_KA_4532_500_WITH_13952,
     HettichKa4532SpacerProfile,
 )
-from part_outside_face_plane import PartOutsideFacePlaneResolver
 
 if TYPE_CHECKING:
     from hettich_ka_4532_spacer_step_set import HettichKa4532SpacerStepSet
@@ -36,10 +35,6 @@ class HettichKa4532SpacerMountingPlanner:
         (0.0, 0.0, -1.0),
     )
 
-    def __init__(self) -> None:
-        self._part_locator = AssemblyPartLocator()
-        self._outside_face = PartOutsideFacePlaneResolver()
-
     def plan(
         self,
         cabinet: Any,
@@ -50,8 +45,8 @@ class HettichKa4532SpacerMountingPlanner:
         drawer_bottom_mm: float,
         hardware: HettichKa4532SpacerProfile = HETTICH_KA_4532_500_WITH_13952,
     ) -> HettichKa4532SpacerMountingPlan:
-        left_inside_mm = self._inside_face_x(cabinet, "left_side")
-        right_inside_mm = self._inside_face_x(cabinet, "right_side")
+        host = DrawerHost.resolve(cabinet)
+        left_inside_mm, right_inside_mm = host.inside_x("left"), host.inside_x("right")
         hardware_width_mm = hardware.hardware_width_per_side_mm
         drawer_origin_mm = (
             left_inside_mm + hardware_width_mm,
@@ -134,13 +129,6 @@ class HettichKa4532SpacerMountingPlanner:
             (x_translation_mm, front_mm - native_front_mm, z_translation_mm),
             self._IDENTITY_AXES,
         )
-
-    def _inside_face_x(self, cabinet: Any, part_id: str) -> float:
-        part = cabinet.part(part_id)
-        location = self._part_locator.locate(part, cabinet, cabinet.base_height_mm)
-        outside = self._outside_face.resolve(part, location)
-        thickness_mm = float(part.local_size_mm[2])
-        return float((outside.center - outside.normal.multiply(thickness_mm)).x)
 
     def _placement(self, origin_mm: Vector3D, axes: Axes3D) -> HardwarePlacement:
         return HardwarePlacement(origin_mm, axes[0], axes[1], axes[2])

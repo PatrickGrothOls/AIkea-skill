@@ -14,6 +14,7 @@ from panel_hardware_reservation import (
     PanelHardwareReservationPlan,
 )
 from system_32_side_panel_grid import System32SidePanelGrid
+from drawer_host import DrawerHost
 
 
 class HettichKa5332System32RowError(ValueError):
@@ -36,21 +37,16 @@ class HettichKa5332System32RowResolver:
         runner: HettichKa5332RunnerProfile,
         blocked: tuple[PanelHardwareReservation, ...] = (),
     ) -> float:
-        common_panel_height_mm = min(
-            float(cabinet.part(part_id).local_size_mm[1])
-            for part_id in ("left_side", "right_side")
-        )
-        requested_row_mm = (
-            requested_bottom_height_mm
-            + runner.runner_center_from_drawer_bottom_mm
-        )
-        for row_mm in self.grid.rows_nearest_mm(
-            common_panel_height_mm,
-            requested_row_mm,
-        ):
-            if row_mm < runner.runner_center_from_drawer_bottom_mm:
+        host = DrawerHost.resolve(cabinet)
+        world_rows = [{round(host.frame(side).origin_mm[2] + row, 6)
+                       for row in self.grid.row_heights_mm(host.part(side).local_size_mm[1])}
+                      for side in ("left", "right")]
+        requested = host.spec.bottom_mm + requested_bottom_height_mm + runner.runner_center_from_drawer_bottom_mm
+        for height in sorted(world_rows[0] & world_rows[1], key=lambda row: (abs(row-requested), row)):
+            if height - runner.runner_center_from_drawer_bottom_mm < host.spec.bottom_mm:
                 continue
-            candidates = self.reservations.build(drawer_id, row_mm, runner)
+            row_mm = host.row_in_part("left", height)
+            candidates = self.reservations.build(drawer_id, row_mm, runner, host=host)
             try:
                 for candidate in candidates:
                     self.compatibility.require_compatible(candidate, blocked)

@@ -67,9 +67,9 @@ class TestHettichKa4532SpacerCabinetDrawerPlan:
             owner_id="hinge_01",
             hardware_kind="hinge_plate",
             side_part_id="left_side",
-            system_32_node_rows_mm=(132.0, 164.0),
+            system_32_node_rows_mm=(68.0, 100.0),
             depth_interval_mm=(19.0, 64.0),
-            height_interval_mm=(150.0, 202.0),
+            height_interval_mm=(75.0, 125.0),
         )
 
         with pytest.raises(ValueError, match="conflicts with hinge_01"):

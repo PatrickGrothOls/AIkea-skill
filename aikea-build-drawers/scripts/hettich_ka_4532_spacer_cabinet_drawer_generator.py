@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from assembly_taxonomy_writer import AssemblyTaxonomyWriter
-from cabinet_assembly_spec_loader import CabinetAssemblySpecLoader
+from drawer_host_loader import DrawerHostLoader
 from cabinet_drawer_plan import DrawerLayout
 from cabinet_feature_manifest import CabinetFeatureManifest
 from drawer_generated_file_record import DrawerGeneratedFileRecord
@@ -35,7 +35,7 @@ class HettichKa4532SpacerCabinetDrawerGenerator:
     """Generate one recursively composed cabinet without inventing machining."""
 
     def __init__(self, step_loader=None) -> None:
-        self.specs = CabinetAssemblySpecLoader()
+        self.specs = DrawerHostLoader()
         self.steps = step_loader or HettichKa4532SpacerStepSetLoader()
         self.planner = HettichKa4532SpacerCabinetDrawerPlanner()
         self.renderer = HettichKa4532SpacerFileSetRenderer()
@@ -83,8 +83,8 @@ class HettichKa4532SpacerCabinetDrawerGenerator:
             10,
             review_module="drawers.review",
             affected_manufactured_part_paths=(
-                "left_side",
-                "right_side",
+                cabinet.part("left").part_id,
+                cabinet.part("right").part_id,
                 *(f"{layout.drawer_id}/{part.part_id}" for part in plan.drawer.parts),
             ),
         )

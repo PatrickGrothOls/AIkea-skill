@@ -7,6 +7,7 @@ from typing import Any
 from cabinet_drawer_fit_checker import CabinetDrawerFitChecker
 from cabinet_drawer_plan import DrawerLayout
 from drawer_assembly_spec import DrawerAssemblySpec
+from drawer_host import DrawerHost
 from drawer_box_planner import DrawerBoxPlanner
 from drawer_box_spec import CabinetDrawerOpening
 from hettich_ka_4532_spacer_cabinet_drawer_plan import (
@@ -56,9 +57,12 @@ class HettichKa4532SpacerCabinetDrawerPlanner:
         cabinet_front_mm: float,
         drawer_front_mm: float,
     ) -> HettichKa4532SpacerCabinetDrawerPlan:
+        cabinet = DrawerHost.resolve(cabinet)
         profile = HETTICH_KA_4532_500_WITH_13952
         self._require_product_fit(cabinet, layout, profile)
-        drawer_bottom_mm = float(cabinet.base_height_mm) + layout.bottom_height_mm
+        if abs(cabinet_front_mm - cabinet.spec.front_mm) > 1e-6:
+            raise ValueError("cabinet front datum must match the declared drawer host")
+        drawer_bottom_mm = cabinet.spec.bottom_mm + layout.bottom_height_mm
         mounting = self.mounting.plan(
             cabinet,
             hardware_step,
@@ -73,7 +77,7 @@ class HettichKa4532SpacerCabinetDrawerPlanner:
                 mounting.drawer_outside_width_mm
                 + 2.0 * profile.hardware_width_per_side_mm
             ),
-            inside_depth_mm=float(cabinet.inside_depth_mm),
+            inside_depth_mm=cabinet.spec.inside_depth_mm,
         )
         sizing = self.box_profile.build(
             profile,
@@ -97,6 +101,7 @@ class HettichKa4532SpacerCabinetDrawerPlanner:
             layout.drawer_id,
             mounting,
             hardware_step,
+            cabinet,
         )
         drawer = DrawerAssemblySpec(
             assembly_id=layout.drawer_id,
@@ -122,10 +127,10 @@ class HettichKa4532SpacerCabinetDrawerPlanner:
         requested = layout.box_depth_mm or profile.nominal_runner_length_mm
         if abs(requested - profile.nominal_runner_length_mm) > 1e-6:
             raise ValueError("KA 4532 article 9114276 requires the exact 500 mm depth")
-        if float(cabinet.inside_depth_mm) < profile.minimum_cabinet_depth_mm:
+        if cabinet.spec.inside_depth_mm < profile.minimum_cabinet_depth_mm:
             raise ValueError("KA 4532 article 9114276 requires 504 mm cabinet depth")
 
-    def _reservations(self, existing, drawer_id, mounting, hardware_step):
+    def _reservations(self, existing, drawer_id, mounting, hardware_step, host):
         owner_ids = {
             self.reservations.owner_id(drawer_id, side)
             for side in ("left", "right")
@@ -136,7 +141,7 @@ class HettichKa4532SpacerCabinetDrawerPlanner:
             for item in retained
         ):
             raise ValueError("KA 4532 spacer repetition remains disabled before first proof")
-        candidates = self.reservations.build(drawer_id, mounting, hardware_step)
+        candidates = self.reservations.build(drawer_id, mounting, hardware_step, host=host)
         accepted = list(retained)
         for candidate in candidates:
             self.compatibility.require_compatible(candidate, tuple(accepted))

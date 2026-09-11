@@ -6,7 +6,7 @@ from dataclasses import dataclass, replace
 from pathlib import Path
 
 from assembly_taxonomy_writer import AssemblyTaxonomyWriter
-from cabinet_assembly_spec_loader import CabinetAssemblySpecLoader
+from drawer_host_loader import DrawerHostLoader
 from cabinet_feature_manifest import CabinetFeatureManifest
 from cabinet_drawer_file_set_renderer import CabinetDrawerFileSetRenderer
 from cabinet_drawer_plan import CabinetDrawerPlan, CabinetDrawerPlanner, DrawerLayout
@@ -29,7 +29,7 @@ class CabinetDrawerGenerator:
         self,
         hardware_verifier_factory: DrawerHardwareSetVerifierFactory | None = None,
     ) -> None:
-        self.spec_loader = CabinetAssemblySpecLoader()
+        self.spec_loader = DrawerHostLoader()
         self.planner = CabinetDrawerPlanner()
         self.renderer = CabinetDrawerFileSetRenderer()
         self.writer = AssemblyTaxonomyWriter()

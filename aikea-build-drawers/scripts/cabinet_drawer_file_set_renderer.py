@@ -14,6 +14,7 @@ from cabinet_with_drawers_builder_renderer import (
 from drawer_child_module_renderer import DrawerChildModuleRenderer
 from drawer_installation_renderer import DrawerInstallationRenderer
 from drawer_layout_renderer import DrawerLayoutRenderer
+from complete_assembly_builder_renderer import CompleteAssemblyBuilderRenderer
 
 
 class CabinetDrawerFileSetRenderer:
@@ -30,6 +31,7 @@ class CabinetDrawerFileSetRenderer:
         parent = Path("assemblies") / plan.parent_assembly_id
         drawer = parent / "drawers" / plan.drawer.assembly_id
         files = {
+            parent / "complete_builder.py": CompleteAssemblyBuilderRenderer().render(plan.parent_assembly_id),
             parent / "drawer-layout.yaml": self.layout.render(plan),
             parent / "drawers/__init__.py": (
                 f'"""Scope: Contain drawer children owned by {plan.parent_assembly_id}."""\n'

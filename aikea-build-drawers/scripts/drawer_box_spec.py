@@ -18,19 +18,10 @@ class CabinetDrawerOpening:
 
     @classmethod
     def from_assembly_spec(cls, assembly: Any) -> "CabinetDrawerOpening":
-        """Read the clear opening from one generated cabinet specification."""
-        left_side = assembly.part("left_side")
-        right_side = assembly.part("right_side")
-        left_thickness_mm = float(left_side.local_size_mm[2])
-        right_thickness_mm = float(right_side.local_size_mm[2])
-        return cls(
-            clear_width_mm=(
-                float(assembly.width_mm)
-                - left_thickness_mm
-                - right_thickness_mm
-            ),
-            inside_depth_mm=float(assembly.inside_depth_mm),
-        )
+        """Read actual support faces through the common drawer host interface."""
+        from drawer_host import DrawerHost
+        host = DrawerHost.resolve(assembly)
+        return cls(host.clear_width_mm, host.spec.inside_depth_mm)
 
 
 @dataclass(frozen=True, slots=True)

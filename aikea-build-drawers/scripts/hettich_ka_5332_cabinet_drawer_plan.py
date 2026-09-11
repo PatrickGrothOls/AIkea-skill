@@ -32,6 +32,7 @@ from hettich_ka_5332_system_32_row_resolver import (
 )
 from hettich_ka_5332_step_assembly import HettichKa5332StepAssembly
 from panel_hardware_reservation import PanelHardwareReservation
+from drawer_host import DrawerHost
 
 SOURCE_CAD_MOUNTING_PLAN_SAVED = "source_cad_mounting_plan_saved"
 
@@ -74,6 +75,7 @@ class HettichKa5332CabinetDrawerPlanner:
         hardware_step: HettichKa5332StepAssembly,
         blocked_reservations: tuple[PanelHardwareReservation, ...] = (),
     ) -> HettichKa5332CabinetDrawerPlan:
+        cabinet = DrawerHost.resolve(cabinet)
         opening = CabinetDrawerOpening.from_assembly_spec(cabinet)
         runner = self.runner_catalog.select(
             layout.box_depth_mm,
@@ -95,8 +97,8 @@ class HettichKa5332CabinetDrawerPlanner:
             runner,
             blocked_reservations,
         )
-        cabinet_opening_front_mm = 0.0
-        drawer_bottom_mm = float(cabinet.base_height_mm) + (
+        cabinet_opening_front_mm = cabinet.spec.front_mm
+        drawer_bottom_mm = cabinet.frame("left").origin_mm[2] + (
             system_32_row_mm - runner.runner_center_from_drawer_bottom_mm
         )
         mounting = self.mounting_planner.plan(
@@ -127,6 +129,7 @@ class HettichKa5332CabinetDrawerPlanner:
             layout.drawer_id,
             system_32_row_mm,
             runner,
+            host=cabinet,
         )
         return HettichKa5332CabinetDrawerPlan(
             parent_assembly_id=cabinet.assembly_id,

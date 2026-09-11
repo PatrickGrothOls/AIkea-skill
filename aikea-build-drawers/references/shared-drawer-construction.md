@@ -35,11 +35,10 @@ movement requirements. Successfully machining a pilot does not resolve drawer
 joinery or prove load capacity. Deleting a declared drilling request leaves its
 mounting requirement missing. Do not remove the requirement to obtain a pass.
 
-The child migration does not make every existing host adapter universal. Cabinet
-layout still uses the current opening, side frames, reserved hardware rows and
-selected product checks. Use a host only when it satisfies that documented
-interface; the subsequent host migration makes those inputs and operations explicit.
-Do not invent cabinet metadata on an unrelated arrangement to bypass its fit check.
+The [drawer host interface](drawer-host-interface.md) lets the same recipes use
+actual supports and clear space in a custom parent. Standard cabinets adapt to
+that contract. Respect its upright-face boundary and the remaining host-aware
+proof work; do not invent cabinet metadata or bypass a failing mounting check.
 
 See the [shared construction protocol](../../aikea-build-units/references/shared-construction.md)
 and [surface drilling](../../aikea-build-units/references/surface-drilling.md).

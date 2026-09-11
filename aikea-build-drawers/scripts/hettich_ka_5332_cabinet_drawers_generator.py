@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from assembly_taxonomy_writer import AssemblyTaxonomyWriter
-from cabinet_assembly_spec_loader import CabinetAssemblySpecLoader
+from drawer_host_loader import DrawerHostLoader
 from cabinet_drawer_plan import DrawerLayout
 from cabinet_feature_manifest import CabinetFeatureManifest
 from drawer_generated_file_record import DrawerGeneratedFileRecord
@@ -36,7 +36,7 @@ class HettichKa5332CabinetDrawersGenerator:
     """Generate or revise independently sized and positioned drawer children."""
 
     def __init__(self, step_loader=None) -> None:
-        self.spec_loader = CabinetAssemblySpecLoader()
+        self.spec_loader = DrawerHostLoader()
         self.step_loader = step_loader or HettichKa5332StepAssemblyLoader()
         self.layout_loader = HettichKa5332DrawerLayoutCollectionLoader()
         self.planner = HettichKa5332CabinetDrawersPlanner()
@@ -104,8 +104,8 @@ class HettichKa5332CabinetDrawersGenerator:
             "drawers.feature",
             10,
             affected_manufactured_part_paths=(
-                "left_side",
-                "right_side",
+                cabinet.part("left").part_id,
+                cabinet.part("right").part_id,
                 *(
                     f"{drawer.drawer.assembly_id}/{part.part_id}"
                     for drawer in plan.drawers

@@ -19,6 +19,9 @@ class CabinetAssemblySpecLoader:
     _ID_PATTERN = re.compile(r"^[a-z][a-z0-9_]*_[0-9]{2}$")
 
     def load(self, project_root: Path, assembly_id: str) -> Any:
+        return self.load_module(project_root, assembly_id).SPEC
+
+    def load_module(self, project_root: Path, assembly_id: str) -> Any:
         if not self._ID_PATTERN.fullmatch(assembly_id):
             raise CabinetAssemblySpecError("the cabinet must have a stable id")
         spec_path = project_root / "assemblies" / assembly_id / "spec.py"
@@ -35,7 +38,7 @@ class CabinetAssemblySpecLoader:
             sys.modules.pop(name)
         sys.path.insert(0, str(project_root))
         try:
-            return importlib.import_module(f"assemblies.{assembly_id}.spec").SPEC
+            return importlib.import_module(f"assemblies.{assembly_id}.spec")
         finally:
             sys.path.remove(str(project_root))
             for name in tuple(sys.modules):

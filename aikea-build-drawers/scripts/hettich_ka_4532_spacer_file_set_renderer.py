@@ -25,6 +25,7 @@ from hettich_ka_4532_spacer_machining_authority_renderer import (
 from hettich_ka_4532_spacer_review_module_renderer import (
     HettichKa4532SpacerReviewModuleRenderer,
 )
+from complete_assembly_builder_renderer import CompleteAssemblyBuilderRenderer
 
 
 class HettichKa4532SpacerFileSetRenderer:
@@ -44,6 +45,7 @@ class HettichKa4532SpacerFileSetRenderer:
         drawers = parent / "drawers"
         child = drawers / plan.drawer.assembly_id
         files = {
+            parent / "complete_builder.py": CompleteAssemblyBuilderRenderer().render(plan.parent_assembly_id),
             parent / "drawer-layout.yaml": self.layout.render(plan),
             parent / "drawer_installation.py": self.installation.render(plan),
             drawers / "__init__.py": (

@@ -9,6 +9,7 @@ from drawer_hardware_mounting_plan import (
     HardwarePlacement,
 )
 from movento_mounting_profile import MoventoMountingProfile
+from drawer_host import DrawerHost
 
 Vector3D = tuple[float, float, float]
 
@@ -23,11 +24,8 @@ class MoventoHardwareMountingPlanner:
         drawer_origin_in_cabinet_mm: Vector3D,
         profile: MoventoMountingProfile,
     ) -> DrawerHardwareMountingPlan:
-        left_wall_mm = float(cabinet.part("left_side").local_size_mm[2])
-        right_wall_mm = (
-            float(cabinet.width_mm)
-            - float(cabinet.part("right_side").local_size_mm[2])
-        )
+        host = DrawerHost.resolve(cabinet)
+        left_wall_mm, right_wall_mm = host.inside_x("left"), host.inside_x("right")
         side_clearance_mm = (
             drawer_box.opening.clear_width_mm - drawer_box.outside_width_mm
         ) / 2.0
