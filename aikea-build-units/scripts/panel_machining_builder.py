@@ -6,13 +6,15 @@ from part_construction_error import PartConstructionError
 from part_cut import AssemblyCuts, PartCut
 from system_32_side_panel_grid import System32SidePanelGrid
 from surface_drilling_builder import SurfaceDrillingBuilder
+from surface_groove_builder import SurfaceGrooveBuilder
 
 
 class PanelMachiningBuilder:
     """Select operations by their request type, never the furniture or panel role."""
 
     def __init__(self):
-        self.operations = {"system_32": self._system32, "surface_holes": SurfaceDrillingBuilder().build}
+        self.operations = {"system_32": self._system32, "surface_holes": SurfaceDrillingBuilder().build,
+                           "surface_groove": SurfaceGrooveBuilder().build}
 
     def build(self, spec):
         cuts = []

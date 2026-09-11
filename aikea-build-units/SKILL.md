@@ -68,3 +68,9 @@ assembly build. The complete assembly builder remains the stable entry point.
 geometry.
 
 For selected adjustable feet, reuse the [Korrekt mounting operation](references/korrekt-mounting.md) through shared construction.
+
+For a straight rectangular panel groove, use `SurfaceGrooveSpec` through the
+common machining list. Its surface frame points +Z into the material, with +X
+along the length and Y centered across the width. The complete groove must fit
+the panel and avoid prior machining. Tool radii and end-access assumptions still
+need fabrication review. Lighting supplies this operation from its saved run.
