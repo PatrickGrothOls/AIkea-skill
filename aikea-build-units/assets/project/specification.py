@@ -40,6 +40,7 @@ class PartSpec:
     outline_mm: tuple[BoundaryPoint, ...] = ()
     local_size_mm: tuple[float, float, float] = ()
     inside_face: str = ""
+    material_id: str = ""
 
 
 @dataclass(frozen=True)

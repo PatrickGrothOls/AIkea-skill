@@ -4,10 +4,11 @@
 
 Make standard configurators and model-authored furniture use one construction
 foundation. Configurators make common work faster; their supported layouts must
-not limit the furniture that can be designed. This document plans the migration;
-this branch changes documentation only.
+not limit the furniture that can be designed. This document tracks the migration;
+implementation progress and evidence are recorded per work package below.
 
-Branch: `docs/shared-construction-foundation`.
+Planning branch: `docs/shared-construction-foundation`.
+Current implementation branch: `feat/shared-construction-inputs`.
 Baseline: `origin/main` at `52facbf73b5ea775975025bb6409ea02ef8560bd`, fetched on
 2026-09-11. The finishing checkout stays at `fc78dfa`; its untracked `dist/`
 artifacts and the other worktrees are preserved.
@@ -23,10 +24,11 @@ artifacts and the other worktrees are preserved.
 - [ ] Migrate and verify the standard configurators and custom composition route.
 - [ ] Run fresh model-driven evaluations and the saved wardrobe integration.
 
-No runtime, skill, installed package, or saved furniture design has been changed.
-The earlier composition branch remains unmerged. This session inspected code and
-historical test records; it did not rerun geometry tests or reproduce their results.
-Planning is complete; implementation and its acceptance checks remain open.
+WP1 now supplies the shared input values, material identity and a source trace of
+the saved wardrobe. Its 29 focused compatibility tests and the per-WP `review` skill
+passed, including an independent testing/compatibility review. See [WP1 evidence](shared-construction-inputs.md). Existing
+construction algorithms, installed skills and private design files are unchanged.
+WP2-WP7 remain open. The earlier composition branch remains unmerged.
 
 ## Confirmed direction and evidence boundary
 
@@ -112,18 +114,18 @@ acceptance evidence.
 
 ### WP1 — Define the common input and audit one real build
 
-- [ ] Trace representative current wardrobe panels, joints, doors, drawers,
+- [x] Trace representative current wardrobe panels, joints, doors, drawers,
   supports, and purchased hardware from saved requirements to built-tree output.
-- [ ] Map each concern to an existing contract or a specific missing field;
+- [x] Map each concern to an existing contract or a specific missing field;
   separate verified main behavior from saved-project runtime dependencies.
-- [ ] Define explicit part geometry, manufacturing frame, material/thickness,
+- [x] Define explicit part geometry, manufacturing frame, material/thickness,
   participant references, operation parameters and physical/purchase identity.
-- [ ] Define how required attachment/support or movement is declared and checked;
+- [x] Define how required attachment/support or movement is declared and checked;
   allow intentional floor contact, loose/removable parts, and unresolved design
   work. Do not infer structural completeness merely from touching solids.
-- [ ] Specify what a configurator emits and how the model can adapt that output
+- [x] Specify what a configurator emits and how the model can adapt that output
   while preserving IDs, dependent connections and regeneration behavior.
-- [ ] Document the small extension interface and required evidence for operations
+- [x] Document the small extension interface and required evidence for operations
   the library does not yet support; use existing protocols where they suffice.
 
 Acceptance: standard and custom descriptions of the same small assembly can
@@ -327,3 +329,6 @@ stack supplies Korrekt and lighting work when those migrations are reached.
    preserving finishing work, private evaluation artifacts and other worktrees.
    Reuse of existing contracts, staged migration and bounded proof are proposals
    implementing Patrick's confirmed direction; exact API choices remain open.
+
+5. 2026-09-11 — Patrick authorized implementation and review using the review
+   skill after every work package. WP1 is implemented and reviewed; WP2 is next.
