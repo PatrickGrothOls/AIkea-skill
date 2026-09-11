@@ -45,6 +45,10 @@ The gate requires all of the following:
    and part with complete coordinates, axes, positive bounds, exact relationship
    structure, unique passed checks, and the fingerprint of every current closed
    tree path and accumulated frame.
+   Every root also needs the shared closed construction position record: current
+   envelope authority, physical paths/bounds and independently recomputed fit and
+   contact checks. Custom roots use this common record without the older wardrobe
+   relationship schema. See [closed position evidence](construction-position.md).
 10. The client has approved the exact checksum of the canonical closed wardrobe
     GLB regenerated from the current built tree. Its default scene must contain
     reachable mesh geometry. The viewer serves immutable startup bytes and

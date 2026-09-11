@@ -79,6 +79,7 @@ class WardrobeAssemblyRenderer:
             "from assemblies.specification import BuiltAssembly, BuiltChildAssembly\n\n"
             f"{imports}\n"
             "from .spec import SPEC\n\n\n"
+            'ENVELOPE_SOURCE = "configured_measurements"\n'
             f"CHILD_BUILDERS = ({builders},)\n\n\n"
             "class WardrobeBuilder:\n"
             "    \"\"\"Build the base and every complete cabinet in saved order.\"\"\"\n\n"

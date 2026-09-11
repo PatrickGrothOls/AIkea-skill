@@ -93,7 +93,7 @@ class TestFurnitureGeometryCheck:
         builder.write_text(self.design_source().replace("Point3D(80, 20, 40)", "Point3D(300, 20, 40)"))
         changed = FurnitureDesignBuild().build(tmp_path, "furniture_01", output)
         assert changed["status"] == "invalid"
-        assert changed["outside_envelope"][0]["part"] == "raised_01__surface"
+        assert changed["outside_envelope"][0]["part"] == "furniture_01/raised_01/part:surface"
 
     def design_source(self):
         return '''"""Scope: Define an invented nested composition for geometry tests."""

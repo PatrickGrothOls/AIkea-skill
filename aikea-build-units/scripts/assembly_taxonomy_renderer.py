@@ -27,6 +27,7 @@ class AssemblyTaxonomyRenderer:
         "specification.py",
         "construction_specification.py",
         "construction_requirement.py",
+        "contact_allowance.py",
         "panel_assembly.py",
     )
 

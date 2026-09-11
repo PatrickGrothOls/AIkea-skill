@@ -12,6 +12,7 @@ import cadquery as cq
 from fabrication_closed_assembly_model import FabricationClosedAssemblyModel
 from fabrication_position_test_record import FabricationPositionTestRecord
 from construction_input_fingerprint import ConstructionInputFingerprinter
+from construction_position_evidence import ConstructionPositionEvidence
 
 
 class AssemblyTreeAssembly:
@@ -77,6 +78,11 @@ class FabricationReadinessTestProject:
         slug = self.PART_PATH.replace("/", "__")
         visits = self.visits()
         built_part = visits[-1].part
+        builder = root / "assemblies/wardrobe_01/builder.py"
+        builder.parent.mkdir(parents=True, exist_ok=True)
+        builder.write_text('"""Scope: Declare the test envelope."""\nimport cadquery as cq\n'
+                           'ENVELOPE = cq.Workplane("XY").box(500, 2000, 18, centered=False)\n')
+        ConstructionPositionEvidence().write(root, visits, cq.Workplane("XY").box(500, 2000, 18, centered=False))
         cq.exporters.export(built_part.solid, str(parts / f"{slug}.step"))
         cq.exporters.export(built_part.solid.faces(">Z"), str(parts / f"{slug}.dxf"))
         self.write_json(

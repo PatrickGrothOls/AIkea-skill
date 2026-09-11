@@ -90,6 +90,8 @@ build is not fresh evidence; the new invalid report contains no GLB reference.
 Run `check_fabrication_readiness.py <project>/aikea.yaml --assembly <root-id>` for
 that same tree. Novel operation types still need separate qualification evidence;
 passing participant and shape checks alone does not provide it.
+For complete position records, bounded contact declarations and a fabrication
+review on any root, follow the [closed position protocol](../../aikea-review-unit/references/construction-position.md).
 
 ## Requirements and extension evidence
 

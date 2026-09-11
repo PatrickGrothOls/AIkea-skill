@@ -41,7 +41,7 @@ BUILDER = CompleteBuilder()
         output = tmp_path / "reviews/full.glb"
         report = FurnitureDesignBuild().build(tmp_path, "furniture_01", output)
         assert report["status"] == "invalid"
-        assert report["outside_envelope"][0]["part"] == "foot"
+        assert report["outside_envelope"][0]["part"] == "furniture_01/part:foot"
         assert report["construction_status"] == "incomplete"
         checks = {item["code"]: item["passed"] for item in report["construction_checks"]}
         assert checks["construction.applied_operations"]

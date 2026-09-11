@@ -13,6 +13,7 @@ from fabrication_part_artifact_checker import FabricationPartArtifactChecker
 from fabrication_readiness_report import FabricationReadinessCheck
 from fabrication_position_evidence_checker import FabricationPositionEvidenceChecker
 from fabrication_tree_evidence import FabricationTreeEvidence
+from construction_position_evidence import ConstructionPositionEvidence
 
 
 class FabricationArtifactChecker:
@@ -24,6 +25,7 @@ class FabricationArtifactChecker:
         self.feature_evidence = FabricationFeatureEvidenceChecker()
         self.position_evidence = FabricationPositionEvidenceChecker()
         self.approval = FabricationClosedAssemblyApprovalChecker()
+        self.construction_position = ConstructionPositionEvidence()
 
     def check(
         self,
@@ -31,11 +33,14 @@ class FabricationArtifactChecker:
         evidence: FabricationTreeEvidence,
         visits,
     ) -> tuple[FabricationReadinessCheck, ...]:
+        # Keep the old wardrobe-specific relationship record as a migration adapter.
+        legacy = (self.position_evidence.check(project_root, evidence, visits),) if visits[0].path == ("wardrobe_01",) else ()
         return (
             self.part_artifacts.check(project_root, evidence.parts),
             *self.pack_records.check(project_root, evidence),
             self.feature_evidence.check(project_root, evidence, visits),
-            self.position_evidence.check(project_root, evidence, visits),
+            self.construction_position.check(project_root, evidence, visits),
+            *legacy,
             self.approval.check(project_root, visits),
         )
 
