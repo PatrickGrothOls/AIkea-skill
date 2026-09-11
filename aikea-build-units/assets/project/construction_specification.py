@@ -6,6 +6,7 @@ from typing import Any, Protocol
 from .specification import (
     AssemblySpecification, ChildAssemblySpec, PartMachiningSpec, PartSpec, PurchasedHardwareSpec,
 )
+from .construction_requirement import ConstructionRequirementSpec
 
 
 class ConstructionSpecification(AssemblySpecification, Protocol):
@@ -28,6 +29,7 @@ class PanelAssemblySpec:
     child_assemblies: tuple[ChildAssemblySpec, ...] = ()
     purchased_hardware: tuple[PurchasedHardwareSpec, ...] = ()
     machining: tuple[PartMachiningSpec, ...] = ()
+    requirements: tuple[ConstructionRequirementSpec, ...] | None = None
 
     def part(self, part_id: str) -> PartSpec:
         return next(part for part in self.parts if part.part_id == part_id)

@@ -40,6 +40,17 @@ class FabricationFeatureEvidenceChecker:
             problems,
         )
 
+    def validated_scopes(self, root, tree, visits):
+        part_hashes = self._part_step_hashes(root, tree)
+        owners = tuple(self._path(item.path) for item in visits if hasattr(item, "assembly"))
+        valid = []
+        for manifest in sorted((root / "assemblies").rglob("features.json")):
+            for scope in self.scopes.resolve(root, manifest, owners) or ():
+                data = self.records.read_json(scope.evidence_path)
+                if self._valid_evidence(data, scope.module, scope.expected_paths, part_hashes):
+                    valid.append((scope, data))
+        return tuple(valid)
+
     def _invalid_evidence_paths(
         self,
         root,

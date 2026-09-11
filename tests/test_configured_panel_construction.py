@@ -12,6 +12,7 @@ from assembly_taxonomy_generator import AssemblyTaxonomyGenerator
 from generated_project_module_runtime import GeneratedProjectModuleRuntime
 from physical_item_counter import PhysicalItemCounter
 from sheet_part_builder import SheetPartBuilder
+from construction_requirement_checker import ConstructionRequirementChecker
 
 
 class TestConfiguredPanelConstruction:
@@ -40,6 +41,7 @@ class TestConfiguredPanelConstruction:
         direct = panels.PanelAssemblySpec(
             spec.assembly_id, spec.purpose, spec.parts, spec.joints,
             spec.child_assemblies, spec.purchased_hardware, spec.machining,
+            spec.requirements,
         )
         custom = panels.PanelAssemblyBuilder(direct, allow_unresolved=True).build()
         return values, panels, tree, configured, legacy, custom
@@ -66,6 +68,19 @@ class TestConfiguredPanelConstruction:
             assert report == reports[0]
         assert any(item["code"] == "joint.unresolved" for item in reports[0]["unresolved"])
         assert not any(item["code"] == "cut.unknown_joint" for item in reports[0]["unresolved"])
+
+    def test_authored_and_configured_requirements_share_coverage_and_detect_removed_work(self, cabinet):
+        _, _, tree, configured, _, custom = cabinet
+        checker = ConstructionRequirementChecker()
+        assert custom.spec.requirements == configured.spec.requirements
+        assert checker.check(tree.walk(custom)) == checker.check(tree.walk(configured))
+        joint = next(item for item in custom.joints if item.joint_type == "cabineo")
+        remaining = tuple(item for item in custom.joints if item != joint)
+        changed = replace(custom, spec=replace(custom.spec, joints=remaining), joints=remaining,
+                          cuts=tuple(cut for cut in custom.cuts if cut.joint_id != joint.joint_id))
+        check = checker.check(tree.walk(changed))[0]
+        assert any(f"requirement:{joint.joint_id}: required operation is missing" in item
+                   for item in check.problems)
 
     def test_recipe_panel_can_be_notched_without_new_role_or_tool(self, cabinet):
         values, panels, _, configured, _, custom = cabinet

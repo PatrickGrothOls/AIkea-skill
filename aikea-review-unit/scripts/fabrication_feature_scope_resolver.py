@@ -16,6 +16,9 @@ class FabricationFeatureScope:
     module: str
     evidence_path: Path
     expected_paths: tuple[str, ...]
+    owner_path: str = ""
+    qualified_joint_ids: tuple[str, ...] = ()
+    expected_hardware_paths: tuple[str, ...] = ()
 
 
 class FabricationFeatureScopeResolver:
@@ -57,10 +60,19 @@ class FabricationFeatureScopeResolver:
         if len(set(expected)) != len(expected):
             return None
         module = feature["module"]
+        qualified = feature.get("qualified_joint_ids", [])
+        if (not isinstance(qualified, list) or any(not isinstance(item, str) or not item for item in qualified)
+                or len(set(qualified)) != len(qualified)):
+            return None
+        hardware = feature.get("affected_purchased_hardware_paths", [])
+        if (not isinstance(hardware, list) or any(not isinstance(item, str) or not item for item in hardware)
+                or len(set(hardware)) != len(hardware)):
+            return None
         evidence_path = manifest_path.parent / "fabrication-evidence" / (
             module.replace(".", "-") + ".json"
         )
-        return FabricationFeatureScope(module, evidence_path, expected)
+        return FabricationFeatureScope(module, evidence_path, expected, owner, tuple(qualified),
+                                       tuple(f"{owner}/{path}" for path in hardware))
 
     def _owner_path(self, root, manifest_path, assembly_paths) -> str | None:
         lineage = self._lineage(root / "assemblies", manifest_path)

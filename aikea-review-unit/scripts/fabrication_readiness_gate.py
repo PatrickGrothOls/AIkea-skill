@@ -7,6 +7,8 @@ from typing import Any
 
 from assembly_fabrication_checker import AssemblyFabricationChecker
 from construction_tree_checker import ConstructionTreeChecker
+from construction_requirement_checker import ConstructionRequirementChecker
+from construction_feature_qualification import ConstructionFeatureQualification
 from fabrication_artifact_checker import FabricationArtifactChecker
 from fabrication_readiness_report import FabricationReadinessReport
 from fabrication_tree_evidence import FabricationTreeEvidenceBuilder
@@ -26,10 +28,12 @@ class FabricationReadinessGate:
         visits: tuple[Any, ...],
     ) -> FabricationReadinessReport:
         evidence = self.evidence.build(visits)
-        checks = ConstructionTreeChecker().check(visits) + self.assembly.check(visits) + self.artifacts.check(
-            project_root,
-            evidence,
-            visits,
+        qualified, features = ConstructionFeatureQualification().resolve(project_root, evidence, visits)
+        checks = (
+            ConstructionTreeChecker().check(visits, qualified)
+            + ConstructionRequirementChecker().check(visits, features)
+            + self.assembly.check(visits)
+            + self.artifacts.check(project_root, evidence, visits)
         )
         return FabricationReadinessReport(checks)
 

@@ -42,7 +42,10 @@ BUILDER = CompleteBuilder()
         report = FurnitureDesignBuild().build(tmp_path, "furniture_01", output)
         assert report["status"] == "invalid"
         assert report["outside_envelope"][0]["part"] == "foot"
-        assert report["construction_status"] == "verified_operations"
+        assert report["construction_status"] == "incomplete"
+        checks = {item["code"]: item["passed"] for item in report["construction_checks"]}
+        assert checks["construction.applied_operations"]
+        assert not checks["construction.requirement_coverage"]
         assert json.loads(output.with_suffix(".geometry-check.json").read_text()) == report
 
     def test_failed_builder_revokes_previous_success_report(self, tmp_path):

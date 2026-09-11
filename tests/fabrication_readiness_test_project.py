@@ -11,6 +11,7 @@ import cadquery as cq
 
 from fabrication_closed_assembly_model import FabricationClosedAssemblyModel
 from fabrication_position_test_record import FabricationPositionTestRecord
+from construction_input_fingerprint import ConstructionInputFingerprinter
 
 
 class AssemblyTreeAssembly:
@@ -46,7 +47,7 @@ class FabricationReadinessTestProject:
         wardrobe.path = ("wardrobe_01",)
         wardrobe.local_to_root = self._identity_placement()
         wardrobe.assembly = SimpleNamespace(
-            spec=SimpleNamespace(assembly_id="wardrobe_01", purpose="wardrobe"),
+            spec=SimpleNamespace(assembly_id="wardrobe_01", purpose="wardrobe", requirements=()),
             parts=(),
             joints=(),
             cuts=(),
@@ -55,7 +56,11 @@ class FabricationReadinessTestProject:
         cabinet.path = ("wardrobe_01", "cabinet_01")
         cabinet.local_to_root = self._identity_placement()
         cabinet.assembly = SimpleNamespace(
-            spec=SimpleNamespace(assembly_id="cabinet_01", purpose="tall_storage"),
+            spec=SimpleNamespace(assembly_id="cabinet_01", purpose="tall_storage", requirements=(
+                SimpleNamespace(requirement_id="loose_sample", description="Loose material sample",
+                                subject_paths=("part:left_side",), operation_paths=(),
+                                disposition="loose", basis="Unattached sample panel for this fixture"),
+            )),
             parts=(built_part,),
             joints=(),
             cuts=(),
@@ -119,6 +124,8 @@ class FabricationReadinessTestProject:
                 "artifact": "assemblies/full_wardrobe_review.glb",
                 "artifact_sha256": sha256(model.read_bytes()).hexdigest(),
                 "decision_artifact_sha256": sha256(model.read_bytes()).hexdigest(),
+                "construction_sha256": ConstructionInputFingerprinter().build(root, visits),
+                "decision_construction_sha256": ConstructionInputFingerprinter().build(root, visits),
             },
         )
 

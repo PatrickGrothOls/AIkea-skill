@@ -13,8 +13,8 @@ class RecordProbe:
     def __init__(self) -> None:
         self.call = None
 
-    def write_proposal(self, project_root, model_path):
-        self.call = project_root, model_path
+    def write_proposal(self, project_root, model_path, construction_sha256):
+        self.call = project_root, model_path, construction_sha256
         return project_root / "reviews/fabrication-assembly.json"
 
 
@@ -27,6 +27,7 @@ class TestFabricationReviewProposalWriter:
         result = SimpleNamespace(
             glb_path=model,
             door_states={"cabinet_01": "closed"},
+            construction_sha256="current-inputs",
         )
 
         path = FabricationReviewProposalWriter(records).write_for_result(
@@ -35,7 +36,7 @@ class TestFabricationReviewProposalWriter:
         )
 
         assert path == tmp_path / "reviews/fabrication-assembly.json"
-        assert records.call == (tmp_path, model)
+        assert records.call == (tmp_path, model, "current-inputs")
 
     def test_skips_open_or_noncanonical_results(self, tmp_path) -> None:
         records = RecordProbe()

@@ -16,13 +16,14 @@ class ReviewServerSession:
         self.artifact = GlbArtifactSnapshot.load(model_path)
         self.store = ReviewDecisionStore(review_path) if review_path else None
         self.token = secrets.token_urlsafe(32) if self.store else None
+        self.construction_sha256 = ""
         if self.store:
-            self.store.read(self.artifact)
+            self.construction_sha256 = self.store.read(self.artifact).get("construction_sha256", "")
 
     def review_data(self) -> dict:
         if self.store is None:
             raise ValueError("this viewer has no decision record")
-        return self.store.read(self.artifact) | {"decision_token": self.token}
+        return self.store.read(self.artifact, self.construction_sha256) | {"decision_token": self.token}
 
     def decide(self, decision: str, token: str | None) -> dict:
         if self.store is None:
@@ -33,7 +34,7 @@ class ReviewServerSession:
             or not secrets.compare_digest(token, self.token)
         ):
             raise PermissionError("review decision token is invalid")
-        return self.store.decide(decision, self.artifact)
+        return self.store.decide(decision, self.artifact, self.construction_sha256)
 
 
 __all__ = ["ReviewServerSession"]

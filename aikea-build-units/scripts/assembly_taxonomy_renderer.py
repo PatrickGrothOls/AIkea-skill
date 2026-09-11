@@ -26,6 +26,7 @@ class AssemblyTaxonomyRenderer:
         "assembly_tree.py",
         "specification.py",
         "construction_specification.py",
+        "construction_requirement.py",
         "panel_assembly.py",
     )
 

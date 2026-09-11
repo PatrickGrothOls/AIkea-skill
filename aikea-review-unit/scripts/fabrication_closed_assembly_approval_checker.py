@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from construction_input_fingerprint import ConstructionInputFingerprinter
 
 from fabrication_closed_assembly_model import FabricationClosedAssemblyModel
 from fabrication_readiness_report import FabricationReadinessCheck
@@ -39,6 +40,8 @@ class FabricationClosedAssemblyApprovalChecker:
             and data.get("status") == "approved"
             and data.get("artifact_sha256") == model.sha256
             and data.get("decision_artifact_sha256") == model.sha256
+            and data.get("construction_sha256") == ConstructionInputFingerprinter().build(root, visits)
+            and data.get("decision_construction_sha256") == data.get("construction_sha256")
         )
         problems = () if approved else (str(record_path.relative_to(root)),)
         return FabricationReadinessCheck(

@@ -23,7 +23,7 @@ class FabricationReviewProposalWriter:
         }
         if result.glb_path.resolve() != canonical_path.resolve() or not is_closed:
             return None
-        return self.records.write_proposal(project_root, result.glb_path)
+        return self.records.write_proposal(project_root, result.glb_path, result.construction_sha256)
 
 
 __all__ = ["FabricationReviewProposalWriter"]

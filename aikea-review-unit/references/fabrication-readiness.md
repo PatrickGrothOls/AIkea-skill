@@ -18,8 +18,11 @@ The gate requires all of the following:
 1. Every manufactured tree item has positive-volume geometry and an explicit
    accumulated placement.
 2. Every purchased item has exact verified geometry and an explicit placement.
-3. Every multi-part assembly declares resolved joints, and every resolved joint
-   has matching part-owned machining.
+3. Every assembly declares assessed construction requirements and every physical
+   item has explicit coverage. Required connections/features must exist and cover
+   their declared subjects; intentional loose parts or floor contact need a
+   rationale. All declared joints are resolved and have matching part-owned
+   machining. No blanket joint-count rule forces loose parts to be joined.
 4. Every manufactured part has a parseable STEP solid that boolean-matches its
    built local geometry and a closed-face DXF drawing with the same millimetre
    footprint in `manufacturing/parts/`, named from its full tree path joined by
@@ -46,7 +49,15 @@ The gate requires all of the following:
     GLB regenerated from the current built tree. Its default scene must contain
     reachable mesh geometry. The viewer serves immutable startup bytes and
     serializes the one-way decision across processes. Any changed tree, model,
-    path, proposal, or decision checksum requires a new approval.
+    path, proposal, or decision checksum requires a new approval. The proposal and
+    decision also bind `construction_sha256` to current declared inputs and project
+    source, so material, product or requirement changes invalidate an unchanged image.
+
+Custom joint qualification reuses the registered feature record and exact affected
+part scope. Both manifest and current report declare `qualified_joint_ids`; the
+report must include the current `construction_sha256`, passed applicable checks
+and matching STEP checksums for every participant. Shared output checks still run
+independently. See the [construction protocol](../../aikea-build-units/references/shared-construction.md).
 
 Run the gate with:
 

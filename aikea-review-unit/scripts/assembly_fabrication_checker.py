@@ -58,8 +58,6 @@ class AssemblyFabricationChecker:
         problems = []
         for item in assemblies:
             assembly = item.assembly
-            if len(assembly.parts) > 1 and not assembly.joints:
-                problems.append(self.path(item.path) + ": no declared joints")
             problems.extend(
                 self.path(item.path) + f": unresolved joint {joint.joint_id}"
                 for joint in assembly.joints

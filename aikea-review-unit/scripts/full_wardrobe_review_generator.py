@@ -22,6 +22,7 @@ from generated_assembly_builder_loader import GeneratedAssemblyBuilderLoader
 from project_hardware_geometry_resolver import ProjectHardwareGeometryResolver
 from purchased_hardware_hydrator import PurchasedHardwareHydrator
 from unit_mockup import UnitMockupInputError
+from construction_input_fingerprint import ConstructionInputFingerprinter
 
 
 class FullWardrobeReviewGenerator:
@@ -51,6 +52,8 @@ class FullWardrobeReviewGenerator:
         review_plan: AssemblyTreeReviewPlan | None = None,
         output_filename: str | None = None,
     ) -> FullWardrobeReviewResult:
+        fingerprint = ConstructionInputFingerprinter()
+        sources = fingerprint.source_inputs(project_root)
         run = self.run_reader.read(project)
         assembly_ids = tuple(item.assembly_id for item in run.assemblies)
         resolved_door_plan = door_plan or FullWardrobeDoorPlan.uniform(
@@ -104,6 +107,8 @@ class FullWardrobeReviewGenerator:
         filename = output_filename or resolved_door_plan.filename_for(assembly_ids)
         glb_path = project_root / f"assemblies/{filename}"
         self.exporter.export("full_wardrobe", placed_parts, glb_path)
+        construction_sha256 = fingerprint.build(project_root, visits)
+        fingerprint.require_unchanged_sources(project_root, sources)
         return FullWardrobeReviewResult(
             tuple(built.spec.assembly_id for built in built_cabinets),
             glb_path,
@@ -114,6 +119,7 @@ class FullWardrobeReviewGenerator:
                     for assembly_id in assembly_ids
                 }
             ),
+            construction_sha256,
         )
 
     def _children(

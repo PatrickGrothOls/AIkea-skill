@@ -24,26 +24,30 @@ class ReviewDecisionStore:
     def __init__(self, path: Path) -> None:
         self.path = path.resolve()
 
-    def read(self, artifact: GlbArtifactSnapshot | None = None) -> dict:
+    def read(self, artifact: GlbArtifactSnapshot | None = None, construction_sha256: str | None = None) -> dict:
         record = self._read_record()
         self._validate_record(record, artifact)
+        if construction_sha256 is not None and record.get("construction_sha256", "") != construction_sha256:
+            raise ReviewDecisionConflict("construction inputs changed after the viewer loaded")
         return record
 
     def decide(
         self,
         decision: str,
         artifact: GlbArtifactSnapshot | None = None,
+        construction_sha256: str | None = None,
     ) -> dict:
         if decision not in self._DECISIONS:
             raise ValueError("unsupported review decision")
         with ReviewDecisionFileLock(self.path):
-            record = self.read(artifact)
+            record = self.read(artifact, construction_sha256)
             if record.get("status") != "proposed":
                 raise ReviewDecisionConflict("the review proposal is no longer pending")
             record["status"] = decision
             record["decided_at"] = datetime.now(timezone.utc).isoformat()
             if record["review_type"] == "fabrication_assembly":
                 record["decision_artifact_sha256"] = artifact.sha256
+                record["decision_construction_sha256"] = record.get("construction_sha256", "")
             self._write_atomically(record)
             return record
 

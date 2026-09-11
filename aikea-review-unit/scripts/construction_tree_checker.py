@@ -8,7 +8,7 @@ from part_construction_error import PartConstructionError
 class ConstructionTreeChecker:
     """Apply the shared output checks to configured, custom and extended builders."""
 
-    def check(self, visits):
+    def check(self, visits, qualified_operations=frozenset()):
         problems, extensions = [], []
         for visit in visits:
             if not hasattr(visit, "assembly"):
@@ -20,7 +20,8 @@ class ConstructionTreeChecker:
                 problems.append(f"{path}: {error}")
                 continue
             extensions.extend(f"{path}/joint:{joint.joint_id}: {joint.joint_type} needs qualification"
-                              for joint in unqualified)
+                              for joint in unqualified
+                              if f"{path}/joint:{joint.joint_id}" not in qualified_operations)
         return (
             FabricationReadinessCheck("construction.applied_operations", not problems, tuple(problems)),
             FabricationReadinessCheck("construction.extension_qualification", not extensions, tuple(extensions)),

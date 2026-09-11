@@ -13,6 +13,10 @@ sys.path.insert(0, str(BUILD_SCRIPTS))
 from assembly_tree_review_geometry import AssemblyTreeReviewGeometry  # noqa: E402
 from cadquery_glb_exporter import CadQueryGlbExporter  # noqa: E402
 from construction_tree_checker import ConstructionTreeChecker  # noqa: E402
+from construction_requirement_checker import ConstructionRequirementChecker  # noqa: E402
+from construction_input_fingerprint import ConstructionInputFingerprinter  # noqa: E402
+from construction_feature_qualification import ConstructionFeatureQualification  # noqa: E402
+from fabrication_tree_evidence import FabricationTreeEvidenceBuilder  # noqa: E402
 from furniture_geometry_check import FurnitureGeometryCheck  # noqa: E402
 from generated_assembly_builder_loader import GeneratedAssemblyBuilderLoader  # noqa: E402
 
@@ -30,6 +34,8 @@ class FurnitureDesignBuild:
                                           "scope": "Build has not completed."}) + "\n")
         if not re.fullmatch(r"[a-z][a-z0-9_]*_[0-9]{2}", assembly_id):
             raise ValueError("use a stable assembly ID such as furniture_01")
+        fingerprint = ConstructionInputFingerprinter()
+        sources = fingerprint.source_inputs(project_root)
         built = self.loader.load_assembly(project_root, assembly_id)
         envelope = self.loader.runtime.execute(
             project_root, lambda: importlib.import_module(f"assemblies.{assembly_id}.builder").ENVELOPE,
@@ -40,7 +46,10 @@ class FurnitureDesignBuild:
             raise ValueError("assembly tree paths must be unique")
         parts = AssemblyTreeReviewGeometry().build(visits, {})
         report = FurnitureGeometryCheck().check(parts, envelope)
-        checks = ConstructionTreeChecker().check(visits)
+        evidence = FabricationTreeEvidenceBuilder().build(visits)
+        qualified, features = ConstructionFeatureQualification().resolve(project_root, evidence, visits)
+        checks = ConstructionTreeChecker().check(visits, qualified) + ConstructionRequirementChecker().check(visits, features)
+        report["construction_sha256"] = fingerprint.build(project_root, visits)
         report["construction_checks"] = [check.as_dict() for check in checks]
         report["construction_status"] = "verified_operations" if all(check.passed for check in checks) else "incomplete"
         report["assembly_id"] = assembly_id
@@ -51,6 +60,7 @@ class FurnitureDesignBuild:
             CadQueryGlbExporter().export(assembly_id, parts, output)
             report["glb"] = str(output)
         report["geometry_check"] = str(report_path)
+        fingerprint.require_unchanged_sources(project_root, sources)
         report_path.write_text(json.dumps(report, indent=2) + "\n")
         return report
 

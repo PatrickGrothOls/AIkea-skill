@@ -11,6 +11,7 @@ from assembly_taxonomy import (
 )
 from part_spec_source_renderer import PartSpecSourceRenderer
 from configured_panel_module_renderer import ConfiguredPanelModuleRenderer
+from configured_requirement_renderer import ConfiguredRequirementRenderer
 
 
 class AssemblySpecRenderer:
@@ -34,6 +35,7 @@ class AssemblySpecRenderer:
             f'"""Scope: Own local dimensions, parts, and joints for {assembly.assembly_id}."""\n\n'
             "from assemblies.specification import (\n"
             "    AssemblySpec,\n"
+            "    ConstructionRequirementSpec,\n"
             "    BoundaryPoint,\n"
             "    CabineoJointSpec,\n"
             "    JointSpec,\n"
@@ -64,6 +66,7 @@ class AssemblySpecRenderer:
             f"{joints}\n"
             "    ),\n"
             f"{ConfiguredPanelModuleRenderer().machining(assembly)}"
+            f"{ConfiguredRequirementRenderer().render(assembly)}"
             ")\n"
         )
 

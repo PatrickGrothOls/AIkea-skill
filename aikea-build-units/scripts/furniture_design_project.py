@@ -10,7 +10,8 @@ class FurnitureDesignProject:
 
     CONTRACTS = (
         "assembly_composition.py", "assembly_feature.py", "assembly_placement.py",
-        "assembly_tree.py", "specification.py", "construction_specification.py", "panel_assembly.py",
+        "assembly_tree.py", "specification.py", "construction_specification.py",
+        "construction_requirement.py", "panel_assembly.py",
     )
 
     def initialize(self, project_root: Path) -> tuple[Path, ...]:

@@ -8,7 +8,7 @@ not limit the furniture that can be designed. This document tracks the migration
 implementation progress and evidence are recorded per work package below.
 
 Planning branch: `docs/shared-construction-foundation`.
-Current implementation branch: `feat/common-construction-checks`.
+Current implementation branch: `feat/construction-requirement-evidence`.
 Baseline: `origin/main` at `52facbf73b5ea775975025bb6409ea02ef8560bd`, fetched on
 2026-09-11. The finishing checkout stays at `fc78dfa`; its untracked `dist/`
 artifacts and the other worktrees are preserved.
@@ -31,9 +31,11 @@ construction algorithms, installed skills and private design files are unchanged
 WP2 is implemented and its review findings are fixed. WP3 implementation and
 independent review pass, with 561 unique Python tests and 72 subtests passed,
 five skipped. See [WP3 evidence](standard-configurator-construction.md).
-WP4a is implementing independent operation-result validation at shared review
-boundaries; WP4b requirement/evidence coverage and WP5-WP7 remain open. See
-[WP4 progress](common-construction-checks.md). The earlier
+WP4a operation-result validation is implemented and reviewed. WP4b requirement
+coverage, current input binding and scoped extension qualification are implemented
+and reviewed. Generic position/contact evidence and WP5-WP7 remain open.
+See [WP4 progress](common-construction-checks.md) and
+[requirement/evidence work](construction-requirement-evidence.md). The earlier
 composition branch remains unmerged; useful code is being reused selectively.
 
 ## Confirmed direction and evidence boundary
@@ -180,18 +182,18 @@ Changed dimensions rebuild dependent operations and invalidate affected evidence
 
 ### WP4 — Establish common check coverage and qualified extensions
 
-- [ ] Inventory existing geometric, feature, machining and fabrication checks;
+- [x] Inventory existing geometric, feature, machining and fabrication checks;
   attach each to the contract it can actually verify.
-- [ ] Apply the same checks to configurator output, custom assemblies and custom
+- [x] Apply the same checks to configurator output, custom assemblies and custom
   operation results at the official build/review/export boundaries.
-- [ ] Report required-but-undeclared construction work, missing product/material
+- [x] Report required-but-undeclared construction work, missing product/material
   evidence and declared operations that did not run. A validator cannot detect
   requirements that neither the project nor a recipe declares; make that limit explicit.
 - [ ] Distinguish expected mating/contact or motion from unintended collisions
   using bounded, traceable allowances; do not suppress whole hardware families.
-- [ ] Bind results to the current dimensions, operations, hardware and built
+- [x] Bind results to the current dimensions, operations, hardware and built
   artifacts using existing evidence mechanisms; reject stale approval after edits.
-- [ ] Demonstrate one extension that satisfies the protocol and one that returns
+- [x] Demonstrate one extension that satisfies the protocol and one that returns
   plausible geometry but lacks required participation or evidence.
 
 Acceptance: bypassing a standard builder cannot bypass applicable checks or
@@ -342,3 +344,7 @@ stack supplies Korrekt and lighting work when those migrations are reached.
 6. 2026-09-11 — WP2 review found incomplete per-occurrence receiver coverage,
    clipped local grid holes and a stale legacy test fixture. All three were fixed
    and independently rechecked before continuing to WP3.
+7. 2026-09-11 — WP3 passed standard/custom parity and the broad regression. WP4a
+   added independent output checks; WP4b added requirement coverage, current-input
+   approval binding and registered extension/hardware evidence. Each slice was
+   reviewed with the review skill and its findings fixed before checkpointing.

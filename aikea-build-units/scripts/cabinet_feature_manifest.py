@@ -22,17 +22,17 @@ class CabinetFeatureManifest:
         order: int,
         review_module: str | None = None,
         affected_manufactured_part_paths: tuple[str, ...] = (),
+        affected_purchased_hardware_paths: tuple[str, ...] = (),
+        qualified_joint_ids: tuple[str, ...] = (),
     ) -> Path | None:
         self._validate(assembly_id, module, order)
         if review_module is not None and not self._MODULE.fullmatch(review_module):
             raise ValueError("review module must be a stable dotted name")
-        if len(set(affected_manufactured_part_paths)) != len(
-            affected_manufactured_part_paths
-        ) or any(
-            not self._PART_PATH.fullmatch(path)
-            for path in affected_manufactured_part_paths
-        ):
-            raise ValueError("affected manufactured part paths must be unique and stable")
+        for paths, label in ((affected_manufactured_part_paths, "affected manufactured part paths"),
+                             (affected_purchased_hardware_paths, "affected purchased hardware paths"),
+                             (qualified_joint_ids, "qualified joint IDs")):
+            if len(set(paths)) != len(paths) or any(not self._PART_PATH.fullmatch(item) for item in paths):
+                raise ValueError(f"{label} must be unique and stable")
         path = project_root / "assemblies" / assembly_id / "features.json"
         features = self._load(path)
         by_module = {item["module"]: item for item in features}
@@ -45,6 +45,10 @@ class CabinetFeatureManifest:
         }
         if review_module is not None:
             registration["review_module"] = review_module
+        for name, values in (("affected_purchased_hardware_paths", affected_purchased_hardware_paths),
+                             ("qualified_joint_ids", qualified_joint_ids)):
+            if values:
+                registration[name] = list(values)
         by_module[module] = registration
         ordered = sorted(by_module.values(), key=lambda item: (item["order"], item["module"]))
         data = {"schema_version": 1, "features": ordered}

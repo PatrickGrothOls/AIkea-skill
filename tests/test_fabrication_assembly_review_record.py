@@ -23,6 +23,7 @@ class TestFabricationAssemblyReviewRecord:
         approved = json.loads(record.read_text(encoding="utf-8"))
         approved["status"] = "approved"
         approved["decision_artifact_sha256"] = approved["artifact_sha256"]
+        approved["decision_construction_sha256"] = approved["construction_sha256"]
         record.write_text(json.dumps(approved), encoding="utf-8")
 
         writer.write_proposal(tmp_path, model)

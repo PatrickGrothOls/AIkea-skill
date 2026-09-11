@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from .construction_requirement import ConstructionRequirementSpec
 from .assembly_composition import (
     AssemblyCompositionError,
     AssemblySpecification,
@@ -62,6 +63,7 @@ class CompositeAssemblySpec:
     child_assemblies: tuple[ChildAssemblySpec, ...]
     parts: tuple[PartSpec, ...] = ()
     purchased_hardware: tuple[PurchasedHardwareSpec, ...] = ()
+    requirements: tuple[ConstructionRequirementSpec, ...] | None = None
 
 
 @dataclass(frozen=True)
@@ -107,6 +109,7 @@ class AssemblySpec:
     child_assemblies: tuple[ChildAssemblySpec, ...] = ()
     purchased_hardware: tuple[PurchasedHardwareSpec, ...] = ()
     machining: tuple[PartMachiningSpec, ...] = ()
+    requirements: tuple[ConstructionRequirementSpec, ...] | None = None
 
     def part(self, part_id: str) -> PartSpec:
         return next(part for part in self.parts if part.part_id == part_id)
@@ -135,6 +138,7 @@ class BaseAssemblySpec:
     joints: tuple[JointSpec | CabineoJointSpec, ...]
     child_assemblies: tuple[ChildAssemblySpec, ...] = ()
     purchased_hardware: tuple[PurchasedHardwareSpec, ...] = ()
+    requirements: tuple[ConstructionRequirementSpec, ...] | None = None
 
     @property
     def base_height_mm(self) -> float:

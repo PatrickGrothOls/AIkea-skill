@@ -13,6 +13,7 @@ class FullWardrobeReviewResult:
     glb_path: Path
     position_report_path: Path
     door_states: Mapping[str, str]
+    construction_sha256: str = ""
 
 
 __all__ = ["FullWardrobeReviewResult"]

@@ -17,6 +17,7 @@ class FabricationAssemblyReviewRecord:
         self,
         project_root: Path,
         model_path: Path,
+        construction_sha256: str = "",
     ) -> Path:
         record_path = project_root / "reviews/fabrication-assembly.json"
         model = GlbArtifactSnapshot.load(model_path)
@@ -27,6 +28,7 @@ class FabricationAssemblyReviewRecord:
             "message": self._MESSAGE,
             "artifact": str(relative_model),
             "artifact_sha256": model.sha256,
+            "construction_sha256": construction_sha256,
         }
         existing = self._read(record_path)
         if (
@@ -35,6 +37,8 @@ class FabricationAssemblyReviewRecord:
             and existing.get("artifact_sha256") == proposal["artifact_sha256"]
             and existing.get("decision_artifact_sha256")
             == proposal["artifact_sha256"]
+            and existing.get("construction_sha256") == construction_sha256
+            and existing.get("decision_construction_sha256") == construction_sha256
         ):
             return record_path
         record_path.parent.mkdir(parents=True, exist_ok=True)

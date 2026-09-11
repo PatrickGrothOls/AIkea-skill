@@ -10,8 +10,10 @@ custom and extended construction at official review/export boundaries.
 ## Current state
 
 WP4a (operation result validation and shared entry points) is implemented and its
-independent review findings are fixed and rechecked. WP4b (explicit requirement coverage, extension qualification
-and context binding) remains to implement. This split keeps each commit reviewable.
+independent review findings are fixed and rechecked. WP4b (explicit requirement
+coverage, extension qualification and context binding) is also implemented and
+reviewed; see [its evidence](construction-requirement-evidence.md). Generic position
+records and bounded contact allowances remain for WP4c. These slices keep the stack reviewable.
 WP3 is fully verified: 561 unique tests and 72 subtests passed, five skipped,
 including a successful rerun of local HTTP tests with socket permission.
 
@@ -20,13 +22,13 @@ including a successful rerun of local HTTP tests with socket permission.
 - [x] Inventory existing geometry, machining, feature and artifact checks.
 - [x] Validate declared operations, participant coverage and actual removed
   material on any returned built tree, including directly authored builders.
-- [ ] Record explicit construction requirements and disposition/evidence gaps.
-- [ ] Keep extension qualification separate from successful solid generation.
+- [x] Record explicit construction requirements and disposition/evidence gaps.
+- [x] Keep extension qualification separate from successful solid generation.
 - [x] Apply the common operation checks to review and fabrication commands for any root.
 - [ ] Keep expected contact allowances bounded to exact participants/evidence.
-- [ ] Bind changed requirements, material, operations and products to current
+- [x] Bind changed requirements, material, operations and products to current
   review evidence, reusing artifact checks where possible.
-- [ ] Test valid extensions, plausible-but-incomplete results and stale evidence.
+- [x] Test valid extensions, plausible-but-incomplete results and stale evidence.
 - [ ] Run the `review` skill, fix/recheck findings and commit the slice.
 
 ## Audit log
