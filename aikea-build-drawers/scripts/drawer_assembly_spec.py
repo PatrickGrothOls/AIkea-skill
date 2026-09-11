@@ -19,10 +19,16 @@ class DrawerAssemblySpec:
     box: DrawerBoxSpec
     child_assemblies: tuple = ()
     purchased_hardware: tuple = ()
+    joints: tuple = ()
+    machining: tuple = ()
+    requirements: tuple | None = None
 
     @property
     def parts(self) -> tuple[DrawerPartSpec, ...]:
         return self.box.parts
+
+    def part(self, part_id: str) -> DrawerPartSpec:
+        return self.box.part(part_id)
 
 
 __all__ = ["DrawerAssemblySpec"]

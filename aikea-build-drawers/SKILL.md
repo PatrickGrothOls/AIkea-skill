@@ -21,6 +21,12 @@ the intended cabinet and drawer arrangement, runs the deterministic builders,
 and discusses the physical result with the client. It does not recreate drawer
 geometry from prose.
 
+The sizing recipes are optional conveniences over shared construction. Read
+[shared drawer construction](references/shared-drawer-construction.md) when
+adapting their output or using a drawer in a custom parent. Generated child
+builders use the same panel/operation protocol as other furniture. Respect the
+remaining host-interface limits and keep unresolved construction explicit.
+
 ## Select the runner profile
 
 Preserve an exact runner choice already saved in the active project or stated by

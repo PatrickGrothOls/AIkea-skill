@@ -5,7 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any
 
-from blank_sheet_builder import BlankSheetBuilder
+from panel_blank_builder import PanelBlankBuilder
 from drawer_box_spec import DrawerBoxSpec, DrawerPartSpec
 from drawer_part_locator import DrawerPartPlacement
 from local_to_parent_location import LocalToParentLocation
@@ -35,14 +35,14 @@ class BuiltDrawerBox:
 
 
 class DrawerBoxBuilder:
-    """Construct every drawer part through the shared BlankSheetBuilder."""
+    """Expose the sizing recipe's preview through the common explicit blank tool."""
 
     def build(self, drawer: DrawerBoxSpec) -> BuiltDrawerBox:
         parts = tuple(self._build_part(part) for part in drawer.parts)
         return BuiltDrawerBox(spec=drawer, parts=parts)
 
     def _build_part(self, part: DrawerPartSpec) -> BuiltDrawerPart:
-        blank = BlankSheetBuilder.rectangle(*part.local_size_mm).build()
+        blank = PanelBlankBuilder().build(part)
         return BuiltDrawerPart(
             spec=part,
             solid=blank,

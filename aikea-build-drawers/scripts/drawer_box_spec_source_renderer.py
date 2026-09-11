@@ -52,6 +52,8 @@ class DrawerBoxSpecSourceRenderer:
             f"            height_mm={part.height_mm!r},\n"
             f"            thickness_mm={part.thickness_mm!r},\n"
             f"            local_to_parent={self._placement(placement)},\n"
+            f"            outline_mm={part.outline_mm!r},\n"
+            f"            material_id={part.material_id!r},\n"
             "        ),"
         )
 

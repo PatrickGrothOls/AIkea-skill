@@ -5,6 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from drawer_box_spec_source_renderer import DrawerBoxSpecSourceRenderer
+from drawer_construction_module_renderer import DrawerConstructionModuleRenderer
 
 
 class HettichKa4532SpacerDrawerChildRenderer:
@@ -23,10 +24,12 @@ class HettichKa4532SpacerDrawerChildRenderer:
         }
 
     def _spec(self, plan) -> str:
+        hardware_ids = tuple(f"{plan.drawer.assembly_id}_runner_{side}_moving" for side in ("left", "right"))
         return (
             f'"""Scope: Own the resolved {plan.drawer.assembly_id} dimensions."""\n\n'
             "from assemblies.specification import (\n"
             "    AxisBasis, AxisDirection, LocalToParentPlacement, Point3D,\n"
+            "    BoundaryPoint, ConstructionRequirementSpec,\n"
             ")\n"
             "from drawer_assembly_spec import DrawerAssemblySpec\n"
             "from drawer_box_spec import (\n"
@@ -42,32 +45,13 @@ class HettichKa4532SpacerDrawerChildRenderer:
             f"    hardware_geometry_state={plan.drawer.hardware_geometry_state!r},\n"
             "    box=BOX_SPEC,\n"
             "    purchased_hardware=DRAWER_HARDWARE,\n"
+            "    machining=(),\n"
+            f"{DrawerConstructionModuleRenderer().requirements(plan.drawer.box, hardware_ids=hardware_ids)}"
             ")\n"
         )
 
     def _builder(self, drawer_id: str) -> str:
-        class_name = "".join(part.capitalize() for part in drawer_id.split("_"))
-        return (
-            f'"""Scope: Build the review-only wooden sheets owned by {drawer_id}."""\n\n'
-            "from assemblies.specification import (\n"
-            "    BuiltAssembly, BuiltPart, BuiltPurchasedHardware,\n"
-            ")\n"
-            "from drawer_box_builder import DrawerBoxBuilder\n\n"
-            "from .spec import SPEC\n\n\n"
-            f"class {class_name}Builder:\n"
-            "    \"\"\"Build blanks without claiming unresolved fixing machining.\"\"\"\n\n"
-            "    def build(self) -> BuiltAssembly:\n"
-            "        box = DrawerBoxBuilder().build(SPEC.box)\n"
-            "        parts = tuple(BuiltPart(part.spec, part.solid) for part in box.parts)\n"
-            "        hardware = tuple(\n"
-            "            BuiltPurchasedHardware(spec, None)\n"
-            "            for spec in SPEC.purchased_hardware\n"
-            "        )\n"
-            "        return BuiltAssembly(\n"
-            "            SPEC, parts, (), purchased_hardware=hardware\n"
-            "        )\n\n\n"
-            f"BUILDER = {class_name}Builder()\n"
-        )
+        return DrawerConstructionModuleRenderer().builder(drawer_id)
 
 
 __all__ = ["HettichKa4532SpacerDrawerChildRenderer"]

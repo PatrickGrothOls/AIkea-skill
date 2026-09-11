@@ -57,6 +57,8 @@ class DrawerPartSpec:
     height_mm: float
     thickness_mm: float
     local_to_parent: DrawerPartPlacement | None = None
+    outline_mm: tuple = ()
+    material_id: str = ""
 
     @property
     def local_size_mm(self) -> tuple[float, float, float]:

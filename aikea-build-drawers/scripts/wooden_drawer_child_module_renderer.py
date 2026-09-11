@@ -6,6 +6,9 @@ from pathlib import Path
 from typing import Any
 
 from drawer_box_spec_source_renderer import DrawerBoxSpecSourceRenderer
+from drawer_construction_module_renderer import DrawerConstructionModuleRenderer
+from hettich_ka_5332_drilling_recipe import HettichKa5332DrillingRecipe
+from surface_drilling_source_renderer import SurfaceDrillingSourceRenderer
 
 
 class WoodenDrawerChildModuleRenderer:
@@ -25,12 +28,16 @@ class WoodenDrawerChildModuleRenderer:
 
     def _spec(self, plan: Any) -> str:
         box = self.box_renderer.render(plan.drawer.box)
+        drilling = HettichKa5332DrillingRecipe().drawer(plan.drawer.box, plan.runner)
+        requests = "\n".join(f"        {SurfaceDrillingSourceRenderer().render(request)}," for request in drilling)
         return (
             f'"""Scope: Own the resolved {plan.drawer.assembly_id} dimensions."""\n\n'
             "from assemblies.specification import (\n"
             "    AxisBasis, AxisDirection, LocalToParentPlacement, Point3D,\n"
+            "    BoundaryPoint, ConstructionRequirementSpec, SurfaceDrillingSpec,\n"
             ")\n"
             "from drawer_assembly_spec import DrawerAssemblySpec\n"
+            "from surface_hole_pattern import SurfaceHole\n"
             "from drawer_box_spec import (\n"
             "    CabinetDrawerOpening, DrawerBoxSizingProfile, DrawerBoxSpec, DrawerPartSpec,\n"
             ")\n\n\n"
@@ -42,29 +49,13 @@ class WoodenDrawerChildModuleRenderer:
             f"    runner_item_number={plan.runner.item_number!r},\n"
             f"    hardware_geometry_state={plan.drawer.hardware_geometry_state!r},\n"
             "    box=BOX_SPEC,\n"
+            f"    machining=(\n{requests}\n    ),\n"
+            f"{DrawerConstructionModuleRenderer().requirements(plan.drawer.box, drilling)}"
             ")\n"
         )
 
     def _builder(self, plan: Any) -> str:
-        class_name = "".join(
-            part.capitalize() for part in plan.drawer.assembly_id.split("_")
-        )
-        return (
-            f'"""Scope: Build every wooden sheet owned by {plan.drawer.assembly_id}."""\n\n'
-            "from assemblies.specification import BuiltAssembly, BuiltPart\n"
-            "from drawer_box_builder import DrawerBoxBuilder\n\n"
-            "from hettich_ka_5332_panel_machining import HettichKa5332PanelMachining\n\n"
-            "from .spec import SPEC\n\n\n"
-            f"class {class_name}Builder:\n"
-            "    \"\"\"Build the resolved drawer box in canonical part frames.\"\"\"\n\n"
-            "    def build(self) -> BuiltAssembly:\n"
-            "        box = HettichKa5332PanelMachining().drawer_box(\n"
-            "            DrawerBoxBuilder().build(SPEC.box)\n"
-            "        )\n"
-            "        parts = tuple(BuiltPart(part.spec, part.solid) for part in box.parts)\n"
-            "        return BuiltAssembly(SPEC, parts, ())\n\n\n"
-            f"BUILDER = {class_name}Builder()\n"
-        )
+        return DrawerConstructionModuleRenderer().builder(plan.drawer.assembly_id)
 
 
 __all__ = ["WoodenDrawerChildModuleRenderer"]
