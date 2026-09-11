@@ -67,7 +67,7 @@ class TestDoorFeatureGeneration:
         assert hinge.hardware_asset_id == "riex-nc70-f000001-closed"
         assert plate.hardware_asset_id == "riex-nc70-f000049-h0-euroscrew-plate"
         assert hinge.local_to_parent.origin_in_parent.z_mm == (
-            assembly.door_bottom_mm + 500.0
+            assembly.base_height_mm + 500.0
         )
 
         parts = tuple(specification.BuiltPart(part, object()) for part in assembly.parts)
@@ -111,7 +111,7 @@ class TestDoorFeatureGeneration:
             door_thickness_mm=door["thickness"],
             door_mass_kg=20.0,
             overlay_mm=17.0,
-            placements=(DoorHingePlacement("hinge_01", 500.0, 500.0, (484.0, 516.0)),),
+            placements=(DoorHingePlacement("hinge_01", 500.0+assembly.base_height_mm-assembly.door_bottom_mm, 500.0, (484.0, 516.0)),),
             compatibility_issues=(),
         )
 

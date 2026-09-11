@@ -26,14 +26,18 @@ class _Part:
     dimensions_mm: tuple[tuple[str, float], ...]
     local_size_mm: tuple[float, float, float] = ()
     inside_face: str = ">Z"
+    outline_mm: tuple = ()
 
     @property
     def local_to_parent(self):
         left = self.part_id == "left_side"
         axes = ((0, 1, 0), (0, 0, 1), (1, 0, 0)) if left else ((0, -1, 0), (0, 0, 1), (-1, 0, 0))
+        origin = (0, 0, 0) if left else (504, 582, 0)
+        if self.part_id == "door_panel":
+            axes, origin = ((1, 0, 0), (0, 0, 1), (0, -1, 0)), (2, 0, 0)
         directions = tuple(SimpleNamespace(x=x, y=y, z=z) for x, y, z in axes)
         return SimpleNamespace(
-            origin_in_parent=SimpleNamespace(x_mm=0 if left else 504, y_mm=0 if left else 582, z_mm=0),
+            origin_in_parent=SimpleNamespace(**dict(zip(("x_mm", "y_mm", "z_mm"), origin))),
             axis_basis=SimpleNamespace(**dict(zip(("local_x_in_parent", "local_y_in_parent", "local_z_in_parent"), directions))),
         )
 
@@ -52,6 +56,7 @@ class _Assembly:
                 "door_panel",
                 (("width", 500.0), ("left_height", 1000.0),
                  ("right_height", 1000.0), ("thickness", 18.0)),
+                (500, 1000, 18), "<Z",
             ),
             _Part(
                 "left_side",

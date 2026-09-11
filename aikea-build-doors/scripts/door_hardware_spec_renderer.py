@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import Any
 
 from door_hinge_plan import DoorHingePlan
+from door_host import DoorHost
 from riex_nc70_hardware_frame import (
     RiexNc70HardwareFrame,
     RiexNc70HardwareFrameResolver,
@@ -24,6 +25,7 @@ class DoorHardwareSpecRenderer:
         plan: DoorHingePlan,
         profile: RiexNc70HingeProfile,
     ) -> str:
+        host = DoorHost.resolve(assembly, plan.hinge_side, plan.host_spec)
         hardware = []
         for placement in plan.placements:
             hardware.extend(
@@ -33,9 +35,9 @@ class DoorHardwareSpecRenderer:
                         "F000001",
                         "riex-nc70-f000001-closed",
                         self.frames.hinge(
-                            assembly,
+                            host,
                             profile,
-                            float(assembly.door_bottom_mm)
+                            host.door_bottom_mm
                             + placement.door_height_mm,
                             plan.hinge_side,
                         ),
@@ -45,9 +47,9 @@ class DoorHardwareSpecRenderer:
                         "F000049",
                         "riex-nc70-f000049-h0-euroscrew-plate",
                         self.frames.plate(
-                            assembly,
+                            host,
                             profile,
-                            float(assembly.base_height_mm)
+                            host.support_bottom_mm
                             + placement.cabinet_height_mm,
                             plan.hinge_side,
                         ),

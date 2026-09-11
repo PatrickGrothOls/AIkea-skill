@@ -3,7 +3,7 @@
 from dataclasses import dataclass
 from math import isfinite
 
-from drawer_hardware_mounting_plan import HardwarePlacement
+from hardware_placement import HardwarePlacement
 
 
 @dataclass(frozen=True)

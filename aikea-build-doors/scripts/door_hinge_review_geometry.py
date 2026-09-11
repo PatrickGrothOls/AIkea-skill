@@ -10,6 +10,7 @@ from assembly_part_locator import AssemblyPartLocator
 from cabinet_assembly_geometry import CabinetAssemblyGeometry
 from concealed_hinge_machining import HingedPanelSet
 from door_hinge_plan import DoorHingePlan
+from door_host import DoorHost
 from riex_nc70_hardware_loader import RiexNc70HardwareSet
 from riex_nc70_hardware_placement import RiexNc70HardwarePlacement
 from riex_nc70_hinge_profile import RiexNc70HingeProfile
@@ -56,8 +57,8 @@ class DoorHingeReviewGeometry:
         opened: bool,
     ) -> tuple[MockupPart, ...]:
         replacements = {
-            plan.hinge_side.side_part_id: machined.cabinet_side,
-            "door_panel": machined.door,
+            plan.support_part_id: machined.cabinet_side,
+            plan.door_part_id: machined.door,
         }
         parts = tuple(
             MockupPart(
@@ -71,7 +72,7 @@ class DoorHingeReviewGeometry:
         if not opened:
             return parts
         pivot_x_mm, pivot_y_mm = self.hardware_placement.pivot(
-            built_assembly.spec,
+            DoorHost.resolve(built_assembly.spec, plan.hinge_side, plan.host_spec),
             profile,
             plan.hinge_side,
         )
@@ -80,7 +81,7 @@ class DoorHingeReviewGeometry:
         )
         return tuple(
             self._open_door(part, pivot_x_mm, pivot_y_mm, angle_degrees)
-            if part.name == "door_panel"
+            if part.name == plan.door_part_id
             else part
             for part in parts
         )

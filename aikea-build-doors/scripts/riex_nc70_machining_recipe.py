@@ -2,6 +2,8 @@
 
 from dataclasses import replace
 
+from door_host import DoorHost
+
 from panel_machining_builder import PanelMachiningBuilder
 from riex_nc70_cup_pattern import RiexNc70CupPattern
 from surface_drilling_reuse import SurfaceDrillingReuse
@@ -18,9 +20,11 @@ class RiexNc70MachiningRecipe:
                 profile.plate_required_hole_depth_mm > grid.hole_depth_mm or
                 profile.plate_fixing_spacing_mm != grid.row_pitch_mm):
             raise ValueError("selected hinge plate does not match the configured System 32 interface")
-        door, side = assembly.part("door_panel"), assembly.part(plan.hinge_side.side_part_id)
+        host = DoorHost.resolve(assembly, plan.hinge_side, plan.host_spec)
+        host.require_current_plan(plan, profile)
+        door, side = host.door, host.support
         pattern = RiexNc70CupPattern(profile, pilot_diameter_mm, pilot_depth_mm).build()
-        prior = PanelMachiningBuilder().build(assembly).all
+        prior = PanelMachiningBuilder().build(host.assembly).all
         requests = []
         left = plan.hinge_side.value == "left"
         cup_x = profile.cup_center_from_edge_mm if left else plan.door_width_mm-profile.cup_center_from_edge_mm
@@ -40,7 +44,7 @@ class RiexNc70MachiningRecipe:
             surface = self._surface(side, (0, height, thickness) if top else (0, 0, 0),
                                     ((1, 0, 0), (0, -1, 0), (0, 0, -1)) if top else
                                     ((1, 0, 0), (0, 1, 0), (0, 0, 1)))
-            x = profile.plate_line_from_front_mm if left else depth-profile.plate_line_from_front_mm
+            x = host.support_frame.to_local((host.inside_x_mm, host.front_mm+profile.plate_line_from_front_mm, host.support_bottom_mm))[0]
             holes = tuple(SurfaceHole(f"fixing_{index}", x, height-row if top else row,
                                      grid.hole_diameter_mm, grid.hole_depth_mm)
                           for index, row in enumerate(rows, 1))

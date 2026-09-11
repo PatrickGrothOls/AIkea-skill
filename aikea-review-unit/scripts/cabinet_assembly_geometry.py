@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from unit_mockup import MockupPart, UnitMockupInputError
+from unit_mockup import MockupPart
 
 
 class CabinetAssemblyGeometry:
@@ -19,13 +19,7 @@ class CabinetAssemblyGeometry:
 
     def build(self, built_assembly: Any) -> tuple[MockupPart, ...]:
         spec = built_assembly.spec
-        parts = {built_part.spec.part_id: built_part for built_part in built_assembly.parts}
-        required = {"left_side", "right_side", "back_panel", "door_panel", "top_panel_01"}
-        missing = sorted(required - parts.keys())
-        if missing:
-            raise UnitMockupInputError(["missing visual parts: " + ", ".join(missing)])
-        part_specs = {part_id: built_part.spec for part_id, built_part in parts.items()}
-        base_height_mm = self._base_height(spec, part_specs)
+        base_height_mm = float(getattr(spec, "base_height_mm", 0.0))
         return tuple(
             MockupPart(
                 built_part.spec.part_id,
@@ -35,16 +29,6 @@ class CabinetAssemblyGeometry:
             )
             for built_part in built_assembly.parts
         )
-
-    def _base_height(self, spec: Any, parts: dict[str, Any]) -> float:
-        if hasattr(spec, "base_height_mm"):
-            return float(spec.base_height_mm)
-        left = self._dimensions(parts["left_side"])
-        door = self._dimensions(parts["door_panel"])
-        return door["left_height"] - left["height"]
-
-    def _dimensions(self, part: Any) -> dict[str, float]:
-        return {name: float(value) for name, value in part.dimensions_mm}
 
     def _color(self, role: str) -> tuple[float, float, float, float]:
         return {

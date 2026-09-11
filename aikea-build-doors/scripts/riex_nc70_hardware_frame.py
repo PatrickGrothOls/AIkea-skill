@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from typing import Any
 
 from door_hinge_side import DoorHingeSide
+from door_host import DoorHost
 from riex_nc70_hinge_pivot import RiexNc70HingePivot
 from riex_nc70_hinge_profile import RiexNc70HingeProfile
 
@@ -35,6 +36,7 @@ class RiexNc70HardwareFrameResolver:
         center_z_mm: float,
         hinge_side: DoorHingeSide,
     ) -> RiexNc70HardwareFrame:
+        host = DoorHost.resolve(assembly, hinge_side)
         origin_x_mm = self.hinge_pivot.hinge_origin_x(
             assembly, profile, hinge_side
         )
@@ -44,7 +46,7 @@ class RiexNc70HardwareFrameResolver:
             else (0.0, 0.0, -1.0)
         )
         return self._from_plane(
-            (origin_x_mm, -profile.native_door_surface_x_mm, center_z_mm),
+            (origin_x_mm, host.front_mm-profile.native_door_surface_x_mm, center_z_mm),
             (0.0, 1.0, 0.0),
             local_z,
         )
@@ -56,20 +58,18 @@ class RiexNc70HardwareFrameResolver:
         center_z_mm: float,
         hinge_side: DoorHingeSide,
     ) -> RiexNc70HardwareFrame:
-        side_thickness_mm = self._dimensions(
-            assembly.part(hinge_side.side_part_id)
-        )["thickness"]
-        origin_x_mm = side_thickness_mm + profile.plate_native_panel_face_y_mm
+        host = DoorHost.resolve(assembly, hinge_side)
+        offset = profile.plate_native_panel_face_y_mm
+        origin_x_mm = host.inside_x_mm + (offset if hinge_side is DoorHingeSide.LEFT else -offset)
         origin_z_mm = center_z_mm - profile.plate_native_vertical_center_x_mm
         local_x = (0.0, 0.0, 1.0)
         if hinge_side is DoorHingeSide.RIGHT:
-            origin_x_mm = float(assembly.width_mm) - origin_x_mm
             origin_z_mm = center_z_mm + profile.plate_native_vertical_center_x_mm
             local_x = (0.0, 0.0, -1.0)
         return self._from_plane(
             (
                 origin_x_mm,
-                profile.plate_line_from_front_mm
+                host.front_mm + profile.plate_line_from_front_mm
                 + profile.plate_native_fixing_axis_z_mm,
                 origin_z_mm,
             ),
@@ -99,9 +99,5 @@ class RiexNc70HardwareFrameResolver:
             (z_x * x_y) - (z_y * x_x),
         )
         return RiexNc70HardwareFrame(origin, local_x, local_y, local_z)
-
-    def _dimensions(self, part: Any) -> dict[str, float]:
-        return {name: float(value) for name, value in part.dimensions_mm}
-
 
 __all__ = ["RiexNc70HardwareFrame", "RiexNc70HardwareFrameResolver"]

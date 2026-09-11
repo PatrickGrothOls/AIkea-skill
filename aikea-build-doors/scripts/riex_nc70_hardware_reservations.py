@@ -16,6 +16,7 @@ class RiexNc70HardwareReservations:
         self,
         plan: Any,
         profile: RiexNc70HingeProfile,
+        host=None,
     ) -> tuple[PanelHardwareReservation, ...]:
         return tuple(
             self.for_position(
@@ -23,7 +24,7 @@ class RiexNc70HardwareReservations:
                 plan.hinge_side,
                 placement.cabinet_fixing_rows_mm,
                 placement.cabinet_height_mm,
-                profile,
+                profile, host,
             )
             for placement in plan.placements
         )
@@ -35,6 +36,7 @@ class RiexNc70HardwareReservations:
         fixing_rows_mm: tuple[float, float],
         center_height_mm: float,
         profile: RiexNc70HingeProfile,
+        host=None,
     ) -> PanelHardwareReservation:
         low_offset_mm, high_offset_mm = (
             profile.plate_height_interval_from_center_mm
@@ -42,9 +44,11 @@ class RiexNc70HardwareReservations:
         return PanelHardwareReservation(
             owner_id=owner_id,
             hardware_kind="hinge_plate",
-            side_part_id=hinge_side.side_part_id,
-            system_32_node_rows_mm=fixing_rows_mm,
-            depth_interval_mm=profile.plate_depth_interval_from_front_mm,
+            side_part_id=host.support.part_id if host else hinge_side.side_part_id,
+            system_32_node_rows_mm=(fixing_rows_mm if host is None or
+                                    abs(host.front_mm-host.support_front_mm) <= 1e-6 else ()),
+            depth_interval_mm=tuple(value+(host.front_mm-host.support_front_mm if host else 0)
+                                    for value in profile.plate_depth_interval_from_front_mm),
             height_interval_mm=(
                 center_height_mm + low_offset_mm,
                 center_height_mm + high_offset_mm,

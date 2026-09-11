@@ -11,6 +11,7 @@ from cadquery_glb_exporter import CadQueryGlbExporter
 from cabinet_door_feature_generator import CabinetDoorFeatureGenerator
 from concealed_hinge_machining import ConcealedHingeMachining
 from door_hinge_plan import DoorHingePlanner
+from door_host_loader import DoorHostLoader
 from door_hinge_review_geometry import DoorHingeReviewGeometry
 from door_hinge_review_report import DoorHingeReviewReport
 from door_opening_review_record import DoorOpeningReviewRecord
@@ -83,8 +84,9 @@ class CabinetDoorHingeReviewGenerator:
             for item in self.reservation_store.load(project_root, assembly_id)
             if item.hardware_kind != "hinge_plate"
         )
+        host = DoorHostLoader().load(project_root, built.spec, opening_plan.proposed_side)
         plan = self.planner.plan(
-            built.spec,
+            host,
             profile,
             opening_plan.proposed_side,
             existing_reservations,
@@ -96,7 +98,7 @@ class CabinetDoorHingeReviewGenerator:
         self.feature_generator.generate(project_root, built.spec, plan, profile)
         side_dimensions = {
             name: float(value)
-            for name, value in built.spec.part(plan.hinge_side.side_part_id).dimensions_mm
+            for name, value in built.spec.part(plan.support_part_id).dimensions_mm
         }
         report = DoorHingeReviewReport.from_plan(
             plan,
@@ -126,7 +128,7 @@ class CabinetDoorHingeReviewGenerator:
             project_root,
             assembly_id,
             existing_reservations
-            + self.hardware_reservations.from_plan(plan, profile),
+            + self.hardware_reservations.from_plan(plan, profile, host),
         )
         return CabinetDoorHingeReviewResult(
             assembly_id=assembly_id,

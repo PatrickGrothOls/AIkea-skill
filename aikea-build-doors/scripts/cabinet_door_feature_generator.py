@@ -47,8 +47,8 @@ class CabinetDoorFeatureGenerator:
                 f"{placement.hinge_id}_{item}" for placement in plan.placements for item in ("hinge", "plate")
             ),
             affected_manufactured_part_paths=(
-                "door_panel",
-                plan.hinge_side.side_part_id,
+                plan.door_part_id,
+                plan.support_part_id,
             ),
         )
         return written + ((manifest.relative_to(project_root),) if manifest else ())

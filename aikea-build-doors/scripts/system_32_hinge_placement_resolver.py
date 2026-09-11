@@ -5,7 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any
 
-from cabinet_feature_reservations import CabinetFeatureReservations
+from door_host import DoorHost
 from door_hinge_spread_policy import DoorHingeSpreadPolicy
 from door_hinge_side import DoorHingeSide
 from panel_hardware_reservation import PanelHardwareReservation
@@ -35,7 +35,6 @@ class System32HingePlacementResolver:
 
     def __init__(self, grid: System32SidePanelGrid | None = None) -> None:
         self.grid = grid or System32SidePanelGrid()
-        self.features = CabinetFeatureReservations()
         self.spread = DoorHingeSpreadPolicy()
         self.hardware_clearance = RiexNc70HardwareClearance()
 
@@ -47,15 +46,11 @@ class System32HingePlacementResolver:
         profile: RiexNc70HingeProfile = RIEX_NC70_FULL_OVERLAY,
         blocked_reservations: tuple[PanelHardwareReservation, ...] = (),
     ) -> tuple[System32PlatePosition, ...]:
-        door_height_mm = self._dimensions(assembly.part("door_panel"))[
-            hinge_side.door_height_dimension
-        ]
-        side_height_mm = self._dimensions(assembly.part(hinge_side.side_part_id))["height"]
-        cabinet_offset_mm = float(assembly.door_bottom_mm) - float(assembly.base_height_mm)
-        obstacles = blocked_reservations + self.features.for_side(
-            assembly,
-            hinge_side.side_part_id,
-        )
+        host = DoorHost.resolve(assembly, hinge_side)
+        door_height_mm = host.dimensions[hinge_side.door_height_dimension]
+        side_height_mm = host.support.local_size_mm[1]
+        cabinet_offset_mm = host.door_bottom_mm-host.support_bottom_mm
+        obstacles = blocked_reservations + host.fixed_reservations
         candidates = tuple(
             self._position(pair, cabinet_offset_mm)
             for pair in self.grid.adjacent_row_pairs_mm(side_height_mm)
@@ -68,7 +63,7 @@ class System32HingePlacementResolver:
                 position,
                 hinge_side,
                 profile,
-                obstacles,
+                obstacles, host,
             )
         )
         selected: list[System32PlatePosition] = []
@@ -82,7 +77,7 @@ class System32HingePlacementResolver:
                     item,
                     hinge_side,
                     profile,
-                    tuple(selected_reservations),
+                    tuple(selected_reservations), host,
                 )
             )
             if not available:
@@ -102,7 +97,7 @@ class System32HingePlacementResolver:
                     "selected_hinge_plate",
                     position,
                     hinge_side,
-                    profile,
+                    profile, host,
                 )
             )
         return tuple(sorted(selected, key=lambda item: item.door_center_mm))
@@ -118,10 +113,6 @@ class System32HingePlacementResolver:
             cabinet_center_mm=cabinet_center_mm,
             door_center_mm=cabinet_center_mm - cabinet_offset_mm,
         )
-
-    def _dimensions(self, part: Any) -> dict[str, float]:
-        return {name: float(value) for name, value in part.dimensions_mm}
-
 
 __all__ = [
     "System32HingePlacementError",

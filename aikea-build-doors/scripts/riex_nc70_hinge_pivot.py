@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import Any
 
 from door_hinge_side import DoorHingeSide
+from door_host import DoorHost
 from riex_nc70_hinge_profile import RiexNc70HingeProfile
 
 
@@ -24,7 +25,8 @@ class RiexNc70HingePivot:
             if hinge_side is DoorHingeSide.LEFT
             else origin_x_mm + pivot_offset_mm
         )
-        pivot_y_mm = -profile.native_door_surface_x_mm + profile.native_pivot_x_mm
+        host = DoorHost.resolve(assembly, hinge_side)
+        pivot_y_mm = host.front_mm-profile.native_door_surface_x_mm + profile.native_pivot_x_mm
         return pivot_x_mm, pivot_y_mm
 
     def hinge_origin_x(
@@ -33,16 +35,9 @@ class RiexNc70HingePivot:
         profile: RiexNc70HingeProfile,
         hinge_side: DoorHingeSide,
     ) -> float:
-        edge_gap_mm = (
-            float(assembly.width_mm) - float(assembly.door_width_mm)
-        ) / 2.0
-        if hinge_side is DoorHingeSide.LEFT:
-            return edge_gap_mm + profile.source_origin_from_door_edge_mm
-        return (
-            float(assembly.width_mm)
-            - edge_gap_mm
-            - profile.source_origin_from_door_edge_mm
-        )
+        host = DoorHost.resolve(assembly, hinge_side)
+        offset = profile.source_origin_from_door_edge_mm
+        return host.door_edge_x_mm + (offset if hinge_side is DoorHingeSide.LEFT else -offset)
 
 
 __all__ = ["RiexNc70HingePivot"]

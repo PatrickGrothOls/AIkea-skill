@@ -18,6 +18,30 @@ unresolved screw/material suitability requirement. Valid cutter geometry is not
 manufacturing approval. Exact hinge/plate identities and opening evidence are
 still required, with the purchased instances included in the feature's scope.
 
-This slice retains the existing slab-door host convention. Custom door-host
-declarations are the next migration step. Review regeneration rebuilds the host
-without its old door feature, retaining other composed features, before replanning.
+Save `DOOR_HOST = DoorHostSpec('front_id', 'support_id')` next to `SPEC` in a
+custom assembly's `spec.py`. Both are actual owned parts, built with the common
+panel builder. The NC70 host supports an upright slab with its back on local Z=0
+and a support whose inside broad face points into the selected opening. An inset
+front and either support-face orientation are supported. The named door and
+support are saved in the plan, feature scope and machining; no standard part
+names or cabinet dimensions are required for this route.
+
+Load the feature-free assembly with `GeneratedAssemblyBuilderLoader.load_assembly`
+using `exclude_features=('door_hinges.feature',)`, resolve its declaration through
+`DoorHostLoader.load(project_root, built.spec, hinge_side)`, then pass that host to
+`DoorHingePlanner.plan`. Write the resulting installation plan and call
+`CabinetDoorFeatureGenerator.generate(project_root, built.spec, plan, profile)`.
+The ordinary complete builder and registered door review feature build and show
+the same result. The standard workflow performs these steps automatically.
+
+Custom hosts must pass relevant `PanelHardwareReservation` entries to the planner
+and complete parent-level position/contact and opening checks. These reservations
+use canonical support front-to-back depth and support-bottom height, even if its
+local X points backwards. Standard cabinets retain the existing shelf adapter.
+The host contract does not infer every structural obstacle or certify movement.
+
+Review regeneration rebuilds the host without its old door feature and retains
+other composed features. A plan with changed dimensions, overlay or mismatched
+door/support fixing heights is rejected before generated files are written.
+The existing height/density mass value is an estimate; material-specific strength
+and multi-part/framed front construction require their own applicable evidence.

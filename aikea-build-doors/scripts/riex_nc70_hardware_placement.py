@@ -7,6 +7,7 @@ from typing import Any
 import cadquery as cq
 
 from door_hinge_plan import DoorHingePlan
+from door_host import DoorHost
 from door_hinge_side import DoorHingeSide
 from riex_nc70_hardware_frame import (
     RiexNc70HardwareFrame,
@@ -33,19 +34,21 @@ class RiexNc70HardwarePlacement:
         profile: RiexNc70HingeProfile,
         opened: bool,
     ) -> tuple[MockupPart, ...]:
+        host = DoorHost.resolve(assembly, plan.hinge_side, plan.host_spec)
+        host.require_current_plan(plan, profile)
         hinge_shape = hardware.open_hinge if opened else hardware.closed_hinge
         parts = []
         for placement in plan.placements:
             hinge_location = self.hinge_location(
-                assembly,
+                host,
                 profile,
-                float(assembly.door_bottom_mm) + placement.door_height_mm,
+                host.door_bottom_mm + placement.door_height_mm,
                 plan.hinge_side,
             )
             plate_location = self.plate_location(
-                assembly,
+                host,
                 profile,
-                float(assembly.base_height_mm) + placement.cabinet_height_mm,
+                host.support_bottom_mm + placement.cabinet_height_mm,
                 plan.hinge_side,
             )
             parts.extend(

@@ -27,12 +27,13 @@ class RiexNc70HardwareClearance:
         hinge_side: DoorHingeSide,
         profile: RiexNc70HingeProfile,
         existing: tuple[PanelHardwareReservation, ...],
+        host=None,
     ) -> bool:
         candidate = self.reservation(
             "candidate_hinge_plate",
             position,
             hinge_side,
-            profile,
+            profile, host,
         )
         try:
             self.compatibility.require_compatible(candidate, existing)
@@ -46,13 +47,14 @@ class RiexNc70HardwareClearance:
         position: Any,
         hinge_side: DoorHingeSide,
         profile: RiexNc70HingeProfile,
+        host=None,
     ) -> PanelHardwareReservation:
         return self.reservations.for_position(
             owner_id,
             hinge_side,
             position.cabinet_fixing_rows_mm,
             position.cabinet_center_mm,
-            profile,
+            profile, host,
         )
 
 

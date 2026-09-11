@@ -80,7 +80,11 @@ class TestDoorConstructionMachining:
         changed = next(part.solid.val() for part in built.parts if part.spec.part_id == 'left_side')
         assert left.Volume()-changed.Volume() == pytest.approx(2*pi*2.5**2*13)
         ConstructionResultValidator().validate(built)
-        shifted = replace(plan, placements=(replace(plan.placements[0], door_height_mm=5),))
+        original = plan.placements[0]
+        delta = 5-original.door_height_mm
+        shifted = replace(plan, placements=(replace(original, door_height_mm=5,
+            cabinet_height_mm=original.cabinet_height_mm+delta,
+            cabinet_fixing_rows_mm=tuple(row+delta for row in original.cabinet_fixing_rows_mm)),))
         requests = RiexNc70MachiningRecipe().build(spec, shifted, RIEX_NC70_FULL_OVERLAY)
         with pytest.raises(ValueError):
             PanelMachiningFeature().apply(before, requests)

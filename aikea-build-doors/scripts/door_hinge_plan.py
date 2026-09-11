@@ -9,6 +9,7 @@ from typing import Any
 
 from door_hinge_compatibility import DoorHingeCompatibilityChecker
 from door_hinge_side import DoorHingeSide
+from door_host import DoorHost, DoorHostSpec
 from riex_nc70_hinge_profile import RiexNc70HingeProfile
 from system_32_hinge_placement_resolver import System32HingePlacementResolver
 from panel_hardware_reservation import PanelHardwareReservation
@@ -39,6 +40,15 @@ class DoorHingePlan:
     overlay_mm: float
     placements: tuple[DoorHingePlacement, ...]
     compatibility_issues: tuple[str, ...]
+    host_spec: DoorHostSpec | None = None
+
+    @property
+    def door_part_id(self):
+        return self.host_spec.door_part_id if self.host_spec else "door_panel"
+
+    @property
+    def support_part_id(self):
+        return self.host_spec.support_part_id if self.host_spec else self.hinge_side.side_part_id
 
     @property
     def fabrication_ready(self) -> bool:
@@ -64,6 +74,8 @@ class DoorHingePlan:
             )
             for item in values["placements"]
         )
+        if values.get("host_spec") is not None:
+            values["host_spec"] = DoorHostSpec(**values["host_spec"])
         values["compatibility_issues"] = tuple(values["compatibility_issues"])
         return cls(**values)
 
@@ -84,21 +96,18 @@ class DoorHingePlanner:
         hinge_side: DoorHingeSide = DoorHingeSide.LEFT,
         blocked_reservations: tuple[PanelHardwareReservation, ...] = (),
     ) -> DoorHingePlan:
-        door = assembly.part("door_panel")
-        side = assembly.part(hinge_side.side_part_id)
-        dimensions = self._dimensions(door)
-        side_dimensions = self._dimensions(side)
+        host = DoorHost.resolve(assembly, hinge_side)
+        dimensions = host.dimensions
         height_mm = dimensions[hinge_side.door_height_dimension]
         count = profile.hinge_count(height_mm)
         positions = self.placement_resolver.resolve(
-            assembly,
+            host,
             count,
             hinge_side,
             profile,
             blocked_reservations,
         )
-        edge_gap_mm = (float(assembly.width_mm) - dimensions["width"]) / 2.0
-        overlay_mm = side_dimensions["thickness"] - edge_gap_mm
+        overlay_mm = host.overlay_mm
         issues = self.compatibility.check(dimensions, overlay_mm, profile)
         return DoorHingePlan(
             assembly_id=assembly.assembly_id,
@@ -120,6 +129,7 @@ class DoorHingePlanner:
                 for index, position in enumerate(positions, start=1)
             ),
             compatibility_issues=issues,
+            host_spec=host.spec,
         )
 
     def _door_mass(self, dimensions: dict[str, float]) -> float:
@@ -130,9 +140,5 @@ class DoorHingePlanner:
             / 1_000_000_000.0
         )
         return round(volume_m3 * self._PLYWOOD_DENSITY_KG_PER_M3, 2)
-
-    def _dimensions(self, part: Any) -> dict[str, float]:
-        return {name: float(value) for name, value in part.dimensions_mm}
-
 
 __all__ = ["DoorHingePlacement", "DoorHingePlan", "DoorHingePlanner"]

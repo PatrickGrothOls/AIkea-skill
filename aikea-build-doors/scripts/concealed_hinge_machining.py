@@ -11,6 +11,8 @@ from door_hinge_plan import DoorHingePlan
 from door_hinge_side import DoorHingeSide
 from riex_nc70_hinge_profile import RiexNc70HingeProfile
 from riex_nc70_cup_pattern import RiexNc70CupPattern
+from panel_machining_feature import PanelMachiningFeature
+from riex_nc70_machining_recipe import RiexNc70MachiningRecipe
 
 
 @dataclass(frozen=True, slots=True)
@@ -33,19 +35,11 @@ class ConcealedHingeMachining:
         plan: DoorHingePlan,
         profile: RiexNc70HingeProfile,
     ) -> HingedPanelSet:
-        parts = {part.spec.part_id: part for part in built_assembly.parts}
-        door = parts["door_panel"].solid
-        side = parts[plan.hinge_side.side_part_id].solid
-        for placement in plan.placements:
-            door = door.cut(
-                self._door_cutter(
-                    placement.door_height_mm,
-                    profile,
-                    plan.hinge_side,
-                    plan.door_width_mm,
-                )
-            )
-        return HingedPanelSet(door=door, cabinet_side=side)
+        requests = RiexNc70MachiningRecipe().build(built_assembly.spec, plan, profile)
+        machined = PanelMachiningFeature().apply(built_assembly, requests)
+        parts = {part.spec.part_id: part for part in machined.parts}
+        return HingedPanelSet(door=parts[plan.door_part_id].solid,
+                              cabinet_side=parts[plan.support_part_id].solid)
 
     def _door_cutter(
         self,
