@@ -183,10 +183,11 @@ complete. The calculator requires exactly one confirmed decision for the
 carcass-and-shelf, door, and back-panel groups and rejects unresolved material
 requirements.
 
-When the client adds drawers to generated cabinets, load
-`$aikea-build-drawers`. Let that subskill calculate the drawer from its owning
-cabinet, save it as a local child assembly, and return the same composed cabinet
-to the complete furniture review.
+Whenever the design contains drawers, including custom compositions, load
+[$aikea-build-drawers](../aikea-build-drawers/SKILL.md) before generating them.
+It must include compatible runners, mounting holes and any needed hinge-clearance
+spacers, save each complete installation under its real parent, and return that
+same composed assembly to the complete furniture review.
 
 When the client adds recessed lighting to a generated furniture part, load
 `$aikea-add-lighting`. Let that subskill save one part-local run, derive the host

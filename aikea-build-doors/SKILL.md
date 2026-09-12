@@ -13,6 +13,12 @@ Read [the manufacturing process](../aikea-design-furniture/references/manufactur
 before placing hinges or handles. Their machining must share each participant's
 chosen CNC face with its existing joinery.
 
+If the cabinet contains drawers, adding or changing its doors or hinges must
+recheck the [complete drawer installation](../aikea-build-drawers/references/complete-drawer-installation.md).
+Check actual intrusion throughout drawer travel, not only shared fixing nodes.
+Where it obstructs the installation, add compatible spacers and update the box,
+runner placements and mounting cuts together before presenting the fitted result.
+
 Turn the cabinet's saved door relationship into one complete, adjustable fitted
 door. The result must connect the visible slab, the selected purchased hinge
 system, both participating panels, and the real opening movement through shared

@@ -47,6 +47,10 @@ A compatible report proves only declared entry-face compatibility. It does not
 approve tool reach, workholding, machine capability, loads, movement or CAM.
 Use the existing fabrication gate for manufacturing claims. A prototype can be
 shown with its precise unresolved items and must retain `fabrication_ready: false`.
+This does not waive the [complete drawer installation contract](../../aikea-build-drawers/references/complete-drawer-installation.md):
+resolve runners, necessary spacers and mounting preparation before generating
+drawers. Missing installation data requires sourcing or a specific user handoff,
+not a box-only drawer delivered as the prototype.
 
 ## Secondary finishing
 

@@ -1,9 +1,15 @@
 ---
 name: aikea-build-drawers
-description: Add a calculated wooden drawer subassembly to an existing generated AIkea cabinet, select a depth-matched runner profile, save the drawer's local project files, and review that same built child in its cabinet and complete furniture run. Use when adding, checking, opening, or visually reviewing a drawer in an AIkea project.
+description: Build a complete drawer installation with compatible runners, mounting holes and any required hinge-clearance spacers. Use whenever an AIkea design contains drawers, including custom compositions, configurators, or changes to an existing drawer or its surrounding doors.
 ---
 
 # AIkea build drawers
+
+Every drawer must include its runners and mounting holes. Read and apply the
+[complete installation contract](references/complete-drawer-installation.md)
+before generating drawer parts. Include spacers automatically where door or hinge
+intrusion obstructs installation or travel. Missing source or fixing data pauses
+drawer generation; a box-only prototype does not satisfy this skill.
 
 Before any client-facing message, including progress commentary, read
 [../aikea/references/client-conversation.md](../aikea/references/client-conversation.md)
@@ -37,11 +43,13 @@ and remaining proof boundary before claiming that a custom installation is verif
 ## Select the runner profile
 
 Preserve an exact runner choice already saved in the active project or stated by
-the client. Otherwise, when the client asks for verified Hettich runners without
-naming a product, select Hettich KA 4532 Silent System article `9114276` together
-with one exact purchased article `13952` spacer on each cabinet side. Do not fall
-back to KA 5332 merely because it was implemented earlier. Use KA 5332 only when
-the active project or client explicitly selects it.
+the client. For a request for verified Hettich runners without a named product,
+evaluate the registered KA 4532 Silent System article `9114276` with one exact
+article `13952` spacer on each cabinet side. This paired option is usable only
+when it fits the actual opening and its fixing blockers are resolved. Its length
+and spacer width are not furniture defaults. Source a compatible exact option
+when needed; do not silently substitute a different length or omit the runners.
+Use KA 5332 only when the active project or client explicitly selects it.
 
 ## Use a drawer in an authored parent
 
@@ -81,7 +89,10 @@ authored-host route above.
    heights unchanged.
 4. Resolve the exact source STEP files named by the selected runner profile. If
    they are absent, load `$aikea-source-hardware-cad` and resume with the returned
-   project-local `hardware_directory`. For the implemented MOVENTO generator, run:
+   project-local `hardware_directory`. Before invoking a generator, also resolve
+   its installation and pilot data under the complete installation contract.
+   Source CAD alone is insufficient. The capability gaps below remain blockers
+   even when a command can emit geometry. Once resolved, for MOVENTO run:
 
    `python <skill-directory>/scripts/generate_cabinet_drawer.py <project>/aikea.yaml --assembly <cabinet-id> --drawer <drawer-id> --bottom-height-mm <height-above-carcass-bottom> --hardware-directory <download-directory>`
 
@@ -96,11 +107,13 @@ authored-host route above.
 
    `python <aikea-review-unit-directory>/scripts/generate_hettich_ka_5332_prototype.py <project>/aikea.yaml --assembly <cabinet-id> --hardware-directory <hardware-directory> --output-directory <review-directory>`
 
-   For KA 4532 with article 13952, generate only the first requested drawer:
+   For KA 4532 with article 13952, the current command below is a hardware
+   integration probe, not a complete drawer generator. Do not use it for normal
+   drawer delivery until its missing fixing implementation is resolved:
 
    `python <skill-directory>/scripts/generate_hettich_ka_4532_spacer_cabinet_drawer.py <project>/aikea.yaml --assembly <cabinet-id> --drawer <drawer-id> --bottom-height-mm <height-above-carcass-bottom> --box-height-mm <height> --box-depth-mm <depth> --drawer-front-mm <drawer-front> --hardware-directory <hardware-directory>`
 
-   Do not repeat it yet. This command preserves one unchanged spacer STEP on
+   Do not repeat an incomplete probe. This command preserves one unchanged spacer STEP on
    each cabinet side, verifies the official rail axes against both purchased
    STEPs, and records only the unresolved longer screw and cabinet pilot.
 
@@ -134,13 +147,15 @@ authored-host route above.
    open, and removed review states when needed, and require the runner movement
    report when the drawer is shown open.
 
-   For KA 4532 with article 13952, require only the saved recursive
+   For a KA 4532 integration probe with article 13952, inspect the saved recursive
    `ka4532-spacer-movement-collision-check.json`: it must have no failed checks
    and must retain `manufacturing_authority: false`. Do not substitute the
    legacy position reports for this proof or treat its machining blocker as a
    requirement to invent missing fixing data.
-8. Explain the useful physical result in client-facing language and end with one
-   concrete visual decision about the drawer's size or position.
+8. Reconcile every drawer with its own runner set, required spacers and actual
+   mounting cuts using the complete installation contract. Only then present the
+   complete drawer and its next concrete visual decision. If blocked, explain the
+   missing physical information and the exact action needed to resolve it.
 
 ## Current capability
 

@@ -6,6 +6,11 @@ and every generated child uses `PanelAssemblyBuilder`. An authored composition
 can reuse these values in `PanelAssemblySpec` or place the result as one child of
 a different parent. Keep each physical panel and purchased item owned once.
 
+These are intermediate construction recipes, not permission to build a box-only
+drawer. Every route must follow the
+[complete installation contract](complete-drawer-installation.md) before drawer
+generation, including exact runners, mounting cuts and any needed spacers.
+
 `DrawerPartSpec` retains its local outline and material identity as well as its
 dimensions and frame. Empty material means unresolved selection; set the actual
 material on each part. An overall price scenario does not change the construction.
@@ -29,6 +34,9 @@ KA 4532 with its spacer currently emits no drawer drilling because its selected
 fixing details remain unresolved. MOVENTO retains its existing unmachined box
 and exact declared locking-device placeholders. Hardware hydration still resolves
 their exact source geometry through the existing profile-specific path.
+These gaps block complete drawer generation and fabrication; do not use either
+recipe as a fallback when its mounting preparation is still missing. Resolve
+and implement the selected installation before delivering or repeating it.
 
 Every recipe separately declares box joinery/bottom support, mounting and installed
 movement requirements. Successfully machining a pilot does not resolve drawer

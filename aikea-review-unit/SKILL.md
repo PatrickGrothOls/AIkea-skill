@@ -22,6 +22,13 @@ to the current complete tree before claiming CNC compatibility. Run its face aud
 and reconcile missing hardware holes and connection requirements; a valid GLB
 alone does not establish a one-face process. Keep secondary finishing explicit.
 
+For any tree containing drawers, reconcile each one against the
+[complete installation contract](../aikea-build-drawers/references/complete-drawer-installation.md):
+its own runner set, any required spacers, actual host/drawer mounting cuts and
+current clearance evidence must be present. This also applies to custom and
+exploded views. If absent, return to drawer installation before delivering the
+drawer design; do not present bare boxes as completed drawers or release CNC files.
+
 Inspect the actual root builder and active brief. For a project-authored or mixed
 tree, use [the common project contract](../aikea-design-furniture/references/authored-assemblies.md)
 and [closed construction checks](references/construction-position.md): run

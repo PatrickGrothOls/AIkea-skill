@@ -52,6 +52,13 @@ Keep shared panels under one owner. Let a connection resolve both participants'
 machining, and let a component own its purchases, host effects and review states.
 Changing a name or purpose must not add or remove machining.
 
+Whenever the design contains drawers, load
+[$aikea-build-drawers](../aikea-build-drawers/SKILL.md) before generating them.
+Its complete runner, mounting-hole and hinge-clearance spacer contract applies
+equally to custom panel compositions and configurators. Resolve the installation
+before sizing the box; unresolved hardware is not permission to deliver bare
+drawer boxes and defer their holes to a later manufacturing stage.
+
 Reuse existing standards and selected hardware within their supported interfaces.
 New operations remain possible: first establish the missing capability, then use
 the shared extension contract and independent checks on actual participants.
