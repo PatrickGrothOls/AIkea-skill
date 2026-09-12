@@ -3,6 +3,7 @@
 import argparse
 import json
 from pathlib import Path
+from functools import partial
 import re
 import sys
 
@@ -21,6 +22,8 @@ from construction_position_inputs import ConstructionPositionInputs  # noqa: E40
 from fabrication_closed_assembly_model import FabricationClosedAssemblyModel  # noqa: E402
 from fabrication_assembly_review_record import FabricationAssemblyReviewRecord  # noqa: E402
 from generated_assembly_builder_loader import GeneratedAssemblyBuilderLoader  # noqa: E402
+from project_hardware_geometry_resolver import ProjectHardwareGeometryResolver  # noqa: E402
+from purchased_hardware_hydrator import PurchasedHardwareHydrator  # noqa: E402
 
 
 class FurnitureDesignBuild:
@@ -42,6 +45,7 @@ class FurnitureDesignBuild:
         fingerprint = ConstructionInputFingerprinter()
         sources = fingerprint.source_inputs(project_root)
         built = self.loader.load_assembly(project_root, assembly_id)
+        built = self.loader.runtime.execute(project_root, partial(self._hydrate, project_root, built))
         envelope, allowances, _ = ConstructionPositionInputs().read(project_root, assembly_id)
         if envelope is None:
             raise ValueError("the authored root builder must declare its measured ENVELOPE")
@@ -77,6 +81,9 @@ class FurnitureDesignBuild:
             report["review_record"] = str(record)
         report_path.write_text(json.dumps(report, indent=2) + "\n")
         return report
+
+    def _hydrate(self, project_root, built):
+        return PurchasedHardwareHydrator(ProjectHardwareGeometryResolver()).hydrate(project_root, built)
 
 
 class FurnitureDesignBuildCommand:
