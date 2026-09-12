@@ -7,6 +7,7 @@ from part_cut import AssemblyCuts, PartCut
 from system_32_side_panel_grid import System32SidePanelGrid
 from surface_drilling_builder import SurfaceDrillingBuilder
 from surface_groove_builder import SurfaceGrooveBuilder
+from surface_pocket_builder import SurfacePocketBuilder
 
 
 class PanelMachiningBuilder:
@@ -14,7 +15,8 @@ class PanelMachiningBuilder:
 
     def __init__(self):
         self.operations = {"system_32": self._system32, "surface_holes": SurfaceDrillingBuilder().build,
-                           "surface_groove": SurfaceGrooveBuilder().build}
+                           "surface_groove": SurfaceGrooveBuilder().build,
+                           "surface_pocket": SurfacePocketBuilder().build}
 
     def build(self, spec):
         cuts = []

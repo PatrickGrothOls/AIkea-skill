@@ -108,3 +108,14 @@ present on both sides, then preserve that row and the shelf's assembled height i
 the local assembly specification. This keeps an unequal or sloped top from giving
 the two sides mismatched supports while allowing the shelf count and placement to
 change locally without changing the measured-space specification.
+
+
+`SurfacePocketSpec` uses the same part-local surface frame as a groove and adds
+`corner_radius_mm`. Its shared builder makes a rectangular or rounded rectangular
+pocket; set depth to the panel thickness for a through-opening. For example,
+`SurfacePocketSpec("frame_opening", "frame", surface, 400, 600, 6, 4)` makes a
+400×600 mm opening with 4 mm internal radii in a 6 mm frame. Give `surface` an
+origin at one end's center (+X along length, +Z into stock). The complete opening
+must enter an actual panel face, fit retained stock, and avoid earlier cuts.
+Square corners, remaining walls, hold-down and final tooling still need deliberate
+fabrication decisions. Use this same operation for a configured or authored part.
