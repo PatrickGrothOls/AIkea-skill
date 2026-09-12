@@ -1,30 +1,19 @@
-"""Scope: Construct one generated sheet part and apply its local machining."""
-
-from __future__ import annotations
-
-from typing import Any
-
-from part_blank_builder import PartBlankBuilder
-from system_32_side_panel_grid import System32SidePanelGrid
+"""Scope: Adapt saved per-part builders to the shared blank, machining and subtraction tools."""
+from legacy_panel_input import LegacyPanelInput
+from panel_blank_builder import PanelBlankBuilder
+from panel_cut_applicator import PanelCutApplicator
+from panel_machining_builder import PanelMachiningBuilder
 
 
 class SheetPartBuilder:
-    """Continue from the calculated blank through deterministic subtraction."""
+    """Retain old implicit-grid behavior only at this compatibility entry point."""
 
-    def __init__(self) -> None:
-        self.blank_builder = PartBlankBuilder()
-        self._local_machining = {
-            "side_panel": System32SidePanelGrid().apply,
-        }
-
-    def build(self, part: Any, cuts: tuple[Any, ...]) -> Any:
-        workpiece = self.blank_builder.build(part)
-        machining = self._local_machining.get(part.role)
-        if machining is not None:
-            workpiece = machining(part, workpiece)
-        for cut in cuts:
-            workpiece = workpiece.cut(cut.cutter.located(cut.location))
-        return workpiece
+    def build(self, part, cuts):
+        spec = LegacyPanelInput(part)
+        blank = PanelBlankBuilder().build(spec.panel)
+        local = PanelMachiningBuilder().build(spec).all
+        requests = {request.machining_id: request for request in spec.machining}
+        return PanelCutApplicator().apply(spec.panel, blank, local+tuple(cuts), requests)
 
 
 __all__ = ["SheetPartBuilder"]

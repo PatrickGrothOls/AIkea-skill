@@ -13,7 +13,7 @@ from construction_requirement_checker import ConstructionRequirementChecker
 from construction_tree_checker import ConstructionTreeChecker
 from generated_project_module_runtime import GeneratedProjectModuleRuntime
 from physical_item_counter import PhysicalItemCounter
-from sheet_part_builder import SheetPartBuilder
+from legacy_panel_construction import LegacySheetPartBuilder as SheetPartBuilder
 
 
 class TestConfiguredBaseConstruction:
