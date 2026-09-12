@@ -69,8 +69,7 @@ python <this-skill>/scripts/generate_cabinet_lighting_review.py \
   <project>/aikea.yaml \
   --assembly-id <cabinet-id> \
   --part-id <host-part-id> \
-  --base-builder-module complete_builder \
-  --hardware-directory <verified-existing-hardware-source>
+  --base-builder-module complete_builder
 ```
 
 The generated cabinet keeps `lighting.yaml` beside its owning part. Its local
@@ -100,3 +99,14 @@ explicit frame places the light inside any owning assembly, without cabinet
 width/height assumptions. Keep supply, controls and cable-routing requirements
 open until resolved. Removing the feature removes its purchases, groove and
 requirements on rebuild; retained source files are inactive plans.
+
+Complete-tree review includes the registered `lighting.review` contribution at
+any assembly depth. State `on` (or the default `closed`) shows the emitter; `off`
+retains the purchased body and groove while suppressing emitted light. Use the
+removal command to remove physical construction. The lighting review command
+uses the common complete assembly and needs no drawer-specific CAD directory.
+Its report is a geometry preview; confirm visual aim and retain unresolved
+installation, outside-owner clearance, hardware/movement and electrical requirements.
+The light-body check covers manufactured parts within its owning assembly subtree;
+parent/sibling parts require the whole-design clearance review. An old retained
+lighting plan cannot be used to review a different currently registered host.

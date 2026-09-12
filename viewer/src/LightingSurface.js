@@ -1,5 +1,7 @@
 /** Scope: Give exported light emitters their lit or unlit review material. */
 
+import { ReviewMeshName } from "./ReviewMeshName.js";
+
 import { Color } from "three";
 
 import { LIGHT_SOURCE_PREFIX } from "./LightingSource.js";
@@ -10,7 +12,7 @@ export class LightingSurface {
   }
 
   applyTo(mesh) {
-    if (!mesh.name.startsWith(LIGHT_SOURCE_PREFIX)) {
+    if (!ReviewMeshName.hasRole(mesh.name, LIGHT_SOURCE_PREFIX)) {
       return;
     }
     const materials = [mesh.material].flat().map((source) => {

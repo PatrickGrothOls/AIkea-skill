@@ -1,5 +1,7 @@
 /** Scope: Derive one Three.js area-light placement from an exported emitter mesh. */
 
+import { ReviewMeshName } from "./ReviewMeshName.js";
+
 import { Vector3 } from "three";
 
 const LIGHT_SOURCE_PREFIX = "light_source__";
@@ -9,7 +11,7 @@ export class LightingSource {
   static collect(root) {
     const candidates = new Map();
     root.traverse((node) => {
-      if (node.isMesh && node.name.startsWith(LIGHT_SOURCE_PREFIX)) {
+      if (node.isMesh && ReviewMeshName.hasRole(node.name, LIGHT_SOURCE_PREFIX)) {
         const candidate = new LightingSource(node);
         if (!candidate.isEmitterFace()) {
           return;
@@ -29,7 +31,10 @@ export class LightingSource {
   }
 
   sourceId() {
-    return this.mesh.name.replace(/_part_\d+$/, "");
+    const parentName = this.mesh.parent?.name ?? "";
+    return ReviewMeshName.hasRole(parentName, LIGHT_SOURCE_PREFIX)
+      ? parentName
+      : this.mesh.name.replace(/_part_\d+$/, "");
   }
 
   isEmitterFace() {

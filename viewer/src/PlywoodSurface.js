@@ -1,5 +1,7 @@
 /** Scope: Apply the packaged photographed plywood PBR maps to review meshes. */
 
+import { ReviewMeshName } from "./ReviewMeshName.js";
+
 import {
   Float32BufferAttribute,
   RepeatWrapping,
@@ -23,10 +25,10 @@ export class PlywoodSurface {
 
   applyTo(mesh) {
     if (
-      mesh.name.startsWith(REVIEW_ONLY_PREFIX) ||
+      ReviewMeshName.hasRole(mesh.name, REVIEW_ONLY_PREFIX) ||
       mesh.name.includes(SOURCE_CAD_MARKER) ||
-      mesh.name.startsWith(PURCHASED_LIGHT_PREFIX) ||
-      mesh.name.startsWith(LIGHT_SOURCE_PREFIX)
+      ReviewMeshName.hasRole(mesh.name, PURCHASED_LIGHT_PREFIX) ||
+      ReviewMeshName.hasRole(mesh.name, LIGHT_SOURCE_PREFIX)
     ) {
       return;
     }

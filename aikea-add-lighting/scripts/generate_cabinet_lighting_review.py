@@ -11,6 +11,7 @@ SKILL_ROOT = Path(__file__).resolve().parents[2]
 sys.path[:0] = [
     str(SKILL_ROOT / "aikea-build-units/scripts"),
     str(SKILL_ROOT / "aikea-build-drawers/scripts"),
+    str(SKILL_ROOT / "aikea-build-doors/scripts"),
     str(SKILL_ROOT / "aikea-review-unit/scripts"),
 ]
 
@@ -62,7 +63,7 @@ def main() -> int:
     parser.add_argument("--assembly-id", required=True)
     parser.add_argument("--part-id", required=True)
     parser.add_argument("--base-builder-module", default="complete_builder")
-    parser.add_argument("--hardware-directory", type=Path, required=True)
+    parser.add_argument("--hardware-directory", type=Path)
     parser.add_argument(
         "--door-state",
         choices=tuple(state.value for state in DoorReviewState),

@@ -7,7 +7,7 @@ from lighting_machining_recipe import LightingMachiningRecipe
 from panel_machining_feature import PanelMachiningFeature
 from part_lighting_builder import PartLightingBuilder
 from part_lighting_plan import PartLightingPlan
-from purchased_hardware_spec import HardwarePurchaseSpec
+from lighting_purchase import LightingPurchase
 
 
 @dataclass(frozen=True)
@@ -15,7 +15,7 @@ class LightingComponentFeature:
     plan: PartLightingPlan
 
     def apply(self, assembly):
-        from assemblies.specification import BuiltPurchasedHardware, PurchasedHardwareSpec, ConstructionRequirementSpec
+        from assemblies.specification import BuiltPurchasedHardware, ConstructionRequirementSpec
 
         plan, run = self.plan, self.plan.run
         self.validate_owner(assembly.spec)
@@ -23,11 +23,7 @@ class LightingComponentFeature:
         request = LightingMachiningRecipe().build(host.spec, plan)
         geometry = PartLightingBuilder().prepare(host, plan)
         placement = CabinetLightingPlacementBuilder().build(assembly.spec, host.spec, plan)
-        variant = f"{run.profile.product_name} / {run.length_mm:g} mm / {run.color_temperature_k} K"
-        hardware_spec = PurchasedHardwareSpec(run.run_id, run.profile.manufacturer, variant,
-            run.profile.profile_id, placement.luminaire_in_cabinet.as_project_placement(),
-            geometry_selector=f"{run.length_mm:g}mm_{run.color_temperature_k}k",
-            purchase=HardwarePurchaseSpec(run.run_id, variant, "piece", "luminaire", ("luminaire",)))
+        hardware_spec = LightingPurchase().build(run, placement.luminaire_in_cabinet.as_project_placement())
         requirements = (
             ConstructionRequirementSpec(run.run_id+"_mounting", "Machine the saved light groove",
                 (f"part:{plan.part_id}",), (f"machining:{request.machining_id}",), "operations"),

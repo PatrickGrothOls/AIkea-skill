@@ -50,6 +50,7 @@ class TestCabinetLightingFeature:
             {
                 "module": "lighting.feature",
                 "order": 30,
+                "review_module": "lighting.review",
                 "affected_manufactured_part_paths": ["top_panel_01"],
                 "affected_purchased_hardware_paths": ["shelf_light_01"],
             }

@@ -116,6 +116,7 @@ class AssemblyTreeReviewGeometry:
                 part.color,
             )
             for overlay in plan.overlays
+            if not plan.hides(overlay.owner_path)
             for part in overlay.parts
         )
 

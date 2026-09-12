@@ -68,6 +68,7 @@ class CabinetLightingGenerator:
             assembly_id,
             "lighting.feature",
             30,
+            review_module="lighting.review",
             affected_manufactured_part_paths=(part_id,),
             affected_purchased_hardware_paths=(run.run_id,),
         )

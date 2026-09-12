@@ -28,6 +28,7 @@ class CabinetLightingFileSetRenderer:
             assembly / "lighting/__init__.py": (
                 f'"""Scope: Contain lighting features owned by {plan.assembly_id}."""\n'
             ),
+            assembly / "lighting/review.py": self._review_module(plan),
             assembly / "lighting/feature.py": self._assembly_feature_module(plan),
             assembly / "with_lighting_builder.py": self._wrapper_module(
                 plan,
@@ -61,6 +62,14 @@ class CabinetLightingFileSetRenderer:
             "from lighting_component_feature import LightingComponentFeature\n"
             f"from ..parts.{plan.part_id}.lighting import PLAN\n\n"
             "FEATURE = LightingComponentFeature(PLAN)\n"
+        )
+
+    def _review_module(self, plan):
+        return (
+            '"""Scope: Contribute the owned lighting to generic assembly review."""\n'
+            'from lighting_component_review import LightingComponentReview\n'
+            f'from ..parts.{plan.part_id}.lighting import PLAN\n'
+            'REVIEW = LightingComponentReview(PLAN)\n'
         )
 
     def _wrapper_module(self, plan, base_builder_module):

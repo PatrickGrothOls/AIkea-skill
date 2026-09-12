@@ -1,115 +1,44 @@
-"""Scope: Export one generated cabinet with its saved recessed light."""
+"""Scope: Retain the lighting-review command as an adapter to generic complete-assembly review."""
 
-from __future__ import annotations
+from hashlib import sha256
+import json
 
-from pathlib import Path
-
-from cabinet_lighting_placement import CabinetLightingPlacementBuilder
+from assembly_review_feature_loader import AssemblyReviewFeatureLoader
 from cabinet_lighting_review import CabinetLightingReviewResult
-from cabinet_review_geometry import CabinetReviewGeometry
-from cadquery_glb_exporter import CadQueryGlbExporter
+from complete_assembly_review_generator import CompleteAssemblyReviewGenerator
 from door_review_state import DoorReviewState
 from generated_assembly_builder_loader import GeneratedAssemblyBuilderLoader
-from hettich_ka_5332_drawers_review_geometry import HettichKa5332DrawersReviewGeometry
-from hettich_ka_5332_saved_drawers_loader import HettichKa5332SavedDrawersLoader
-from hettich_ka_5332_step_assembly import HettichKa5332StepAssemblyLoader
-from part_lighting_builder import PartLightingBuilder
-from part_lighting_fit_checker import PartLightingFitChecker
 from part_lighting_plan_loader import PartLightingPlanLoader
-from unit_mockup import MockupPart, UnitMockupInputError
 
 
 class CabinetLightingReviewGenerator:
-    """Rebuild, fit-check, and export one cabinet from its generated files."""
-
-    _LIGHTING_BUILDER_MODULE = "with_lighting_builder"
-
-    def __init__(self) -> None:
-        self.assembly_loader = GeneratedAssemblyBuilderLoader()
-        self.plan_loader = PartLightingPlanLoader()
-        self.part_lighting = PartLightingBuilder()
-        self.placement = CabinetLightingPlacementBuilder()
-        self.fit_checker = PartLightingFitChecker()
-        self.cabinet_geometry = CabinetReviewGeometry()
-        self.saved_drawers = HettichKa5332SavedDrawersLoader()
-        self.drawer_geometry = HettichKa5332DrawersReviewGeometry()
-        self.step_loader = HettichKa5332StepAssemblyLoader()
-        self.exporter = CadQueryGlbExporter()
-
-    def generate(
-        self,
-        project_root: Path,
-        assembly_id: str,
-        part_id: str,
-        *,
-        base_builder_module: str,
-        hardware_directory: Path,
-        door_state: DoorReviewState = DoorReviewState.REMOVED,
-    ) -> CabinetLightingReviewResult:
-        base = self.assembly_loader.load_assembly(
-            project_root,
-            assembly_id,
-            "complete_builder" if base_builder_module == "builder" else base_builder_module,
-            exclude_features=("lighting.feature",),
-        )
-        lit = self.assembly_loader.load_assembly(
-            project_root,
-            assembly_id,
-            self._LIGHTING_BUILDER_MODULE,
-        )
-        plan_path = project_root / "assemblies" / assembly_id / "parts" / part_id / "lighting.yaml"
-        plan = self.plan_loader.load(plan_path)
-        original_host = next(part for part in base.parts if part.spec.part_id == part_id)
-        lighting = self.part_lighting.build(original_host, plan)
-        host_in_lit = next(part for part in lit.parts if part.spec.part_id == part_id)
-        if abs(host_in_lit.solid.val().Volume() - lighting.part.solid.val().Volume()) > 0.01:
-            raise UnitMockupInputError(["generated cabinet does not contain its saved groove"])
-        cabinet_parts = self.cabinet_geometry.build(lit, door_state)
-        drawers, hardware = self._drawer_parts(project_root, assembly_id, lit, hardware_directory)
-        placement = self.placement.build(lit.spec, original_host.spec, plan)
-        other_parts = tuple(part for part in cabinet_parts if part.name != part_id) + drawers + hardware
-        report = self.fit_checker.check(
-            lit.spec,
-            original_host,
-            lighting,
-            plan,
-            placement,
-            other_parts,
-        )
-        if not report.is_valid:
-            raise UnitMockupInputError(["cabinet lighting fit check failed"])
-        fit_report_path = project_root / "assemblies" / assembly_id / "lighting-fit-check.json"
-        report.write(fit_report_path)
-        review_parts = cabinet_parts + drawers + hardware + self._light_parts(lighting, plan, placement)
-        glb_path = project_root / "assemblies" / assembly_id / f"{assembly_id}_lighting_review.glb"
-        self.exporter.export(f"{assembly_id}_lighting_review", review_parts, glb_path)
-        return CabinetLightingReviewResult(assembly_id, glb_path, fit_report_path)
-
-    def _drawer_parts(self, project_root, assembly_id, cabinet, hardware_directory):
-        saved = self.saved_drawers.load(project_root, assembly_id, cabinet)
-        step = self.step_loader.load(hardware_directory)
-        steps = {str(saved_item.runner_item_number): step for saved_item in saved}
-        return (
-            self.drawer_geometry.build_drawers(saved, {}),
-            self.drawer_geometry.build_hardware(saved, steps, {}),
-        )
-
-    def _light_parts(self, lighting, plan, placement):
-        profile_id = plan.run.profile.profile_id
-        return (
-            MockupPart(
-                f"purchased_light__{profile_id}__body",
-                lighting.luminaire_body,
-                placement.luminaire_location,
-                (0.23, 0.24, 0.22, 1.0),
-            ),
-            MockupPart(
-                f"light_source__{profile_id}__{plan.run.color_temperature_k}k",
-                lighting.emitter_face,
-                placement.luminaire_location,
-                (1.0, 0.76, 0.50, 1.0),
-            ),
-        )
-
-
-__all__ = ["CabinetLightingReviewGenerator"]
+    def generate(self, project_root, assembly_id, part_id, *, base_builder_module="complete_builder",
+                 hardware_directory=None, door_state=DoorReviewState.REMOVED):
+        # The old hardware-directory argument is retained for callers; registered providers own CAD loading.
+        if base_builder_module not in {"builder", "complete_builder"}:
+            raise ValueError("Move existing features into complete_builder before lighting review")
+        plan = PartLightingPlanLoader().load(project_root/'assemblies'/assembly_id/'parts'/part_id/'lighting.yaml')
+        if (plan.assembly_id, plan.part_id) != (assembly_id, part_id):
+            raise ValueError("lighting review must use the requested owner and host")
+        loader, features = GeneratedAssemblyBuilderLoader(), AssemblyReviewFeatureLoader()
+        built = loader.load_assembly(project_root, assembly_id)
+        registrations = tuple((visit.path, feature)
+            for visit in loader.walk(project_root, built) if hasattr(visit, "assembly")
+            for feature in features.load(project_root, visit.path))
+        active = next((feature.feature for owner, feature in registrations
+                       if owner == (assembly_id,) and feature.feature_id == 'lighting'), None)
+        if active is None:
+            raise ValueError("No registered lighting review; add or regenerate the saved lighting feature")
+        if active.lighting_plan != plan:
+            raise ValueError("Requested lighting plan is inactive; review the current registered host and run")
+        states = {"/".join((*owner, feature.feature_id)): door_state.value
+                  for owner, feature in registrations if feature.feature_id == 'door_hinges'}
+        output = project_root/'assemblies'/assembly_id/(assembly_id+'_lighting_review.glb')
+        result = CompleteAssemblyReviewGenerator().generate(project_root, assembly_id, output, states)
+        report = output.with_name('lighting-fit-check.json')
+        report.write_text(json.dumps(dict(schema_version=1, status='geometry_preview', manufacturing_authority=False,
+            glb_sha256=sha256(output.read_bytes()).hexdigest(), review_report=str(result.report_path.relative_to(project_root)),
+            checks=['common groove construction', 'light body clearance against manufactured parts in its owner subtree'],
+            unresolved=['manufactured-part clearance outside the lighting owner subtree', 'illumination placement approval', 'other hardware and movement clearance',
+                        'supply, controls, cable route and final product installation']), indent=2)+'\n')
+        return CabinetLightingReviewResult(assembly_id, output, report)

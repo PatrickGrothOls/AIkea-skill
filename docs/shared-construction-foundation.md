@@ -8,7 +8,7 @@ not limit the furniture that can be designed. This document tracks the migration
 implementation progress and evidence are recorded per work package below.
 
 Planning branch: `docs/shared-construction-foundation`.
-Current implementation branch: `feat/lighting-shared-construction`.
+Current implementation branch: `feat/lighting-assembly-review`.
 Baseline: `origin/main` at `52facbf73b5ea775975025bb6409ea02ef8560bd`, fetched on
 2026-09-11. The finishing checkout stays at `fc78dfa`; its untracked `dist/`
 artifacts and the other worktrees are preserved.
@@ -45,7 +45,7 @@ found two stale fixtures, now [repaired and reviewed](shared-construction-regres
 slice](door-construction-machining.md) is implemented and reviewed; explicit custom
 door hosts, paired placement and generic source-CAD review are
 [implemented and reviewed](door-host-interface.md). The [shared Korrekt mounting slice](korrekt-shared-construction.md) is implemented and reviewed;
-[complete leg-feature ownership](korrekt-component-feature.md) is implemented and reviewed; multi-part fronts and final parent movement evidence remain open. [Lighting construction/removal](lighting-shared-construction.md) is implemented and reviewed; its generic visual review is next. See [drilling dependency](shared-surface-drilling.md) and
+[complete leg-feature ownership](korrekt-component-feature.md) is implemented and reviewed; multi-part fronts and final parent movement evidence remain open. [Lighting construction/removal](lighting-shared-construction.md) is implemented and reviewed; its [generic visual review](lighting-assembly-review.md) is implemented and reviewed; a pre-existing viewer-axis correction is next. See [drilling dependency](shared-surface-drilling.md) and
 [drawer child slice](drawer-panel-construction.md).
 See [WP4c evidence](construction-position-evidence.md) and [base migration](base-configurator-construction.md).
 See [WP4 progress](common-construction-checks.md) and
@@ -226,7 +226,7 @@ load, motion or manufacturing evidence. No automatic strength certification is i
   host/feature ownership when that construction is integrated; verify parent motion.
 - [x] Integrate adjustable-foot mounting through the sourced mounting interface
   and existing Korrekt work; preserve unresolved physical-fit evidence separately.
-- [ ] Integrate lighting as a removable owned feature, retaining the agreed
+- [x] Integrate lighting as a removable owned feature, retaining the agreed
   design default when that separate branch is brought in. Removal must remove
   its machining, purchases and evidence without damaging unrelated features.
 - [ ] For each component, document host faces, available space, supported inputs,
