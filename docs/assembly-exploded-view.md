@@ -113,3 +113,48 @@ unneeded fallback branches or duplicated manufacturing identities were introduce
    tests, instructions and generated viewer assets together.
 8. 2026-09-12 — Save the coherent implementation as a local feature commit.
    Leave the tested viewer running for inspection; no push or merge is included.
+9. 2026-09-12 — Patrick observed that every drawer lacks runners. Inspection
+   confirms they are absent from the source assembly, rather than hidden by the
+   exploded viewer. The 45 passing tests cover the viewer; they do not establish
+   a complete drawer installation. Record the construction follow-up below.
+
+## Construction follow-up — Missing drawer runners
+
+### Confirmed current state
+
+All eight `runner_installation` requirements remain unresolved. The saved design
+uses a proposed 350 mm sizing input and 13 mm side reservations, with no selected
+runner or purchased geometry. Its box is 651 × 382 × 145 mm; the saved opening
+depth used by the planner is 418 mm. The verified 500 mm runner profiles currently
+in this checkout do not fit that opening. No runner has been added or mounting
+hole declared during this investigation.
+
+The drawer sides already have inner-face Cabineo operations. Blind runner pilots
+entered from the opposite outer face would violate the requested one-face CNC
+process. A complete attachment solution must be checked before calling these
+drawers finished. Undeclared mounting holes cannot count as a setup pass.
+
+### Proposed next work package
+
+- [x] Confirm whether runner geometry was missing or merely hidden.
+- [x] Trace the saved box dimensions, nominal allowance and open requirements.
+- [ ] Select and verify a complete runner system against depth, width and load.
+- [ ] Resolve one drawer's exact cabinet/box attachment and one-face machining.
+- [ ] Import the exact left/right components and verify closed fit and travel.
+- [ ] Repeat the proved installation across all eight independently owned drawers.
+- [ ] Reconcile eight purchased pairs in the BOM and show closed/open/exploded views.
+- [ ] Review the completed construction change with the review skill.
+
+### Sourcing investigation, not a selected product
+
+Hettich [KA 4532 Silent System article 9114273](https://shop.hettich.com/de_DE/p/9114273)
+provides a 350 mm candidate and an exact CAD entry. Its published minimum cabinet
+depth is 354 mm. The [official installation sheet](https://web2.hettich.com/hbh/addon/montage/MS_10547_00_Montageanleitung_KA4532-SiSy.pdf)
+also shows a 550 mm maximum-width recommendation, so suitability for the current
+651 mm box is unresolved. Do not treat length alone as compatibility.
+
+The vendor portal generated an AP214 download for article 9114273. No local STEP
+was recovered: the browser download did not produce a file in Downloads, and
+retrieving its observed direct link returned HTTP 403. No alternate-size file,
+scaled geometry, source-CAD claim or inferred fixing pattern was substituted.
+This candidate does not yet qualify for the current design.
