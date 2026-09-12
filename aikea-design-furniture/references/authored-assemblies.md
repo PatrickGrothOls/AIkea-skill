@@ -19,7 +19,9 @@ requirements in the authored inputs. Preserve existing YAML; this metadata file
 does not require fabricated wardrobe fields or running the wardrobe calculator.
 
 The project root builder at `assemblies/<root_id>/builder.py` exports `BUILDER`
-(an object with `build()`) and a measured CadQuery `ENVELOPE` in root coordinates.
+(an object with `build()`) and a measured CadQuery `ENVELOPE` in root coordinates. Keep it as a `Workplane`
+containing one solid/compound (for example `cq.Workplane("XY").box(w, d, h, centered=False)`);
+do not call `.val()` on the envelope.
 Use stable IDs such as `furniture_01`. A complete builder may compose registered
 features; the official loader honors it. Return one `BuiltAssembly` tree with
 declared parts, child placements and hardware matching the actual built members.

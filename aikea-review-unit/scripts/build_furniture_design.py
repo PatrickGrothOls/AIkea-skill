@@ -18,7 +18,7 @@ from construction_input_fingerprint import ConstructionInputFingerprinter  # noq
 from construction_feature_qualification import ConstructionFeatureQualification  # noqa: E402
 from fabrication_tree_evidence import FabricationTreeEvidenceBuilder  # noqa: E402
 from construction_position_evidence import ConstructionPositionEvidence  # noqa: E402
-from construction_position_inputs import ConstructionPositionInputs  # noqa: E402
+from construction_envelope_authority import ConstructionEnvelopeAuthority  # noqa: E402
 from fabrication_closed_assembly_model import FabricationClosedAssemblyModel  # noqa: E402
 from fabrication_assembly_review_record import FabricationAssemblyReviewRecord  # noqa: E402
 from generated_assembly_builder_loader import GeneratedAssemblyBuilderLoader  # noqa: E402
@@ -46,15 +46,13 @@ class FurnitureDesignBuild:
         sources = fingerprint.source_inputs(project_root)
         built = self.loader.load_assembly(project_root, assembly_id)
         built = self.loader.runtime.execute(project_root, partial(self._hydrate, project_root, built))
-        envelope, allowances, _ = ConstructionPositionInputs().read(project_root, assembly_id)
-        if envelope is None:
-            raise ValueError("the authored root builder must declare its measured ENVELOPE")
+        envelope, allowances, source = ConstructionEnvelopeAuthority().read(project_root, assembly_id)
         visits = self.loader.walk(project_root, built)
         paths = tuple(item.path for item in visits)
         if len(paths) != len(set(paths)):
             raise ValueError("assembly tree paths must be unique")
         parts = AssemblyTreeReviewGeometry().build(visits, {})
-        position = ConstructionPositionEvidence().write(project_root, visits, envelope, allowances)
+        position = ConstructionPositionEvidence().write(project_root, visits, envelope, allowances, source)
         report = dict(position["geometry"])
         report["status"] = position["status"]
         report["contact_evidence_problems"] = position["contact_evidence_problems"]

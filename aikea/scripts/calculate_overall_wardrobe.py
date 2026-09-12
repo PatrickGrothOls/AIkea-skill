@@ -4,10 +4,17 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from pathlib import Path
 
 import yaml
 
+BUILD_SCRIPTS = Path(__file__).resolve().parents[2] / "aikea-build-units/scripts"
+sys.path.insert(0, str(BUILD_SCRIPTS))
+
+from assembly_run import AssemblyRunReader
+from assembly_run_overall_project_adapter import AssemblyRunOverallProjectAdapter
+from assembly_taxonomy import AssemblyTaxonomyInputError
 from overall_wardrobe_calculator import OverallWardrobeCalculator
 from overall_wardrobe_inputs import OverallWardrobeInputError, OverallWardrobeInputReader
 
@@ -22,9 +29,14 @@ class OverallWardrobeCommand:
             print(json.dumps({"status": "invalid", "problems": [str(error)]}, indent=2))
             return 2
         try:
-            inputs = OverallWardrobeInputReader().read(data if isinstance(data, dict) else {})
+            project = data if isinstance(data, dict) else {}
+            settings = project.get("design_settings", {})
+            if isinstance(settings, dict) and "assembly_run" in settings:
+                run = AssemblyRunReader().read(project)
+                project = AssemblyRunOverallProjectAdapter().adapt(project, run)
+            inputs = OverallWardrobeInputReader().read(project)
             result = OverallWardrobeCalculator().calculate(inputs)
-        except OverallWardrobeInputError as error:
+        except (OverallWardrobeInputError, AssemblyTaxonomyInputError) as error:
             print(
                 json.dumps(
                     {"status": "invalid", "problems": list(error.problems)}, indent=2

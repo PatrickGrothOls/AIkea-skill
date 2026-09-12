@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from functools import partial
 from pathlib import Path
 from types import MappingProxyType
 from typing import Any
@@ -40,9 +41,6 @@ class FullWardrobeReviewGenerator:
         self.tree_geometry = AssemblyTreeReviewGeometry()
         self.tree_fingerprint = AssemblyTreePlacementFingerprinter()
         self.review_plan_validator = AssemblyTreeReviewPlanValidator()
-        self.hardware = PurchasedHardwareHydrator(
-            ProjectHardwareGeometryResolver()
-        )
         self.exporter = CadQueryGlbExporter()
 
     def generate(
@@ -91,11 +89,8 @@ class FullWardrobeReviewGenerator:
                     + ", ".join(report.failed_check_names())
                 ]
             )
-        hydrated = self.hardware.hydrate(
-            project_root,
-            wardrobe,
-            resolved_review_plan.hides,
-        )
+        hydrated = self.loader.runtime.execute(project_root, partial(
+            self._hydrate, project_root, wardrobe, resolved_review_plan.hides))
         visits = self.loader.walk(project_root, hydrated)
         report = report.bind_closed_tree(self.tree_fingerprint.build(visits))
         report_path = project_root / "assemblies/full-wardrobe-position-check.json"
@@ -123,6 +118,10 @@ class FullWardrobeReviewGenerator:
             ),
             construction_sha256,
         )
+
+    def _hydrate(self, project_root, built, hidden):
+        return PurchasedHardwareHydrator(ProjectHardwareGeometryResolver()).hydrate(
+            project_root, built, hidden)
 
     def _children(
         self,

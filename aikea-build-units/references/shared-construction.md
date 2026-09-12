@@ -76,7 +76,7 @@ builder uses the same single-shape and participant-cut checks. Shape-specific
 extensions remain possible; standard machining should be reused.
 
 For whole-assembly review, a root `assemblies/<id>/builder.py` exports `BUILDER`
-and a CadQuery `ENVELOPE`. Run
+and a CadQuery `ENVELOPE` Workplane containing one solid/compound. Run
 `aikea-review-unit/scripts/build_furniture_design.py <project> --assembly <id>`.
 Its GLB and geometry report remain prototype evidence; use the existing fabrication
 gate for manufacturing claims. Build the complete root, including bought hardware.

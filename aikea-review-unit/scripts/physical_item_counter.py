@@ -84,6 +84,6 @@ class PhysicalItemCounter:
             dict(manufacturer=None, supplier="Häfele", product_code="267.91.314",
                  description="Brass insert for Cabineo 8 M6", unit="piece",
                  quantity=len(inserts), occurrence_paths=inserts, supplier_pack_quantity=100,
-                 selection_source="Patrick's supplied product screenshot; compatibility not revalidated"),
+                 selection_source="AIkea library default; project selection and compatibility not revalidated"),
         ]
         return [row for row in rows if row["quantity"]]
