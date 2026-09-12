@@ -51,6 +51,5 @@ is not a changed physical joint.
 
 Hinge machining must resolve the actual mounting surface into each intersected
 layer and check retained material near the opening. Nominal combined thickness
-alone proves neither cup fit nor screw engagement. The recipe migration supplies
-shared construction; layered hinge and moving-state integration remain open until
-that separate component slice is verified. Do not substitute one layer as a slab.
+alone proves neither cup fit nor screw engagement. Use the [whole-front hinge interface](../../aikea-build-doors/references/assembly-fronts.md)
+for the supported flat layered case. Do not substitute one layer as a slab.

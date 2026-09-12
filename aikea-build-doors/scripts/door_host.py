@@ -11,6 +11,7 @@ from hardware_placement import HardwarePlacement
 class DoorHostSpec:
     door_part_id: str
     support_part_id: str
+    door_assembly_id: str | None = None
 
 
 class DoorHost:
@@ -92,7 +93,8 @@ class DoorHost:
         aligned = all(isfinite(item.door_height_mm) and isfinite(item.cabinet_height_mm) and
                       abs(self.door_bottom_mm+item.door_height_mm-self.support_bottom_mm-item.cabinet_height_mm) <= 1e-6
                       for item in plan.placements)
-        if (plan.assembly_id != self.assembly_id or plan.profile_id != profile.profile_id or
+        if ((plan.host_spec is not None and plan.host_spec != self.spec) or
+                plan.assembly_id != self.assembly_id or plan.profile_id != profile.profile_id or
                 plan.relationship != profile.relationship or not aligned or
                 any(not isfinite(actual) or abs(actual-current) > 1e-6 for actual, current in pairs)):
             raise ValueError("hinge plan differs from current door/support geometry; replan before generating")
@@ -103,6 +105,10 @@ class DoorHost:
             if assembly.hinge_side is not hinge_side:
                 raise ValueError("door host and requested hinge hand disagree")
             return assembly
+        if declaration is not None and declaration.door_assembly_id is not None:
+            from assembly_door_host import AssemblyDoorHost
+            return AssemblyDoorHost(assembly, declaration, hinge_side)
+        assembly = getattr(assembly, "spec", assembly)
         if declaration is not None:
             return cls(assembly, declaration, hinge_side)
         from cabinet_feature_reservations import CabinetFeatureReservations

@@ -68,6 +68,6 @@ using [$aikea-review-unit](../aikea-review-unit/SKILL.md). A separated view is
 presentation only. Geometry success does not settle adhesive strength, tall-door
 stiffness, hinge support or fabrication readiness.
 
-The current helper supplies shared construction and complete-leaf ownership.
-Layered hinge cutting and complete-front moving-state integration are a separate
-open migration task. Do not pass one layer as though it represents the whole front.
+Use the [whole-front hinge interface](../aikea-build-doors/references/assembly-fronts.md)
+for supported flat multi-part fronts. Its layer drilling and generic child motion
+keep every physical piece explicit; unsupported arrangements need a qualified extension.

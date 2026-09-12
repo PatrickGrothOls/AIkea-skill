@@ -8,7 +8,7 @@ not limit the furniture that can be designed. This document tracks the migration
 implementation progress and evidence are recorded per work package below.
 
 Planning branch: `docs/shared-construction-foundation`.
-Current implementation branch: `feat/layered-surface-drilling`.
+Current implementation branch: `feat/assembly-door-component`.
 Baseline: `origin/main` at `52facbf73b5ea775975025bb6409ea02ef8560bd`, fetched on
 2026-09-11. The finishing checkout stays at `fc78dfa`; its untracked `dist/`
 artifacts and the other worktrees are preserved.
@@ -45,7 +45,7 @@ found two stale fixtures, now [repaired and reviewed](shared-construction-regres
 slice](door-construction-machining.md) is implemented and reviewed; explicit custom
 door hosts, paired placement and generic source-CAD review are
 [implemented and reviewed](door-host-interface.md). The [shared Korrekt mounting slice](korrekt-shared-construction.md) is implemented and reviewed;
-[complete leg-feature ownership](korrekt-component-feature.md) is implemented and reviewed; multi-part fronts and final parent movement evidence remain open. [Lighting construction/removal](lighting-shared-construction.md) is implemented and reviewed; its [generic visual review](lighting-assembly-review.md) is implemented and reviewed; the [viewer-axis correction](review-model-orientation.md) is also verified and reviewed. See [drilling dependency](shared-surface-drilling.md) and
+[complete leg-feature ownership](korrekt-component-feature.md) is implemented and reviewed; multi-part fronts and parent movement are now [implemented and reviewed](assembly-door-component.md). [Lighting construction/removal](lighting-shared-construction.md) is implemented and reviewed; its [generic visual review](lighting-assembly-review.md) is implemented and reviewed; the [viewer-axis correction](review-model-orientation.md) is also verified and reviewed. See [drilling dependency](shared-surface-drilling.md) and
 [drawer child slice](drawer-panel-construction.md).
 See [WP4c evidence](construction-position-evidence.md) and [base migration](base-configurator-construction.md).
 See [WP4 progress](common-construction-checks.md) and
@@ -222,7 +222,7 @@ load, motion or manufacturing evidence. No automatic strength certification is i
   See the host/proof slices; unresolved screw/pilot authority remains explicit.
 - [x] Adapt slab doors/hinges with exact selected mounting interfaces and both
   sides of the connection; preserve rectangular/sloped fronts and custom hosts.
-- [ ] Carry multi-part framed fronts from their separate branch through the same
+- [x] Carry multi-part framed fronts from their separate branch through the same
   host/feature ownership when that construction is integrated; verify parent motion.
 - [x] Integrate adjustable-foot mounting through the sourced mounting interface
   and existing Korrekt work; preserve unresolved physical-fit evidence separately.
@@ -365,3 +365,8 @@ stack supplies Korrekt and lighting work when those migrations are reached.
    added independent output checks; WP4b added requirement coverage, current-input
    approval binding and registered extension/hardware evidence. Each slice was
    reviewed with the review skill and its findings fixed before checkpointing.
+
+8. 2026-09-12 — WP5 component migrations now include separate-layer framed fronts,
+   exact hinges and whole-child movement. Independent review closed the invalid-fit
+   preflight finding. Common build-command hardware loading and final protocol
+   instructions remain next before the complete WP7 evidence run.

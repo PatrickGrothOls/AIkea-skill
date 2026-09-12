@@ -12,6 +12,9 @@ from cabinet_door_feature_file_set_renderer import (
 from cabinet_feature_manifest import CabinetFeatureManifest
 from door_generated_file_record import DoorGeneratedFileRecord
 from door_hinge_plan import DoorHingePlan
+from door_host import DoorHost
+from generated_project_module_runtime import GeneratedProjectModuleRuntime
+from riex_assembly_door_feature import RiexAssemblyDoorFeature
 from riex_nc70_hinge_profile import RiexNc70HingeProfile
 
 
@@ -30,7 +33,15 @@ class CabinetDoorFeatureGenerator:
         plan: DoorHingePlan,
         profile: RiexNc70HingeProfile,
     ) -> tuple[Path, ...]:
-        files = self.renderer.render(assembly, plan, profile)
+        host = DoorHost.resolve(assembly, plan.hinge_side, plan.host_spec)
+        if host.spec.door_assembly_id is not None:
+            # Feature contracts are project-scoped; check the real parent before any file writes.
+            GeneratedProjectModuleRuntime().execute(project_root,
+                lambda: RiexAssemblyDoorFeature(plan).apply(host.physical_assembly))
+        files = self.renderer.render(host, plan, profile)
+        affected = ((plan.door_part_id, plan.support_part_id) if plan.host_spec is None or
+                    plan.host_spec.door_assembly_id is None else
+                    (*tuple(path.replace('part:', '') for path in host.front_subjects), plan.support_part_id))
         recorded = DoorGeneratedFileRecord.load(project_root, plan.assembly_id)
         written = self.writer.write(project_root, files, recorded=recorded)
         DoorGeneratedFileRecord.from_rendered(
@@ -46,10 +57,7 @@ class CabinetDoorFeatureGenerator:
             affected_purchased_hardware_paths=tuple(
                 f"{placement.hinge_id}_{item}" for placement in plan.placements for item in ("hinge", "plate")
             ),
-            affected_manufactured_part_paths=(
-                plan.door_part_id,
-                plan.support_part_id,
-            ),
+            affected_manufactured_part_paths=affected,
         )
         return written + ((manifest.relative_to(project_root),) if manifest else ())
 

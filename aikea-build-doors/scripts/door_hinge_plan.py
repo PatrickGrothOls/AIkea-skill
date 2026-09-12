@@ -56,9 +56,12 @@ class DoorHingePlan:
 
     def write(self, path: Path) -> None:
         path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(self.to_json(), encoding="utf-8")
+
+    def to_json(self) -> str:
         values = asdict(self)
         values["fabrication_ready"] = self.fabrication_ready
-        path.write_text(json.dumps(values, indent=2) + "\n", encoding="utf-8")
+        return json.dumps(values, indent=2) + "\n"
 
     @classmethod
     def read(cls, path: Path) -> "DoorHingePlan":

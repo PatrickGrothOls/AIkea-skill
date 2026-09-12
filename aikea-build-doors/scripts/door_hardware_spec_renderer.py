@@ -1,103 +1,11 @@
-"""Scope: Render exact closed hinge and plate instances for one cabinet."""
-
-from __future__ import annotations
-
-from typing import Any
-
-from door_hinge_plan import DoorHingePlan
-from door_host import DoorHost
-from riex_nc70_hardware_frame import (
-    RiexNc70HardwareFrame,
-    RiexNc70HardwareFrameResolver,
-)
-from riex_nc70_hinge_profile import RiexNc70HingeProfile
+"""Scope: Render the exact shared hinge purchase declarations as editable project source."""
+from riex_nc70_hardware_specs import RiexNc70HardwareSpecs
 
 
 class DoorHardwareSpecRenderer:
-    """Write each purchased hinge component in its cabinet-local frame."""
-
-    def __init__(self) -> None:
-        self.frames = RiexNc70HardwareFrameResolver()
-
-    def render(
-        self,
-        assembly: Any,
-        plan: DoorHingePlan,
-        profile: RiexNc70HingeProfile,
-    ) -> str:
-        host = DoorHost.resolve(assembly, plan.hinge_side, plan.host_spec)
-        hardware = []
-        for placement in plan.placements:
-            hardware.extend(
-                (
-                    self._hardware(
-                        f"{placement.hinge_id}_hinge",
-                        "F000001",
-                        "riex-nc70-f000001-closed",
-                        self.frames.hinge(
-                            host,
-                            profile,
-                            host.door_bottom_mm
-                            + placement.door_height_mm,
-                            plan.hinge_side,
-                        ),
-                    ),
-                    self._hardware(
-                        f"{placement.hinge_id}_plate",
-                        "F000049",
-                        "riex-nc70-f000049-h0-euroscrew-plate",
-                        self.frames.plate(
-                            host,
-                            profile,
-                            host.support_bottom_mm
-                            + placement.cabinet_height_mm,
-                            plan.hinge_side,
-                        ),
-                    ),
-                )
-            )
-        return (
-            f'"""Scope: Declare exact purchased hinge instances for {plan.assembly_id}."""\n\n'
-            "from assemblies.specification import (\n"
-            "    AxisBasis, AxisDirection, LocalToParentPlacement, Point3D,\n"
-            ")\n"
-            "from purchased_hardware_spec import PurchasedHardwareSpec, HardwarePurchaseSpec\n\n\n"
-            "DOOR_HARDWARE = (\n"
-            + "".join(hardware)
-            + ")\n"
-        )
-
-    def _hardware(
-        self,
-        hardware_id: str,
-        product_code: str,
-        asset_id: str,
-        frame: RiexNc70HardwareFrame,
-    ) -> str:
-        return (
-            "    PurchasedHardwareSpec(\n"
-            f"        hardware_id={hardware_id!r},\n"
-            "        manufacturer='Riex',\n"
-            f"        product_code={product_code!r},\n"
-            f"        hardware_asset_id={asset_id!r},\n"
-            f"        local_to_parent={self._placement(frame)},\n"
-            "        purchase=HardwarePurchaseSpec(\n"
-            f"            {hardware_id!r}, {product_code!r}, 'piece', 'item', ('item',),\n"
-            "        ),\n"
-            "    ),\n"
-        )
-
-    def _placement(self, frame: RiexNc70HardwareFrame) -> str:
-        return (
-            "LocalToParentPlacement("
-            f"Point3D{frame.origin_mm!r}, "
-            "AxisBasis("
-            f"AxisDirection{frame.local_x_in_cabinet!r}, "
-            f"AxisDirection{frame.local_y_in_cabinet!r}, "
-            f"AxisDirection{frame.local_z_in_cabinet!r}"
-            ")"
-            ")"
-        )
-
-
-__all__ = ["DoorHardwareSpecRenderer"]
+    def render(self, assembly, plan, profile):
+        hardware = RiexNc70HardwareSpecs().build(assembly, plan, profile)
+        return ('"""Scope: Declare exact purchased hinge instances."""\n\n'
+                'from assemblies.specification import AxisBasis, AxisDirection, LocalToParentPlacement, Point3D\n'
+                'from purchased_hardware_spec import PurchasedHardwareSpec, HardwarePurchaseSpec\n\n'
+                'DOOR_HARDWARE = (\n'+''.join(f"    {item!r},\n" for item in hardware)+')\n')
