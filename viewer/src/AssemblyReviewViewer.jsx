@@ -44,7 +44,6 @@ function ReviewModel({ onModelMeasured, reviewView }) {
       renderer.capabilities.getMaxAnisotropy(),
     );
     const lightingSurface = new LightingSurface(reviewView.showsLighting());
-    scene.rotation.x = -Math.PI / 2;
     scene.traverse((node) => {
       if (node.isMesh) {
         node.castShadow = true;

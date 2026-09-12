@@ -8,7 +8,7 @@ not limit the furniture that can be designed. This document tracks the migration
 implementation progress and evidence are recorded per work package below.
 
 Planning branch: `docs/shared-construction-foundation`.
-Current implementation branch: `feat/lighting-assembly-review`.
+Current implementation branch: `fix/review-model-orientation`.
 Baseline: `origin/main` at `52facbf73b5ea775975025bb6409ea02ef8560bd`, fetched on
 2026-09-11. The finishing checkout stays at `fc78dfa`; its untracked `dist/`
 artifacts and the other worktrees are preserved.
@@ -45,7 +45,7 @@ found two stale fixtures, now [repaired and reviewed](shared-construction-regres
 slice](door-construction-machining.md) is implemented and reviewed; explicit custom
 door hosts, paired placement and generic source-CAD review are
 [implemented and reviewed](door-host-interface.md). The [shared Korrekt mounting slice](korrekt-shared-construction.md) is implemented and reviewed;
-[complete leg-feature ownership](korrekt-component-feature.md) is implemented and reviewed; multi-part fronts and final parent movement evidence remain open. [Lighting construction/removal](lighting-shared-construction.md) is implemented and reviewed; its [generic visual review](lighting-assembly-review.md) is implemented and reviewed; a pre-existing viewer-axis correction is next. See [drilling dependency](shared-surface-drilling.md) and
+[complete leg-feature ownership](korrekt-component-feature.md) is implemented and reviewed; multi-part fronts and final parent movement evidence remain open. [Lighting construction/removal](lighting-shared-construction.md) is implemented and reviewed; its [generic visual review](lighting-assembly-review.md) is implemented and reviewed; the [viewer-axis correction](review-model-orientation.md) is also verified and reviewed. See [drilling dependency](shared-surface-drilling.md) and
 [drawer child slice](drawer-panel-construction.md).
 See [WP4c evidence](construction-position-evidence.md) and [base migration](base-configurator-construction.md).
 See [WP4 progress](common-construction-checks.md) and
