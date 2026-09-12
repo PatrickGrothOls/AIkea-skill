@@ -14,7 +14,7 @@ from recessed_luminaire_profile import DOMUS_APEX_84_HI
 
 
 class TestCabinetLightingFeature:
-    """Protect lighting ownership without requiring CadQuery geometry."""
+    """Protect standard configurator lighting and its shared construction registration."""
 
     _FIXTURE = Path(__file__).parent / "fixtures/four-unit-review-aikea.yaml"
 
@@ -51,6 +51,7 @@ class TestCabinetLightingFeature:
                 "module": "lighting.feature",
                 "order": 30,
                 "affected_manufactured_part_paths": ["top_panel_01"],
+                "affected_purchased_hardware_paths": ["shelf_light_01"],
             }
         ]
         assert Path("assemblies/tall_storage_01/features.json") in result.written_paths

@@ -6,6 +6,7 @@ from pathlib import Path
 
 import yaml
 
+from complete_assembly_builder_renderer import CompleteAssemblyBuilderRenderer
 from part_lighting_plan import PartLightingPlan
 
 
@@ -20,6 +21,7 @@ class CabinetLightingFileSetRenderer:
         assembly = Path("assemblies") / plan.assembly_id
         host = assembly / "parts" / plan.part_id
         return {
+            assembly / "complete_builder.py": CompleteAssemblyBuilderRenderer().render(plan.assembly_id),
             host / "lighting.yaml": yaml.safe_dump(plan.as_record(), sort_keys=False),
             host / "lighting.py": self._plan_module(plan),
             host / "lighting_builder.py": self._part_builder_module(plan),
@@ -55,57 +57,16 @@ class CabinetLightingFileSetRenderer:
 
     def _assembly_feature_module(self, plan: PartLightingPlan) -> str:
         return (
-            f'"""Scope: Apply the declared recessed light to {plan.assembly_id}."""\n\n'
-            "from dataclasses import replace\n"
-            "from assemblies.specification import (\n"
-            "    BuiltAssembly, BuiltPurchasedHardware, PurchasedHardwareSpec,\n"
-            ")\n"
-            "from cabinet_lighting_placement import CabinetLightingPlacementBuilder\n\n"
-            f"from ..parts.{plan.part_id}.lighting import PLAN\n"
-            f"from ..parts.{plan.part_id}.lighting_builder import BUILDER as LIGHTING_BUILDER\n\n\n"
-            "class CabinetLightingFeature:\n"
-            "    \"\"\"Compose the machined host part and one purchased luminaire.\"\"\"\n\n"
-            "    def apply(self, cabinet) -> BuiltAssembly:\n"
-            "        host = next(part for part in cabinet.parts if part.spec.part_id == PLAN.part_id)\n"
-            "        lighting = LIGHTING_BUILDER.build(host)\n"
-            "        placement = CabinetLightingPlacementBuilder().build(\n"
-            "            cabinet.spec, host.spec, PLAN\n"
-            "        )\n"
-            "        hardware_spec = PurchasedHardwareSpec(\n"
-            "            PLAN.run.run_id,\n"
-            "            PLAN.run.profile.manufacturer,\n"
-            "            PLAN.run.profile.product_name,\n"
-            "            PLAN.run.profile.profile_id,\n"
-            "            placement.luminaire_in_cabinet.as_project_placement(),\n"
-            "        )\n"
-            "        parts = tuple(\n"
-            "            lighting.part if part.spec.part_id == PLAN.part_id else part\n"
-            "            for part in cabinet.parts\n"
-            "        )\n"
-            "        spec = replace(\n"
-            "            cabinet.spec,\n"
-            "            purchased_hardware=cabinet.spec.purchased_hardware + (hardware_spec,),\n"
-            "        )\n"
-            "        hardware = BuiltPurchasedHardware(hardware_spec, lighting.luminaire_body)\n"
-            "        return BuiltAssembly(\n"
-            "            spec=spec, parts=parts, joints=cabinet.joints, cuts=cabinet.cuts,\n"
-            "            child_assemblies=cabinet.child_assemblies,\n"
-            "            purchased_hardware=cabinet.purchased_hardware + (hardware,),\n"
-            "        )\n\n\n"
-            "FEATURE = CabinetLightingFeature()\n"
+            f'"""Scope: Apply the saved lighting feature owned by {plan.assembly_id}."""\n\n'
+            "from lighting_component_feature import LightingComponentFeature\n"
+            f"from ..parts.{plan.part_id}.lighting import PLAN\n\n"
+            "FEATURE = LightingComponentFeature(PLAN)\n"
         )
 
-    def _wrapper_module(
-        self,
-        plan: PartLightingPlan,
-        base_builder_module: str,
-    ) -> str:
+    def _wrapper_module(self, plan, base_builder_module):
         return (
-            f'"""Scope: Build {plan.assembly_id} with its recessed light."""\n\n'
-            "from assemblies.assembly_feature import FeatureComposedAssemblyBuilder\n\n"
-            f"from .{base_builder_module} import BUILDER as BASE_BUILDER\n"
-            "from .lighting.feature import FEATURE\n\n\n"
-            "BUILDER = FeatureComposedAssemblyBuilder(BASE_BUILDER, (FEATURE,))\n"
+            f'"""Scope: Retain the complete assembly as the lighting review authority."""\n'
+            "from .complete_builder import BUILDER\n"
         )
 
 

@@ -3,7 +3,8 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from math import atan2, degrees, hypot
+from math import atan2, degrees, hypot, isfinite
+import re
 
 from recessed_luminaire_profile import RecessedLuminaireProfile
 
@@ -21,6 +22,10 @@ class LightingRun:
     profile: RecessedLuminaireProfile
 
     def __post_init__(self) -> None:
+        if not re.fullmatch(r"[a-z][a-z0-9_]*", self.run_id):
+            raise ValueError("a lighting run needs a stable lowercase ID")
+        if any(not isfinite(value) for point in (self.start_mm, self.end_mm) for value in point):
+            raise ValueError("lighting endpoints must be finite")
         if self.length_mm <= 0:
             raise ValueError("a lighting run needs two different endpoints")
         if not self.profile.supports(self.color_temperature_k):

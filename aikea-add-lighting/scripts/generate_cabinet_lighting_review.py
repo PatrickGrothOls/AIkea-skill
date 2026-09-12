@@ -61,7 +61,7 @@ def main() -> int:
     parser.add_argument("aikea_yaml", type=Path)
     parser.add_argument("--assembly-id", required=True)
     parser.add_argument("--part-id", required=True)
-    parser.add_argument("--base-builder-module", default="builder")
+    parser.add_argument("--base-builder-module", default="complete_builder")
     parser.add_argument("--hardware-directory", type=Path, required=True)
     parser.add_argument(
         "--door-state",

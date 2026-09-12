@@ -11,6 +11,7 @@ SKILL_ROOT = Path(__file__).resolve().parents[2]
 sys.path[:0] = [
     str(SKILL_ROOT / "aikea-build-units/scripts"),
     str(SKILL_ROOT / "aikea-build-drawers/scripts"),
+    str(SKILL_ROOT / "aikea-review-unit/scripts"),
 ]
 
 from cabinet_lighting_generator import CabinetLightingGenerator

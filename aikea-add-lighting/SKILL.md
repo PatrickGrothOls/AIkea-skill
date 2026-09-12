@@ -13,6 +13,13 @@ Design the smallest complete purchased-light solution that gives the furniture
 the intended light. Treat the host panel, its machining, the purchased luminaire,
 and the emitted light as one coordinated feature.
 
+Lighting is included in every new design by default. Choose a useful placement
+from the current cabinet geometry without asking an inclusion question. Respect
+an explicit opt-out; record it in the project's existing `design_decisions`.
+Read [references/lighting-price-and-removal.md](references/lighting-price-and-removal.md)
+for the separate quote section and removal workflow. Do not report a complete
+lighting installation while its supply or cable route remains unresolved.
+
 ## Build from one saved run
 
 1. Read `references/recessed-linear-lighting.md` completely.
@@ -49,7 +56,7 @@ After that profile is approved, save one cabinet placement with:
 python <this-skill>/scripts/add_cabinet_lighting.py <project>/aikea.yaml \
   --assembly-id <cabinet-id> \
   --part-id <host-part-id> \
-  --base-builder-module <current-composed-builder> \
+  --base-builder-module complete_builder \
   --run-id <stable-light-id> \
   --start <face-x> <face-y> \
   --end <face-x> <face-y>
@@ -62,7 +69,7 @@ python <this-skill>/scripts/generate_cabinet_lighting_review.py \
   <project>/aikea.yaml \
   --assembly-id <cabinet-id> \
   --part-id <host-part-id> \
-  --base-builder-module <current-composed-builder> \
+  --base-builder-module complete_builder \
   --hardware-directory <verified-existing-hardware-source>
 ```
 
@@ -70,6 +77,10 @@ The generated cabinet keeps `lighting.yaml` beside its owning part. Its local
 builder adds the groove after earlier machining, and the cabinet builder records
 the complete luminaire as one purchased item. The review report must expose the
 part, face, run, and cabinet frames so local-to-global placement remains visible.
+
+Use `complete_builder.py` as the assembly authority. The lighting compatibility
+entry point also checks the manifest. Keep every feature on this manifest path; do not
+hide earlier drawer or door changes in a private lighting base builder.
 
 ## Keep responsibilities local
 
@@ -82,3 +93,10 @@ part, face, run, and cabinet frames so local-to-global placement remains visible
 Do not design mains wiring, certification, custom LED electronics, or a power
 supply enclosure. Do not model loose channels, diffusers, clips, or end caps when
 a verified complete luminaire meets the design goal with fewer installed parts.
+
+The saved light now emits `SurfaceGrooveSpec` into the shared construction path.
+Its whole groove must fit currently available material. The selected part's
+explicit frame places the light inside any owning assembly, without cabinet
+width/height assumptions. Keep supply, controls and cable-routing requirements
+open until resolved. Removing the feature removes its purchases, groove and
+requirements on rebuild; retained source files are inactive plans.

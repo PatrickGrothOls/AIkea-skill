@@ -49,7 +49,8 @@ class CabinetLightingReviewGenerator:
         base = self.assembly_loader.load_assembly(
             project_root,
             assembly_id,
-            base_builder_module,
+            "complete_builder" if base_builder_module == "builder" else base_builder_module,
+            exclude_features=("lighting.feature",),
         )
         lit = self.assembly_loader.load_assembly(
             project_root,

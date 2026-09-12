@@ -7,7 +7,10 @@ from pathlib import Path
 import re
 
 from assembly_taxonomy_writer import AssemblyTaxonomyWriter
-from cabinet_assembly_spec_loader import CabinetAssemblySpecLoader
+from generated_assembly_builder_loader import GeneratedAssemblyBuilderLoader
+from lighting_machining_recipe import LightingMachiningRecipe
+from lighting_component_feature import LightingComponentFeature
+from panel_machining_feature import PanelMachiningFeature
 from cabinet_feature_manifest import CabinetFeatureManifest
 from cabinet_lighting_file_set_renderer import CabinetLightingFileSetRenderer
 from lighting_generated_file_record import LightingGeneratedFileRecord
@@ -29,7 +32,7 @@ class CabinetLightingGenerator:
     _MODULE_PATTERN = re.compile(r"^[a-z][a-z0-9_]*$")
 
     def __init__(self) -> None:
-        self.spec_loader = CabinetAssemblySpecLoader()
+        self.assembly_loader = GeneratedAssemblyBuilderLoader()
         self.renderer = CabinetLightingFileSetRenderer()
         self.writer = AssemblyTaxonomyWriter()
         self.features = CabinetFeatureManifest()
@@ -45,11 +48,17 @@ class CabinetLightingGenerator:
     ) -> CabinetLightingGenerationResult:
         if not self._MODULE_PATTERN.fullmatch(base_builder_module):
             raise ValueError("base builder module must be a stable Python name")
-        assembly = self.spec_loader.load(project_root, assembly_id)
+        if base_builder_module not in {"builder", "complete_builder"}:
+            raise ValueError("Move existing features into complete_builder before adding lighting")
+        built = self.assembly_loader.load_assembly(project_root, assembly_id, exclude_features=("lighting.feature",))
+        assembly = built.spec
         part = assembly.part(part_id)
         if not part.inside_face:
             raise ValueError(f"{part_id} does not declare an inside face")
         plan = PartLightingPlan(assembly_id, part_id, part.inside_face, run)
+        LightingComponentFeature(plan).validate_owner(assembly)
+        request = LightingMachiningRecipe().build(part, plan)
+        PanelMachiningFeature().apply(built, (request,))
         files = self.renderer.render(plan, base_builder_module)
         recorded = LightingGeneratedFileRecord.load(project_root, assembly_id)
         written = self.writer.write(project_root, files, recorded=recorded)
@@ -60,6 +69,7 @@ class CabinetLightingGenerator:
             "lighting.feature",
             30,
             affected_manufactured_part_paths=(part_id,),
+            affected_purchased_hardware_paths=(run.run_id,),
         )
         return CabinetLightingGenerationResult(
             plan,

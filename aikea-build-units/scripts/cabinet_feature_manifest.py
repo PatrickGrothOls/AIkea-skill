@@ -14,6 +14,19 @@ class CabinetFeatureManifest:
     _MODULE = re.compile(r"^[a-z][a-z0-9_]*(?:\.[a-z][a-z0-9_]*)*$")
     _PART_PATH = re.compile(r"^[a-z][a-z0-9_]*(?:/[a-z][a-z0-9_]*)*$")
 
+    def unregister(self, project_root: Path, assembly_id: str, module: str) -> Path | None:
+        """Remove only this feature registration, retaining its saved source files."""
+        self._validate(assembly_id, module, 0)
+        path = project_root / "assemblies" / assembly_id / "features.json"
+        features = self._load(path)
+        retained = [item for item in features if item["module"] != module]
+        if len(retained) == len(features):
+            return None
+        data = json.loads(path.read_text(encoding="utf-8"))
+        data["features"] = retained
+        path.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
+        return path
+
     def register(
         self,
         project_root: Path,

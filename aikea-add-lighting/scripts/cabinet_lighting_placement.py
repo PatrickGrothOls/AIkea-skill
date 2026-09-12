@@ -7,7 +7,7 @@ from typing import Any
 
 import cadquery as cq
 
-from assembly_part_locator import AssemblyPartLocator
+from local_to_parent_location import LocalToParentLocation
 from lighting_run_geometry import LightingRunGeometryBuilder
 from part_face_frame import PartFaceFrameBuilder
 from part_lighting_plan import PartLightingPlan
@@ -37,7 +37,7 @@ class CabinetLightingPlacementBuilder:
     """Compose existing project frames without inventing cabinet coordinates."""
 
     def __init__(self) -> None:
-        self.part_locator = AssemblyPartLocator()
+        self.part_locator = LocalToParentLocation()
         self.face_frames = PartFaceFrameBuilder()
         self.run_geometry = LightingRunGeometryBuilder()
 
@@ -47,11 +47,7 @@ class CabinetLightingPlacementBuilder:
         part: Any,
         plan: PartLightingPlan,
     ) -> CabinetLightingPlacement:
-        part_location = self.part_locator.locate(
-            part,
-            assembly,
-            float(assembly.base_height_mm),
-        )
+        part_location = self.part_locator.build(part.local_to_parent)
         face_location = self.face_frames.build(part, plan.face).location()
         run_location = self.run_geometry.build(plan.run).run_location
         luminaire_location = part_location * face_location * run_location
