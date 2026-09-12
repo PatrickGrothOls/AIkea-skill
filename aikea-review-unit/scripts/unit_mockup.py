@@ -26,7 +26,7 @@ class MockupPart:
 
     def placed_shape(self) -> Any:
         """Return this local part transformed into assembly coordinates."""
-        return self.solid.val().located(self.location)
+        return self.solid.val().moved(self.location)
 
 
 @dataclass(frozen=True)
