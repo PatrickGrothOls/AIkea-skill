@@ -3,6 +3,7 @@
 from itertools import combinations
 from math import isfinite
 from contact_allowance_geometry import ContactAllowanceGeometry
+from intersection_volume_check import IntersectionVolumeCheck
 
 
 class FurnitureGeometryCheck:
@@ -36,6 +37,7 @@ class FurnitureGeometryCheck:
         ]
         outside = []
         overlaps = []
+        uncertain = []
         allowed_overlaps = []
         if not invalid:
             for name, shape in shapes:
@@ -44,7 +46,11 @@ class FurnitureGeometryCheck:
                     outside.append({"part": name, "outside_volume_mm3": volume})
             for (name_a, a), (name_b, b) in combinations(shapes, 2):
                 if self._boxes_overlap(a.BoundingBox(), b.BoundingBox()):
-                    intersection = a.intersect(b)
+                    intersection, problem = IntersectionVolumeCheck().measure(
+                        a, b, self.VOLUME_TOLERANCE_MM3)
+                    if problem:
+                        uncertain.append({"parts": [name_a, name_b], **problem})
+                        continue
                     volume = intersection.Volume()
                     if volume > self.VOLUME_TOLERANCE_MM3:
                         record = {"parts": [name_a, name_b], "volume_mm3": round(volume, 6)}
@@ -54,11 +60,12 @@ class FurnitureGeometryCheck:
                         else:
                             overlaps.append(record)
         return {
-            "status": "invalid" if invalid or outside or overlaps else "valid",
+            "status": "invalid" if invalid or outside or overlaps or uncertain else "valid",
             "part_count": len(shapes),
             "invalid_solids": invalid,
             "outside_envelope": outside,
             "overlaps": overlaps,
+            "uncertain_intersections": uncertain,
             "allowed_overlaps": allowed_overlaps,
             "volume_tolerance_mm3": self.VOLUME_TOLERANCE_MM3,
             "fabrication_ready": False,
