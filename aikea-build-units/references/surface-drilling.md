@@ -55,3 +55,14 @@ preserves prior geometry and ownership, and validates the complete result. Build
 again from the base with only the retained features to remove a component; do
 not try to fill old cuts back in. If the parent's requirements are still
 unassessed, adding a feature retains that unresolved state.
+
+## Drilling through contacting layers
+
+`LayeredSurfaceDrilling().build(id, parts, surface_to_owner, holes)` emits ordinary
+`SurfaceDrillingSpec` requests for explicit panels whose broad faces are parallel
+to the drilling datum. It splits each depth at actual material boundaries and
+rejects gaps, overlaps, over-depth and clipped circular sections. Apply its result
+through `PanelMachiningFeature` so earlier openings and machining remain checked.
+Each part keeps its own local solid, cuts, material and inventory identity. A
+partial hole crossing an edge between neighboring pieces is outside this recipe.
+This is drilling geometry, not adhesive or screw-engagement approval.
