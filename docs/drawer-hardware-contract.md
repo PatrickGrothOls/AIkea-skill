@@ -21,6 +21,14 @@ historical geometry and evidence are not rewritten by this correction.
 
 The actual skill correction, metadata/link validation, responsibility review,
 focused regression checks and two independent forward tests are complete.
+The requested fresh full build attempt has finished using the unchanged
+`d4e2c70` skill package, reference image and already downloaded raw hardware CAD.
+It had no prior dresser geometry, sizing or evaluation findings. **The full
+eight-drawer build did not complete:** it generated a nine-panel carcass and
+stopped drawer generation for incomplete runner installation support. It also
+identified a manufacturer/profile discrepancy for the Cabineo brass inserts.
+The carcass passes geometry and declared-face checks; inventory is draft and
+fabrication is blocked. This is a partial build, not an end-to-end success.
 Installed global aliases still point to the original checkout;
 this branch has not been pushed, merged or installed over those aliases.
 
@@ -42,6 +50,22 @@ this branch has not been pushed, merged or installed over those aliases.
 - [x] Run independent fresh-agent behavior tests from the reusable skill package.
 - [x] Record actual results and limits; do not equate instruction tests with CAD proof.
 - [x] Review the final diff and commit one coherent local checkpoint.
+
+### WP3 — Fresh complete dresser run
+
+- [x] Start an independent agent with a clean project and the exact updated skill.
+- [x] Supply the raw image and unchanged local vendor downloads, without choosing
+  hardware or importing the old dresser's dimensions for the agent.
+- [x] Let the agent attempt construction, hardware sourcing/installation and review.
+- [x] Independently inspect actual output: drawer hardware, mounting operations,
+  one-face compatibility, inventory, movement and fabrication readiness.
+- [x] Show the actual closed/exploded model and screenshot when available, or
+  report the precise evidence-backed blocker without reusing the old model.
+- [x] Preserve results and record whether the full build completed.
+
+These checkmarks record completion of the evaluation, not completion of the
+furniture. Eight drawer installations and their mounting/movement proof remain
+unresolved. No runtime profile or generator was changed during this run.
 
 ## Review and validation
 
@@ -94,6 +118,65 @@ It is intentionally excluded from the skill and commit: raw forward-session
 outputs, root validation summary, instruction hashes and the historical gate
 report are development evidence, not reusable furniture construction.
 
+### WP3 — Actual fresh build result
+
+WP3 review used `aikea-review-unit`, including the shared construction-position,
+one-face process, exploded-inspection and fabrication-readiness instructions.
+The partial model is an inspection result only; no visual/fabrication approval
+was requested or recorded for the incomplete dresser.
+
+The isolated agent proposed a 1600 × 560 mm body, 1640 × 590 mm top and 900 mm
+overall height. These are unapproved proposals derived from the reference image,
+not measurements. Its real output contains nine carcass panels, zero drawer
+installations and zero modeled purchased hardware components. The body follows
+the integrated-leg/two-bay appearance, but cannot demonstrate the reference's
+eight fronts, pulls, drawer motion or complete assembly appearance.
+
+| Actual command | Exit | Result and limit |
+| --- | --- | --- |
+| Shared assembly build | 0 | Nine valid parts, no overlaps, uncertain intersections or envelope errors; construction explicitly incomplete. |
+| Panel setup audit | 0 | Nine parts have compatible declared entry faces; missing runner cuts are outside that evidence. |
+| Physical item count | 2 | Draft: nine panels, 57 paired Cabineo cut occurrences and 57 inferred brass inserts; exact Cabineo purchase SKU missing. Counts do not establish product compatibility. |
+| Fabrication readiness | 2 | Blocked by unresolved construction, missing manufacturing outputs and absent current assembly approval. |
+| Provisional sheet plan | 0 | Four sheets for the partial body only, not a whole-dresser material quantity. |
+
+The actual source CAD hashes and native dimensions matched the supplied Hettich
+manifests. That verifies source identity, not installation fit. The registered
+KA 4532/spacer construction still lacks complete fastener/pilot and drawer-side
+machining implementation. The MOVENTO route also lacks a qualified complete
+locking/preparation arrangement under the one-face constraint. The drawer skill's
+instruction, "Pause drawer generation until it is resolved," prevented either
+unfinished recipe from producing boxes as if they were complete installations.
+This dresser has no hinged doors; spacers are not universally required by it.
+
+Independent manufacturer review confirmed that Lamello's
+[drilling-system brochure, pages 32–33](https://lamello.com/fileadmin/Downloads/Broschueren/Bohr-System/PDF/Bohr-System_Broschuere_EN.pdf)
+specifies an 8 mm diameter, 13.5 mm deep preparation for its M6 × 12.3 mm insert.
+The saved shared receiver is 9.1 × 12.5 mm; the illustrated on-surface pocket and
+rear-center dimensions also differ. Exact selected product/variant compatibility
+must be resolved before changing the shared profile or calling the holes suitable.
+The existing custom cutter and raw source files were preserved. The counter's
+default brass SKU is not evidence of an independently selected compatible product.
+The Hettich installation sheet additionally recommends a maximum 550 mm drawer
+width; suitability for the proposed wider bays remains unqualified.
+
+Parent review reconciled every GLB mesh with inventory and all nine chosen faces
+with every declared operation. The final build/audit share construction hash
+`a2c8f522f1aeb09f4f81185de12464b225127e6e0e87db807778505ff5fcd84a`.
+The new GLB hash is
+`385deb3eddb18254d4d8fa965c0325a3f1b56272a941f667494d6fa451850171`.
+All 497 supplied skill files stayed unchanged, with no additional non-cache files.
+This independent review inspected saved output and source evidence; it did not
+independently regenerate the CAD or qualify the missing hardware installation.
+
+The live viewer rendered the nine-piece body in its assembled and 65% exploded
+poses; Restore assembly returned to 0%. No console errors appeared, only the
+existing Three.js clock deprecation warning. Both screenshots are retained.
+Viewer: `http://127.0.0.1:8847/` (local process; requires restart after shutdown).
+Full local inputs, authored project, command reports, manufacturer evidence,
+screenshots and parent review are retained under
+`local-evidence/dresser-full-rerun/`. Vendor files remain ignored and local.
+
 ## Audit log
 
 - 2026-09-12 — User explicitly required runners and mounting holes for every drawer,
@@ -119,3 +202,24 @@ report are development evidence, not reusable furniture construction.
   match the exact fresh-test package hashes. Retained local evidence separately
   and saved the correction as one local skill checkpoint. No push, merge, global
   skill-alias change or update of the existing dresser geometry is included.
+- 2026-09-12 — User requested a new run. Started `dresser_full_rerun` without
+  inherited conversation context in `/private/tmp/aikea-dresser-new-run-uztpj9z9`.
+  Inputs are the unchanged skill at `d4e2c70`, original dresser image, and vendor
+  downloads for Hettich/Blum/Cabineo with hashes and original notices. The user
+  supplied no measured dresser envelope; the agent must make explicit proposals
+  rather than inherit the previous prototype's 1500 × 500 × 950 mm dimensions.
+  This run targets an actual complete assembly and review, beyond the earlier
+  bounded behavior tests. Unknown source data or capability remains a real gap.
+- 2026-09-12 — Relayed the user's existing authorization for separate aesthetic
+  router work/sanding when the fresh agent mistakenly marked that permission
+  missing. This corrected the brief, without importing previous design geometry
+  or coaching a hardware solution. The corresponding requirement changed the
+  construction hash, so the agent regenerated its final build and reports.
+- 2026-09-12 — Full attempt ended with a partial nine-panel carcass. The actual
+  runner/fixing implementation and exact Cabineo/insert compatibility remain
+  unresolved; no missing hardware was hidden behind a decorative proxy. Parent
+  review verified the saved mesh inventory, all chosen faces, source/package
+  integrity and closed/exploded visual delivery. WP3 evaluation is complete;
+  complete-dresser and fabrication outcomes are failed/blocked, respectively.
+  Preserved evidence locally and recorded this result without changing the
+  runtime, installed skill aliases, old dresser or remote branches.
