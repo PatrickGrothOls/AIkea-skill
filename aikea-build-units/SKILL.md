@@ -20,6 +20,9 @@ shared by a joint must fit both participants without unintended breakthrough.
 When the overall project changes, regenerate every affected local result while
 preserving any local file that the client has changed since its last generation.
 
+For whole-design composition, follow [$aikea-design-furniture](../aikea-design-furniture/SKILL.md).
+This skill supplies optional standard recipes within that common protocol.
+
 ## Shared construction inputs
 
 Read [shared panel construction](references/shared-construction.md) when composing

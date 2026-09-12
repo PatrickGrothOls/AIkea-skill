@@ -8,7 +8,7 @@ not limit the furniture that can be designed. This document tracks the migration
 implementation progress and evidence are recorded per work package below.
 
 Planning branch: `docs/shared-construction-foundation`.
-Current implementation branch: `fix/construction-hardware-loading`.
+Current implementation branch: `docs/shared-construction-routing`.
 Baseline: `origin/main` at `52facbf73b5ea775975025bb6409ea02ef8560bd`, fetched on
 2026-09-11. The finishing checkout stays at `fc78dfa`; its untracked `dist/`
 artifacts and the other worktrees are preserved.
@@ -229,7 +229,7 @@ load, motion or manufacturing evidence. No automatic strength certification is i
 - [x] Integrate lighting as a removable owned feature, retaining the agreed
   design default when that separate branch is brought in. Removal must remove
   its machining, purchases and evidence without damaging unrelated features.
-- [ ] For each component, document host faces, available space, supported inputs,
+- [x] For each component, document host faces, available space, supported inputs,
   effects on other parts, required evidence and a bounded extension route.
 
 Acceptance: each migrated component works inside both a standard cabinet and a
@@ -239,15 +239,15 @@ Each component is a separate mergeable slice; WP5 is not one large branch.
 
 ### WP6 — Route the skills through the common protocol
 
-- [ ] Update skill instructions to start from requirements, inspect available
+- [x] Update skill instructions to start from requirements, inspect available
   operations/configurators, select suitable components, and compose one full tree.
-- [ ] Keep the supported constructor/operation list discoverable with concrete
+- [x] Keep the supported constructor/operation list discoverable with concrete
   input/output examples and links to implementations and checks.
-- [ ] Explain that standard configurators are optional; a missing recipe does
+- [x] Explain that standard configurators are optional; a missing recipe does
   not mean a missing construction capability.
-- [ ] Require inspection of relevant tools before adding an operation. Keep new
+- [x] Require inspection of relevant tools before adding an operation. Keep new
   implementation focused, tested and explicit about its evidence limits.
-- [ ] Route configured and custom build commands to the same construction and
+- [x] Route configured and custom build commands to the same construction and
   validation boundary. Update skill instructions in every preceding slice too,
   so implementation and its documented usage never diverge between merges.
 
@@ -370,3 +370,8 @@ stack supplies Korrekt and lighting work when those migrations are reached.
    exact hinges and whole-child movement. Independent review closed the invalid-fit
    preflight finding. Common build-command hardware loading and final protocol
    instructions remain next before the complete WP7 evidence run.
+
+9. 2026-09-12 — WP6 is implemented and reviewed. Standard and custom designs now
+   share the composition entry and discoverable component/tool maps. Review found
+   old wardrobe-only handoff instructions; the scoped routes, material handoff
+   and minimal project-metadata requirement are corrected and independently proven.

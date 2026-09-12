@@ -5,7 +5,17 @@ description: Start and route an AIkea frameless sheet-material furniture project
 
 # AIkea
 
-Use explicit user messages to create or revise the saved measurements and shared design settings. `aikea.yaml` is the global specification and the project source of truth—not chat or prose. Complete and validate it before moving beyond the overall wardrobe design. Use the bundled script to calculate results.
+Use explicit user messages to create or revise saved measurements and shared
+design settings. For the standard wardrobe route, `aikea.yaml` is the global
+specification; complete and validate it with the bundled calculator. For a custom
+composition, preserve that file and save inputs the wardrobe schema cannot express
+as project-local typed specifications and requirements.
+
+Every design uses [$aikea-design-furniture](../aikea-design-furniture/SKILL.md) as
+its construction protocol. Standard component configurators remain the efficient
+route when their interfaces fit; custom arrangements use the same tools and checks.
+The measurement guidance below applies when it describes the active brief; never
+invent wardrobe fields merely to enter a template for another furniture layout.
 
 ## Client conversation
 
@@ -106,9 +116,15 @@ that contract active through every routed AIkea stage.
 1. Resolve the active project folder from the user's request and current working directory.
 2. If `aikea.yaml` exists, read it and preserve every value the user has not changed.
 3. If the user asks only to inspect or check a project, perform only that operation.
-4. If the project has no `aikea.yaml`, collect the overall wardrobe measurements and settings one topic at a time, unless the client chooses the measurement sheet.
+4. If saved inputs are missing, collect the active brief's measurements and
+   choices one topic at a time. Use the wardrobe sheet/schema when it fits the brief;
+   custom compositions save explicit project inputs through `$aikea-design-furniture`.
 
-## Complete the global specification
+## Complete the standard wardrobe specification
+
+Use this calculator sequence for a standard wardrobe brief. For an arrangement
+that the schema cannot express, continue through `$aikea-design-furniture` with
+its saved measurements and requirements instead.
 
 1. Read `references/overall-wardrobe-measurements-and-settings.md` completely.
 2. Read only the user's messages, user-identified attachments, and the active project's AIkea files for project values.
@@ -133,7 +149,9 @@ that contract active through every routed AIkea stage.
     positions, heights, and depths. Frame them as the clear physical dimensions
     that the next wardrobe work can build from; keep the saving and checking
     mechanics private.
-11. Immediately load `$aikea-arrange-units` and continue with its first unfinished action in the same response. Reuse any purpose, order, or width relationship the client already supplied; do not ask for it again.
+11. Continue through `$aikea-design-furniture`, using `$aikea-arrange-units` for
+    the standard unit-run configurator. Reuse supplied purpose, order and width
+    relationships; the model may compose a custom arrangement with the same tools.
 12. If the client later replies only with an acknowledgement such as "great," treat it as permission to continue the active workflow and perform the next unfinished action. Never answer an acknowledgement with another invitation to proceed.
 
 Never overwrite an existing `aikea.yaml` with the blank template. Never ask another overall-measurement question when every required value is present and consistent. Never treat a chat summary as a substitute for the written and validated global specification.
@@ -148,7 +166,11 @@ and positions, then lead directly into unit arrangement.
 
 ## Route the next stage
 
-When the overall space is checked, load `$aikea-arrange-units` immediately rather than waiting for the client to request the next stage. Keep unit arrangement out of this entry skill instead of duplicating its questions or saved-result rules here.
+When the overall space is checked, load `$aikea-design-furniture` immediately.
+It selects and composes the shared tools. Use `$aikea-arrange-units` and
+`$aikea-build-units` where the standard unit-run recipe fits. Keep their calculation
+and arrangement details in those skills; a novel layout does not need a new
+furniture-purpose registration.
 
 When the client asks what material to use, compares material quality or price,
 reaches the material or thickness stage, or is about to calculate a supplied

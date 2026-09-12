@@ -15,6 +15,27 @@ Give the client a clear view of the real generated parts as physical assemblies,
 so visible form, proportions, and contact between approved assemblies can be
 checked before the design is repeated or manufacturing work continues.
 
+## Select the review route
+
+Inspect the actual root builder and active brief. For a project-authored or mixed
+tree, use [the common project contract](../aikea-design-furniture/references/authored-assemblies.md)
+and [closed construction checks](references/construction-position.md): run
+`build_furniture_design.py <project> --assembly <root-id>` and inspect its report.
+For registered component states, run `generate_complete_assembly_review.py` with
+that same root and the complete feature selectors from its result. Serve the real
+GLB with `serve_unit_review.py`; do not require the legacy wardrobe calculator or
+invent a standard cabinet run. Read [visual presentation](references/visual-review.md)
+for useful viewing angles and client communication, applying wardrobe-specific
+steps only when the actual design is a configured wardrobe.
+
+Show what is complete and what remains unresolved. Apply the user's actual review
+and repetition boundary; a single custom piece need not wait on a run-wide door
+proposal. Preserve the existing left-hinge proposal for applicable fitted doors.
+Use that same real root ID for inventory and the fabrication gate below.
+
+The following first-cabinet, structural-base, full-wardrobe and drawer-run
+sequences apply to the standard wardrobe configurator.
+
 ## Present the first cabinet
 
 1. Resolve the active project and require its completed `aikea.yaml` and generated
@@ -154,7 +175,7 @@ inventory does not grant fabrication readiness or supply a selling price.
 Read [references/fabrication-readiness.md](references/fabrication-readiness.md)
 before making any fabrication claim. After the complete closed assembly is
 approved, run
-`python <skill-directory>/scripts/check_fabrication_readiness.py <project>/aikea.yaml`.
+`python <skill-directory>/scripts/check_fabrication_readiness.py <project>/aikea.yaml --assembly <root-id>`.
 Only its `fabrication-ready` result grants that state. A valid GLB, a passed
 position report, or visual approval alone is insufficient; every recursive
 part, joint, machining declaration, purchased item, STEP, drawing, BOM, cut-list

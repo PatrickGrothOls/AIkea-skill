@@ -148,6 +148,11 @@ recommendation to `<project>/materials/material-comparison.md`. Keep superseded
 research in a clearly dated history section rather than silently replacing its
 price basis.
 
+For authored compositions, follow the skill's part-specific persistence route:
+use the real project inputs and part IDs while retaining the same evidence and
+client-confirmation rules. The YAML instructions below apply to the standard
+wardrobe calculator, whose global groups have narrower representation.
+
 After explicit client confirmation, add or replace the relevant material entries
 under `design_decisions` in `aikea.yaml`. Use stable subjects such as
 `cabinet_carcass_material`, `door_front_material`, and `back_panel_material`.

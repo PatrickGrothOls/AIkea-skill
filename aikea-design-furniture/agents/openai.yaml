@@ -1,0 +1,4 @@
+interface:
+  display_name: "AIkea furniture design"
+  short_description: "Compose furniture with shared tools and editable recipes"
+  default_prompt: "Use $aikea-design-furniture to compose this furniture with shared construction tools and optional standard configurators."

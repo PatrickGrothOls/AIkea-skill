@@ -17,7 +17,9 @@ back panels, and exceptional wet or high-wear parts as separate groups;
 combine groups only when the same construction genuinely suits them. The current
 global specification can represent one thickness for all carcass and shelf
 panels, one for doors, and one for back panels. Treat any requirement
-outside those groups as unresolved construction work, not an implemented choice.
+outside those groups as unresolved for that standard configurator until a
+part-specific construction represents it. Authored compositions can declare
+separate material/thickness choices per real part through the shared contract.
 
 ## Establish the decision
 
@@ -41,6 +43,16 @@ outside those groups as unresolved construction work, not an implemented choice.
    unknowns clear.
 
 ## Confirm and save
+
+For an authored composition, save the client's confirmed choice against its
+actual part IDs/groups in the project's typed design inputs, including the
+confirmation and dated sourcing evidence. Transfer the chosen material identity
+and thickness to each real `PartSpec`; do not squeeze unrelated parts into a
+global wardrobe group. Reuse existing confirmation rather than asking again.
+Keep a changed choice as a proposal until the affected construction is revised,
+rebuilt and reviewed with current evidence. Return to `$aikea-design-furniture`.
+
+The following sequence applies to the standard wardrobe's global schema:
 
 1. Treat the material stage as complete only when the carcass and shelves,
    doors, and back panels each have a confirmed `design_decisions` entry

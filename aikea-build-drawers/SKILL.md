@@ -39,6 +39,23 @@ with one exact purchased article `13952` spacer on each cabinet side. Do not fal
 back to KA 5332 merely because it was implemented earlier. Use KA 5332 only when
 the active project or client explicitly selects it.
 
+## Use a drawer in an authored parent
+
+For an authored or mixed tree, follow [the explicit host contract](references/drawer-host-interface.md)
+and [shared project setup](../aikea-design-furniture/references/authored-assemblies.md).
+Use the selected-runner generator with that parent's real ID and save the child
+through the common feature manifest. Review its complete parent/root using
+`build_furniture_design.py` and `generate_complete_assembly_review.py`, selecting
+the registered drawer state from the returned feature selectors. These commands
+do not require a legacy wardrobe arrangement. Keep the selected profile's source,
+installation and movement proof requirements; for KA 4532 use the host-aware proof
+command below with the actual parent ID. Generic visual states alone do not
+substitute for a profile's manufacturing or full movement evidence.
+
+The following run-wide command sequence applies to configured wardrobes. Its
+source-CAD, purchase ownership and conflict-preservation rules also apply to the
+authored-host route above.
+
 ## Build drawer children from verified source CAD
 
 1. Resolve the active AIkea project and require its completed `aikea.yaml` and

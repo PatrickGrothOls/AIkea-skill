@@ -14,6 +14,25 @@ door. The result must connect the visible slab, the selected purchased hinge
 system, both participating panels, and the real opening movement through shared
 placements.
 
+For physical multi-part fronts, use [the whole-front host](references/assembly-fronts.md).
+Read [component interfaces](../aikea-design-furniture/references/component-interfaces.md) when selecting or adapting a host.
+
+## Use an authored door host
+
+For an authored parent, follow [the explicit slab host](references/shared-hinge-construction.md)
+or [the complete-front host](references/assembly-fronts.md) with the actual support
+faces, front ownership and current dimensions. Use their shared planner/generator;
+an authored host need not have a wardrobe run or an existing System 32 grid.
+Use [the common review route](../aikea-review-unit/SKILL.md) for the same full root,
+including exact closed/open hardware and every moving front piece. Preserve the
+left-hinge default for applicable doors and the user's actual visual/repetition
+authorization. Do not invent a run-wide opening proposal for a single custom piece.
+Keep the explicit host's installation and full-motion limitations unresolved.
+
+The following front-resolution, complete-door and run-wide opening sequence
+describes the standard cabinet adapter and its current capability. Apply its
+source-evidence and paired-machining requirements to authored hosts as well.
+
 ## Resolve the front first
 
 Confirm that the cabinet run can be divided into supported door leaves before

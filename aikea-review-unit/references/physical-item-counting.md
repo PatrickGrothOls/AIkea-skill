@@ -41,9 +41,13 @@ unresolved base/door relationships prevent a complete priced order.
 
 This first counter inventories what the generated tree declares. It cannot yet
 prove that every intended handle, shelf support, base fixing or other feature is
-present. Cabineos currently derive from machining; if a design also models them
-or their inserts as purchased hardware, resolve that duplicate representation
-before using the purchasing summary. Do not quote an unverified sum.
+present. Cabineos derive from paired machining. When a design also models the connector
+or insert, declare its `ConnectionPurchaseSpec` link to the exact joint occurrence;
+the counter reconciles that purchase once. The counter cannot identify an
+unlinked duplicate by its appearance or name; resolve its explicit identity
+before treating the summary as a complete purchasing quantity.
+See [shared purchase identity](../../aikea-build-units/references/shared-construction.md).
+Do not quote an unverified sum.
 
 Existing generated hardware without purchase declarations remains visible as
 unresolved. Updating a feature with the current generator adds its declarations;
