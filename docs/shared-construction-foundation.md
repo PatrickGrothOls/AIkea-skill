@@ -8,49 +8,36 @@ not limit the furniture that can be designed. This document tracks the migration
 implementation progress and evidence are recorded per work package below.
 
 Planning branch: `docs/shared-construction-foundation`.
-Current implementation branch: `fix/uncertain-cad-intersections`.
+Current implementation branch: `test/shared-construction-acceptance`.
 Baseline: `origin/main` at `52facbf73b5ea775975025bb6409ea02ef8560bd`, fetched on
 2026-09-11. The finishing checkout stays at `fc78dfa`; its untracked `dist/`
 artifacts and the other worktrees are preserved.
 
 ## Current state
 
-- [x] Confirm Patrick's three layers: construction tools, optional standard
-  configurators, and whole-design composition using both configured and custom parts.
-- [x] Inspect current main and the existing composition branch against that direction.
-- [x] Identify the shared contracts and the remaining differences in construction.
-- [x] Write work packages, acceptance checks, migration boundaries, and merge sequence.
-- [x] Implement the first contract and shared construction slice.
-- [ ] Migrate and verify the standard configurators and custom composition route.
-- [ ] Run fresh model-driven evaluations and the saved wardrobe integration.
+- [x] WP1–WP4: shared inputs, construction, configured recipes and applicable checks.
+- [x] WP5: cabinet/base, drawer, door, framed-front, adjustable-leg and lighting integration.
+- [x] WP6: standard and custom skill routes use the common construction protocol.
+- [x] Retire duplicate legacy panel algorithms; preserve narrow input adapters.
+- [x] Run independent model-led standard and custom trials and trace the actual saved wardrobe.
+- [ ] WP7: complete final regression, close findings and independently review the acceptance record.
 
-WP1 now supplies the shared input values, material identity and a source trace of
-the saved wardrobe. Its 29 focused compatibility tests and the per-WP `review` skill
-passed, including an independent testing/compatibility review. See [WP1 evidence](shared-construction-inputs.md). Existing
-construction algorithms, installed skills and private design files are unchanged.
-WP2 is implemented and its review findings are fixed. WP3 implementation and
-independent review pass, with 561 unique Python tests and 72 subtests passed,
-five skipped. See [WP3 evidence](standard-configurator-construction.md).
-WP4a operation-result validation is implemented and reviewed. WP4b requirement
-coverage, current input binding and scoped extension qualification are implemented
-and reviewed. WP4c shared position/contact evidence is implemented and reviewed;
-the reproduced envelope-authority finding is fixed and independently rechecked.
-WP5a base migration is implemented and reviewed; remaining WP5-WP7 work is open.
-The shared surface-hole operation and drawer-child migration are reviewed.
-Drawer host mounting now has reviewed [explicit reuse of matching holes](shared-drilling-reuse.md);
-its [operation integration](drawer-host-machining.md) is reviewed. The explicit
-[drawer host interface](drawer-host-interface.md) is reviewed; host-aware KA 4532
-[proof](drawer-host-proof.md) is implemented and reviewed; its broader regression
-found two stale fixtures, now [repaired and reviewed](shared-construction-regressions.md). The [door machining
-slice](door-construction-machining.md) is implemented and reviewed; explicit custom
-door hosts, paired placement and generic source-CAD review are
-[implemented and reviewed](door-host-interface.md). The [shared Korrekt mounting slice](korrekt-shared-construction.md) is implemented and reviewed;
-[complete leg-feature ownership](korrekt-component-feature.md) is implemented and reviewed; multi-part fronts and parent movement are now [implemented and reviewed](assembly-door-component.md). [Lighting construction/removal](lighting-shared-construction.md) is implemented and reviewed; its [generic visual review](lighting-assembly-review.md) is implemented and reviewed; the [viewer-axis correction](review-model-orientation.md) is also verified and reviewed. See [drilling dependency](shared-surface-drilling.md) and
-[drawer child slice](drawer-panel-construction.md).
-See [WP4c evidence](construction-position-evidence.md) and [base migration](base-configurator-construction.md).
-See [WP4 progress](common-construction-checks.md) and
-[requirement/evidence work](construction-requirement-evidence.md). The earlier
-composition branch remains unmerged; useful code is being reused selectively.
+Every completed work package and component slice has used the `review` skill;
+findings were fixed and rechecked before its local checkpoint. The current WP7
+run exposed a source-frame inconsistency in drawer proof after the native-shape
+placement correction. It is under investigation; the complete suite is not yet
+green. See [current acceptance evidence](shared-construction-acceptance.md).
+
+| Work | Evidence |
+| --- | --- |
+| Shared input and construction | [Input audit](shared-construction-inputs.md), [configured parity](standard-configurator-construction.md) |
+| Applicable checks and current evidence | [Operation results](common-construction-checks.md), [requirements](construction-requirement-evidence.md), [position](construction-position-evidence.md) |
+| Component migration | [Base](base-configurator-construction.md), [drawer host](drawer-host-proof.md), [door host](door-host-interface.md), [framed front](assembly-door-component.md), [legs](korrekt-component-feature.md), [lighting](lighting-assembly-review.md) |
+| Entry routes and compatibility | [Skill routing](shared-construction-routing.md), [legacy adapters](legacy-panel-route-retirement.md), [startup corrections](construction-startup-routes.md) |
+| Geometry review corrections | [Native placement](review-native-placement.md), [uncertain CAD intersections](uncertain-cad-intersections.md) |
+
+All work remains local in the reviewed branch stack. The finishing checkout and
+original private wardrobe are preserved; no publication, push or merge occurred.
 
 ## Confirmed direction and evidence boundary
 
@@ -375,3 +362,12 @@ stack supplies Korrekt and lighting work when those migrations are reached.
    share the composition entry and discoverable component/tool maps. Review found
    old wardrobe-only handoff instructions; the scoped routes, material handoff
    and minimal project-metadata requirement are corrected and independently proven.
+
+10. 2026-09-12 — WP7 fresh-model trials exposed CLI startup/provenance gaps and
+    a native CAD placement discrepancy in review reports. Separate reviewed fixes
+    corrected those paths. Exact-source Boolean contradictions remain explicit
+    uncertainty, rather than being hidden by relaxed tolerances or allowances.
+11. 2026-09-12 — The candidate `c33b781` collected 802 Python tests. Its full
+    regression exposed additional drawer proof/source-frame failures; completion
+    remains open while those are diagnosed. Independent source/placement evidence
+    and private design artifacts are preserved in ignored local evidence.
