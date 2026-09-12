@@ -14,6 +14,8 @@ class FullWardrobeReviewResult:
     position_report_path: Path
     door_states: Mapping[str, str]
     construction_sha256: str = ""
+    construction_position_status: str | None = None
+    construction_position_report_path: Path | None = None
 
 
 __all__ = ["FullWardrobeReviewResult"]

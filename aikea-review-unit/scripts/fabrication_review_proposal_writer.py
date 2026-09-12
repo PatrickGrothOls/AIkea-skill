@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Any
 
 from fabrication_assembly_review_record import FabricationAssemblyReviewRecord
+from construction_review_eligibility import ConstructionReviewEligibility
 
 
 class FabricationReviewProposalWriter:
@@ -21,7 +22,9 @@ class FabricationReviewProposalWriter:
         is_closed = bool(result.door_states) and set(result.door_states.values()) == {
             "closed"
         }
-        if result.glb_path.resolve() != canonical_path.resolve() or not is_closed:
+        if (result.glb_path.resolve() != canonical_path.resolve() or not is_closed
+                or result.construction_position_status != "valid"
+                or not ConstructionReviewEligibility().allows(project_root, result.construction_sha256)):
             return None
         return self.records.write_proposal(project_root, result.glb_path, result.construction_sha256)
 

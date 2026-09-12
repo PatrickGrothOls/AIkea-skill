@@ -85,6 +85,8 @@ class TestUnitReviewArtifactBinding:
         assert json.loads(review.read_text(encoding="utf-8"))["status"] == "proposed"
 
     def _record(self, support, model):
+        support.write_json("assemblies/construction-position-check.json",
+                           {"schema_version": 2, "status": "valid", "construction_sha256": "current-inputs"})
         return support.write_json(
             "reviews/fabrication-assembly.json",
             {
@@ -93,6 +95,7 @@ class TestUnitReviewArtifactBinding:
                 "message": "Approve this exact assembly.",
                 "artifact": str(model.relative_to(support.root)),
                 "artifact_sha256": sha256(model.read_bytes()).hexdigest(),
+                "construction_sha256": "current-inputs",
             },
         )
 

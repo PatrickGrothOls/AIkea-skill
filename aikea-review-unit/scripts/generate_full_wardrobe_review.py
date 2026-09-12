@@ -61,11 +61,14 @@ class GenerateFullWardrobeReviewCommand:
         print(
             json.dumps(
                 {
-                    "status": "generated",
+                    "status": "invalid" if result.construction_position_status == "invalid" else "generated",
                     "assemblies": list(result.assembly_ids),
                     "full_wardrobe_glb": str(result.glb_path),
                     "assembly_position_check": str(result.position_report_path),
                     "doors": dict(result.door_states),
+                    "construction_position_status": result.construction_position_status,
+                    "construction_position_check": (str(result.construction_position_report_path)
+                                                    if result.construction_position_report_path else None),
                     "fabrication_review": (
                         str(fabrication_review) if fabrication_review else None
                     ),
@@ -73,7 +76,7 @@ class GenerateFullWardrobeReviewCommand:
                 indent=2,
             )
         )
-        return 0
+        return 2 if result.construction_position_status == "invalid" else 0
 
     def _invalid(self, problems: list[str]) -> int:
         print(json.dumps({"status": "invalid", "problems": problems}, indent=2))

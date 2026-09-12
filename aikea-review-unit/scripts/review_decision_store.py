@@ -8,6 +8,7 @@ from pathlib import Path
 from uuid import uuid4
 
 from glb_artifact_snapshot import GlbArtifactSnapshot
+from construction_review_eligibility import ConstructionReviewEligibility
 from review_decision_file_lock import ReviewDecisionFileLock
 
 
@@ -70,6 +71,9 @@ class ReviewDecisionStore:
             raise ValueError("review record type is unsupported")
         if review_type == "fabrication_assembly":
             self._validate_artifact(record, artifact)
+            if not ConstructionReviewEligibility().allows(
+                    self.path.parent.parent, record.get("construction_sha256")):
+                raise ReviewDecisionConflict("construction position evidence is missing, invalid or stale")
 
     def _validate_artifact(
         self,

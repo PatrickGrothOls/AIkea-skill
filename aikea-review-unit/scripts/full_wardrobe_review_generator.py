@@ -101,7 +101,8 @@ class FullWardrobeReviewGenerator:
             resolved_review_plan,
         )
         filename = output_filename or resolved_door_plan.filename_for(assembly_ids)
-        ConfiguredConstructionEvidence().write(project_root, project, visits, filename, door_states, resolved_review_plan)
+        construction_position = ConfiguredConstructionEvidence().write(
+            project_root, project, visits, filename, door_states, resolved_review_plan)
         glb_path = project_root / f"assemblies/{filename}"
         self.exporter.export("full_wardrobe", placed_parts, glb_path)
         construction_sha256 = fingerprint.build(project_root, visits)
@@ -117,6 +118,8 @@ class FullWardrobeReviewGenerator:
                 }
             ),
             construction_sha256,
+            construction_position["status"] if construction_position else None,
+            project_root / "assemblies/construction-position-check.json" if construction_position else None,
         )
 
     def _hydrate(self, project_root, built, hidden):

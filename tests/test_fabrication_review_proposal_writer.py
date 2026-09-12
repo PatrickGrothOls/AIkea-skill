@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from types import SimpleNamespace
+import json
 
 from fabrication_review_proposal_writer import FabricationReviewProposalWriter
 
@@ -28,8 +29,13 @@ class TestFabricationReviewProposalWriter:
             glb_path=model,
             door_states={"cabinet_01": "closed"},
             construction_sha256="current-inputs",
+            construction_position_status="valid",
         )
 
+        evidence = tmp_path / "assemblies/construction-position-check.json"
+        evidence.parent.mkdir(parents=True)
+        evidence.write_text(json.dumps({"schema_version": 2, "status": "valid",
+                                        "construction_sha256": "current-inputs"}))
         path = FabricationReviewProposalWriter(records).write_for_result(
             tmp_path,
             result,

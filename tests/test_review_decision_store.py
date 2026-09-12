@@ -91,6 +91,8 @@ class TestReviewDecisionStore:
         return path
 
     def _fabrication_record(self, root, model):
+        self._write_json(root / "assemblies/construction-position-check.json",
+                         {"schema_version": 2, "status": "valid", "construction_sha256": "current-inputs"})
         path = root / "reviews/fabrication-assembly.json"
         self._write_json(
             path,
@@ -100,6 +102,7 @@ class TestReviewDecisionStore:
                 "message": "Approve this exact assembly.",
                 "artifact": str(model.relative_to(root)),
                 "artifact_sha256": sha256(model.read_bytes()).hexdigest(),
+                "construction_sha256": "current-inputs",
             },
         )
         return path

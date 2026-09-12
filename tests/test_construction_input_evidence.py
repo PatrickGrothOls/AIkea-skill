@@ -59,9 +59,15 @@ class TestConstructionInputEvidence:
         model = tmp_path / "assemblies/full_wardrobe_review.glb"
         record = tmp_path / "reviews/fabrication-assembly.json"
         writer = FabricationAssemblyReviewRecord()
+        self._position(tmp_path, "old-inputs")
         writer.write_proposal(tmp_path, model, "old-inputs")
         session = ReviewServerSession(model, record)
+        self._position(tmp_path, "new-inputs")
         writer.write_proposal(tmp_path, model, "new-inputs")
         with pytest.raises(ReviewDecisionConflict, match="inputs changed"):
             session.decide("approved", session.token)
         assert json.loads(record.read_text())["status"] == "proposed"
+
+    def _position(self, root, digest):
+        (root / "assemblies/construction-position-check.json").write_text(json.dumps(
+            {"schema_version": 2, "status": "valid", "construction_sha256": digest}))
