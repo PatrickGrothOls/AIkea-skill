@@ -9,7 +9,7 @@ from typing import Any, ClassVar
 
 @dataclass(frozen=True, slots=True)
 class SourceNormalizedFrame:
-    """Remove a source shape's stored location before comparing installations."""
+    """Map already-native source coordinates through the installed placement."""
 
     part: Any
     source: Any
@@ -23,7 +23,8 @@ class SourceNormalizedFrame:
     def point(self, source_point: tuple[float, ...]) -> tuple[float, ...]:
         import cadquery as cq
 
-        source_to_world = self.part.location * self.source.location().inverse
+        # Native points already include the source shape's stored transform.
+        source_to_world = self.part.location
         matrix = cq.Matrix(source_to_world.wrapped.Transformation())
         transformed = cq.Vector(*source_point).transform(matrix)
         return tuple(float(value) for value in transformed.toTuple())

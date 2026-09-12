@@ -72,15 +72,15 @@ class HettichKa4532SpacerProofTestSupport:
                 "drawer_01__drawer_01_runner_left_moving",
                 source.runner_left.moving_member,
                 25.0,
-                drawer_y_mm,
-                22.0,
+                drawer_y_mm + 11.5,
+                23.0,
             ),
             self.source_part(
                 "drawer_01__drawer_01_runner_right_moving",
                 source.runner_right.moving_member,
                 70.0,
-                drawer_y_mm,
-                22.0,
+                drawer_y_mm + 11.5,
+                23.0,
             ),
         )
 

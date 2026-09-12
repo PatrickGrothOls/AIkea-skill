@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-from drawer_hardware_mounting_plan import HardwarePlacement
 from hardware_placement_renderer import HardwarePlacementRenderer
 from hettich_ka_4532_purchase_renderer import HettichKa4532PurchaseRenderer
 
@@ -17,7 +16,6 @@ class HettichKa4532SpacerHardwareSpecRenderer:
     def render(self, plan) -> str:
         profile = plan.hardware
         mounting = plan.hardware_mounting
-        step = plan.hardware_step
         fixed = tuple(
             (
                 f"runner_{side}_fixed",
@@ -25,7 +23,6 @@ class HettichKa4532SpacerHardwareSpecRenderer:
                 profile.runner_asset_id,
                 f"{side}-fixed",
                 getattr(mounting, f"fixed_runner_{side}_in_cabinet"),
-                getattr(step, f"runner_{side}").fixed_member,
                 self.purchases.runner(plan, side, moving=False),
             )
             for side in ("left", "right")
@@ -37,7 +34,6 @@ class HettichKa4532SpacerHardwareSpecRenderer:
                 profile.spacer_asset_id,
                 None,
                 getattr(mounting, f"spacer_{side}_in_cabinet"),
-                step.spacer_solid,
                 self.purchases.spacer(plan, side),
             )
             for side in ("left", "right")
@@ -49,7 +45,6 @@ class HettichKa4532SpacerHardwareSpecRenderer:
                 profile.runner_asset_id,
                 f"{side}-moving",
                 getattr(mounting, f"moving_runner_{side}_in_drawer"),
-                getattr(step, f"runner_{side}").moving_member,
                 self.purchases.runner(plan, side, moving=True),
             )
             for side in ("left", "right")
@@ -75,50 +70,16 @@ class HettichKa4532SpacerHardwareSpecRenderer:
         asset,
         selector,
         placement,
-        shape,
         purchase,
     ) -> str:
         selector_source = f", geometry_selector={selector!r}" if selector else ""
-        installed = self._installed_placement(placement, shape)
         return (
             "    PurchasedHardwareSpec(\n"
             f"        {drawer_id + '_' + suffix!r}, 'Hettich', {product!r}, {asset!r},\n"
-            "        " + self.placements.render(installed, "        ")
+            "        " + self.placements.render(placement, "        ")
             + selector_source + ",\n"
             f"        purchase={purchase},\n"
             "    ),\n"
         )
-
-    def _installed_placement(self, placement, shape) -> HardwarePlacement:
-        import cadquery as cq
-        from OCP.gp import gp_Pnt, gp_Vec
-
-        mounting = cq.Location(
-            cq.Plane(
-                origin=placement.origin_mm,
-                xDir=placement.local_x_in_owner,
-                normal=placement.local_z_in_owner,
-            )
-        )
-        transform = (mounting * shape.location()).wrapped.Transformation()
-        origin = gp_Pnt().Transformed(transform)
-        axes = tuple(
-            gp_Vec(*values).Transformed(transform)
-            for values in (
-                (1.0, 0.0, 0.0),
-                (0.0, 1.0, 0.0),
-                (0.0, 0.0, 1.0),
-            )
-        )
-        return HardwarePlacement(
-            self._coordinates(origin),
-            self._coordinates(axes[0]),
-            self._coordinates(axes[1]),
-            self._coordinates(axes[2]),
-        )
-
-    def _coordinates(self, value) -> tuple[float, float, float]:
-        return (float(value.X()), float(value.Y()), float(value.Z()))
-
 
 __all__ = ["HettichKa4532SpacerHardwareSpecRenderer"]
