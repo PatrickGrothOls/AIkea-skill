@@ -9,6 +9,10 @@ Before any client-facing message, including progress commentary, read
 [../aikea/references/client-conversation.md](../aikea/references/client-conversation.md)
 completely and apply it throughout this stage.
 
+Read [the manufacturing process](../aikea-design-furniture/references/manufacturing-process.md)
+before placing the drawer or its runners. Include cabinet and drawer fixing holes
+in the chosen-face plan alongside their existing joinery.
+
 ## Goal
 
 Turn a drawer design inside an existing generated cabinet into a project-owned

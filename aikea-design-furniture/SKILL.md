@@ -17,6 +17,11 @@ Keep implementation details out of the customer conversation unless requested.
 
 ## Select the construction
 
+Read [the manufacturing process](references/manufacturing-process.md) before
+placing panels or joints. The standard process is three-axis CNC with one chosen
+broad machining face per physical part, no flipping, and paired Cabineo/insert
+connections. This constrains the arrangement, including all hardware fixing holes.
+
 Save the envelope, obstacles, chosen materials and functional requirements in the
 active project. Preserve an existing `aikea.yaml`; use its wardrobe calculator
 when that schema describes the arrangement. Custom compositions can retain their
@@ -26,6 +31,12 @@ Reuse confirmed material choices. For an unconfirmed choice or requested materia
 revision, load [$aikea-choose-materials](../aikea-choose-materials/SKILL.md) and use
 its part-specific route for an authored composition. Apply a choice only within
 the user's authorization; a prototype assumption remains a recorded proposal.
+
+For an image-led brief, record the visible form, proportions, fronts, handles,
+supports and edge treatments before choosing hidden construction. Perspective
+does not supply measured dimensions, material identity or a joint specification.
+Keep proposed dimensions and concealed details explicit, then compare the whole
+generated object with the supplied reference during visual review.
 
 Read the [construction tool map](references/construction-tools.md) and inspect the
 relevant operations or [component interfaces](references/component-interfaces.md)
@@ -49,6 +60,11 @@ a failed check or label an unknown operation as a supported one. A valid solid
 does not qualify a novel operation for fabrication.
 
 ## Review the complete design
+
+Run the mandatory setup and connection checks in
+[the manufacturing process](references/manufacturing-process.md) on the complete
+current tree. A geometrically valid preview with missing holes or conflicting
+entry faces is not a completed CNC design.
 
 Build one complete tree, including configured components, custom parts and bought
 hardware. Reconcile declared requirements with operations, actual physical items

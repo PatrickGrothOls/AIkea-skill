@@ -9,6 +9,10 @@ Before any client-facing message, including progress commentary, read
 [../aikea/references/client-conversation.md](../aikea/references/client-conversation.md)
 completely and apply it throughout this stage.
 
+Read [the manufacturing process](../aikea-design-furniture/references/manufacturing-process.md)
+before placing a groove or cable opening. Include these operations in the host
+part's chosen-face plan alongside its joinery and other hardware.
+
 Design the smallest complete purchased-light solution that gives the furniture
 the intended light. Treat the host panel, its machining, the purchased luminaire,
 and the emitted light as one coordinated feature.

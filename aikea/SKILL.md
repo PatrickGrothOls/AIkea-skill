@@ -14,6 +14,8 @@ as project-local typed specifications and requirements.
 Every design uses [$aikea-design-furniture](../aikea-design-furniture/SKILL.md) as
 its construction protocol. Standard component configurators remain the efficient
 route when their interfaces fit; custom arrangements use the same tools and checks.
+That protocol also owns the standard one-face CNC process and paired Cabineo
+construction; apply it before choosing the furniture's internal arrangement.
 The measurement guidance below applies when it describes the active brief; never
 invent wardrobe fields merely to enter a template for another furniture layout.
 

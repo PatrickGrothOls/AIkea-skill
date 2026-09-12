@@ -22,6 +22,9 @@ preserving any local file that the client has changed since its last generation.
 
 For whole-design composition, follow [$aikea-design-furniture](../aikea-design-furniture/SKILL.md).
 This skill supplies optional standard recipes within that common protocol.
+Apply its [manufacturing process](../aikea-design-furniture/references/manufacturing-process.md)
+before generating or adapting a recipe; standard components still need one-face
+compatibility across every connection and hardware opening.
 
 ## Shared construction inputs
 

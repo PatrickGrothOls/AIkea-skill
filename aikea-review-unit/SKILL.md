@@ -17,6 +17,11 @@ checked before the design is repeated or manufacturing work continues.
 
 ## Select the review route
 
+Apply [the manufacturing process](../aikea-design-furniture/references/manufacturing-process.md)
+to the current complete tree before claiming CNC compatibility. Run its face audit
+and reconcile missing hardware holes and connection requirements; a valid GLB
+alone does not establish a one-face process. Keep secondary finishing explicit.
+
 Inspect the actual root builder and active brief. For a project-authored or mixed
 tree, use [the common project contract](../aikea-design-furniture/references/authored-assemblies.md)
 and [closed construction checks](references/construction-position.md): run

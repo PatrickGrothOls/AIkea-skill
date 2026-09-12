@@ -9,6 +9,10 @@ Before any client-facing message, including progress commentary, read
 [../aikea/references/client-conversation.md](../aikea/references/client-conversation.md)
 completely and apply it throughout this stage.
 
+Read [the manufacturing process](../aikea-design-furniture/references/manufacturing-process.md)
+before placing hinges or handles. Their machining must share each participant's
+chosen CNC face with its existing joinery.
+
 Turn the cabinet's saved door relationship into one complete, adjustable fitted
 door. The result must connect the visible slab, the selected purchased hinge
 system, both participating panels, and the real opening movement through shared
