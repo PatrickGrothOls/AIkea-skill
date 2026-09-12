@@ -223,3 +223,7 @@ screenshots and parent review are retained under
   complete-dresser and fabrication outcomes are failed/blocked, respectively.
   Preserved evidence locally and recorded this result without changing the
   runtime, installed skill aliases, old dresser or remote branches.
+- 2026-09-12 — Verified that the live viewer serves the exact final GLB bytes.
+  Automatic approval review rejected marking its browser tab as a deliverable
+  because the dresser is incomplete and fabrication-blocked. Did not retry or
+  bypass that action; saved screenshots and reports remain inspection evidence.
