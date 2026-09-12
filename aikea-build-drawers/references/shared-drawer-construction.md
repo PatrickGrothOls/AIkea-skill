@@ -30,6 +30,12 @@ these requests and cuts through `PanelMachiningFeature`, preserving earlier cuts
 children and purchases. The complete pattern is independently verified. Editing
 or removing a drilling request does not remove its required-work declaration.
 
+For an authored four-sided MOVENTO installation, the new
+[panel installer](movento-panel-installation.md) composes the drawer, runners,
+clips, host preparation and panel joinery together. It is an engineering
+candidate with source-fit and material qualification still open. Use that owner
+when developing this construction; do not use its intermediate panel helper alone.
+
 KA 4532 with its spacer currently emits no drawer drilling because its selected
 fixing details remain unresolved. MOVENTO retains its existing unmachined box
 and exact declared locking-device placeholders. Hardware hydration still resolves

@@ -42,6 +42,14 @@ and remaining proof boundary before claiming that a custom installation is verif
 
 ## Select the runner profile
 
+For a custom four-sided drawer constrained to one broad CNC face per panel,
+inspect the [MOVENTO panel installation candidate](references/movento-panel-installation.md).
+Its shared installer adds wood, both runners, both clips and host preparation
+together. It remains an engineering candidate with explicit source-fit and
+qualification gaps; those must be resolved for normal completed-drawer delivery.
+Do not mistake a panel helper or an unavailable complete route for an optional
+drawer: keep every requested drawer in scope and repair/source its installation.
+
 Preserve an exact runner choice already saved in the active project or stated by
 the client. For a request for verified Hettich runners without a named product,
 evaluate the registered KA 4532 Silent System article `9114276` with one exact
@@ -158,6 +166,11 @@ authored-host route above.
    missing physical information and the exact action needed to resolve it.
 
 ## Current capability
+
+The authored MOVENTO panel installer now provides a six-panel construction with
+Cabineo joinery, locking pilots, rear-hook preparation and both host fixing
+patterns. Its purchased runner and clip ownership is added in the same operation.
+See its reference above for the exact source-fit and production limitations.
 
 The implemented KA 5332 slice composes any number of independently sized and
 positioned five-panel drawer children beneath an existing cabinet. Each drawer

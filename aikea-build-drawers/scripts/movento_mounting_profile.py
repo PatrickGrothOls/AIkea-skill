@@ -34,7 +34,8 @@ MOVENTO_760H5000S_MOUNTING = MoventoMountingProfile(
     native_x_in_owner=(1.0, 0.0, 0.0),
     native_y_in_owner=(0.0, 0.0, 1.0),
     native_z_in_owner=(0.0, -1.0, 0.0),
-    runner_screw_native_z_mm=(0.0, -256.0),
+    # TD-132/1 page 13, 760H NL500 option B: all five system-screw positions.
+    runner_screw_native_z_mm=(18.0, 0.0, -32.0, -224.0, -256.0),
 )
 
 

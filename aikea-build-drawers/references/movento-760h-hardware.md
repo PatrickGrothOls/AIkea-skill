@@ -65,9 +65,10 @@ drawer outside and each cabinet wall. The left locking-device frame is therefore
 outside width. After the drawer frame is composed into the cabinet, each locking
 device and its runner share the same manufacturer origin and axes.
 
-The runner STEP contains the catalogue-matching system-screw axes at native Z
-`0` and `-256`. They become fixing depths 37 and 293 mm from the wooden drawer
-front. The 9.575 mm vertical translation places the T51 mounting pads on the
+The 500 mm option-B fixing pattern uses native Z `18`, `0`, `-32`, `-224` and
+`-256`, giving depths 19, 37, 69, 261 and 293 mm from the drawer front.
+The [panel installation reference](movento-panel-installation.md) records the
+source and complete preparation. The 9.575 mm vertical translation places the T51 mounting pads on the
 drawer's lower edge; adding another 0.2 mm causes material interference.
 
 ## Placed hardware proof

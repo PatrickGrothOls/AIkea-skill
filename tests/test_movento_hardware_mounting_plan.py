@@ -44,7 +44,7 @@ class TestMoventoHardwareMountingPlan:
         assert profile.native_x_in_owner == (1.0, 0.0, 0.0)
         assert profile.native_y_in_owner == (0.0, 0.0, 1.0)
         assert profile.native_z_in_owner == (0.0, -1.0, 0.0)
-        assert profile.runner_screw_native_z_mm == (0.0, -256.0)
+        assert profile.runner_screw_native_z_mm == (18.0, 0.0, -32.0, -224.0, -256.0)
         assert profile.drawer_front_to_manufacturer_origin_mm == 37.0
         assert profile.drawer_bottom_to_manufacturer_origin_mm == 9.575
 

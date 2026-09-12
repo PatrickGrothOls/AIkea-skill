@@ -100,7 +100,7 @@ class TestDownloadedDrawerHardwarePosition(unittest.TestCase):
             self.assertTrue(report.is_valid, report.failed_check_names())
             self.assertEqual(
                 report.fixing_depths_from_drawer_front_mm,
-                (37.0, 293.0),
+                (19.0, 37.0, 69.0, 261.0, 293.0),
             )
             self.assertTrue(
                 all(contact["contact"] for contact in report.cabinet_side_contacts)
