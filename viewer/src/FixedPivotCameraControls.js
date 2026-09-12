@@ -8,6 +8,7 @@ import {
 } from "three";
 
 import { CabinetSurfaceZoomTravel } from "./CabinetSurfaceZoomTravel.js";
+import { ReviewVisibility } from "./ReviewVisibility.js";
 
 const FULL_TURN_RADIANS = Math.PI * 2;
 const DEGREES_TO_HALF_RADIANS = Math.PI / 360;
@@ -46,7 +47,8 @@ export class FixedPivotCameraControls extends EventDispatcher {
     this.camera.updateMatrixWorld();
     this.modelRoot.updateMatrixWorld(true);
     this.raycaster.setFromCamera(pointer, this.camera);
-    const intersections = this.raycaster.intersectObject(this.modelRoot, true);
+    const intersections = this.raycaster.intersectObject(this.modelRoot, true)
+      .filter(({ object }) => ReviewVisibility.isVisible(object));
     if (intersections.length === 0) {
       return false;
     }

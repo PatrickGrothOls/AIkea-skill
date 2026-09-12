@@ -36,13 +36,13 @@ class TestReviewViewerInteraction:
         controls_source = (self.viewer_source / "FixedPivotCameraControls.js").read_text(
             encoding="utf-8"
         )
-        viewer_source = (self.viewer_source / "AssemblyReviewViewer.jsx").read_text(
+        viewer_source = (self.viewer_source / "ReviewModel.jsx").read_text(
             encoding="utf-8"
         )
 
         assert "CabinetSurfaceZoomTravel" in controls_source
         assert "intersectObject(this.modelRoot, true)" in controls_source
-        assert "modelRoot: scene" in viewer_source
+        assert "modelRoot: presentation.scene" in viewer_source
         assert "scene.children" not in controls_source
         assert 'addEventListener("wheel"' in binding_source
         assert "preventDefault" in binding_source

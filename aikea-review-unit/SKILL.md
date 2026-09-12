@@ -164,6 +164,11 @@ also verified.
 
 ## Responsibility boundary
 
+For an exploded view, follow [exploded inspection](references/exploded-inspection.md).
+Use the shared viewer's assembly selector and separation slider on the existing
+GLB. Show whole pieces and an appropriate subassembly; keep the closed construction
+and its approval separate from this inspection pose.
+
 This stage places and displays the parts returned by generated assembly builders.
 It does not rebuild or alter their local geometry. Base review may isolate one
 module beneath the first cabinet to make their contact legible, while the complete
