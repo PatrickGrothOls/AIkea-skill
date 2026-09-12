@@ -87,6 +87,7 @@ class CabineoJointSpec:
     connector_layout: str
     purpose: str = "structural_seam"
     joint_type: str = "cabineo"
+    connector_positions_mm: tuple[float, ...] = ()
 
     @property
     def participant_ids(self) -> tuple[str, str]:

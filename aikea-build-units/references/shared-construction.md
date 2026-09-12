@@ -39,6 +39,14 @@ fit completely inside the remaining material; clipped holes or collisions with
 earlier cuts fail. Geometry checks do not establish
 loads, omitted design requirements or fabrication readiness.
 
+For a seam whose automatic positions collide with other fittings, use
+`connector_layout="explicit", connector_positions_mm=(16, 52)` on
+`CabineoJointSpec`. Coordinates are measured along the remaining local axis
+(neither the source face normal nor its connecting edge normal). These example
+positions belong to a 64 mm seam, not a global default. Explicit layouts retain
+at least two connectors, 300 mm maximum spacing and 200 mm maximum end distance;
+the shared cutter still checks physical bounds and both participant cuts.
+
 ## Adapting a standard recipe
 
 `generate_unit_taxonomy.py` retains the standard cabinet calculations and writes
