@@ -15,7 +15,7 @@ is tracked in the shared construction plan.
 - [x] Report inconsistent pairs as unresolved/invalid before considering contact allowances.
 - [x] Verify analytic contact/clearance/small-overlap controls and all three source pairs.
 - [x] Complete the review skill, including retained allowance-bypass coverage.
-- [ ] Complete final candidate regression in WP7.
+- [x] Complete final candidate regression in WP7.
 
 ## Audit log
 
@@ -45,3 +45,8 @@ overlaps; a consistent ordinary overlap still receives its intended allowance.
 Five additional scalar-boundary probes reject inconsistent/non-finite volumes.
 The review skill is complete with its one informational test finding resolved;
 there are no outstanding production or test findings. Whitespace checks pass.
+
+WP7 closure: the full 802-case baseline and affected reruns are complete. Its
+nine runner-frame failures are fixed and independently rechecked; the five
+downloaded-Blum skips remain explicit. See [acceptance evidence](shared-construction-acceptance.md)
+for exact candidate/run boundaries and unresolved physical requirements.

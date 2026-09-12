@@ -22,6 +22,14 @@ inputs, and recomputes actual fit/intersections. It also verifies current input
 hashes and exact physical paths/bounds. Editing a saved success flag, removing an
 item, or enlarging the exported envelope cannot substitute for rebuilding.
 
+## Uncertain source CAD
+
+The shared checker compares intersection volume with the material removed from
+each participant. Contradictory results are `uncertain_intersections` and make
+geometry invalid. They establish neither a measured collision nor clearance.
+Retain the exact source and reported gap; do not loosen tolerances or invent a
+contact allowance to clear uncertainty. A valid source solid alone is insufficient.
+
 ## Intentional contact
 
 Touching faces with no positive-volume overlap need no allowance. Positive-volume
@@ -53,8 +61,18 @@ owned allowances as well as its machining/purchases.
 Run `build_furniture_design.py <project> --assembly <root-id> --fabrication-review`
 to create a proposal using the existing closed-model decision mechanism. It uses
 the compatibility filename `assemblies/full_wardrobe_review.glb` for any furniture
-root and returns the `review_record` path. Serve that model and record through
-the existing viewer. This is a proposed review, not approval or readiness.
+root. It returns `review_record` only when current shared geometry is valid.
+The standard full-review command likewise exposes `construction_position_status`
+and `construction_position_check`; invalid geometry exits 2, retains an inspection
+GLB and withholds a proposal. A skipped open/presentation check cannot reuse an
+older valid report to produce a new fabrication proposal.
+
+Serve an eligible model and record through the existing viewer. A decision needs
+a current valid schema-2 position record and matching construction hash. Missing,
+invalid or stale evidence makes an already-open session return HTTP 409, while
+the historical proposed/approved record stays unchanged. Regenerate the relevant
+closed checks before requesting another decision. This is visual review only;
+the complete fabrication gate below still determines readiness.
 
 After the client's decision, run `check_fabrication_readiness.py
 <project>/aikea.yaml --assembly <root-id>`. The same complete parts, material,

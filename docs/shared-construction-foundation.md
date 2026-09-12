@@ -8,7 +8,7 @@ not limit the furniture that can be designed. This document tracks the migration
 implementation progress and evidence are recorded per work package below.
 
 Planning branch: `docs/shared-construction-foundation`.
-Current implementation branch: `fix/geometry-review-eligibility`.
+Current implementation branch: `test/shared-construction-final-acceptance`.
 Baseline: `origin/main` at `52facbf73b5ea775975025bb6409ea02ef8560bd`, fetched on
 2026-09-11. The finishing checkout stays at `fc78dfa`; its untracked `dist/`
 artifacts and the other worktrees are preserved.
@@ -20,13 +20,14 @@ artifacts and the other worktrees are preserved.
 - [x] WP6: standard and custom skill routes use the common construction protocol.
 - [x] Retire duplicate legacy panel algorithms; preserve narrow input adapters.
 - [x] Run independent model-led standard and custom trials and trace the actual saved wardrobe.
-- [ ] WP7: complete final regression, close findings and independently review the acceptance record.
+- [x] WP7: complete final regression, close findings and independently review the acceptance record.
 
 Every completed work package and component slice has used the `review` skill;
-findings were fixed and rechecked before its local checkpoint. The current WP7
-run exposed a source-frame inconsistency in drawer proof after the native-shape
-placement correction. It is under investigation; the complete suite is not yet
-green. See [current acceptance evidence](shared-construction-acceptance.md).
+findings were fixed and rechecked before its local checkpoint. WP7 execution is
+complete: the full 802-case baseline plus scoped reruns cover all 821 current
+cases. All nine baseline failures have passing reruns; five downloaded-Blum
+checks remain skipped. Final independent acceptance review has no remaining findings.
+See [the actual outcomes and boundaries](shared-construction-acceptance.md).
 
 | Work | Evidence |
 | --- | --- |
@@ -34,7 +35,7 @@ green. See [current acceptance evidence](shared-construction-acceptance.md).
 | Applicable checks and current evidence | [Operation results](common-construction-checks.md), [requirements](construction-requirement-evidence.md), [position](construction-position-evidence.md) |
 | Component migration | [Base](base-configurator-construction.md), [drawer host](drawer-host-proof.md), [door host](door-host-interface.md), [framed front](assembly-door-component.md), [legs](korrekt-component-feature.md), [lighting](lighting-assembly-review.md) |
 | Entry routes and compatibility | [Skill routing](shared-construction-routing.md), [legacy adapters](legacy-panel-route-retirement.md), [startup corrections](construction-startup-routes.md) |
-| Geometry review corrections | [Native placement](review-native-placement.md), [uncertain CAD intersections](uncertain-cad-intersections.md) |
+| Geometry review corrections | [Native placement](review-native-placement.md), [runner source frames](installed-source-frames.md), [uncertain intersections](uncertain-cad-intersections.md), [approval eligibility](geometry-review-eligibility.md) |
 
 All work remains local in the reviewed branch stack. The finishing checkout and
 original private wardrobe are preserved; no publication, push or merge occurred.
@@ -244,19 +245,20 @@ still extend the system when a genuinely missing operation is demonstrated.
 
 ### WP7 — End-to-end evidence and retirement of duplicate paths
 
-- [ ] Run the acceptance matrix below from fresh project folders on the candidate
+- [x] Run the acceptance matrix below from fresh project folders on the candidate
   code, with runtime version/commit, commands, inputs and outputs recorded.
-- [ ] Run a fresh model-led standard-configurator case and a custom-layout case;
+- [x] Run a fresh model-led standard-configurator case and a custom-layout case;
   evaluate tool reuse and requirement coverage as well as final geometry.
-- [ ] Run the seated wardrobe from its actual source with explicit dependency
+- [x] Run the seated wardrobe from its actual source with explicit dependency
   provenance. Resolve needed composition/Korrekt dependencies rather than silently
   using a frozen runtime as proof that current main works.
-- [ ] Reconcile the resulting physical instances, connection purchases and sheet
+- [x] Reconcile the resulting physical instances, connection purchases and sheet
   input. Keep actual geometry separate from proposed 16 mm or split-back scenarios.
-- [ ] Capture overall, connection and applicable moving-state visual evidence;
+- [x] Capture overall, connection and applicable moving-state visual evidence;
   record remaining engineering/fabrication gaps separately from tooling defects.
-- [ ] Remove each obsolete construction route after its callers, saved-project
+- [x] Remove each obsolete construction route after its callers, saved-project
   compatibility and regressions pass; remove the corresponding skill fallback.
+- [x] Close final independent review of the acceptance record and evidence index.
 
 Acceptance: ordinary and unusual furniture share the construction foundation;
 configurators remain efficient shortcuts. Tests demonstrate common behavior and
@@ -265,21 +267,22 @@ Unfinished furniture details do not block an independently complete tooling slic
 
 ## Acceptance matrix
 
-These are planned checks, not results. Fixtures must declare their intended
-construction requirements; equality of previews alone is insufficient.
+The following are actual tooling outcomes. The [acceptance record](shared-construction-acceptance.md)
+separates full regression, affected reruns, fresh-model trials and unresolved
+physical design obligations. Private raw evidence is indexed in the local archive.
 
-| Case | Evidence required |
+| Case | Outcome and retained evidence |
 | --- | --- |
-| Same assembly configured and authored directly | Equivalent part geometry/placements, operation identities, cuts, purchases and applicable check results; both call the common implementation. |
-| Same supported connection in different orientations and parent assemblies | Participant cuts align in their local frames; expected physical count is unchanged; unsupported arrangements report why. |
-| Standard cabinet adapted to a sloped outline or seated composition | Same underlying tools; explicit shared-part ownership; no furniture-purpose registration or copied standard cutter. |
-| Dimensions, material or hardware changed | Dependent geometry and purchases recompute; stale evidence is rejected; unsupported combinations remain unresolved. |
-| Requested connection omitted; unknown operation; receiver misses its host | Required-work coverage or machining check identifies the exact gap in either route. |
-| Standard side panel renamed | Labels do not create or remove System 32 holes; only an explicit drilling request changes machining. |
-| Door/drawer component in configured and custom parents | Host contracts, both mounting participants, exact hardware identity and applicable motion checks agree. |
-| Optional component removed | Its parts, host modifications, purchases and evidence disappear coherently; unrelated geometry is preserved. |
-| Custom builder/operation returns an attractive but incomplete model | Official checks expose missing declared work and evidence; it cannot claim readiness just by exporting GLB. |
-| Saved wardrobe and a fresh project | No unexplained private/frozen-runtime import; parts and purchases reconcile once; sheet proposals remain marked as scenarios. |
+| Same assembly configured and authored | Passed part/cut/frame/purchase parity through the common executor: `test_configured_panel_construction.py`, `test_configured_base_construction.py`. |
+| Same supported connection in different orientations/parents | Passed paired-cutter transforms, custom corners, rotated parents and once-only purchase reconciliation. Exact source-frame controls cover native/parent transforms. |
+| Slope or seated composition | Passed notched-outline and sloped-envelope cases; fresh custom has one shared divider; saved seated wardrobe preserves 104 manufactured parts and placements. |
+| Dimensions/material/hardware changed | Passed stale evidence rejection and lighting 600→500 mm groove/purchase regeneration. Unsupported material/load compatibility stays unresolved. |
+| Omitted/unknown/missed construction | Passed negative tests for missing operations, participants, receiver cuts, unsupported dispatch and insufficient removed material. |
+| Side-panel role renamed | Passed explicit System 32 request tests; common construction does not drill based on the role label. Legacy input conventions remain confined to adapters. |
+| Doors/drawers in configured/custom parents | Passed host/layer/motion/ownership cases and the 118-case runner rerun. Exact-source saved drawer moves 500 mm; 1 mm invalid offsets reject. Full swept/physical fit is a separate obligation. |
+| Optional component removed | Passed lighting, Korrekt and whole-front feature removal; owned machining/purchases disappear while unrelated work remains. |
+| Attractive incomplete custom model | Passed explicit incompleteness and fabrication-gate rejection. Invalid/stale geometry also blocks visual approval, preserving earlier records. |
+| Saved wardrobe and fresh projects | Completed standard/custom/saved replays and count reconciliation. Private dependencies are traced; incomplete one-/20-sheet scenarios retain their material/oversize limits. |
 
 ## Small-branch execution and merge order
 
@@ -371,3 +374,20 @@ stack supplies Korrekt and lighting work when those migrations are reached.
     regression exposed additional drawer proof/source-frame failures; completion
     remains open while those are diagnosed. Independent source/placement evidence
     and private design artifacts are preserved in ignored local evidence.
+
+12. 2026-09-12 — Full baseline completed: 788 passed, nine failed, five skipped,
+    plus 72 subtests. The native frame fix passes all nine original failing nodes
+    within 118 affected tests. Geometry eligibility adds 43 passing tests and
+    independent HTTP/source probes. All 821 current nodes are covered across
+    these separately recorded runs; missing Blum downloads remain explicit skips.
+13. 2026-09-12 — Final standard/custom/saved replays, independent saved-source
+    parity and component proof are preserved in an ignored hash-indexed archive.
+    The matrix now records actual outcomes. Material, load, hardware-interface
+    and machining requirements remain explicit. Exact-source CAD uncertainty
+    continues to block affected approvals.
+
+14. 2026-09-12 — Final independent WP7 review is complete with no remaining
+    findings. It verifies current source hashes, exact test coverage, preserved
+    private inputs, archive integrity and visual records. Updated review guidance
+    explains invalid geometry and stale decisions; all eleven skills and links
+    validate. The reviewed stack is local; push/CI/merge remain separate actions.

@@ -96,8 +96,11 @@ focused on the physical result and the next decision the client can make.
 
 After the first cabinet and its base relationship are approved, run
 `python <skill-directory>/scripts/generate_full_wardrobe_review.py <project>/aikea.yaml`
-and require the full position report to pass. Open the generated GLB in the same
-viewer. Present all saved cabinets with their doors closed on the complete base
+and inspect both the legacy relationship report and `construction_position_status`.
+An invalid shared result exits 2 and retains the GLB for inspection: show its gaps
+and resolve them before requesting fabrication approval. An open/presentation
+view has no new closed-geometry status. Follow [the shared evidence rules](references/construction-position.md).
+Open the generated GLB in the same viewer. Present all saved cabinets with their doors closed on the complete base
 so the client can judge the finished facade, spacing, and overall proportions.
 Ask whether that complete visible result looks right before moving into the next
 construction or manufacturing stage.

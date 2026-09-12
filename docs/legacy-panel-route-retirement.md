@@ -7,7 +7,7 @@ SheetPartBuilder APIs remain available to saved projects, but now translate thei
 inputs into the common blank, machining and subtraction tools. A test-only copy
 of the historical implementation remains an independent geometry oracle.
 Implementation, focused compatibility checks and independent review are complete.
-The full candidate regression remains part of WP7.
+The complete integration regression and affected reruns are recorded in WP7.
 
 ## Work package and tasks
 
@@ -17,7 +17,7 @@ The full candidate regression remains part of WP7.
 - [x] Retain an independent historical test oracle for geometry parity.
 - [x] Verify saved per-part construction, configured/custom parity and failure behavior.
 - [x] Complete the review skill, including independent compatibility checks.
-- [ ] Run the final whole-candidate regression as part of WP7.
+- [x] Run the final whole-candidate regression as part of WP7.
 
 ## Audit log
 
@@ -44,3 +44,8 @@ The full candidate regression remains part of WP7.
 3. 2026-09-12 — Closed the review skill before starting the separate cold-start
    integration fixes. The legacy entry points preserve old input interpretation
    while their blank, grid and subtraction execution uses the common tools.
+
+WP7 closure: the full 802-case baseline and affected reruns are complete. Its
+nine runner-frame failures are fixed and independently rechecked; the five
+downloaded-Blum skips remain explicit. See [acceptance evidence](shared-construction-acceptance.md)
+for exact candidate/run boundaries and unresolved physical requirements.
