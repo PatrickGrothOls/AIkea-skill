@@ -91,6 +91,9 @@ class TestMoventoPanelDrawer:
         assert len(result.purchased_hardware)==2
         assert len(result.child_assemblies[0].assembly.purchased_hardware)==2
         assert {h.spec.purchase.purchase_id for h in result.purchased_hardware}=={"drawer_02_runners"}
+        assert {h.spec.hardware_id:h.spec.mounting_part_id for h in result.purchased_hardware}=={
+            "drawer_02_runner_left":"host_left","drawer_02_runner_right":"host_right"}
+        assert {h.spec.mounting_part_id for h in result.child_assemblies[0].assembly.purchased_hardware}=={"rail"}
         for part in result.parts:
             assert 518*220*16-part.solid.val().Volume()==pytest.approx(5*pi*2.5**2*14,abs=1e-4)
         assert ConstructionResultValidator().validate(result)==()

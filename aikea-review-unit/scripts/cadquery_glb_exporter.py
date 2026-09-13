@@ -7,6 +7,7 @@ from pathlib import Path
 import cadquery as cq
 
 from unit_mockup import MockupPart
+from glb_inspection_metadata import GlbInspectionMetadata
 
 
 class CadQueryGlbExporter:
@@ -32,3 +33,4 @@ class CadQueryGlbExporter:
             tolerance=0.1,
             angularTolerance=0.1,
         )
+        GlbInspectionMetadata().write(output, parts)

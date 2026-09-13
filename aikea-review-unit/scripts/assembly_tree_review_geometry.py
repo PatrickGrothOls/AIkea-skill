@@ -8,6 +8,7 @@ from assembly_tree_pose_resolver import AssemblyTreePoseResolver
 from assembly_tree_review_plan import AssemblyTreeReviewPlan
 from door_review_state import DoorReviewState
 from review_part_locator import ReviewPartLocator
+from review_inspection_identity import ReviewInspectionIdentity
 from unit_mockup import MockupPart, UnitMockupInputError
 
 
@@ -82,6 +83,8 @@ class AssemblyTreeReviewGeometry:
                 part.solid,
                 location,
                 self._part_color(part.spec.role),
+                inspection_path=ReviewInspectionIdentity().path(item, assemblies),
+                review_kind="panel",
             ),
         )
 
@@ -104,6 +107,8 @@ class AssemblyTreeReviewGeometry:
                 self._HARDWARE,
                 item.hardware.spec.hardware_asset_id,
                 item.hardware.spec.geometry_selector,
+                inspection_path=ReviewInspectionIdentity().path(item, assemblies),
+                review_kind="hardware",
             ),
         )
 

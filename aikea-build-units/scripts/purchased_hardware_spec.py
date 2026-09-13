@@ -38,3 +38,4 @@ class PurchasedHardwareSpec:
     local_to_parent: Any | None
     geometry_selector: str | None = None
     purchase: HardwarePurchaseSpec | None = None
+    mounting_part_id: str | None = None

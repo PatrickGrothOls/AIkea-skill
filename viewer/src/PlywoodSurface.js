@@ -25,6 +25,7 @@ export class PlywoodSurface {
 
   applyTo(mesh) {
     if (
+      this.#isPurchasedHardware(mesh) ||
       ReviewMeshName.hasRole(mesh.name, REVIEW_ONLY_PREFIX) ||
       mesh.name.includes(SOURCE_CAD_MARKER) ||
       ReviewMeshName.hasRole(mesh.name, PURCHASED_LIGHT_PREFIX) ||
@@ -40,6 +41,13 @@ export class PlywoodSurface {
     mesh.material = Array.isArray(mesh.material)
       ? replacementMaterials
       : replacementMaterials[0];
+  }
+
+  #isPurchasedHardware(mesh) {
+    for (let node = mesh; node; node = node.parent) {
+      if (node.userData.aikea?.kind === "hardware") return true;
+    }
+    return false;
   }
 
   #getMaterial(sourceMaterial, useFaceMaterial) {
@@ -124,6 +132,7 @@ export class PlywoodSurface {
   }
 }
 
+// A pure predicate classifies only this normal buffer; it needs no material state.
 export function isPlywoodFace(geometry) {
   const normals = geometry.getAttribute("normal");
   let normalZTotal = 0;

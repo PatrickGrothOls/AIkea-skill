@@ -16,7 +16,11 @@ export class ReviewPartCatalog {
       : source.isMesh;
     if (isPart) {
       const name = source.name || `Part ${this.parts.length + 1}`;
-      this.parts.push({ node: clone, name });
+      const path = source.userData.aikea?.inspection_path;
+      const inspectionPath = Array.isArray(path) && path.length > 0
+        && path.every((segment) => typeof segment === "string" && segment.length > 0)
+        ? path : name.split("__");
+      this.parts.push({ node: clone, name, inspectionPath });
       this.names.set(clone, name);
     }
     source.children.forEach((child, index) => this.collect(child, clone.children[index], associations));

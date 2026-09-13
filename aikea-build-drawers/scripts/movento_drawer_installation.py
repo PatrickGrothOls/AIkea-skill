@@ -56,7 +56,7 @@ class MoventoDrawerInstallation:
         clips, runners, host_cuts = [], [], []
         for hand, x, part_id in (("left",0,request.left_part_id),("right",dimensions.clear_width_mm,request.right_part_id)):
             clips.append(self.clip(hand,x))
-            runners.append(self.runner(drawer_id,hand,x,placement))
+            runners.append(self.runner(drawer_id,hand,x,placement,part_id))
             host_cuts.append(MoventoPanelMachining().host(drawer_id+"_"+hand,
                 parent.spec.part(part_id),placement,x,pilots,recipe.frame))
         drawer_spec = replace(drawer_spec,purchased_hardware=tuple(clips),requirements=drawer_spec.requirements+(
@@ -79,14 +79,15 @@ class MoventoDrawerInstallation:
         product = "T51.7601 " + ("L" if hand=="left" else "R")
         purchase = HardwarePurchaseSpec("locking_"+hand,product,"piece",hand,(hand,),mounting_fasteners_included=False)
         return PurchasedHardwareSpec("locking_"+hand,"Blum",product,"t51-7601-"+hand+"-locking-device",
-                                     self.native(x),purchase=purchase)
+                                     self.native(x),purchase=purchase,mounting_part_id="rail")
 
-    def runner(self, drawer_id, hand, x, placement):
+    def runner(self, drawer_id, hand, x, placement,part_id):
         from assemblies.specification import PurchasedHardwareSpec, HardwarePurchaseSpec
         purchase = HardwarePurchaseSpec(drawer_id+"_runners","760H5000S","pair",hand,("left","right"),
                                         mounting_fasteners_included=False)
         return PurchasedHardwareSpec(drawer_id+"_runner_"+hand,"Blum","760H5000S",
-            "movento-760h5000s-runner-"+hand,placement.compose_child(self.native(x)),purchase=purchase)
+            "movento-760h5000s-runner-"+hand,placement.compose_child(self.native(x)),
+            purchase=purchase,mounting_part_id=part_id)
 
     def native(self, x):
         return MoventoPanelDrawer.frame((x,37,9.575),((1,0,0),(0,0,1),(0,-1,0)))

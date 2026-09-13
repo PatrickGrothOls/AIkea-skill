@@ -4,15 +4,16 @@ import { Box3, Vector3 } from "three";
 import { ExplodedGroupLayout } from "./ExplodedGroupLayout.js";
 import { ReviewVisibility } from "./ReviewVisibility.js";
 import { ReviewPartCatalog } from "./ReviewPartCatalog.js";
+import { ReviewInspectionPath } from "./ReviewInspectionPath.js";
 
 export class AssemblyPresentation {
   constructor(sourceScene, associations) {
     this.catalog = new ReviewPartCatalog(sourceScene, associations);
     this.scene = this.catalog.scene;
     this.records = [];
-    for (const { node, name } of this.catalog.parts) {
+    for (const { node, name, inspectionPath } of this.catalog.parts) {
       this.records.push({
-        node, name, path: name.split("__"),
+        node, name, path: inspectionPath,
         position: node.position.clone(),
         worldOrigin: new Vector3().setFromMatrixPosition(node.matrixWorld),
         parentInverse: node.parent.matrixWorld.clone().invert(),
@@ -27,18 +28,19 @@ export class AssemblyPresentation {
     const scopes = new Set();
     for (const record of this.records.filter((part) => part.visible)) {
       for (let depth = 1; depth < record.path.length; depth += 1) {
-        scopes.add(record.path.slice(0, depth).join("__"));
+        scopes.add(ReviewInspectionPath.key(record.path.slice(0, depth)));
       }
     }
     return [...scopes].sort();
   }
 
   groups(scope) {
-    const depth = scope === "" ? 0 : scope.split("__").length;
+    const scopePath = ReviewInspectionPath.segments(scope);
+    const depth = scopePath.length;
     const groups = new Map();
     for (const record of this.records) {
-      if (!record.visible || (scope !== "" && !record.name.startsWith(`${scope}__`))) continue;
-      const key = record.path.slice(0, depth + 1).join("__");
+      if (!record.visible || !scopePath.every((segment, index) => record.path[index] === segment)) continue;
+      const key = ReviewInspectionPath.key(record.path.slice(0, depth + 1));
       const group = groups.get(key) ?? { key, records: [], bounds: new Box3() };
       group.records.push(record);
       group.bounds.union(record.bounds);

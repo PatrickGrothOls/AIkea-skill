@@ -1,6 +1,7 @@
 /** Scope: Let the viewer select an assembly, separate its pieces and identify a picked part. */
 
 import { ExplodedViewState } from "./ExplodedViewState.js";
+import { ReviewInspectionPath } from "./ReviewInspectionPath.js";
 import "./AssemblyInspection.css";
 
 // A function component keeps native inspection controls bound to React state.
@@ -15,7 +16,7 @@ export function AssemblyInspectionPanel({ inspection, onChange, scopes, visibleC
       <select id="inspection-assembly" value={inspection.scope}
         onChange={(event) => onChange(inspection.withScope(event.target.value))}>
         <option value="">Whole assembly</option>
-        {scopes.map((scope) => <option key={scope} value={scope}>{scope.replaceAll("__", " / ").replaceAll("_", " ")}</option>)}
+        {scopes.map((scope) => <option key={scope} value={scope}>{ReviewInspectionPath.label(scope)}</option>)}
       </select>
       <label className="separation-label" htmlFor="inspection-separation">
         Separation <output>{Math.round(inspection.amount * 100)}%</output>

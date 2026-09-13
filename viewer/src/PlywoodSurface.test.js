@@ -6,6 +6,7 @@ import {
   BoxGeometry,
   BufferGeometry,
   Float32BufferAttribute,
+  Group,
   Mesh,
   MeshStandardMaterial,
   Texture,
@@ -13,6 +14,7 @@ import {
 
 import { isPlywoodFace, PlywoodSurface } from "./PlywoodSurface.js";
 
+// This fixture creates one buffer from supplied normals without shared state.
 function geometryWithNormals(normals) {
   const geometry = new BufferGeometry();
   geometry.setAttribute("normal", new Float32BufferAttribute(normals, 3));
@@ -71,4 +73,14 @@ test("preserves the manufacturer material for source CAD hardware", () => {
 
   assert.equal(mesh.material, sourceMaterial);
   assert.equal(mesh.material.metalness, 0.8);
+});
+
+test("structured hardware identity preserves material across all GLTF surface primitives", () => {
+  const part = new Group();
+  part.userData.aikea = { kind: "hardware", inspection_path: ["panel", "fitting"] };
+  const material = new MeshStandardMaterial({ color: "#777777", metalness: .8 });
+  const mesh = new Mesh(new BoxGeometry(10, 10, 10), material);
+  part.add(mesh);
+  new PlywoodSurface(new Texture(), new Texture(), new Texture(), 1).applyTo(mesh);
+  assert.equal(mesh.material, material);
 });

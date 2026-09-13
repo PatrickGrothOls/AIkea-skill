@@ -8,18 +8,32 @@ Add `explode=0.65` to the viewer URL to start separated. It is a fraction from 0
 to 1. The same controls are available without the URL option:
 
 1. **Whole assembly** separates the root parts and child assemblies. All parts
-   belonging to a child move together.
+   belonging to a child move together. Mounted fittings stay with their carrier:
+   cabinet-side runners with the real supports, drawer-side components and clips
+   with the drawer. Do not scatter hardware independently at this level.
 2. Choose a child in **Assembly** to inspect it alone. Its own panels and deeper
-   child assemblies can then be separated. This works at each named tree level.
+   child assemblies can then be separated. Fittings with an explicit mounting
+   panel stay on that panel. Choose the panel itself to separate its fittings;
+   the panel must remain visible as their reference. This works at each named
+   tree level, so hardware only detaches during an explicitly deeper inspection.
 3. Adjust **Separation** from 0% to 100%. Click a piece to display its exported ID.
 4. **Restore assembly** reveals the complete original model and restores its
    exact part positions. Existing rotate, zoom and pan controls remain available.
 
 GLTF can render one panel as many surface meshes. The viewer keeps primitives
-belonging to one exported part node together. Named tree grouping follows the
-existing `assembly__part` export convention. Flat imports still expose individual
-parts. Displayed names are inspection labels, not replacements for complete
-manufacturing identities or a purchased-hardware manifest.
+belonging to one exported part node together. The shared complete-tree exporter
+records structured inspection paths from the real assembly ownership. A
+`PurchasedHardwareSpec.mounting_part_id` names its mounting panel in the same
+owning assembly; set it when installing each independently represented hardware
+member. The MOVENTO installer supplies its actual support and clip-rail IDs.
+Physical item names, purchases, source CAD and closed placements stay unchanged.
+
+Never infer attachments from proximity or names. Do not split or duplicate a
+combined manufacturer runner model to invent separately mounted members. Preserve
+its sourced component boundaries and identify any missing member authority.
+Older GLBs without inspection metadata retain the `assembly__part` convention;
+flat imports expose individual pieces. Those imports do not gain mounting
+ownership automatically. Display labels are not manufacturing identities.
 
 Separation is a visual layout based on original bounds. It does not establish
 assembly order, collision-free removal, drawer travel, fixing access or structural
@@ -29,7 +43,8 @@ assembled review. Missing purchased parts remain missing; name them explicitly
 rather than treating the view as a complete assembly guide.
 
 For the client, show the whole exploded piece and one useful component, such as
-a drawer. Check that panels remain intact, spacing is legible and reset restores
-the full model. Save actual screenshots for mobile review and keep the live
-viewer available. The existing closed geometry and fabrication checks remain
-the only manufacturing evidence.
+a drawer. Check that each runner and drawer-side fitting follows its declared
+carrier, panels remain intact, spacing is legible and reset restores the full
+model. Save actual screenshots for mobile review and keep the live viewer
+available. The existing closed geometry and fabrication checks remain the only
+manufacturing evidence.
