@@ -8,7 +8,8 @@ the walls are joined. Corner Cabineos remain flush to their joining edges and
 accessible above the floor. Preserve the exact runners/clips and one broad CNC
 face per panel. Implemented, independently reviewed and shown in the live viewer.
 All eight floors pass capture/clearance checks; all 59 panels have a compatible
-chosen CNC face. This remains an inspection candidate: the full report correctly
+chosen CNC face. The follow-up material-removal audit also passes for all 59
+CNC panels, with six new focused tests and an independent review. This remains an inspection candidate: the full report correctly
 retains source, stock, fit/load, finishing and fabrication qualifications.
 
 Branch `codex/captured-drawer-bottom` starts at `2ad43cc`; refreshed main is an
@@ -32,7 +33,26 @@ ancestor. Preserve the earlier project and evidence; rebuild a local copy.
 - [x] Update skill guidance and record remaining fabrication qualifications.
 - [x] Review the final diff and commit a coherent local checkpoint.
 
+### WP3 — Complete material-removal proof (2026-09-13 follow-up)
+
+- [x] Add independent blank-versus-finished checks for every drawer panel,
+  rebuilding expected cuts from declarations and comparing both volume and shape.
+- [x] Add analytic groove/drilling volumes and negative cases for extra cuts,
+  equal-volume misplaced cuts, added stock and overlapping cutters.
+- [x] Run the new tests and audit the actual dresser CNC tree: six tests pass;
+  all 59 CNC panels match expected removed material in volume and shape.
+- [x] Review the added proof using the review skill and independent testing
+  specialist: no code findings; generator/load/hardware/CAM limits retained.
+
 ## Construction candidate and qualifications
+
+The user also questioned the lower brace and 16 mm floor. The brace is the front
+locking-device screw support for the existing one-face construction, not an
+independently specified anti-sag brace. The floor's 16 mm thickness was retained
+from the previous candidate; Blum's 16 mm planning limit concerns the sides.
+A 9 mm plywood floor is a lighter candidate for a clothes drawer; actual grade,
+load and stock fit need qualification. No thickness or mounting change has been
+approved/applied in this follow-up. The displayed geometry remains unchanged.
 
 Use the existing 16 mm floor with 5.8 mm engagement in 6 mm deep wall grooves,
 16.2 mm groove width and a 14.5 mm bottom recess (inside the saved Blum 12–15 mm
@@ -94,6 +114,20 @@ construction proposal, not the source's nominal blind-hole specification.
   separation. The earlier project/view remain preserved. Local commits:
   `427f797` shared construction and `cf3dc2f` correct requirement coverage.
 
+- 2026-09-13 — User approved closing the complete material-removal test gap and
+  asked why the lower brace and 16 mm floor are present. Add focused independent
+  tests and a saved-tree audit; keep the thickness alternative a proposal.
+  This is verification of CNC wood geometry, not a change to fabrication approval.
+
+- 2026-09-13 — WP3 completed: six tests passed in 13.90 seconds; independent
+  review repeated them in 19.42 seconds with no findings. All 59 saved dresser
+  CNC panels pass the volume and removed-shape comparison, including all eight
+  drawers and their pull holes. Overlapping cutters are unioned and clipped to
+  stock; unmachined floors must retain the full blank. Expected cutters are
+  rebuilt from declarations using production generators, with seven independent
+  analytic groove/drilling volume checks. This does not independently validate
+  every declared dimension or certify the generators, stock, load or CAM.
+
 ## Local evidence
 
 - `local-evidence/regression-tests.log`: 21 passing tests after the final fix.
@@ -113,3 +147,9 @@ construction proposal, not the source's nominal blind-hole specification.
   `local-evidence/drawer-bottom-assembled.png`: actual final-model screenshots.
 - Live viewer: `http://127.0.0.1:63938/` (drawer selected through the inspection
   controls); the server retains the final immutable model snapshot.
+
+- `local-evidence/material-removal-tests.log`: six new passing tests.
+- `local-evidence/material-removal-proof.json`: every panel's expected/actual
+  removed volume, missing cut, extra cut and added material, at 1e-5 mm3 tolerance.
+- `local-evidence/audit_material_removal.py`: reproducible saved-CNC-tree audit.
+- `local-evidence/material-removal-review.md`: core and independent review.
