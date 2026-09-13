@@ -69,6 +69,13 @@ construction proposal, not the source's nominal blind-hole specification.
   All 59 panels have a compatible broad machining face. Inventory retains 40
   purchased components and now reconciles 156 Cabineos with 156 brass inserts;
   removing the bottom joints removes 32 pairs from the previous 188.
+- 2026-09-13 — Full finished geometry has 99 valid solids, no positive-volume
+  overlaps or envelope violations and the same 88 uncertain source intersections.
+  Its requirement check exposed an incorrect operations-coverage claim for the
+  unmachined bottom. Separate joined-wall/support operations from an explicit
+  captured-floor stock-fit/load qualification. Do not invent a bottom operation
+  or call the captured floor loose to clear the gate. This changes evidence
+  declarations only; rerun the complete check after this correction.
 
 ## Local evidence
 

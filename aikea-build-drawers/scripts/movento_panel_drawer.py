@@ -20,11 +20,13 @@ class MoventoPanelDrawer:
         grooves = MoventoCapturedBottom().grooves(dimensions, self.frame)
         machining = grooves + MoventoPanelMachining().drawer(dimensions, pilots, self.frame)
         required = (
-            Requirement("panel_connections", "Attach all six drawer panels", tuple(
-                "part:"+part.part_id for part in parts),
+            Requirement("panel_connections", "Join the walls/support and cut four retaining grooves", tuple(
+                "part:"+part.part_id for part in parts if part.part_id!="bottom"),
                 tuple("joint:"+joint.joint_id for joint in joints) +
                 tuple("machining:"+groove.machining_id for groove in grooves),
                 "operations", "Paired wall/support Cabineos and a four-edge captured floor"),
+            Requirement("captured_floor_fit", "Qualify four-edge floor retention, stock fit and load",
+                        ("part:bottom",)),
             Requirement("drawer_fixings", "Prepare locking devices and rear hooks", ("part:rail", "part:back"),
                 ("machining:locking_clips", "machining:rear_hooks", "machining:runner_relief"),
                 "operations", "Blum TD-132/1 plus unchanged clip CAD; " + pilots.basis),

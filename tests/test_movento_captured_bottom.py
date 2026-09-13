@@ -89,6 +89,13 @@ class TestMoventoCapturedBottom:
             assert any("panel_connections" in problem and "required operation is missing" in problem
                        for problem in problems)
 
+    def test_unmachined_floor_has_explicit_qualification_without_fake_cut_coverage(self, drawer):
+        root, built = drawer
+        checks = ConstructionRequirementChecker().check(GeneratedAssemblyBuilderLoader().walk(root,built))
+        problems = checks[0].problems
+        assert not any("panel_connections" in problem for problem in problems)
+        assert any("captured_floor_fit: unresolved construction requirement" in problem for problem in problems)
+
     @pytest.mark.parametrize("height", (100,400,1000))
     def test_small_and_tall_boxes_keep_clearance_and_bounded_corner_spacing(self, drawer, height):
         root, _ = drawer
