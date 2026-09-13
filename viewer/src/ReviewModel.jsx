@@ -59,7 +59,10 @@ export function ReviewModel({ onModelMeasured, reviewView, inspection, onSelectP
   const selectPart = (event) => {
     event.stopPropagation();
     const hit = event.intersections.find(({ object }) => object.isMesh && ReviewVisibility.isVisible(object));
-    if (hit) onSelectPart(presentation.catalog.nameFor(hit.object));
+    if (hit) {
+      const name = presentation.catalog.nameFor(hit.object);
+      onSelectPart(name, presentation.scopeForPart(name));
+    }
   };
 
   return <primitive object={presentation.scene} onClick={selectPart} />;

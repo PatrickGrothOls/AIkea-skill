@@ -47,7 +47,7 @@ export function AssemblyReviewViewer() {
         />
         <ReviewModel onModelMeasured={setModelBounds} reviewView={reviewView}
           inspection={inspection}
-          onSelectPart={(name) => setInspection((current) => current.withSelectedPart(name))} />
+          onSelectPart={(name, scope) => setInspection((current) => current.withSelectedPart(name, scope))} />
       </Suspense>
     </>
   );

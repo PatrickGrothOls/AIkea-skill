@@ -27,11 +27,15 @@ export class AssemblyPresentation {
   get scopes() {
     const scopes = new Set();
     for (const record of this.records.filter((part) => part.visible)) {
-      for (let depth = 1; depth < record.path.length; depth += 1) {
+      for (let depth = 1; depth <= record.path.length; depth += 1) {
         scopes.add(ReviewInspectionPath.key(record.path.slice(0, depth)));
       }
     }
     return [...scopes].sort();
+  }
+
+  scopeForPart(name) {
+    return ReviewInspectionPath.key(this.records.find((part) => part.name === name).path);
   }
 
   groups(scope) {

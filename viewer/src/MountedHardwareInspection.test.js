@@ -74,7 +74,7 @@ test("panel inspection includes the panel itself and can detach its fittings", (
   assert.ok(fixture.offset("bottom").distanceTo(fixture.offset("clip")) > 1);
   assert.equal(fixture.model.catalog.nameFor(fixture.model.scene.getObjectByName("clip")), "clip");
   assert.ok(fixture.model.scopes.includes("support"));
-  assert.ok(fixture.model.scopes.includes("drawer_01__bottom"));
+  assert.ok(fixture.model.scopes.includes(ReviewInspectionPath.key(["drawer_01", "bottom"])));
 });
 
 test("reset restores exact matrices and leaves geometry and source ownership untouched", () => {

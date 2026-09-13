@@ -24,7 +24,9 @@ test("a mesh-bearing GLTF node is one part even when it has multiple primitive m
   const copy = model.records[0].node;
   assert.deepEqual(copy.children.map((node) => node.position.z), [0, 2, 4]);
   assert.equal(model.catalog.nameFor(copy.children[1]), "drawer__side");
-  assert.deepEqual(model.scopes, ["drawer"]);
+  assert.deepEqual(model.scopes, ["drawer", "drawer__side"]);
+  assert.equal(model.apply(model.scopeForPart("drawer__side"), 3).visibleCount, 1);
+  assert.deepEqual(copy.children.map((node) => node.position.z), [0, 2, 4]);
   model.apply("", 0);
   assert.deepEqual(copy.position.toArray(), panel.position.toArray());
 });

@@ -7,6 +7,7 @@ export class ExplodedGroupLayout {
     const bounds = new Box3();
     for (const group of groups) bounds.union(group.bounds);
     const size = bounds.getSize(new Vector3());
+    const center = bounds.getCenter(new Vector3());
     const span = Math.max(size.x, size.y, size.z);
     const faces = groups.map((group) => ({ group, ...this.nearestFace(group, bounds) }));
     const layers = new Map();
@@ -21,6 +22,8 @@ export class ExplodedGroupLayout {
       const layer = gaps.length - gaps.indexOf(gap);
       const offset = new Vector3();
       offset[axis] = sign * amount * layer * Math.max(size[axis] * 0.35, span * 0.12);
+      // Extra spacing separates stacked groups that share the same outward face.
+      offset.add(group.bounds.getCenter(new Vector3()).sub(center).multiplyScalar(Math.max(0, amount - 1)));
       return [group.key, offset];
     }));
   }

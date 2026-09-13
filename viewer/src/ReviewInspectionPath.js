@@ -2,7 +2,7 @@
 
 export class ReviewInspectionPath {
   static key(path) {
-    return path.map((segment) => encodeURIComponent(segment).replaceAll("__", "%5F%5F")).join("__");
+    return path.map((segment) => encodeURIComponent(segment).replaceAll("_", "%5F")).join("__");
   }
 
   static segments(key) {

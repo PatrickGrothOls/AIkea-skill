@@ -4,19 +4,26 @@ Use the current real generated GLB and the bundled `serve_unit_review.py` viewer
 Do not write a dresser-specific explosion script, change part geometry, or
 regenerate manufacturing files just to separate the pieces on screen.
 
-Add `explode=0.65` to the viewer URL to start separated. It is a fraction from 0
-to 1. The same controls are available without the URL option:
+Add `explode=0.65` to the viewer URL to start separated, or `explode=2` for more
+space. The supported range is 0 to 3 (0–300%). The same controls are available
+without the URL option:
 
 1. **Whole assembly** separates the root parts and child assemblies. All parts
    belonging to a child move together. Mounted fittings stay with their carrier:
    cabinet-side runners with the real supports, drawer-side components and clips
    with the drawer. Do not scatter hardware independently at this level.
-2. Choose a child in **Assembly** to inspect it alone. Its own panels and deeper
+2. Choose a child in **Assembly or part** to inspect it alone. Its own panels and deeper
    child assemblies can then be separated. Fittings with an explicit mounting
    panel stay on that panel. Choose the panel itself to separate its fittings;
    the panel must remain visible as their reference. This works at each named
    tree level, so hardware only detaches during an explicitly deeper inspection.
-3. Adjust **Separation** from 0% to 100%. Click a piece to display its exported ID.
+3. Adjust **Separation** from 0% to 300%. Above 100%, additional spreading opens
+   gaps between aligned units such as stacked drawers. Every physical part is
+   available in **Assembly or part**. Alternatively, click a piece and choose
+   **Inspect selected part**. A panel includes its declared mounted fittings;
+   set Separation to 0% to inspect them attached, or raise it to separate them.
+   A selected individual fitting is shown alone. Rotate, zoom and pan to inspect
+   its faces and cuts. Names and multi-surface geometry remain intact.
 4. **Restore assembly** reveals the complete original model and restores its
    exact part positions. Existing rotate, zoom and pan controls remain available.
 

@@ -35,7 +35,8 @@ test("whole assembly separates child units without changing their internal place
   const result = model.apply("", 1);
   assert.equal(result.groupCount, 2);
   assert.equal(result.visibleCount, 5);
-  assert.deepEqual(model.scopes, ["drawer", "drawer__tray"]);
+  assert.deepEqual(model.scopes, ["drawer", "drawer__back", "drawer__front", "drawer__tray",
+    "drawer__tray__bottom", "drawer__visible%5Ffront", "side"]);
   const offsets = model.records.filter((record) => record.name.startsWith("drawer__"))
     .map((record) => record.node.position.clone().sub(record.position).toArray());
   assert.deepEqual(offsets, offsets.map(() => offsets[0]));
@@ -66,7 +67,7 @@ test("repeated inspection restores exact local transforms and leaves source vert
     matrix: record.node.matrix.toArray(),
     vertices: [...record.node.geometry.attributes.position.array],
   }));
-  for (const amount of [0.4, 1, 0.2, 0.9]) {
+  for (const amount of [0.4, 1, 3, 0.2, 2.5]) {
     const expected = model.apply("drawer", amount).bounds;
     const active = model.records.filter((record) => record.node.visible);
     const actual = active.reduce((bounds, record) => bounds.expandByObject(record.node),
@@ -102,6 +103,7 @@ test("unnamed flat imports retain separate selectable pieces", () => {
   fixture.scene.children.forEach((mesh) => { mesh.name = ""; });
   const model = new AssemblyPresentation(fixture.scene);
   assert.equal(model.apply("", 0.6).groupCount, 5);
-  assert.deepEqual(model.scopes, []);
+  assert.equal(model.scopes.length, 5);
+  assert.equal(model.apply(model.scopeForPart("Part 1"), 0).visibleCount, 1);
   assert.equal(new Set(model.records.map((record) => record.name)).size, 5);
 });
