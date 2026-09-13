@@ -30,14 +30,18 @@ class CabineoConnectorLayout:
         if joint.connector_layout == "explicit":
             return self._explicit(joint.connector_positions_mm, length_mm)
         edge_distance_mm = min(self._MAX_EDGE_DISTANCE_MM, length_mm / 4.0)
-        connector_span_mm = length_mm - (2.0 * edge_distance_mm)
+        return self.between(edge_distance_mm, length_mm-edge_distance_mm)
+
+    def between(self, first_mm: float, last_mm: float) -> tuple[float, ...]:
+        """Fill a resolved clear interval using the shared maximum spacing policy."""
+        connector_span_mm = last_mm-first_mm
         connector_count = max(
             self._MIN_CONNECTOR_COUNT,
             ceil(connector_span_mm / self._MAX_SPACING_MM) + 1,
         )
         spacing_mm = connector_span_mm / (connector_count - 1)
         return tuple(
-            edge_distance_mm + (index * spacing_mm)
+            first_mm + (index * spacing_mm)
             for index in range(connector_count)
         )
 

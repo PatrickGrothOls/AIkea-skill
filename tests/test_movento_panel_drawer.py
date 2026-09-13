@@ -42,7 +42,7 @@ class TestMoventoPanelDrawer:
         by_id={op.machining_id:op for op in built.spec.machining}
         assert len(by_id["locking_clips"].holes)==4
         assert len(by_id["rear_hooks"].holes)==2
-        assert len(built.cuts)==35  # 16 paired connectors plus three local patterns.
+        assert len(built.cuts)==31  # 12 paired connectors, four grooves and three fixing patterns.
 
     def test_omitting_locking_preparation_fails_independent_requirement(self, drawer):
         root, built=drawer

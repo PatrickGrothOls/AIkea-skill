@@ -68,9 +68,18 @@ The front and back panels span the complete outside width of the drawer. The
 left and right side panels fit between their inner faces. Keep the purchased
 runner profile's calculated side-panel length unchanged; derive the complete
 outside depth by adding the front and back thicknesses. The bottom fills the
-clear opening between all four walls. Use `DrawerBoxPlanner` and
+clear opening between all four walls in that legacy sizing result; sizing alone
+does not provide bottom retention. Use `DrawerBoxPlanner` and
 `DrawerPartLocator` as the construction authority rather than recreating these
 relationships in project builders.
+
+For construction, retain the wooden bottom in four wall grooves and join the
+walls around it. The shared MOVENTO panel route implements this through
+`MoventoCapturedBottom`; it extends the floor into the grooves, leaves the bottom
+without Cabineos and positions wall connectors above it. Verify actual closed
+solids and cutter access, including all runner/locking hardware, before presenting
+the construction as resolved. Other sizing routes still need compatible joinery;
+do not silently treat their between-wall floor as a captured one.
 
 ## Vertical drawer density
 

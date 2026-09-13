@@ -23,8 +23,8 @@ class MoventoPanelMachining:
 
     Host fixing option B: five 661.1450.HG system screws per 500 mm runner.
     Clip coordinates differ by hand; they are not mirrored from one download.
-    Rear hook bores retain the nominal manufacturer dimensions. Source-CAD fit
-    must be checked independently; the present right-hand download has a mismatch.
+    Rear hook bores retain nominal axes/diameter but extend through for one setup.
+    Source-CAD fit needs requalification; the right-hand download has a mismatch.
     """
 
     HOST_DEPTHS_MM = tuple(MOVENTO_760H5000S_MOUNTING.drawer_front_to_manufacturer_origin_mm - z
@@ -36,9 +36,12 @@ class MoventoPanelMachining:
         inside = dimensions.inside_width_mm
         identity = frame((0, 0, 0))
         return (
-            SurfaceDrillingSpec("rear_hooks", "back", identity, (
-                SurfaceHole("left", 7, 10.5, 6, 10),
-                SurfaceHole("right", inside-7, 10.5, 6, 10))),
+            # Keep the sourced axes/diameter; extend through from the groove face
+            # to avoid a flip. This extension still needs installation qualification.
+            SurfaceDrillingSpec("rear_hooks", "back", frame((0,0,16),
+                ((1,0,0),(0,-1,0),(0,0,-1))), (
+                SurfaceHole("left", 7, -10.5, 6, 16),
+                SurfaceHole("right", inside-7, -10.5, 6, 16))),
             SurfaceDrillingSpec("locking_clips", "rail", identity, tuple(
                 SurfaceHole(str(i), x-21, 6.8, pilots.clip_diameter_mm, pilots.clip_depth_mm)
                 for i, x in enumerate((37.5, 60.5, width-37, width-60)))),

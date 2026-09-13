@@ -11,6 +11,13 @@ before generating drawer parts. Include spacers automatically where door or hing
 intrusion obstructs installation or travel. Missing source or fixing data pauses
 drawer generation; a box-only prototype does not satisfy this skill.
 
+For a wooden drawer, capture the bottom in grooves in all four walls so joining
+the walls retains it. Keep wall-connector pockets and tool access above the floor;
+do not fasten this bottom with Cabineos or let it cover their openings. Apply the
+shared captured-bottom construction in the MOVENTO panel route below. Other
+runner routes still require their own compatible retention and machining proof;
+a plain box-sizing result does not establish that construction.
+
 Before any client-facing message, including progress commentary, read
 [../aikea/references/client-conversation.md](../aikea/references/client-conversation.md)
 completely and apply it throughout this stage.

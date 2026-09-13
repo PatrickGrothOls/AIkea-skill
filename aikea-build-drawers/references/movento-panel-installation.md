@@ -47,13 +47,30 @@ option-B system-screw positions (page 13), and vertical locking-device fixing fo
 a four-sided drawer (page 19). The shared profile now carries all five fixing
 depths: 19, 37, 69, 261 and 293 mm from the drawer-front datum.
 
-The panel recipe uses 16 mm sides/bottom, a 490 mm side length, 13 mm bottom
-recess, a separate 64 mm deep × 29 mm thick front mounting rail and a back whose
-lower edge is 0.5 mm above the side bottom. These are an explicit construction
-candidate, not universal stock or furniture defaults. The rail's underside hosts
-the clip pilots and source-derived reliefs. Its two Cabineo positions avoid those
-cuts; all panel joins retain the common paired cutter. The visible front is also
-the structural front, removing a separate unfastened decorative facade.
+The panel recipe uses 16 mm sides/bottom, a 490 mm side length and a 14.5 mm bottom
+recess. `MoventoCapturedBottom` resolves the floor and four 6 mm deep wall grooves
+from one datum. The 16.2 mm groove width and 5.8 mm floor engagement leave proposed
+stock-fit allowances: qualify these on a tool/material coupon. The visible
+structural front has a stopped R3 pocket with sufficient end overrun for the
+floor's square corners. The other grooves run through the wall ends and are
+concealed by the assembled corners. Join the walls around the floor; the bottom
+has no Cabineo fastenings. Wall pockets stay above the floor and flush to their
+mating edges. Do not move them inward to avoid a clash.
+
+A separate 64 mm deep × 14.5 mm finished-thickness front support stays below the
+floor. It carries the unchanged clip mounting plane, pilots and source reliefs.
+Prepare this strip from qualified stock (facing thicker stock from the same
+underside setup is a candidate); do not silently reuse the former 29 mm finished
+rail description. The support-stock requirement remains unresolved until that
+preparation is supplied. Its two Cabineos at 16/52 mm retain the earlier layout;
+their short end distances still need Lamello/stock qualification.
+
+The back starts 0.5 mm above the side bottoms. Its groove, corner pockets and
+rear-hook bores now use the inner broad face. Hook centres and Ø6 diameter are
+unchanged, but the bores extend through 16 mm instead of the source's nominal
+10 mm blind depth. This deliberate single-setup proposal needs installation
+qualification; it is not a newly sourced Blum instruction. The 14.5 mm groove
+floor stays above the bores' 14 mm maximum height.
 
 `MoventoPilotChoice` records selected host and clip pilot dimensions and their
 basis. It is not manufacturer/material approval. The trial uses host Ø5 × 14 mm
@@ -64,8 +81,9 @@ screw engagement and supplied quantities must be qualified before fabrication.
 
 - All six drawer panels and all runner supports have compatible chosen CNC faces.
   The independent drilling requirement fails if locking preparation is removed.
-- The raw right-hand runner and nominal Ø6 × 10 mm rear bore leave a small source
-  intersection. Do not enlarge or move the bore to conceal that discrepancy.
+- The raw right-hand runner previously disagreed with the nominal rear preparation.
+  A through-bore for process access does not prove that source discrepancy fixed;
+  retain current exact-source intersection evidence and do not shift hardware.
 - The vendor runner representations produce inconsistent CAD Boolean volumes and
   overlap their engaged clips. Exact-source fit remains invalid; no broad contact
   allowance or adjusted tolerance has been added to clear it.
