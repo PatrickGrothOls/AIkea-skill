@@ -76,8 +76,12 @@ relationships in project builders.
 For construction, retain the wooden bottom in four wall grooves and join the
 walls around it. The shared MOVENTO panel route implements this through
 `MoventoCapturedBottom`; it extends the floor into the grooves, leaves the bottom
-without Cabineos and positions wall connectors above it. Verify actual closed
-solids and cutter access, including all runner/locking hardware, before presenting
+without Cabineos and positions wall connectors above it. Use the client's
+selected bottom thickness and material, independent of
+the wall stock. In the shared MOVENTO panel recipe, save those choices as
+`bottom_thickness_mm` and `bottom_material`; floor and groove width derive from
+the same thickness. A material selection does not resolve the stock-fit/load gate.
+Verify actual closed solids and cutter access, including all runner/locking hardware, before presenting
 the construction as resolved. Other sizing routes still need compatible joinery;
 do not silently treat their between-wall floor as a captured one.
 

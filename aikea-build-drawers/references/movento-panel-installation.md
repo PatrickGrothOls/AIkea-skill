@@ -47,9 +47,16 @@ option-B system-screw positions (page 13), and vertical locking-device fixing fo
 a four-sided drawer (page 19). The shared profile now carries all five fixing
 depths: 19, 37, 69, 261 and 293 mm from the drawer-front datum.
 
-The panel recipe uses 16 mm sides/bottom, a 490 mm side length and a 14.5 mm bottom
-recess. `MoventoCapturedBottom` resolves the floor and four 6 mm deep wall grooves
-from one datum. The 16.2 mm groove width and 5.8 mm floor engagement leave proposed
+The panel recipe uses 16 mm sides, a 490 mm side length and a 14.5 mm bottom
+recess. Select the bottom stock separately through `MoventoPanelDimensions`:
+`bottom_thickness_mm` and `bottom_material`. Existing saved callers retain their
+16 mm panel-stock bottom when those fields are omitted. The inspected dresser's
+user-selected bottom is 6 mm HDF; its exact product and load remain unqualified.
+Do not substitute Fibralux or ordinary MDF for that HDF choice without agreement.
+The current groove geometry accepts 6–16 mm stock; this is not a load rating.
+`MoventoCapturedBottom` resolves the floor and four 6 mm deep wall grooves
+from one datum. Groove width is bottom thickness plus 0.2 mm (6.2 mm for this
+HDF choice). That clearance and the 5.8 mm floor engagement leave proposed
 stock-fit allowances: qualify these on a tool/material coupon. The visible
 structural front has a stopped R3 pocket with sufficient end overrun for the
 floor's square corners. The other grooves run through the wall ends and are

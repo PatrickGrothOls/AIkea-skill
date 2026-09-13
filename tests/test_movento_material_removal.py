@@ -3,6 +3,7 @@
 from dataclasses import replace
 from math import pi
 from types import SimpleNamespace
+from functools import partial
 
 import cadquery as cq
 import pytest
@@ -12,35 +13,45 @@ from movento_panel_drawer import MoventoPanelDrawer
 from movento_panel_machining import MoventoPilotChoice
 from panel_blank_builder import PanelBlankBuilder
 from panel_material_proof import PanelMaterialProof
-from test_movento_panel_drawer import TestMoventoPanelDrawer as DrawerFixture
+from furniture_design_project import FurnitureDesignProject
+from generated_project_module_runtime import GeneratedProjectModuleRuntime
 
 
 class TestMoventoMaterialRemoval:
-    drawer = DrawerFixture.drawer
+    @pytest.fixture(scope="class", params=(6, 16))
+    def drawer(self, request, tmp_path_factory):
+        root = tmp_path_factory.mktemp("bottom-material")
+        FurnitureDesignProject().initialize(root)
+        built = GeneratedProjectModuleRuntime().execute(root, partial(self.build, request.param))
+        return root, built, request.param
 
-    def build(self):
+    def build(self, thickness):
         from assemblies.panel_assembly import PanelAssemblyBuilder
         # Actual eight-drawer dresser's local dimensions, including its visible front.
         dimensions = MoventoPanelDimensions(661,120,657,152.5,2,-18,22,
-                                           "ply16","prepared14.5","front22")
+                                           "ply16","prepared14.5","front22",
+                                           bottom_thickness_mm=thickness,bottom_material="selected_test_bottom")
         spec = MoventoPanelDrawer().specification("drawer_01", dimensions,
             MoventoPilotChoice(5,14,2.5,10,"Test preparation; not production qualification"))
         return PanelAssemblyBuilder(spec).build()
 
     def test_every_panel_matches_all_declared_cuts_in_volume_and_shape(self, drawer):
-        _, built = drawer
+        _, built, thickness = drawer
         proof = PanelMaterialProof()
         cuts = proof.expected_cuts(built.spec)
         assert {part.spec.part_id for part in built.parts} == {"left","right","back","front","rail","bottom"}
+        bottom = next(part for part in built.parts if part.spec.part_id == "bottom")
+        assert bottom.spec.local_size_mm == pytest.approx((630.6,485.6,thickness))
         for part in built.parts:
             proof.assert_matches(proof.measure(part, cuts))
 
     def test_grooves_and_drilling_match_independent_analytic_volumes(self, drawer):
-        _, built = drawer
-        expected = {"bottom_groove_left":490*16.2*6,
-                    "bottom_groove_right":490*16.2*6,
-                    "bottom_groove_back":619*16.2*6,
-                    "bottom_groove_front":(651*16.2-(4-pi)*3**2)*6,
+        _, built, thickness = drawer
+        width = thickness + .2
+        expected = {"bottom_groove_left":490*width*6,
+                    "bottom_groove_right":490*width*6,
+                    "bottom_groove_back":619*width*6,
+                    "bottom_groove_front":(651*width-(4-pi)*3**2)*6,
                     "rear_hooks":2*pi*3**2*16,
                     "locking_clips":4*pi*1.25**2*10,
                     "runner_relief":2*pi*6**2*.5}
@@ -52,7 +63,7 @@ class TestMoventoMaterialRemoval:
                 volume, abs=1e-5, rel=0), identifier
 
     def test_rejects_extra_cut_in_otherwise_unmachined_bottom(self, drawer):
-        _, built = drawer
+        _, built, _ = drawer
         bottom = next(p for p in built.parts if p.spec.part_id == "bottom")
         changed = replace(bottom, solid=bottom.solid.cut(cq.Workplane("XY").circle(3).extrude(16)))
         proof = PanelMaterialProof()
@@ -60,7 +71,7 @@ class TestMoventoMaterialRemoval:
             proof.assert_matches(proof.measure(changed, proof.expected_cuts(built.spec)))
 
     def test_equal_volume_wrong_position_fails_shape_comparison(self, drawer):
-        _, built = drawer
+        _, built, _ = drawer
         part = next(p for p in built.parts if p.spec.part_id == "left")
         groove = next(c for c in built.cuts if c.joint_id == "bottom_groove_left")
         blank = PanelBlankBuilder().build(part.spec)
@@ -74,7 +85,7 @@ class TestMoventoMaterialRemoval:
             proof.assert_matches(report)
 
     def test_overlapping_cutters_are_counted_once_and_clipped_to_stock(self, drawer):
-        _, built = drawer
+        _, built, thickness = drawer
         bottom = next(p for p in built.parts if p.spec.part_id == "bottom")
         blank = PanelBlankBuilder().build(bottom.spec)
         first = cq.Solid.makeBox(20,10,20,cq.Vector(10,10,-2))
@@ -84,16 +95,16 @@ class TestMoventoMaterialRemoval:
         changed = replace(bottom,solid=blank.cut(first).cut(second))
         proof = PanelMaterialProof()
         report = proof.measure(changed,cuts)
-        assert report["expected_removed_mm3"] == pytest.approx(30*10*16, abs=1e-5, rel=0)
+        assert report["expected_removed_mm3"] == pytest.approx(30*10*thickness, abs=1e-5, rel=0)
         proof.assert_matches(report)
 
     def test_rejects_material_added_outside_blank(self, drawer):
-        _, built = drawer
+        _, built, thickness = drawer
         bottom = next(p for p in built.parts if p.spec.part_id == "bottom")
-        tab = cq.Solid.makeBox(10,10,16,cq.Vector(-5,10,0))
+        tab = cq.Solid.makeBox(10,10,thickness,cq.Vector(-5,10,0))
         changed = replace(bottom,solid=bottom.solid.union(tab))
         proof = PanelMaterialProof()
         report = proof.measure(changed,())
-        assert report["added_material_mm3"] == pytest.approx(5*10*16,abs=1e-5,rel=0)
+        assert report["added_material_mm3"] == pytest.approx(5*10*thickness,abs=1e-5,rel=0)
         with pytest.raises(AssertionError):
             proof.assert_matches(report)

@@ -13,7 +13,6 @@ class MoventoCapturedBottom:
     """
 
     underside_mm = 14.5
-    thickness_mm = 16
     groove_depth_mm = 6
     fit_clearance_mm = .2
 
@@ -23,12 +22,12 @@ class MoventoCapturedBottom:
 
     def floor(self, dimensions):
         engagement = self.engagement_mm
-        size = (dimensions.inside_width_mm + 2*engagement, 474 + 2*engagement, self.thickness_mm)
+        size = (dimensions.inside_width_mm + 2*engagement, 474 + 2*engagement, dimensions.bottom_thickness_mm)
         origin = (21-engagement, -engagement, self.underside_mm)
         return size, origin
 
     def grooves(self, dimensions, frame):
-        width = self.thickness_mm + self.fit_clearance_mm
+        width = dimensions.bottom_thickness_mm + self.fit_clearance_mm
         center = self.underside_mm + width/2
         inner = ((1,0,0),(0,-1,0),(0,0,-1))
         rows = (("left",490,center), ("right",490,center),

@@ -15,6 +15,12 @@ retains source, stock, fit/load, finishing and fabrication qualifications.
 Branch `codex/captured-drawer-bottom` starts at `2ad43cc`; refreshed main is an
 ancestor. Preserve the earlier project and evidence; rebuild a local copy.
 
+The user's 6 mm HDF choice is applied to all eight bottoms and shown in a new
+live inspection model. The 35 focused tests, all 59-panel capture/setup and
+material-removal checks, stock inventory assertion and skill-package validation
+pass. Independent review found no issues. Exact HDF product, load, stock fit and
+existing hardware/finishing/CAM qualifications remain open.
+
 ## Work packages
 
 ### WP1 — Shared captured construction
@@ -44,18 +50,26 @@ ancestor. Preserve the earlier project and evidence; rebuild a local copy.
 - [x] Review the added proof using the review skill and independent testing
   specialist: no code findings; generator/load/hardware/CAM limits retained.
 
+### WP4 — User-selected 6 mm HDF bottoms
+
+- [x] Save bottom thickness/material independently; retain existing caller defaults.
+- [x] Apply 6 mm HDF to all eight drawers and derive 6.2 mm grooves.
+- [x] Recheck capture, edge-flush Cabineos, one-face machining and removed material.
+- [x] Refresh the full inspection model and review this slice using the review skill.
+- [x] Record the actual results and commit the coherent local change.
+
 ## Construction candidate and qualifications
 
 The user also questioned the lower brace and 16 mm floor. The brace is the front
 locking-device screw support for the existing one-face construction, not an
 independently specified anti-sag brace. The floor's 16 mm thickness was retained
 from the previous candidate; Blum's 16 mm planning limit concerns the sides.
-A 9 mm plywood floor is a lighter candidate for a clothes drawer; actual grade,
-load and stock fit need qualification. No thickness or mounting change has been
-approved/applied in this follow-up. The displayed geometry remains unchanged.
+A 9 mm plywood floor was discussed as an alternative. The user then selected
+6 mm HDF; actual HDF grade, load and stock fit need qualification. The choice is
+HDF, not the Fibralux high-density MDF used as a price comparator.
 
-Use the existing 16 mm floor with 5.8 mm engagement in 6 mm deep wall grooves,
-16.2 mm groove width and a 14.5 mm bottom recess (inside the saved Blum 12–15 mm
+Use a 6 mm HDF floor with 5.8 mm engagement in 6 mm deep wall grooves,
+6.2 mm groove width and a 14.5 mm bottom recess (inside the saved Blum 12–15 mm
 planning range). The floor grows into all four grooves. The visible structural
 front has a stopped, rounded pocket; its ends extend beyond the bottom corners.
 The bottom rests on the groove floors; the 0.2 mm upper/end allowances are proposed
@@ -128,6 +142,29 @@ construction proposal, not the source's nominal blind-hole specification.
   analytic groove/drilling volume checks. This does not independently validate
   every declared dimension or certify the generators, stock, load or CAM.
 
+- 2026-09-14 — User selected "6mm hdf it is then". Apply that choice to this
+  dresser while preserving saved projects that omitted separate bottom stock.
+  Derive the groove from the same thickness so the thinner floor is captured;
+  keep the support, hardware datums and edge-flush joints in place. Verification
+  and a new inspection export are required before declaring this slice complete.
+
+- 2026-09-14 — WP4 complete: 35 tests pass in 398.93 seconds. The saved CNC
+  dresser has eight HDF bottoms at 630.6 × 485.6 × 6 mm; all 59 panels retain a
+  compatible chosen face, all floors remain captured, and wall pockets stay flush
+  to their edges above the floor. Inventory remains 59 wood parts, 40 hardware
+  components, 156 Cabineos and 156 matching inserts. Removed material matches all
+  59 declarations: maximum volume difference 2.1780579118058085e-08 mm3, with
+  zero missing cuts, extra cuts or material added outside stock. An initial test
+  compared fresh dataclass types across isolated project loads; it now compares
+  their complete values. No physical change was needed to address that failure.
+- 2026-09-14 — Final model contains 99 valid solids, no positive-volume overlaps
+  or envelope violations and the same 88 unresolved source intersections, 12
+  extension qualifications and 59 requirement issues. Exit 2 remains correct
+  for this non-fabrication-ready inspection model. Independent review found no
+  issues and 11 skill packages/links validate. Opened the new model and inspected
+  left drawer 01 at 65% separation; saved an actual screenshot. The thinner
+  floor retains its underside datum, providing 10 mm more internal height.
+
 ## Local evidence
 
 - `local-evidence/regression-tests.log`: 21 passing tests after the final fix.
@@ -153,3 +190,17 @@ construction proposal, not the source's nominal blind-hole specification.
   removed volume, missing cut, extra cut and added material, at 1e-5 mm3 tolerance.
 - `local-evidence/audit_material_removal.py`: reproducible saved-CNC-tree audit.
 - `local-evidence/material-removal-review.md`: core and independent review.
+
+### 6 mm HDF evidence (current inspection candidate)
+
+- `local-evidence/hdf-regression.log`: 35 passing tests; old 16 mm callers included.
+- `local-evidence/hdf-bottom-proof.json`: all eight floors, 59 machining setups and inventory.
+- `local-evidence/hdf-stock-proof.json`: eight actual HDF material/dimension records.
+- `local-evidence/hdf-material-removal-proof.json`: all 59 panels match in volume and shape.
+- `local-evidence/hdf-review.md`: core and independent review, no issues.
+- `local-evidence/dresser-hdf-bottom.geometry-check.json`: qualifications remain explicit.
+- `local-evidence/dresser-hdf-bottom.glb`: current 99-piece model.
+- `local-evidence/hdf-drawer-exploded.png`: actual new-model drawer screenshot.
+- Live viewer: `http://127.0.0.1:51296/`; drawer 01, 65% separation.
+- Construction SHA-256: `d1170b4ff461fa50beade888630aa3d686cb171bbe37dae4cbdd15b69eedb5bd`.
+- GLB SHA-256: `1ffc399da9eb230609b13c0b3d55b5399b66024dcd7932f758825aee7f35c34d`.

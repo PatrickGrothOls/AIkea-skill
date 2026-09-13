@@ -46,7 +46,7 @@ class MoventoPanelDrawer:
             ("left", "drawer_side", (490,h,16), (5,0,0), ((0,1,0),(0,0,1),(1,0,0)), ">Z", d.panel_material),
             ("right", "drawer_side", (490,h,16), (w-5,490,0), ((0,-1,0),(0,0,1),(-1,0,0)), ">Z", d.panel_material),
             ("back", "drawer_back", (inside,h-.5,16), (21,490,.5), ((1,0,0),(0,0,1),(0,-1,0)), ">Z", d.panel_material),
-            ("bottom", "drawer_bottom", floor_size, floor_origin, self.IDENTITY, "<Z", d.panel_material),
+            ("bottom", "drawer_bottom", floor_size, floor_origin, self.IDENTITY, "<Z", d.bottom_material),
             ("rail", "locking_device_support", (inside,64,bottom.underside_mm), (21,0,0), self.IDENTITY, "<Z", d.rail_material),
             ("front", "drawer_front", (d.front_width_mm,d.front_height_mm,d.front_thickness_mm),
              (d.front_left_mm,0,d.front_bottom_mm), ((1,0,0),(0,0,1),(0,-1,0)), "<Z", d.front_material),
