@@ -6,8 +6,10 @@ Correct the inspected eight-drawer dresser through the shared MOVENTO recipe.
 The user requires a bottom captured in recesses in the four walls, retained when
 the walls are joined. Corner Cabineos remain flush to their joining edges and
 accessible above the floor. Preserve the exact runners/clips and one broad CNC
-face per panel. Shared construction and the complete CNC-tree checks pass. The
-finished full-tree source/position check and visual delivery are in progress.
+face per panel. Implemented, independently reviewed and shown in the live viewer.
+All eight floors pass capture/clearance checks; all 59 panels have a compatible
+chosen CNC face. This remains an inspection candidate: the full report correctly
+retains source, stock, fit/load, finishing and fabrication qualifications.
 
 Branch `codex/captured-drawer-bottom` starts at `2ad43cc`; refreshed main is an
 ancestor. Preserve the earlier project and evidence; rebuild a local copy.
@@ -26,9 +28,9 @@ ancestor. Preserve the earlier project and evidence; rebuild a local copy.
 
 - [x] Rebuild the same eight drawers in a copied project with current shared code.
 - [x] Reconcile parts, connector pairs, purchased runners and clips.
-- [ ] Check the full tree and show actual assembled/exploded drawer screenshots.
+- [x] Check the full tree and show actual assembled/exploded drawer screenshots.
 - [x] Update skill guidance and record remaining fabrication qualifications.
-- [ ] Review the final diff and commit a coherent local checkpoint.
+- [x] Review the final diff and commit a coherent local checkpoint.
 
 ## Construction candidate and qualifications
 
@@ -76,13 +78,38 @@ construction proposal, not the source's nominal blind-hole specification.
   captured-floor stock-fit/load qualification. Do not invent a bottom operation
   or call the captured floor loose to clear the gate. This changes evidence
   declarations only; rerun the complete check after this correction.
+- 2026-09-13 — Final refresh completed: applied operations and product identities
+  pass; no `panel_connections` errors remain. All eight `captured_floor_fit`
+  qualifications intentionally remain open. There are 12 unresolved extension
+  qualifications and 59 requirement issues across the complete candidate.
+  The geometry still has no invalid solids, overlaps or envelope violations,
+  and retains the same 88 uncertain manufacturer-body intersections. Exit 2 is
+  the correct non-fabrication-ready result, not a failed model generation.
+- 2026-09-13 — Independently reviewed the current reports and all 99 unique
+  GLB inspection identities. All 16 runners and 16 locking clips resolve to
+  existing physical mounting owners. The final report has no unresolved code
+  finding; physical production qualifications remain explicitly separate.
+- 2026-09-13 — Opened a fresh snapshot of the final GLB, inspected the drawer
+  exploded and assembled, saved new screenshots and left the drawer at 65%
+  separation. The earlier project/view remain preserved. Local commits:
+  `427f797` shared construction and `cf3dc2f` correct requirement coverage.
 
 ## Local evidence
 
-- `local-evidence/regression-tests.log`: 20 passing tests.
+- `local-evidence/regression-tests.log`: 21 passing tests after the final fix.
 - `local-evidence/complete-bottom-proof.json`: complete CNC-tree face audit,
   actual eight-drawer retention/access checks and physical inventory.
 - `local-evidence/project`: a copied design with a corrected prepared-support
   material label; the original project and model are unchanged.
 - Skill-package validation: 11 local skills and links pass.
 - All changed code files remain below 150 lines.
+- `local-evidence/dresser-captured-bottom.geometry-check.json`: final combined
+  report, construction hash
+  `5de1279c35968061e871f18583f3505ab5ea31c86056848bc1cc16f6205a50d7`.
+- `local-evidence/dresser-captured-bottom.glb`: final 99-piece inspection model;
+  SHA-256 `6928c36fa2ae494b40051d9e36479bd9e7f7d3461969fb075dd4f5b649d95ef3`.
+- `local-evidence/captured-bottom-review.md`: independent WP1/WP2 review.
+- `local-evidence/drawer-grooves-exploded.png` and
+  `local-evidence/drawer-bottom-assembled.png`: actual final-model screenshots.
+- Live viewer: `http://127.0.0.1:63938/` (drawer selected through the inspection
+  controls); the server retains the final immutable model snapshot.
