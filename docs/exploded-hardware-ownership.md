@@ -80,6 +80,52 @@ Source fit, articulated travel and previous fabrication gaps remain unresolved.
 - All touched authored code files remain below 150 lines; largest is
   `PlywoodSurface.js` at 143. Diff review found no unrelated changes.
 
+## Follow-up — exact Cabineo and runner-recess calculation
+
+The user's visual check prompted a direct calculation of the existing geometry
+and the previously suggested shift along the rail's 64 mm front-to-back depth
+(16 to 20 mm and 52 to 44 mm). The existing layout does **not**
+intersect the shallow runner recess. Only the hypothetical move does.
+
+- [x] Rebuild the unchanged `dresser_cnc_01` through the shared project loader.
+- [x] Measure actual current rail-local cutters in all eight drawers.
+- [x] Measure hypothetical positions 20/44 mm with the same shared Cabineo
+  cutter and participant transforms, without editing the design.
+- [x] Cross-check the solid intersections with an independent circle formula.
+- [x] Record the distinction between cut overlap and physical hardware fit.
+
+The 619 x 64 x 29 mm rail has four Cabineo pockets, two shallow runner recesses
+and four clip pilot holes. Each cut was located in the same part-local frame and
+clipped to the original wooden blank. Exact solid intersection volume and nearest
+surface distance were measured against both complete drilling patterns. There
+were 32 current pockets and 32 hypothetical pockets across eight rails.
+
+| Layout | Pocket position along rail depth | Gap to runner recess | Intersection volume per pocket |
+| --- | ---: | ---: | ---: |
+| Current | 16 mm | 3.500074532 mm | 0 mm³ |
+| Current | 52 mm | 5.500066687 mm | 0 mm³ |
+| Hypothetical | 20 mm | 0 mm | 0.604837274 mm³ |
+| Hypothetical | 44 mm | 0 mm | 6.600067590 mm³ |
+
+Results repeat on both sides of all eight drawers. Clip screw pilot holes do not
+overlap a Cabineo pocket in either layout. Their minimum pocket-to-hole distance
+is 0.602194509 mm in the current layout and 4.556522541 mm in the hypothetical
+layout. These are distances between the modeled cuts, not qualification of the
+wood web or the physical screw threads.
+
+Independent check: the relevant Cabineo bore radius is 7.5 mm and its centre is
+X=25.5-2*sqrt(7.5²-5²)=14.319660113 mm, Y=the connector position. The recess has
+radius 6 mm, centre (14.37,33) mm and depth 0.5 mm. Its centre distance is
+`d=sqrt((14.37-14.319660113)^2+(33-Y)^2)`. The signed separation is `d-13.5`.
+For intersecting circles, the standard two-circle lens area multiplied by the
+common 0.5 mm depth gives the overlap volume. It agrees with the actual full
+Cabineo cutter intersections within 1e-8 mm³ for all 64 comparisons.
+
+Raw results: `local-evidence/rail-cut-intersections.json`. No design dimensions,
+joint positions or cuts were changed. Overlapping removal volumes are not by
+themselves a collision between physical hardware or proof of joint failure.
+The existing end-distance and fixing qualification questions remain separate.
+
 ## Acceptance boundary
 
 At full-dresser separation, a mounted fitting and its host must have identical
@@ -109,3 +155,11 @@ missing source-member identity must not be guessed from proximity or product nam
   exact reset; captured the full dresser, drawer underside and separated clip
   rail. This completes the requested viewing change locally without changing
   furniture dimensions, drilling geometry or manufacturing approval.
+- 2026-09-13 — At the user's request, calculated actual rail cut intersections
+  across all eight drawers and cross-checked them analytically. Confirmed the
+  current 16/52 layout has no runner-recess or clip-pilot overlap. The suggested
+  20/44 move alone creates shallow overlap. This corrects the earlier ambiguous
+  wording; it does not change the design or establish physical hardware fit.
+- 2026-09-13 — Clarified the ambiguous word "inward": the hypothetical movement
+  is along the rail's 64 mm front-to-back depth toward its midpoint, not a change
+  in cut depth or a move across the drawer width. No movement was applied.
