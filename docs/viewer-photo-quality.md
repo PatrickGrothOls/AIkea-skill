@@ -7,6 +7,22 @@ using the exact GLB. This small branch stacks on `e83cd58`, the completed viewer
 CTA and mobile inspection work. Generated UI concepts are aesthetic references,
 not model or machining evidence.
 
+## Product fidelity constraint — confirmed by Patrick
+
+The viewer must represent the product that will be manufactured. Preserve all
+CAD-defined edges, profiles, joints, holes, dimensions, and hardware. A bevel,
+roundover, groove, or other physical detail must be defined in the part's CAD
+and its machining or finishing instructions before appearing in the viewer.
+Do not create these details with render-only geometry, Blender bevel modifiers,
+displacement, or shader-only rounded edges.
+
+Rendering may improve the representation of the specified material and finish:
+grain, material-scale surface texture, roughness, lighting, and reflections.
+It must not imply an unselected veneer, coating, edge treatment, or wood species.
+Blender, if used, is a preparation tool under this same constraint. Preserve full
+rotation and exploded inspection; a still image is not an acceptable replacement
+for convincing interactive furniture.
+
 ## Work packages
 
 ### WP1 — Material and light
@@ -29,15 +45,21 @@ not model or machining evidence.
 - [ ] Save a real-render screenshot for mobile and compare against the baseline.
 - [ ] Review the final diff and commit the coherent rendering change.
 
+### Next material pass — separate implementation slice
+- [x] Record Patrick's CAD and manufacturing fidelity requirement.
+- [ ] Establish the intended material and finish for the rendered dresser parts.
+- [ ] Improve material appearance and lighting without inventing physical details.
+- [ ] Verify the improvement while rotating and inspecting the actual assembly.
+- [ ] Confirm physical part geometry and hardware remain unchanged.
+
 ## Current state
 
-Recovery verification is pending. All 52 viewer checks pass and the packaged
-viewer builds with the lifecycle fix. The local server is running again at
-http://127.0.0.1:51344/ with `--no-open`. Only one in-app tab remains, currently
-the connection-error page left by the crash. Browser Use rejects that internal
-data URL, and native Codex app control is unavailable. A request to reopen the
-same tab in interactive mode was queued through the app; Patrick was asked to
-reload the existing preview. No new live viewer was opened.
+The viewer is accessible again in the same single tab at
+http://127.0.0.1:51344/?render=interactive&title=Dresser. Browser inspection and a
+live screenshot confirmed the assembled dresser is visible. Patrick confirmed
+it is visible but considers its finish insufficiently realistic. All 52 viewer
+checks pass and the packaged viewer builds with the lifecycle fix, saved in
+local checkpoint `106067a`. No additional live viewer was opened.
 
 Before the crash the actual 99-piece HDF-bottom dresser loaded and drawer
 inspection showed nine parts, but restoring the photo view stalled. The final
@@ -117,3 +139,13 @@ Generated license notices reflect the installed dependency set.
 9. Verified the server's GET endpoint serves the new `index-BZ2j7A2w.js` bundle.
    Preserve this tested implementation as a local checkpoint while keeping the
    actual WebGL acceptance tasks open. No push or merge is part of this recovery.
+10. Patrick rejected an image-first presentation that changes to a less convincing
+    rotating model. The quality target applies to the interactive model itself.
+    The existing single tab is accessible again in interactive mode; its generic
+    plywood material does not meet that target.
+11. Patrick explicitly rejected render-only edge finishing. Physical details
+    must exist in CAD and the manufacturing process so the delivered product
+    matches its preview. Record this as a hard constraint before any further
+    material work. Materials, lighting, and reflections remain in scope when
+    they accurately represent the intended product. No rendering bevel was
+    implemented in this branch.
