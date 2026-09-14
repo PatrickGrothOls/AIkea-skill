@@ -15,6 +15,7 @@ import { ReviewModel } from "./ReviewModel";
 import { ReviewGuidanceCard } from "./ReviewGuidanceCard";
 import { ReviewGlassFilter } from "./ReviewGlassFilter";
 import { ReviewApprovalPanel } from "./ReviewApprovalPanel";
+import { MakeItRealCard } from "./MakeItRealCard";
 import { configureReviewRenderer } from "./ReviewRenderer";
 import { ReviewView } from "./ReviewView";
 
@@ -90,7 +91,12 @@ export function AssemblyReviewViewer() {
       <div className="review-controls">
         <AssemblyInspectionPanel inspection={inspection} onChange={setInspection}
           scopes={modelBounds.scopes} visibleCount={modelBounds.visibleCount} />
-        {inspection.wholeAssembled && <ReviewApprovalPanel ready={modelBounds.modelRoot !== null} />}
+        {inspection.wholeAssembled && (
+          <div className="review-action-cards">
+            <ReviewApprovalPanel ready={modelBounds.modelRoot !== null} />
+            <MakeItRealCard />
+          </div>
+        )}
       </div>
     </main>
   );
