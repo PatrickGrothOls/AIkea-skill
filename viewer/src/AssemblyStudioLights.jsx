@@ -23,6 +23,26 @@ function StudioSoftbox({ color, height, intensity, position, target, width }) {
   );
 }
 
+// This component owns the shadow camera for the same light direction as the studio key.
+function StudioWindowLight({ modelBounds }) {
+  const { center, span } = modelBounds;
+  const light = useRef();
+  useLayoutEffect(() => {
+    light.current.target.position.set(...center);
+    light.current.target.updateMatrixWorld();
+    light.current.shadow.camera.updateProjectionMatrix();
+  }, [center, span]);
+  return (
+    <directionalLight ref={light} color="#fff8ee" intensity={0.8} castShadow
+      position={[center[0] - span * .9, center[1] + span * 1.4, center[2] + span]}
+      shadow-mapSize={[2048, 2048]} shadow-bias={-0.00003} shadow-normalBias={0.25}
+      shadow-camera-left={-span * 1.1} shadow-camera-right={span * 1.1}
+      shadow-camera-top={span * 1.1} shadow-camera-bottom={-span * 1.1}
+      shadow-camera-near={span * .01} shadow-camera-far={span * 5}
+      shadow-radius={3} />
+  );
+}
+
 // A function component expresses the studio arrangement without owning scene state.
 export function AssemblyStudioLights({ modelBounds }) {
   const { center, span } = modelBounds;
@@ -30,10 +50,11 @@ export function AssemblyStudioLights({ modelBounds }) {
 
   return (
     <>
+      <StudioWindowLight modelBounds={modelBounds} />
       <StudioSoftbox
         color="#fff2dc"
         height={span * 1.1}
-        intensity={11}
+        intensity={3.5}
         position={[
           center[0] - span * 0.75,
           center[1] + span * 1.1,

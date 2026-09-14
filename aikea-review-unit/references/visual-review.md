@@ -110,6 +110,23 @@ keep a clean interactive image visible while the client moves or while photograp
 samples are still gathering, then fade into the refined image after the client
 settles on an angle.
 
+Preserve the manufactured design in every presentation. Bevels, edge rounding,
+grooves, and other physical details must come from the source CAD and its recorded
+machining or secondary finishing operations. Do not add them in the renderer.
+Materials, grain, and reflections may describe the intended stock and finish;
+keep an unselected product or coating explicitly representative.
+
+For a material-bearing GLB, use standard glTF PBR textures and part-local UVs.
+The viewer preserves textured materials and materials carrying
+`extras.aikea.material_id`, including untextured HDF or painted surfaces. The
+plywood presentation remains a fallback for undeclared materials. Do not apply
+oak grain to HDF bottoms or turn exposed sheet cores into finished edge banding.
+The packaged `materials/oak-veneer/SOURCE.md` records the optional oak maps and
+their license; the source exporter must assign the actual material identities.
+Adding a presentation material must preserve source geometry, placements,
+hardware, and the physical part count. Check the exported buffers when preparing
+a separate material study. A material study does not establish fabrication approval.
+
 Drawer review supports closed, open, and removed states without changing the
 checked physical design. Closed and removed views use the genuine static runner
 CAD in its checked mounting frames. The open view uses separately named movement

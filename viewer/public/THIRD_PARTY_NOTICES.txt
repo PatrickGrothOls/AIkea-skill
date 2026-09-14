@@ -27,6 +27,12 @@ Haven under CC0 1.0 Universal:
 https://polyhaven.com/a/plywood
 https://creativecommons.org/publicdomain/zero/1.0/
 
+The bundled Oak Veneer 01 PBR maps were created by Jenelle van Heerden and
+published by Poly Haven under CC0 1.0 Universal:
+
+https://polyhaven.com/a/oak_veneer_01
+https://creativecommons.org/publicdomain/zero/1.0/
+
 The bundled Studio Small 08 HDRI was created by Sergej Majboroda and published
 by Poly Haven under CC0 1.0 Universal:
 

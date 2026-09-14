@@ -11,6 +11,7 @@ import { LightingSurface } from "./LightingSurface.js";
 import { PlywoodSurface } from "./PlywoodSurface.js";
 import { ReviewCameraFraming } from "./ReviewCameraFraming.js";
 import { ReviewVisibility } from "./ReviewVisibility.js";
+import { ReviewMaterialSurface } from "./ReviewMaterialSurface.js";
 
 // A function component owns the GLB/texture hooks and their scene lifecycle.
 export function ReviewModel({ onModelMeasured, reviewView, inspection, onSelectPart }) {
@@ -27,8 +28,9 @@ export function ReviewModel({ onModelMeasured, reviewView, inspection, onSelectP
   const renderer = useThree((state) => state.gl);
 
   useLayoutEffect(() => {
-    const surface = new PlywoodSurface(colorMap, normalMap, roughnessMap,
-      renderer.capabilities.getMaxAnisotropy());
+    const anisotropy = renderer.capabilities.getMaxAnisotropy();
+    const surface = new ReviewMaterialSurface(
+      new PlywoodSurface(colorMap, normalMap, roughnessMap, anisotropy), anisotropy);
     const lightingSurface = new LightingSurface(reviewView.showsLighting());
     presentation.scene.traverse((node) => {
       if (node.isMesh) {
