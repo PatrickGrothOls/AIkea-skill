@@ -4,6 +4,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { AssemblyReviewViewer } from "./AssemblyReviewViewer.jsx";
 import "./styles.css";
+import "./ReviewGlass.css";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>

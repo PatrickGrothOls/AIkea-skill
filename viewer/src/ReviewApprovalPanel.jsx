@@ -63,7 +63,7 @@ export function ReviewApprovalPanel({ ready }) {
   const copy = review ? COPY[review.review_type] : null;
 
   return (
-    <section className="decision-card" aria-live="polite">
+    <section className="decision-card review-glass" aria-live="polite">
       {review && (
         <>
           <p className="eyebrow">{copy.eyebrow}</p>

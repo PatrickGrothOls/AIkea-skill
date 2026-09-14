@@ -13,6 +13,7 @@ import { AssemblyInspectionPanel } from "./AssemblyInspectionPanel";
 import { ExplodedViewState } from "./ExplodedViewState";
 import { ReviewModel } from "./ReviewModel";
 import { ReviewGuidanceCard } from "./ReviewGuidanceCard";
+import { ReviewGlassFilter } from "./ReviewGlassFilter";
 import { ReviewApprovalPanel } from "./ReviewApprovalPanel";
 import { configureReviewRenderer } from "./ReviewRenderer";
 import { ReviewView } from "./ReviewView";
@@ -84,10 +85,13 @@ export function AssemblyReviewViewer() {
           {!photo && <AssemblyContactShading />}
         </Canvas>
       </div>
+      <ReviewGlassFilter />
       <ReviewGuidanceCard reviewView={reviewView} />
-      <AssemblyInspectionPanel inspection={inspection} onChange={setInspection}
-        scopes={modelBounds.scopes} visibleCount={modelBounds.visibleCount} />
-      {inspection.wholeAssembled && <ReviewApprovalPanel ready={modelBounds.modelRoot !== null} />}
+      <div className="review-controls">
+        <AssemblyInspectionPanel inspection={inspection} onChange={setInspection}
+          scopes={modelBounds.scopes} visibleCount={modelBounds.visibleCount} />
+        {inspection.wholeAssembled && <ReviewApprovalPanel ready={modelBounds.modelRoot !== null} />}
+      </div>
     </main>
   );
 }

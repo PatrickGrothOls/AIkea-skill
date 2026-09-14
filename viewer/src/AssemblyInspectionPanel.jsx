@@ -7,7 +7,7 @@ import "./AssemblyInspection.css";
 // A function component keeps native inspection controls bound to React state.
 export function AssemblyInspectionPanel({ inspection, onChange, scopes, visibleCount }) {
   return (
-    <aside className="assembly-inspection" aria-label="Assembly inspection">
+    <aside className="assembly-inspection review-glass" aria-label="Assembly inspection">
       <div className="inspection-heading">
         <h2>Exploded view</h2>
         <button type="button" onClick={() => onChange(new ExplodedViewState())}>Restore assembly</button>
