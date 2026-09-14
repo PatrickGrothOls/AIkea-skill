@@ -22,9 +22,20 @@ on `4a35c36` (`codex/viewer-glass-cards`); refreshed origin/main is included.
 - [x] Capture mobile-friendly screenshots and leave the viewer open.
 - [x] Review the final diff and commit this local UI slice.
 
+### WP3 — Compact mobile inspection and correct screenshots
+- [x] Reduce mobile inspection to an expandable 48px row.
+- [x] Verify expand/collapse, inspection and restore, plus unchanged desktop controls.
+- [x] Diagnose and eliminate the blank screenshot margin without trimming the design.
+- [x] Rebuild, review with the code-boundaries skill and capture corrected screenshots.
+- [x] Commit the responsive correction.
+
 ## Current state
 
-The missing CTA is implemented and verified locally. It reads **Make it real**
+The CTA and compact mobile inspection are implemented and verified locally.
+Mobile inspection starts collapsed: a 48px touch row, approximately 50px including
+the border, replacing the previous 211px panel. A tap or Enter reveals all controls;
+desktop keeps the controls expanded. The corrected native-size screenshot has no
+blank capture margin. The CTA reads **Make it real**
 with **Your design, cut to fit and ready to assemble.** It appears in its own
 glass card at the lower right on desktop and beneath inspection controls on
 mobile. Clicking opens an explicit unavailable-ordering message; Escape and
@@ -70,6 +81,30 @@ the native interaction; existing tests retain the geometry and review coverage.
 
 ## Audit log
 
+### WP3 verification and review
+
+- Rebuilt the distributed viewer; all 45 viewer checks passed after the behavior
+  change. A subsequent indentation-only correction produced identical bundles.
+- At 390 x 844, verified collapse/expand, drawer selection (9 pieces), separation,
+  restoration (99 pieces, zero separation) and a roughly 50px collapsed card.
+  Enter also toggles the disclosure; hidden inputs leave the focus order.
+- At 1280 x 800, the toggle is hidden and all desktop controls remain visible.
+- The old blank margin is reproducible in in-app emulated-size captures while
+  the canvas and page have matching DOM bounds. Resetting the viewport and taking
+  a native-size capture removes it. This corrects screenshot delivery, without
+  cropping an image or changing the canvas, camera or furniture geometry.
+- A separate headless-browser capture was attempted but its software WebGL context
+  failed; no image from that failed renderer is used as evidence. The existing
+  in-app viewer continues to render all 99 pieces.
+- Corrected screenshot: `local-evidence/compact-mobile-native.jpg` (716 x 631,
+  showing the mobile breakpoint at the browser's native size).
+- Code-boundaries review: **PASS**. `AssemblyInspectionPanel.jsx` (35 -> 51 lines)
+  owns disclosure state and accessible input markup; `AssemblyInspection.css`
+  (47 -> 64 lines) owns breakpoint visibility and layout. The viewer coordinator,
+  CAD model and inspection state contracts are unchanged. No 150-line trigger.
+
+### Decisions
+
 1. Patrick approved **Make it real** as the CTA, asking to sell the outcome, and
    then pointed out that it was absent from the glass-card screenshots.
 2. Add it directly to the current viewer. Use a short native dialog to explain
@@ -83,3 +118,8 @@ the native interaction; existing tests retain the geometry and review coverage.
 4. Completed browser interaction, separate fixture coexistence, build and 45 viewer
    checks. Saved screenshots for mobile review and kept the real viewer open.
    No cloud resources, uploads, prices or orders were created.
+5. Patrick requested a much smaller exploded-view panel on mobile and asked about
+   the blank margin in the screenshots. Keep all inspection controls accessible
+   behind a compact mobile toggle; desktop controls remain expanded. Live DOM
+   bounds fill the page, so investigate screenshot resizing before changing canvas
+   layout or camera geometry.
