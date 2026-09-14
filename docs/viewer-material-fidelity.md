@@ -8,6 +8,10 @@ Patrick explicitly requires every physical edge detail to exist in CAD and the
 manufacturing process. No display-only bevel, displacement, or artificial joints.
 Use one browser tab and retain the inherited render budget.
 
+The realism target is the assembled furniture while the camera orbits it.
+Patrick accepts a simpler, plastic-looking exploded view. Keep inspection
+lightweight; matching its lighting to the assembled presentation is not required.
+
 ## Work packages
 
 ### WP1 — Preserve declared materials
@@ -107,3 +111,8 @@ material test is 45 lines. No subagent size-refactor report is required.
    and saved-file geometry comparison and interactive drawer restoration passed.
    Exact finish selection and general exporter material assignment remain separate
    work; neither is implied by this visual study.
+8. Patrick clarified that exploded inspection may look plastic. Prioritize the
+   assembled rotating view. This makes baked assembled lighting a viable candidate
+   without requiring those static shadows to stay correct during explosion.
+   A scripted Blender preparation stage is being discussed; no bake pipeline
+   has been implemented or validated yet.
