@@ -1,4 +1,4 @@
-/** Scope: Place two broad photographic softboxes around the reviewed assembly. */
+/** Scope: Place a key, fill, and backdrop light around the reviewed assembly. */
 
 import { useLayoutEffect, useRef } from "react";
 import { Vector3 } from "three";
@@ -23,7 +23,7 @@ function StudioSoftbox({ color, height, intensity, position, target, width }) {
   );
 }
 
-// A function component expresses the two-light studio arrangement without owning scene state.
+// A function component expresses the studio arrangement without owning scene state.
 export function AssemblyStudioLights({ modelBounds }) {
   const { center, span } = modelBounds;
   const target = [center[0], center[1] + span * 0.08, center[2]];
@@ -31,28 +31,36 @@ export function AssemblyStudioLights({ modelBounds }) {
   return (
     <>
       <StudioSoftbox
-        color="#fff4df"
-        height={span * 1.25}
-        intensity={5.5}
+        color="#fff2dc"
+        height={span * 1.1}
+        intensity={11}
         position={[
-          center[0] + span * 1.15,
-          center[1] + span * 0.95,
-          center[2] + span * 1.2,
+          center[0] - span * 0.75,
+          center[1] + span * 1.1,
+          center[2] + span * 0.9,
         ]}
         target={target}
-        width={span * 1.25}
+        width={span * 0.65}
       />
       <StudioSoftbox
-        color="#e8f0ff"
-        height={span * 0.9}
-        intensity={2.2}
+        color="#eef3ff"
+        height={span * 0.75}
+        intensity={0.9}
         position={[
-          center[0] - span * 1.1,
+          center[0] + span * 1.1,
           center[1] + span * 0.35,
-          center[2] + span,
+          center[2] + span * 0.6,
         ]}
         target={target}
         width={span}
+      />
+      <StudioSoftbox
+        color="#fff8ed"
+        height={span}
+        intensity={3}
+        position={[center[0], center[1] + span * 0.5, center[2] - span * 0.6]}
+        target={[center[0], center[1] + span * 0.5, center[2] - span * 2.5]}
+        width={span * 2}
       />
     </>
   );

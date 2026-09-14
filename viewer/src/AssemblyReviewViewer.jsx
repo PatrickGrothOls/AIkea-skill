@@ -64,24 +64,21 @@ export function AssemblyReviewViewer() {
     >
       <div className="review-stage">
         <Canvas
-          camera={{ position: [150, 100, 150], fov: 50 }}
-          dpr={[1, 2]}
+          camera={{ position: [150, 100, 150], fov: 42 }}
+          dpr={[1, 1.5]}
           gl={{ antialias: true, powerPreference: "high-performance" }}
           onCreated={configureReviewRenderer}
         >
-          <color attach="background" args={["#d8d5ce"]} />
+          <color attach="background" args={["#e7dfd3"]} />
           <CloseInspectionControls
             modelRoot={modelBounds.modelRoot}
             modelSpan={modelBounds.span}
           />
-          {photo ? (
-            <Suspense fallback={assemblyScene}>
-              <AssemblyPhotoRenderer key={`photo-${modelBounds.span}`}>
-                {assemblyScene}
-              </AssemblyPhotoRenderer>
+          {assemblyScene}
+          {reviewView.usesPhotoRenderer() && modelBounds.modelRoot !== null && (
+            <Suspense fallback={null}>
+              <AssemblyPhotoRenderer enabled={photo} />
             </Suspense>
-          ) : (
-            assemblyScene
           )}
           {!photo && <AssemblyContactShading />}
         </Canvas>

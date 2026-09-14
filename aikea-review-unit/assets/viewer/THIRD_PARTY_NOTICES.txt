@@ -6,7 +6,7 @@ archives and documents their sources.
 
 The AIkea unit review viewer bundles React, React DOM, Three.js,
 @react-three/fiber, @react-three/drei, @react-three/postprocessing,
-@react-three/gpu-pathtracer, postprocessing, n8ao, and three-gpu-pathtracer.
+postprocessing, n8ao, and three-gpu-pathtracer.
 These projects retain their respective licenses. The generated file includes
 the license text shipped by each package, including postprocessing's Zlib terms
 and n8ao's CC0 text (its package metadata separately labels the license ISC).
@@ -17,7 +17,6 @@ https://github.com/mrdoob/three.js
 https://github.com/pmndrs/react-three-fiber
 https://github.com/pmndrs/drei
 https://github.com/pmndrs/react-postprocessing
-https://github.com/pmndrs/react-three-gpu-pathtracer
 https://github.com/pmndrs/postprocessing
 https://github.com/N8python/n8ao
 https://github.com/gkjohnson/three-gpu-pathtracer

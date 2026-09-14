@@ -2,6 +2,7 @@
 
 import { AgXToneMapping, SRGBColorSpace } from "three";
 
+// A stateless function matches Canvas's renderer-creation callback directly.
 export function configureReviewRenderer({ gl }) {
   gl.outputColorSpace = SRGBColorSpace;
   gl.toneMapping = AgXToneMapping;

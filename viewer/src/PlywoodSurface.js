@@ -1,14 +1,13 @@
 /** Scope: Apply the packaged photographed plywood PBR maps to review meshes. */
 
 import { ReviewMeshName } from "./ReviewMeshName.js";
+import { PanelTextureCoordinates } from "./PanelTextureCoordinates.js";
 
 import {
-  Float32BufferAttribute,
   RepeatWrapping,
   SRGBColorSpace,
 } from "three";
 
-const TEXTURE_SCALE_MM = 500;
 const REVIEW_ONLY_PREFIX = "review_only__";
 const SOURCE_CAD_MARKER = "__source_cad";
 const PURCHASED_LIGHT_PREFIX = "purchased_light__";
@@ -20,6 +19,7 @@ export class PlywoodSurface {
     this.normalMap = normalMap;
     this.roughnessMap = roughnessMap;
     this.materialsBySource = new WeakMap();
+    this.coordinates = new PanelTextureCoordinates();
     this.#prepareMaps(anisotropy);
   }
 
@@ -33,7 +33,7 @@ export class PlywoodSurface {
     ) {
       return;
     }
-    this.#addLocalTextureCoordinates(mesh.geometry);
+    this.coordinates.applyTo(mesh.geometry, mesh.parent?.name || mesh.name);
     const useFaceMaterial = isPlywoodFace(mesh.geometry);
     const replacementMaterials = [mesh.material]
       .flat()
@@ -66,24 +66,24 @@ export class PlywoodSurface {
     material.color.set("#ffffff");
     material.map = this.colorMap;
     material.normalMap = this.normalMap;
-    material.normalScale.set(0.24, 0.24);
+    material.normalScale.set(0.12, 0.12);
     material.roughnessMap = this.roughnessMap;
     material.envMapIntensity = 1;
     material.metalness = 0;
-    material.roughness = 0.92;
+    material.roughness = 0.48;
     material.needsUpdate = true;
     return material;
   }
 
   #createEdgeMaterial(sourceMaterial) {
     const material = sourceMaterial.clone();
-    material.color.set("#cfb27f");
+    material.color.set("#e4ceb0");
     material.map = this.colorMap;
     material.normalMap = null;
     material.roughnessMap = null;
-    material.envMapIntensity = 0.7;
+    material.envMapIntensity = 1;
     material.metalness = 0;
-    material.roughness = 0.88;
+    material.roughness = 0.62;
     material.needsUpdate = true;
     return material;
   }
@@ -100,35 +100,6 @@ export class PlywoodSurface {
       texture.wrapT = RepeatWrapping;
       texture.needsUpdate = true;
     }
-  }
-
-  #addLocalTextureCoordinates(geometry) {
-    const positions = geometry.getAttribute("position");
-    const normals = geometry.getAttribute("normal");
-    const coordinates = new Float32Array(positions.count * 2);
-
-    for (let index = 0; index < positions.count; index += 1) {
-      const x = positions.getX(index);
-      const y = positions.getY(index);
-      const z = positions.getZ(index);
-      const normalX = Math.abs(normals.getX(index));
-      const normalY = Math.abs(normals.getY(index));
-      const normalZ = Math.abs(normals.getZ(index));
-      const coordinateOffset = index * 2;
-
-      if (normalZ >= normalX && normalZ >= normalY) {
-        coordinates[coordinateOffset] = y / TEXTURE_SCALE_MM;
-        coordinates[coordinateOffset + 1] = x / TEXTURE_SCALE_MM;
-      } else if (normalX >= normalY) {
-        coordinates[coordinateOffset] = y / TEXTURE_SCALE_MM;
-        coordinates[coordinateOffset + 1] = z / TEXTURE_SCALE_MM;
-      } else {
-        coordinates[coordinateOffset] = x / TEXTURE_SCALE_MM;
-        coordinates[coordinateOffset + 1] = z / TEXTURE_SCALE_MM;
-      }
-    }
-
-    geometry.setAttribute("uv", new Float32BufferAttribute(coordinates, 2));
   }
 }
 

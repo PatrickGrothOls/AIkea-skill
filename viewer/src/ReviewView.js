@@ -33,7 +33,7 @@ export class ReviewView {
     if (this.view === "structure") {
       return [1, -0.35, 1];
     }
-    return [1, 0.45, 1];
+    return [0.8, 0.35, 1.1];
   }
 
   cameraUp() {
