@@ -12,9 +12,65 @@ keep approval bound to the original presentation artifact.
 - [x] Keep live inspection lights separate from the already baked illumination.
 - [x] Validate viewer lifecycle, restricted HTTP paths, decisions and production bundle.
 - [x] Review boundaries and commit the coherent slice.
-- [ ] Integrate construction defaults and verify the corrected Vilja cabinet in one tab.
+- [x] Integrate construction defaults and verify the corrected Vilja cabinet in one tab.
 
-## Active handoff — 2026-09-15 14:07 UTC
+## Current delivery — 2026-09-15
+The corrected Vilja baked viewer has been delivered and visually inspected in the
+existing tab at http://127.0.0.1:63332/?render=interactive&title=Vilja%20%E2%80%94%20finished%20review.
+Server session52701 serves local-evidence/vilja-finished-attached.glb with
+local-evidence/vilja-inspection-attached.glb as the matching inspection source.
+The tab is marked deliverable. Assembled DOM: baked=true,174parts,1canvas,no photo
+renderer. At20percent explosion: inspection.glb,7live lights,174parts,1canvas.
+Restore returns to the bake; finished appearance and actual separated panels were
+visually checked. The right-side strip and shelf supports were inspected separately.
+
+All174 exported parts pass oriented triangle correspondence; maximum error is
+0.000794331mm at the unchanged0.002mm limit. Zero uncovered panel centroids.
+Manifest: local-evidence/vilja-presentation-03/presentation-rechecked.json. Original
+failed bake log is preserved; the corrected verifier and hash chain are documented
+in docs/bake-geometry-verification.md. No geometry was simplified or regenerated.
+
+The explicitly authorized delivery heartbeat can now be paused. Manufacturing is
+still unresolved: six drawers need compatible runner CAD; selected hinge fit and
+overlay, Korrekt socket/screw/deck qualification and electrical/CNC checks remain
+open. Source fixes remain local branches, not main or installed global skills.
+The small full-engine acceptance fixture rerun remains a pre-merge check because
+another task's Blender render was active. Actual Vilja verification and native
+runtime verifier smoke pass. Do not start another render for this delivered viewer.
+
+## Previous handoff — geometry revalidation in progress
+Current branch is codex/bake-geometry-verification, stacked on inspection97e4ed4
+and integrated hinge metadatafa16d9d. See docs/bake-geometry-verification.md.
+Bake03 FINISHED; exec85208 exited1 only at final geometry comparison. The old
+float32 nearest-vertex check rejected cabinet_01/hinge_04_hinge. Independent
+direct-GLB diagnosis proves all73,632 triangles match bijectively with winding
+and max0.000543457mm error, below unchanged0.002mm tolerance. Do not rebake.
+
+Full revised verification IS RUNNING in exec session68332 (plain activated Python,
+no Blender runtime). It writes local-evidence/vilja-presentation-03/export-geometry-rechecked.json
+only after every part passes. It has passed the base, lights, cabinets04/03/02 and
+is checking cabinet01 hinges. Nine focused verifier tests and three packing tests
+pass. Check this session/report, not obsolete bake85208. No presentation PASS yet.
+
+When it passes, run `direnv exec . python local-evidence/finalize_verified_presentation.py`.
+This checks the original source/export hashes and all four reports, packs the
+finished model, applies the exact36hinge ownership mapping to a new derivative,
+checks inspection identities match, and writes presentation-rechecked.json.
+It preserves the original failed bake.log and records the revalidation explicitly.
+Outputs are local-evidence/vilja-finished-attached.glb and matching
+local-evidence/vilja-inspection-attached.glb. Use these as primary and inspection.
+The original assembled.glb is not changed. Do not weaken comparison tolerance.
+
+Server session9114 still serves construction inspection on63332; single existing
+tab1/browser1 is currently focused on the right-side lighting panel. Replace that
+server only after verification/derivation PASS, restore whole furniture, check
+finished quality and explosion/reset. Keep automation ACTIVE until visual delivery.
+Another task had a Blender background animation PID65443 (GPU, six threads) while
+our direct-GLB diagnostic ran. Never stop it or launch a competing bake.
+All fabrication gaps in the previous handoffs remain open. No push/merge/global
+skill install was performed. The reusable changes are local stacked branches.
+
+## Previous handoff — 2026-09-15 14:07 UTC
 Current branch is codex/compact-review-geometry in this same worktree. See
 docs/compact-review-geometry.md. It adds static GLB packing and fixes inspection
 lighting for consolidated solids plus panel-normal separation with attached hardware.
@@ -94,9 +150,9 @@ Korrekt socket fit, screw engagement, clips/loads and15mm deck stock need approv
 lighting wiring/endcaps/supply and full CNC/setup/fabrication checks remain open.
 
 ## Current state
-Implementation and targeted validation complete. This implements the second
-slice of docs/lit-component-inspection.md; visual calibration and actual new bake
-remain pending. No source CAD geometry is changed by asset selection.
+Viewer implementation, corrected Vilja bake, detailed inspection and same-tab
+switch/reset validation are complete; see Current delivery above for the actual
+asset hashes and fabrication limits. No source CAD geometry is changed by asset selection.
 
 Evidence:61 viewer tests and10 HTTP/decision/path tests pass; production bundle
 build passes. The first HTTP attempt hit the sandbox socket restriction; the

@@ -115,6 +115,13 @@ below 0.002 mm. The detailed reports and `bake.log` stay next to the result.
 The centroid check detects the reproduced streaks; also inspect edge close-ups
 visually, since it does not prove every texel at every viewing angle.
 
+Export verification reads the GLB's world transforms directly and requires a
+one-to-one correspondence of oriented triangles within the same 0.002 mm limit.
+It preserves triangle multiplicity and winding. A nearest-vertex map alone is
+insufficient: nearly coincident hardware vertices can collapse at float32
+precision and produce a false mismatch. Failed checks still block delivery;
+never increase the tolerance to make an export pass.
+
 Show `assembled.glb` with `serve_unit_review.py assembled.glb --inspection-model
 <matching-source-materials.glb> --no-open` and `?render=interactive`. Reuse the
 existing browser tab. Check the full piece and a

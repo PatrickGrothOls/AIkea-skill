@@ -56,11 +56,13 @@ class TestBlenderBakeAcceptance(unittest.TestCase):
             geometry = json.loads((root / 'prepared-geometry.json').read_text())
             self.assertTrue(geometry['source_uvs_unchanged'])
             # The verifier's successful round trip is not enough: moved parts must fail.
+            bpy.ops.wm.read_factory_settings(use_empty=True)
+            bpy.ops.import_scene.gltf(filepath=str(root / 'assembled.glb'))
             obj = next(obj for obj in bpy.context.scene.objects if obj.type == 'MESH')
             obj.location.x += 10
             changed = root / 'changed.glb'
             bpy.ops.export_scene.gltf(filepath=str(changed), export_format='GLB', export_extras=True)
-            with self.assertRaises(AssertionError):
+            with self.assertRaises(ValueError):
                 ExportGeometryVerification().run(source, changed, root / 'bad-geometry.json', 0.001)
             # Reusing the job after its input changes must fail before rendering.
             source.write_bytes(source.read_bytes() + b'changed')
