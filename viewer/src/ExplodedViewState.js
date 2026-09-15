@@ -8,11 +8,12 @@ export class ExplodedViewState {
     return new ExplodedViewState(Number.isFinite(value) ? Math.max(0, Math.min(this.MAX_AMOUNT, value)) : 0);
   }
 
-  constructor(amount = 0, scope = "", selectedPart = "", selectedScope = "") {
+  constructor(amount = 0, scope = "", selectedPart = "", selectedScope = "", detail = "panels") {
     this.amount = amount;
     this.scope = scope;
     this.selectedPart = selectedPart;
     this.selectedScope = selectedScope;
+    this.detail = detail;
   }
 
   get wholeAssembled() {
@@ -20,14 +21,18 @@ export class ExplodedViewState {
   }
 
   withAmount(amount) {
-    return new ExplodedViewState(amount, this.scope, this.selectedPart, this.selectedScope);
+    return new ExplodedViewState(amount, this.scope, this.selectedPart, this.selectedScope, this.detail);
   }
 
   withScope(scope) {
-    return new ExplodedViewState(0.65, scope);
+    return new ExplodedViewState(0.65, scope, "", "", this.detail);
   }
 
   withSelectedPart(name, scope = "") {
-    return new ExplodedViewState(this.amount, this.scope, name, scope);
+    return new ExplodedViewState(this.amount, this.scope, name, scope, this.detail);
+  }
+
+  withDetail(detail) {
+    return new ExplodedViewState(this.amount, this.scope, this.selectedPart, this.selectedScope, detail);
   }
 }

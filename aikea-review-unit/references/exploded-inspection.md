@@ -8,10 +8,12 @@ Add `explode=0.65` to the viewer URL to start separated, or `explode=2` for more
 space. The supported range is 0 to 3 (0–300%). The same controls are available
 without the URL option:
 
-1. **Whole assembly** separates the root parts and child assemblies. All parts
-   belonging to a child move together. Mounted fittings stay with their carrier:
-   cabinet-side runners with the real supports, drawer-side components and clips
-   with the drawer. Do not scatter hardware independently at this level.
+1. **All panels · keep fittings attached** is the default separation mode. It
+   opens the cabinets across the complete furniture by separating their actual
+   panels, including panels within drawers. Runners, hinges and lights move with
+   their explicitly named mounting panels. Choose **Cabinets and subassemblies**
+   when complete child units should move intact instead. Neither mode scatters
+   mounted hardware independently; select its panel for that deeper inspection.
 2. Choose a child in **Assembly or part** to inspect it alone. Its own panels and deeper
    child assemblies can then be separated. Fittings with an explicit mounting
    panel stay on that panel. Choose the panel itself to separate its fittings;
@@ -34,6 +36,8 @@ records structured inspection paths from the real assembly ownership. A
 owning assembly; set it when installing each independently represented hardware
 member. The MOVENTO installer supplies its actual support and clip-rail IDs.
 Physical item names, purchases, source CAD and closed placements stay unchanged.
+Lighting overlays retain their owning panel and shared purchase identity for
+both body and emitter, so one luminaire stays together when that panel moves.
 
 Never infer attachments from proximity or names. Do not split or duplicate a
 combined manufacturer runner model to invent separately mounted members. Preserve
@@ -48,6 +52,14 @@ support. The exploded pose uses interactive rendering and cannot present the
 visual-approval controls. A collapsed isolated child is also not the complete
 assembled review. Missing purchased parts remain missing; name them explicitly
 rather than treating the view as a complete assembly guide.
+
+Keep lighting visible during inspection. Emitters and modest area lights follow
+the current panel transforms; hidden panels do not leave floating illumination.
+These lights use the ordinary renderer without per-strip shadow maps or a path
+tracer. They show placement and direction, not calibrated illuminance. Opening
+inspection unmounts the optional photo renderer and releases its resources.
+The assembled Blender bake is a fixed-pose presentation: use the ordinary source
+material asset for separated panels, so baked shadows cannot move with them.
 
 For the client, show the whole exploded piece and one useful component, such as
 a drawer. Check that each runner and drawer-side fitting follows its declared

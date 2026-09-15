@@ -5,15 +5,16 @@ import { ExplodedGroupLayout } from "./ExplodedGroupLayout.js";
 import { ReviewVisibility } from "./ReviewVisibility.js";
 import { ReviewPartCatalog } from "./ReviewPartCatalog.js";
 import { ReviewInspectionPath } from "./ReviewInspectionPath.js";
+import { InspectionGrouping } from "./InspectionGrouping.js";
 
 export class AssemblyPresentation {
   constructor(sourceScene, associations) {
     this.catalog = new ReviewPartCatalog(sourceScene, associations);
     this.scene = this.catalog.scene;
     this.records = [];
-    for (const { node, name, inspectionPath } of this.catalog.parts) {
+    for (const { node, name, inspectionPath, kind } of this.catalog.parts) {
       this.records.push({
-        node, name, path: inspectionPath,
+        node, name, kind, path: inspectionPath,
         position: node.position.clone(),
         worldOrigin: new Vector3().setFromMatrixPosition(node.matrixWorld),
         parentInverse: node.parent.matrixWorld.clone().invert(),
@@ -22,6 +23,7 @@ export class AssemblyPresentation {
       });
     }
     this.layout = new ExplodedGroupLayout();
+    this.grouping = new InspectionGrouping(this.records);
   }
 
   get scopes() {
@@ -38,13 +40,13 @@ export class AssemblyPresentation {
     return ReviewInspectionPath.key(this.records.find((part) => part.name === name).path);
   }
 
-  groups(scope) {
+  groups(scope, detail) {
     const scopePath = ReviewInspectionPath.segments(scope);
     const depth = scopePath.length;
     const groups = new Map();
     for (const record of this.records) {
       if (!record.visible || !scopePath.every((segment, index) => record.path[index] === segment)) continue;
-      const key = ReviewInspectionPath.key(record.path.slice(0, depth + 1));
+      const key = this.grouping.key(record, depth, detail);
       const group = groups.get(key) ?? { key, records: [], bounds: new Box3() };
       group.records.push(record);
       group.bounds.union(record.bounds);
@@ -53,12 +55,12 @@ export class AssemblyPresentation {
     return [...groups.values()];
   }
 
-  apply(scope, amount) {
+  apply(scope, amount, detail = "assemblies") {
     for (const record of this.records) {
       record.node.position.copy(record.position);
       record.node.visible = scope === "" && amount === 0 ? record.originalVisibility : false;
     }
-    const groups = this.groups(scope);
+    const groups = this.groups(scope, detail);
     const offsets = this.layout.offsets(groups, amount);
     const bounds = new Box3();
     let visibleCount = 0;

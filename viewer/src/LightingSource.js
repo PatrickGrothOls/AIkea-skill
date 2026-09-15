@@ -1,17 +1,20 @@
 /** Scope: Derive one Three.js area-light placement from an exported emitter mesh. */
 
 import { ReviewMeshName } from "./ReviewMeshName.js";
+import { ReviewVisibility } from "./ReviewVisibility.js";
 
 import { Vector3 } from "three";
 
 const LIGHT_SOURCE_PREFIX = "light_source__";
-const RECESSED_LIGHT_REVIEW_INTENSITY = 1800;
+// A modest inspection luminance, not a calibrated electrical/photometric specification.
+const RECESSED_LIGHT_REVIEW_INTENSITY = 15;
 
 export class LightingSource {
   static collect(root) {
     const candidates = new Map();
     root.traverse((node) => {
-      if (node.isMesh && ReviewMeshName.hasRole(node.name, LIGHT_SOURCE_PREFIX)) {
+      if (node.isMesh && ReviewVisibility.isVisible(node)
+        && ReviewMeshName.hasRole(node.name, LIGHT_SOURCE_PREFIX)) {
         const candidate = new LightingSource(node);
         if (!candidate.isEmitterFace()) {
           return;

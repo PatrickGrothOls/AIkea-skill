@@ -27,6 +27,12 @@ export function AssemblyInspectionPanel({ inspection, onChange, scopes, visibleC
           onClick={() => onChange(new ExplodedViewState())}>Restore assembly</button>
       </div>
       <div className="inspection-body" id="inspection-body">
+        <label htmlFor="inspection-detail">Separate</label>
+        <select id="inspection-detail" value={inspection.detail}
+          onChange={(event) => onChange(inspection.withDetail(event.target.value))}>
+          <option value="panels">All panels · keep fittings attached</option>
+          <option value="assemblies">Cabinets and subassemblies</option>
+        </select>
         <label htmlFor="inspection-assembly">Assembly or part</label>
         <select id="inspection-assembly" value={inspection.scope}
           onChange={(event) => onChange(inspection.withScope(event.target.value))}>

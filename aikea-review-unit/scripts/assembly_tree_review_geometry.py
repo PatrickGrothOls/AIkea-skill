@@ -119,6 +119,10 @@ class AssemblyTreeReviewGeometry:
                 part.solid,
                 posed_assemblies[overlay.owner_path] * part.location,
                 part.color,
+                source_hardware_asset_id=part.source_hardware_asset_id,
+                source_geometry_selector=part.source_geometry_selector,
+                inspection_path=overlay.owner_path[1:] + part.inspection_path if part.inspection_path else (),
+                review_kind=part.review_kind,
             )
             for overlay in plan.overlays
             if not plan.hides(overlay.owner_path)

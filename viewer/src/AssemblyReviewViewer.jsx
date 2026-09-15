@@ -75,7 +75,7 @@ export function AssemblyReviewViewer() {
             modelSpan={modelBounds.span}
           />
           {assemblyScene}
-          {reviewView.usesPhotoRenderer() && modelBounds.modelRoot !== null && (
+          {photo && modelBounds.modelRoot !== null && (
             <Suspense fallback={null}>
               <AssemblyPhotoRenderer enabled={photo} />
             </Suspense>

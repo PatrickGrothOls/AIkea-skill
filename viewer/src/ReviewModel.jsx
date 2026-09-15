@@ -43,18 +43,18 @@ export function ReviewModel({ onModelMeasured, reviewView, inspection, onSelectP
   }, [colorMap, normalMap, presentation, renderer, reviewView, roughnessMap]);
 
   useLayoutEffect(() => {
-    const { bounds, visibleCount, groupCount } = presentation.apply(inspection.scope, inspection.amount);
+    const { bounds, visibleCount, groupCount } = presentation.apply(inspection.scope, inspection.amount, inspection.detail);
     const center = bounds.getCenter(new Vector3());
     const size = bounds.getSize(new Vector3());
     framing.frame(camera, controls, reviewView, center, size);
     onModelMeasured({
       center: center.toArray(), size: size.toArray(),
-      lightingSources: inspection.wholeAssembled ? LightingSource.collect(presentation.scene) : [],
+      lightingSources: LightingSource.collect(presentation.scene),
       modelRoot: presentation.scene,
       span: Math.max(size.x, size.y, size.z),
       scopes: presentation.scopes, visibleCount, groupCount,
     });
-  }, [camera, controls, framing, inspection.amount, inspection.scope,
+  }, [camera, controls, framing, inspection.amount, inspection.scope, inspection.detail,
     onModelMeasured, presentation, reviewView]);
 
   // Selection filters hidden meshes because Three.js raycasting includes them.

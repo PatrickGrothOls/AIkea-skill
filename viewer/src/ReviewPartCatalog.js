@@ -20,7 +20,7 @@ export class ReviewPartCatalog {
       const inspectionPath = Array.isArray(path) && path.length > 0
         && path.every((segment) => typeof segment === "string" && segment.length > 0)
         ? path : name.split("__");
-      this.parts.push({ node: clone, name, inspectionPath });
+      this.parts.push({ node: clone, name, inspectionPath, kind: source.userData.aikea?.kind });
       this.names.set(clone, name);
     }
     source.children.forEach((child, index) => this.collect(child, clone.children[index], associations));
