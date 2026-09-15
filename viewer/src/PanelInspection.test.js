@@ -64,7 +64,8 @@ test("exploded light sources follow actual panel transforms and exclude isolated
     const original = before.find((item) => item.name === source.name);
     const movement = new Vector3(...source.position).sub(new Vector3(...original.position));
     assert.ok(movement.distanceTo(fixture.offset(source.name)) < 1e-8);
-    assert.ok(source.intensity > 0 && source.intensity < 100);
+    assert.ok(Number.isFinite(source.intensity) && source.intensity > 0);
+    assert.equal(source.intensity, original.intensity);
   }
   fixture.model.apply(ReviewInspectionPath.key(["left"]), .8, "panels");
   assert.equal(LightingSource.collect(fixture.model.scene).length, 1);

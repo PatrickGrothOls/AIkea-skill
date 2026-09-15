@@ -7,8 +7,9 @@ import { LightingEmitterFace } from "./LightingEmitterFace.js";
 import { Vector3 } from "three";
 
 const LIGHT_SOURCE_PREFIX = "light_source__";
-// A modest inspection luminance, not a calibrated electrical/photometric specification.
-const RECESSED_LIGHT_REVIEW_INTENSITY = 15;
+// Narrow diffusers need enough luminance to light surrounding panels, not just glow.
+// This is inspection lighting, not a calibrated electrical/photometric specification.
+const RECESSED_LIGHT_REVIEW_INTENSITY = 600;
 
 export class LightingSource {
   static collect(root) {

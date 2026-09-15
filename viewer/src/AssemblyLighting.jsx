@@ -2,6 +2,11 @@
 
 import { useLayoutEffect, useRef } from "react";
 import { Vector3 } from "three";
+import { RectAreaLightUniformsLib } from "three/addons/lights/RectAreaLightUniformsLib.js";
+
+// WebGL area lights need the shared LTC lookup textures to illuminate surfaces.
+// Initialize once; each strip remains one light without a shadow-map allocation.
+RectAreaLightUniformsLib.init();
 
 // A component boundary lets each derived strip preserve its own physical orientation.
 function RecessedAreaLight({ source }) {
