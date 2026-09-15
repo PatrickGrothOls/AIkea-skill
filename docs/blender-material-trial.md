@@ -39,10 +39,31 @@ Keep one viewer and one Blender process at a time, with bounded render settings.
 - [x] Locate the black values in the exported atlas at tabletop edge coordinates.
 - [x] Isolate texture coverage from illumination with a constant-white emission bake.
 - [x] Measure the affected UV strip and identify the missing texel coverage.
-- [ ] Give narrow edge islands sufficient texture coverage and padding, rebake,
+- [x] Give narrow edge islands sufficient texture coverage and padding, rebake,
   and visually verify the correction without changing furniture geometry.
 
+### WP5 — Apply reliable coverage across the dresser
+
+- [x] Allocate a minimum usable width to every panel's narrow bake UV islands.
+- [x] Prove constant-white coverage before the full lighting bake.
+- [x] Rebake the approved materials and lighting within the existing texture budget.
+- [x] Verify exported geometry and inspect the repaired edges in the one browser tab.
+- [x] Review responsibility boundaries and record the verified result.
+
 ## Current state
+
+Whole-dresser correction is complete and visually checked. Explicit packing fits 5,066 padded UV
+charts in one 4096-square atlas, with at least six pixels of content width and
+eight pixels of padding per side. Independent rectangle checks find no overlap
+or out-of-bounds allocation. Broad-surface texel density is 90% of the first study;
+the stock grain scale and source UVs are verified unchanged. The constant-
+white regression bake passes all 330,080 triangle-centre samples across 59 panels,
+with zero uncovered samples. Full lighting rebake, export, and browser close-up
+verification passed. The prior 48 front-edge and 42 back-edge black samples are
+both zero in the corrected exported tabletop. All 99 parts retain identical
+triangle connectivity with maximum world-space rounding error 0.000438 mm.
+The viewer's tabletop and frame edge strips are visibly continuous at close range;
+actual drawer reveals and contact shadows remain.
 
 The installed Blender produced a 1100 x 800 Cycles render in approximately
 34 seconds, using three CPU threads, 48 samples, and denoising. The packed
@@ -57,7 +78,7 @@ Reimport verification passed: 99 physical parts, identical world-space triangle
 connectivity, maximum vertex rounding difference 0.000438 mm. No additional
 Blender or bpy package has been downloaded.
 Patrick returned and unlocked the Mac. The baked GLB is now displayed in the
-existing Three.js tab at `http://127.0.0.1:58686/?render=interactive&title=Dresser%20%E2%80%94%20Blender%20bake`.
+existing Three.js tab at `http://127.0.0.1:60693/?render=interactive&title=Dresser%20%E2%80%94%20corrected%20edges`.
 Browser orbiting was visually verified from front/right to the right side, then
 returned to a useful front angle. Only one in-app browser tab is open. Native
 Blender viewport interaction and sustained browser performance remain untested.
@@ -79,6 +100,10 @@ this branch records an experiment, not a shipped rendering feature.
 | `dresser-baked-study.glb` | Embedded baked texture and 99 individually identifiable furniture meshes; no studio floor/camera/lights exported |
 | `blender-geometry-check.json`, `bake-geometry-check.json` | Original mesh coordinates, topology, and placements unchanged by styling and UV/bake preparation |
 | `export-geometry-check.json` | Independent Blender reimport and world-space triangle comparison |
+| `dresser-covered.glb`, `dresser-covered.blend`, `dresser-covered-reference.png` | Corrected whole-dresser presentation and its native comparison image |
+| `covered-uv-packing-check.json`, `all-panel-coverage.json` | Padded rectangles have no overlap; all 330,080 triangle-centre coverage samples pass |
+| `covered-source-uv-check.json`, `covered-export-geometry.json` | Original grain UVs unchanged; all 99 exported parts retain source geometry |
+| `covered-edge-regression.json` | Formerly black tabletop-edge samples drop from 48 + 42 to zero |
 
 The photographed oak texture represents unselected stock, not a supplier-approved
 finish. Patrick accepts its current appearance; the earlier subjective concern
@@ -120,7 +145,7 @@ owns the separate constant-white bake. Both are ignored trial scripts below
 150 lines; no production file or geometry changed.
 
 Minimum-width UV allocation/packing and suitable padding, followed by rebaking,
-are the next correction to verify. Do not remove actual drawer reveals or joints
+now pass the coverage, geometry, and browser checks described above. Do not remove actual drawer reveals or joints
 as a cosmetic workaround. Other similar fine rounded-edge lines have the same
 visual signature, but the white-bake isolation above specifically proves the
 tabletop case; it does not classify every dark line on the assembly.
@@ -148,6 +173,18 @@ code line counts are unchanged (zero production files modified). Every new trial
 script remains below 150 lines. This verdict covers responsibility placement,
 not interactive quality or manufacturing approval.
 
+WP5 **PASS for the isolated experiment**, using review-code-boundaries.
+`texture_shelf_layout.py` (37 lines) owns padded rectangle placement;
+`bake_uv_coverage.py` (66) owns connected chart coordinates and pixel allocation;
+`panel_bake_pass.py` (94) owns the temporary combined bake and coverage sampling;
+`prepare_covered_bake.py` (35) and `run_covered_bake.py` (19) are entry points;
+`export_covered_dresser.py` (74) restores original objects, checks source UVs, and
+exports their materials and verifies source grain UVs. The independent export verifier is 72 lines and the
+sampling inspector is 69. No existing production runtime changed, and no trial
+file exceeds 150 lines. The source UV, coverage, geometry, and actual browser
+close-up gates all passed. This remains local trial tooling; the reusable skill
+has not yet been shipped with a packaged Blender bake command.
+
 ## Audit log
 
 1. Patrick requested a test using installed Blender and a direct Blender presentation
@@ -174,3 +211,16 @@ not interactive quality or manufacturing approval.
    black edge strings. The tabletop case is traced to subpixel UV coverage and
    independently reproduced with constant-white emission. Record the correction
    as pending; this request was diagnosis, not a new material or CAD design.
+10. Patrick asked how to solve coverage for the whole piece. Apply the diagnosed
+    correction to every panel, preserve approved geometry/materials/lighting, and
+    verify the actual corrected export. Keep the texture budget bounded instead
+    of increasing resolution globally without addressing narrow islands.
+11. Expanding thin islands then using Blender's rescaling packer did not retain the
+    required width (measured minima below one pixel). Replace that attempt with
+    explicit padded pixel rectangles. The first fitting layout uses 90% broad-
+    surface density and a six-pixel minimum; actual white coverage passes for
+    every sampled triangle. No blanket resolution increase or CAD change is used.
+12. Full rebake passed. Reimport preserves 99 parts and source triangle connectivity;
+    original grain UV hashes match. The former 90 black tabletop-edge samples are
+    zero. The same browser tab shows the corrected export; close-up inspection
+    confirms continuous tabletop/frame edges with real drawer gaps retained.
