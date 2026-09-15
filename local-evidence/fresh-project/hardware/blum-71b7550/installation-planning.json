@@ -1,0 +1,55 @@
+{
+  "status": "PREPARATION_ONLY_NOT_INSTALLED",
+  "full_run_width_mm": 2475,
+  "cabinet_count": 4,
+  "proposed_cabinet_width_mm": 618.75,
+  "proposed_door_width_mm": 616.75,
+  "overlay_mm": 15,
+  "cup_boring_distance_mm": 4,
+  "plate_height_mm": 0,
+  "proposed_opening_width_mm": 586.75,
+  "proposed_single_structural_front_width_mm": 582.75,
+  "front_side_reveals_mm": [
+    2,
+    2
+  ],
+  "proposed_runner_box_width_mm": 511.35,
+  "required_preserved_clearances_mm": {
+    "floor": 3,
+    "between_fronts": 3,
+    "cap_shelf": 3
+  },
+  "manufacturer_authority": {
+    "overlay": "Official Blum concealedhinges v18 page13: B4/H0 gives OL15",
+    "zero_protrusion": "Official v18 page13: -2.3 mm at90 degrees with H0; side adjustment affects this",
+    "plate": "Official v18 page49:173H7100 physical height8.5;37/32 pattern; additional screw for wide-angle hinge",
+    "width": "Official EASY ASSEMBLY article: up to650 mm requires additional hinge"
+  },
+  "pending": [
+    "Native ACIS to STEP conversion with shape validation and exact coordinate frames",
+    "Cup screw pattern and actual13 mm cup depth versus regional11.7 minimum must be resolved to exact source",
+    "Plate wood screws cannot reuse diameter5 shelf bores; calculate nonoverlapping interleaved positions or source exact5 mm mounting variant",
+    "Additional plate screw min20 mm plus real8.5 mm raised interface must retain skin in16 mm carcass",
+    "Preserve450 mm total depth with manufacturer1.5 mm closed back gap; reconcile carcass/base coordinates explicitly",
+    "Final hinge quantity from actual18 mm leaf mass and height plus650 mm width increment",
+    "Exact restricted90/92 degree pose and swept front/adjacent-door/wall clearance",
+    "Delete every retiredNC70 machining request on fresh regeneration"
+  ],
+  "hinge_quantity_preparation": {
+    "counts_by_bay": [
+      6,
+      6,
+      5,
+      4
+    ],
+    "total": 21,
+    "basis": "Conservative height bands from official hinge chart plus one hinge for each616.75 mm door per official650 mm guidance. Weight and mounting positions still require final verification.",
+    "assumed_door_material_density_kg_m3": 760,
+    "density_authority": "Blum2024 catalogue p716 MDF reference, not measured purchased stock",
+    "cup_center_from_edge_mm": 21.5,
+    "cup_fixing_spacing_mm": 45,
+    "cup_fixing_line_from_edge_mm": 31,
+    "cup_depth_mm": 13,
+    "cup_pattern_authority": "Official v18 p2 45/9.5 screw-pattern reference and p13 CD13; final exact-source alignment remains required"
+  }
+}

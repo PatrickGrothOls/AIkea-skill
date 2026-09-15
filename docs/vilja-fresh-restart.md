@@ -58,11 +58,12 @@ Use `direnv exec .` for commands/scripts and the existing venv. Limit numerical 
 
 ## Current checkpoint
 
-- Full assembly exported: four carcasses, four doors, six complete drawers, thirteen shelves and sixteen exact Korrekt plate/foot pairs. Raw inspection GLB is approximately 48 MB and STEP approximately 110 MB, with 625 rendered items before the final two fitting panels.
-- Parent opened the existing inspection export and verified six drawers with doors hidden. Material presentation and audits are still unfinished.
-- Actual shared construction-result validation accepted all six drawer boxes and all four cabinet cuts. A top lighting groove initially crossed retained miter stock; moving its ends to 50 mm from blank ends resolved the actual geometric failure.
-- Full-run setup audit exposed an orchestration contract mismatch at the composite root. Root now uses the common panel assembly contract and includes the planned fitting panels. Full export/audit is rerunning serially.
-- The next export also uses shared feature review for actual emitter faces and exact open-door source hardware. No browser or server is opened by the worker.
+- Current inspection export contains four bays, six complete drawers, thirteen shelves, two base deck sections, sixteen exact Korrekt plate/foot pairs and nine emitters. Parent verified compact stacks and the neutral-white interior illumination in the single viewer.
+- The current preview still contains the rejected NC70-driven narrow cabinets and two side fitting panels. It is preserved for inspection while exact replacement Blum hardware is integrated; it is not the final intended full-width design.
+- All 86 manufactured parts have individual STEP/DXF exports. Full assembly STEP and GLB exist. DXF is perimeter-only; manufacturing release, full closed collision audit and Blender presentation remain unfinished.
+- Actual wide-front sweep fails against the old NC70 door. This is an active design failure, not a passed motion check. Exact Blum71B7550/173H7100 ACIS sources and official installation authority are saved; native STEP conversion and replacement mounting/pose verification remain open.
+- Shared review/completion routes now enforce complete drawer-layout evidence. Project source declares the six structural fronts and their measured floor/stack/cap relationships; next regeneration must pass that gate.
+- Disk free space is approximately1.76 GB. No large isolated FreeCAD runtime was installed. Existing Fusion access was denied by Computer Use and the live Blum CAD portal requires login; direct STEP download or an approved existing converter is the immediate source-format dependency.
 - Materials remain proposals: painted MDF, birch plywood supports/decks and HDF bottoms. No supplier finish or load approval is implied.
 - Exact runner source axes are checked at all twelve openings. Installation uses the complete native pair at a common 2 mm inset; fixed axes are 39/167/231 mm from cabinet front and moving axes 37/165/291 mm from drawer front. The 0.2 mm native/nominal side spacing difference is explicit.
 - Shelf pins, connector bodies and screw visuals are dimensional illustrations. Purchased hinge, runner and leg bodies use unchanged source CAD. A 13 mm blind grid is not claimed to establish pin insertion length.
@@ -99,3 +100,5 @@ The user explicitly rejected tall drawers and exposed vertical gaps. Two-drawer 
 
 - Neutral-white presentation update produced furniture_01-white.glb with nine emitters, preserving CAD binary and node transforms. Parent verified interior illumination after correcting the viewer area-light initialization. Shared 4300 K review tint now stays neutral; actual source CAD regeneration remains pending better hinge integration.
 - Exact Blum 71B7550 hinge and 173H7100 plate public manufacturer-authored ACIS DXF retrieved from SWS Hardware. Live Blum portal explicitly requires login. Current CadQuery lacks ACIS import; installed Fusion access was denied by Computer Use, so no conversion occurred there. Isolated conversion runtime is being assessed; this is a format barrier, not a hardware/design incompatibility.
+
+- Source checkpoint review: all25 project Python files parse. The153-line initializer-generated specification contract received independent separation-of-concerns review: cohesive immutable contracts/re-exports; no project-copy refactor needed. Future changes belong to the shared initializer/template. Full lit/open GLB now precedes expensive per-part STEP/DXF in the serial build sequence.

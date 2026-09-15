@@ -1,0 +1,147 @@
+{
+  "schema_version": 1,
+  "stacks": [
+    {
+      "cabinet": "furniture_01/cabinet_01",
+      "floor": "furniture_01/cabinet_01/part:floor_panel",
+      "cap": "furniture_01/cabinet_01/part:shelf_01",
+      "opening_sides": [
+        "furniture_01/cabinet_01/part:left_side",
+        "furniture_01/cabinet_01/part:right_side"
+      ],
+      "drawers": [
+        {
+          "path": "furniture_01/cabinet_01/drawer_01",
+          "front": "furniture_01/cabinet_01/drawer_01/part:front_wall",
+          "sides": [
+            "furniture_01/cabinet_01/drawer_01/part:left_wall",
+            "furniture_01/cabinet_01/drawer_01/part:right_wall"
+          ],
+          "side_reveals_mm": [
+            2,
+            2
+          ]
+        },
+        {
+          "path": "furniture_01/cabinet_01/drawer_02",
+          "front": "furniture_01/cabinet_01/drawer_02/part:front_wall",
+          "sides": [
+            "furniture_01/cabinet_01/drawer_02/part:left_wall",
+            "furniture_01/cabinet_01/drawer_02/part:right_wall"
+          ],
+          "side_reveals_mm": [
+            2,
+            2
+          ]
+        }
+      ],
+      "operating_gaps_mm": [
+        3,
+        3,
+        3
+      ],
+      "tolerance_mm": 0.25,
+      "user_requested_exceptions": []
+    },
+    {
+      "cabinet": "furniture_01/cabinet_02",
+      "floor": "furniture_01/cabinet_02/part:floor_panel",
+      "cap": "furniture_01/cabinet_02/part:shelf_01",
+      "opening_sides": [
+        "furniture_01/cabinet_02/part:left_side",
+        "furniture_01/cabinet_02/part:right_side"
+      ],
+      "drawers": [
+        {
+          "path": "furniture_01/cabinet_02/drawer_01",
+          "front": "furniture_01/cabinet_02/drawer_01/part:front_wall",
+          "sides": [
+            "furniture_01/cabinet_02/drawer_01/part:left_wall",
+            "furniture_01/cabinet_02/drawer_01/part:right_wall"
+          ],
+          "side_reveals_mm": [
+            2,
+            2
+          ]
+        },
+        {
+          "path": "furniture_01/cabinet_02/drawer_02",
+          "front": "furniture_01/cabinet_02/drawer_02/part:front_wall",
+          "sides": [
+            "furniture_01/cabinet_02/drawer_02/part:left_wall",
+            "furniture_01/cabinet_02/drawer_02/part:right_wall"
+          ],
+          "side_reveals_mm": [
+            2,
+            2
+          ]
+        }
+      ],
+      "operating_gaps_mm": [
+        3,
+        3,
+        3
+      ],
+      "tolerance_mm": 0.25,
+      "user_requested_exceptions": []
+    },
+    {
+      "cabinet": "furniture_01/cabinet_03",
+      "floor": "furniture_01/cabinet_03/part:floor_panel",
+      "cap": "furniture_01/cabinet_03/part:shelf_01",
+      "opening_sides": [
+        "furniture_01/cabinet_03/part:left_side",
+        "furniture_01/cabinet_03/part:right_side"
+      ],
+      "drawers": [
+        {
+          "path": "furniture_01/cabinet_03/drawer_01",
+          "front": "furniture_01/cabinet_03/drawer_01/part:front_wall",
+          "sides": [
+            "furniture_01/cabinet_03/drawer_01/part:left_wall",
+            "furniture_01/cabinet_03/drawer_01/part:right_wall"
+          ],
+          "side_reveals_mm": [
+            2,
+            2
+          ]
+        }
+      ],
+      "operating_gaps_mm": [
+        3,
+        3
+      ],
+      "tolerance_mm": 0.25,
+      "user_requested_exceptions": []
+    },
+    {
+      "cabinet": "furniture_01/cabinet_04",
+      "floor": "furniture_01/cabinet_04/part:floor_panel",
+      "cap": "furniture_01/cabinet_04/part:shelf_01",
+      "opening_sides": [
+        "furniture_01/cabinet_04/part:left_side",
+        "furniture_01/cabinet_04/part:right_side"
+      ],
+      "drawers": [
+        {
+          "path": "furniture_01/cabinet_04/drawer_01",
+          "front": "furniture_01/cabinet_04/drawer_01/part:front_wall",
+          "sides": [
+            "furniture_01/cabinet_04/drawer_01/part:left_wall",
+            "furniture_01/cabinet_04/drawer_01/part:right_wall"
+          ],
+          "side_reveals_mm": [
+            2,
+            2
+          ]
+        }
+      ],
+      "operating_gaps_mm": [
+        3,
+        3
+      ],
+      "tolerance_mm": 0.25,
+      "user_requested_exceptions": []
+    }
+  ]
+}

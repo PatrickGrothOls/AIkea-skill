@@ -1,0 +1,31 @@
+{
+  "manufacturer": "Julius Blum GmbH",
+  "retrieved_date": "2026-09-15",
+  "files": [
+    {
+      "part_number": "71B7550",
+      "file": "cad46597865_hinge_1.dxf",
+      "source_url": "https://swshardware.com/cdn/cad-files/cad46597865_hinge_1_cad_bau_%24sall_%24acaddxf_%24v1.dxf",
+      "sha256": "3187e8bfebbe9d7c56a03e5d5865181827863beda87dde76d8a21d85656dbf2a",
+      "units": "millimetres, DXF INSUNITS=4",
+      "native_acis_solids": 7,
+      "converted_to_step": false
+    },
+    {
+      "part_number": "173H7100",
+      "file": "cad44226109_mountplate_1.dxf",
+      "source_url": "https://swshardware.com/cdn/cad-files/cad44226109_mountplate_1_cad_bau_%24sall_%24acaddxf_%24v1.dxf",
+      "sha256": "4d3e7b28012f775a7b7ec0f375e898fa464b3004faafdbf2b61be739d3541a15",
+      "units": "millimetres, DXF INSUNITS=4",
+      "native_acis_solids": 1,
+      "converted_to_step": false
+    }
+  ],
+  "authority": [
+    "https://shop.blum.gr/en/clip-top-blumotion-wide-angle-hinge-for-zero-protrusion-69689716",
+    "https://publications.blum.com/2024/catalogue/en/85/",
+    "https://publications.blum.com/2024/catalogue/en/152/",
+    "https://ea.blum.com/en/number-of-hinges/"
+  ],
+  "qualification": "Exact public distributor-hosted manufacturer CAD. DXF ACIS conversion, closed/open frame, final load/count, fastener engagement and actual swept motion remain unverified. Do not substitute a sketch or declare installation complete."
+}
