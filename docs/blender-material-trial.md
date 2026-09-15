@@ -29,7 +29,9 @@ Keep one viewer and one Blender process at a time, with bounded render settings.
 ### WP3 — Client inspection
 
 - [x] Show actual Blender render images in this conversation.
+- [x] Load the baked GLB in the existing Three.js tab and visually verify orbiting.
 - [ ] Open the prepared Blender scene and verify orbiting when the Mac is unlocked.
+- [ ] Match camera, colour handling, and lighting for a controlled Blender/browser comparison.
 
 ## Current state
 
@@ -45,9 +47,11 @@ not a measurement of interactive rendering. The exported GLB is 33.6 MiB.
 Reimport verification passed: 99 physical parts, identical world-space triangle
 connectivity, maximum vertex rounding difference 0.000438 mm. No additional
 Blender or bpy package has been downloaded.
-Patrick is away from the Mac, which is locked. Native viewport interaction and
-browser appearance/performance therefore remain explicitly pending. Do not ask
-him to unlock it again during this session or claim either interactive test passed.
+Patrick returned and unlocked the Mac. The baked GLB is now displayed in the
+existing Three.js tab at `http://127.0.0.1:58686/?render=interactive&title=Dresser%20%E2%80%94%20Blender%20bake`.
+Browser orbiting was visually verified from front/right to the right side, then
+returned to a useful front angle. Only one in-app browser tab is open. Native
+Blender viewport interaction and sustained browser performance remain untested.
 The package-only bpy installation test remains separate from this installed-engine
 trial, following Patrick's instruction to show the Blender outcome first.
 
@@ -74,7 +78,12 @@ an emissive texture over black PBR base; it is not a verified browser light-map
 integration or `KHR_materials_unlit` export. Hardware retains its own material.
 The native baked reference uses Eevee so baked radiance is not traced again as
 new emitted light onto other objects. Keep the full material scene as the quality
-reference, and treat the bake as a transport experiment.
+reference, and treat the bake as a transport experiment. The first browser import
+visibly retains grain and baked shading, but appears darker and flatter than the
+Cycles render. Different camera framing, tone mapping, environment, floor, and
+live hardware lighting prevent assigning a numerical quality loss. Browser shader
+matching remains a separate step; the current result is deliberately the existing
+viewer displaying the unchanged baked export.
 
 The next reusable slice should accept a source GLB and an explicit material
 specification, preserve geometry/part identity, and produce an assembled-only
@@ -117,3 +126,7 @@ not interactive quality or manufacturing approval.
    images; leave native orbit and browser presentation verification unresolved.
 7. Save bounded Cycles preview settings (24 samples, denoising) and a separate Eevee
    baked scene. A second real Cycles camera angle is generated without changing CAD.
+8. Patrick requested the next test in the 3D viewer and confirmed the Mac is unlocked.
+   Reused the existing tab for the baked GLB, visually verified rotation, and left
+   the assembled view open. No extra renderer tab or Blender process was started.
+   No code or geometry changed; only this experiment record was updated.
