@@ -3,9 +3,10 @@
 AIkea's standard structural process is three-axis CNC: choose one broad face
 for each physical part to face the spindle throughout its machining. Do not flip
 the part, assume edge drilling or require an angled/undercut tool approach to
-make an otherwise incompatible arrangement appear complete. An explicitly chosen
-different process must be recorded and qualified; never infer that change from
-the appearance of a reference image.
+make an otherwise incompatible arrangement appear complete. Retain one-face
+machining whenever a viable construction exists. Use the conflict-resolution
+order below; a nicer or simpler part alone does not justify a second machining
+face. Never infer a process exception from a reference image.
 
 ## Plan before joining
 
@@ -36,6 +37,58 @@ the appearance of a reference image.
   Cabineo/insert receivers into through-holes to evade an entry-face conflict.
 - Check the complete tool footprint, remaining material, edge clearances, corner
   radii and reachable depth, not only hole centres or non-overlapping solid boxes.
+
+## Resolve a machining-face conflict
+
+1. Find a viable construction using one broad CNC face per physical part. Evaluate
+   the actual joints, assembly sequence, hardware support and usable space; do not
+   assume splitting a panel into extra pieces is automatically a viable solution.
+2. Consider machining an ordinary fixing/pilot hole all the way through from that
+   face when the resulting appearance, strength and fastening remain acceptable.
+   Check the exact screw/head, board material, pilot diameter, thread engagement,
+   edge distances and retained stock. A clearance hole does not provide the grip
+   of a pilot. Keep required countersinks/counterbores on their proper entry face.
+   Do not use through-machining to bypass blind precision pockets or Cabineo/insert
+   receiver requirements. A passing face audit alone does not qualify the change.
+3. Only when no viable one-face construction exists, record the alternatives and
+   why they fail, then develop a guided second operation. Keep it explicitly
+   separate from single-setup CNC evidence; never omit its holes from the audit.
+
+### Plugging the visible exit
+
+A through-hole may be permanently plugged on its visible side, then trimmed or
+sanded flush and coated. Record the plug, depth, retention method and finishing
+sequence on the same part and include the work/materials in the production package.
+Keep the plug clear of required screw engagement, hardware seating and later
+assembly access. Do not assume filler or a cosmetic plug restores structural
+material removed by drilling; assess the perforated part and fastening separately.
+
+Judge the finish by the hole's location and intended material. A small, neat,
+detectable plug inside a drawer or another low-visibility interior can be an
+acceptable design choice; it need not meet the appearance standard of an exposed
+front. Painted MDF can use a filled/plugged and coated finish. Exposed veneer or
+solid wood may retain a visible plug and grain mismatch; record that appearance
+rather than promise an invisible repair. Show the affected face and mark the
+finishing step in the user's guidance.
+
+### Guide an unavoidable second operation
+
+For hand drilling, design a template that locates positively on the correct part,
+face and orientation, with the verified hole pattern and controlled drilling
+depth. Use unmistakable part/face markings, a keyed or asymmetric fit, suitable
+clamping and drill guidance; verify tool access and that the template cannot seat
+in the wrong orientation. Do not describe a template as risk-free without proof.
+
+For CNC work, design a registered flip fixture with positive stops or locating
+features that constrain translation and rotation, plus a repeatable Z reference.
+One zeroing hole alone does not constrain rotation. Retain the part identity,
+flip transform, clamping plan and exact second-operation toolpaths. Prove the
+registration and hole locations on a test piece before applying them to production.
+
+For either route, provide visual step sheets showing the actual part, orientation,
+locators, clamps, drilling depth or zeroing procedure, and verification steps.
+Reconcile both operations with the final geometry, fit and strength checks. A
+fixture proposal or illustration alone is not qualified machining evidence.
 
 ## Verify the actual tree
 

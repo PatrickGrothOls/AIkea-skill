@@ -19,7 +19,10 @@ Keep implementation details out of the customer conversation unless requested.
 
 Read [the manufacturing process](references/manufacturing-process.md) before
 placing panels or joints. The standard process is three-axis CNC with one chosen
-broad machining face per physical part and no flipping. Selected fixed structural
+broad machining face per physical part and no flipping. Its conflict-resolution
+policy covers qualified through-holes, visible-side plugs and location-dependent
+finish expectations; guided second operations are a last resort only when no
+viable one-face construction exists. Selected fixed structural
 sheet connections use paired Cabineo/insert work. This constrains the arrangement,
 including all hardware fixing holes.
 

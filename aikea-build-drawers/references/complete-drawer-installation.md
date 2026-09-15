@@ -68,9 +68,13 @@ a visible runner solid proves those holes exist.
 
 Plan all these cuts together with Cabineo joinery on each part's one chosen CNC
 face. In particular, inner-face drawer joinery can conflict with outer-face
-runner pilots. Resolve the construction without flipping the part or turning a
-blind fixing into a through-hole just to pass the face audit. Follow the
-[manufacturing process](../../aikea-design-furniture/references/manufacturing-process.md).
+runner pilots. Follow the shared
+[conflict-resolution order](../../aikea-design-furniture/references/manufacturing-process.md#resolve-a-machining-face-conflict):
+retain a viable one-face construction; consider qualified through-holes and
+visible-side plugs, with interior appearance judged by location; only when no
+one-face option is viable use a verified, guided second operation. Never convert
+a blind fixing merely to pass the face audit or treat a cosmetic plug as restored
+screw grip. Record and verify every required operation.
 
 Keep each runner system owned once, with its fixed members on the host and its
 moving members following the drawer through saved placements. Give every drawer
