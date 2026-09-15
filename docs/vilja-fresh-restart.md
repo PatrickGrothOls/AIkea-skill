@@ -58,7 +58,25 @@ Use `direnv exec .` for commands/scripts and the existing venv. Limit numerical 
 
 ## Current checkpoint
 
-- Complete first-cabinet construction reaches shared review with two grooved-bottom drawers, exact runner members, compact supports, full grid, five shelves, source hinges and real lighting grooves.
-- Corrected a review boundary type mismatch (hardware Shape versus required Workplane); first-cabinet review is rerunning. No failed output is accepted as current evidence.
-- Base geometry is authored with 16 Korrekt plate/foot pairs, 15 mm deck and aligned floor access; full run export remains pending.
-- Material identities are explicit proposals: painted MDF panels/doors, birch plywood compact supports/decks, HDF drawer bottoms. Supplier stock, coating allowance, screws/pilot qualification and physical load are not approved by source CAD.
+- Full assembly exported: four carcasses, four doors, six complete drawers, thirteen shelves and sixteen exact Korrekt plate/foot pairs. Raw inspection GLB is approximately 48 MB and STEP approximately 110 MB, with 625 rendered items before the final two fitting panels.
+- Parent opened the existing inspection export and verified six drawers with doors hidden. Material presentation and audits are still unfinished.
+- Actual shared construction-result validation accepted all six drawer boxes and all four cabinet cuts. A top lighting groove initially crossed retained miter stock; moving its ends to 50 mm from blank ends resolved the actual geometric failure.
+- Full-run setup audit exposed an orchestration contract mismatch at the composite root. Root now uses the common panel assembly contract and includes the planned fitting panels. Full export/audit is rerunning serially.
+- The next export also uses shared feature review for actual emitter faces and exact open-door source hardware. No browser or server is opened by the worker.
+- Materials remain proposals: painted MDF, birch plywood supports/decks and HDF bottoms. No supplier finish or load approval is implied.
+- Exact runner source axes are checked at all twelve openings. Installation uses the complete native pair at a common 2 mm inset; fixed axes are 39/167/231 mm from cabinet front and moving axes 37/165/291 mm from drawer front. The 0.2 mm native/nominal side spacing difference is explicit.
+- Shelf pins, connector bodies and screw visuals are dimensional illustrations. Purchased hinge, runner and leg bodies use unchanged source CAD. A 13 mm blind grid is not claimed to establish pin insertion length.
+- Physical qualification still requires stock/load, pilot and screw compatibility, base/cabinet and wall anchoring, fitting-panel/kickboard fixings and lighting electrical routing. Full assembly exports do not establish fabrication readiness.
+- Shared lighting review uncovered missing hardware ownership. The feature now consistently declares its mounting panel and review validates it, so light bodies follow their parent during inspection explosion. Focused regression checks are pending the serial CAD run.
+
+### User correction: compact drawer stacks
+
+- [x] Stop the superseded tall/gappy layout before further export/bake.
+- [x] Derive shallow drawer heights from 3 mm floor, inter-drawer and cap-shelf gaps.
+- [x] Keep cap shelves on System32 rows324/164; move runner axes independently to54/207.75 or54 mm.
+- [ ] Regenerate and audit all six revised drawers and thirteen shelves.
+- [ ] Replace the parent's existing inspection asset and complete its final presentation.
+
+The user explicitly rejected tall drawers and exposed vertical gaps. Two-drawer bays now use150.75 mm boxes; single-drawer bays144.5 mm. Floor top isZ16, first box bottomZ19. Cap undersides areZ326.5 andZ166.5, each3 mm above the drawer stack. Compact strips move upward5 mm to start atZ19 and clear the floor. The entire recipe regenerates its mounting holes; old row164/452 runner holes are not retained. The drawer skill now records this client default. Other shelves remain adjustable on the shared32 mm grid.
+
+- Reusable drawer policy checkpoint: compact floor-adjacent stacks and one full-width structural front are now AIkea defaults, with one authoritative installation section. Applied/doubled fronts require an explicit design choice. Shared height-planner default changed from22 mm to3 mm; six planner tests pass, including the actual corrected two-drawer stack. This user correction supersedes the earlier parent suggestion of a separate front.

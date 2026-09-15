@@ -109,8 +109,8 @@ authored-host route above.
    drawer as an independent child with its own height, depth, vertical position,
    runner selection, and review pose. Repeating a drawer is ordinary collection
    composition; it is not a separate stack design. When the client has not fixed
-   the box heights, resolve the mounting rows and the drawer stack's upper
-   boundary, then use `DrawerStackHeightPlanner` to turn the available intervals
+   the box heights, resolve a floor-adjacent, closely stacked layout and its
+   cap shelf first, derive the mounting positions, then use `DrawerStackHeightPlanner` to turn the available intervals
    into useful box capacity with a deliberate clear gap. Keep explicitly chosen
    heights unchanged.
 4. Resolve the exact source STEP files named by the selected runner profile. If
@@ -224,3 +224,7 @@ hinge plate, shelf, or later fitting from occupying the same fixing node or
 physical panel space.
 `$aikea-review-unit` owns presentation and global placement, while the overall
 `aikea.yaml` remains unchanged because drawer arrangement is local to its cabinet.
+
+### Default frontage and vertical layout
+
+Use one functional structural front wall as the visible drawer front. Calculate its width from the usable cabinet opening and operating reveals, independently of the narrower runner-compatible box; do not automatically add a fascia or doubled front. Place the first drawer close above the cabinet floor, stack shallow drawers with small operating gaps, and cap every stack with a shelf. These are AIkea defaults unless deliberately overridden. Apply the detailed [frontage and compact-stack contract](references/complete-drawer-installation.md#frontage-and-compact-stacks) to geometry, joints, captured bottoms, machining and full travel.

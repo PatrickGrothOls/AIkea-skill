@@ -23,6 +23,7 @@ class TestDrawerStackHeightPlanner:
                 DrawerStackHeightRequest("drawer_03", 561.0),
             ),
             top_boundary_mm=753.0,
+            preferred_clear_gap_mm=22.0,
         )
 
         assert tuple(item.box_height_mm for item in plan.drawers) == (
@@ -43,6 +44,7 @@ class TestDrawerStackHeightPlanner:
                 DrawerStackHeightRequest("drawer_02", 337.0),
             ),
             top_boundary_mm=497.0,
+            preferred_clear_gap_mm=22.0,
         )
 
         assert tuple(item.box_height_mm for item in plan.drawers) == (138.0, 138.0)
@@ -54,6 +56,7 @@ class TestDrawerStackHeightPlanner:
                 DrawerStackHeightRequest("drawer_02", 369.0),
             ),
             top_boundary_mm=561.0,
+            preferred_clear_gap_mm=22.0,
         )
 
         assert plan.drawers[0].box_height_mm == 150.0
@@ -67,11 +70,21 @@ class TestDrawerStackHeightPlanner:
                 DrawerStackHeightRequest("drawer_02", 369.0),
             ),
             top_boundary_mm=593.0,
+            preferred_clear_gap_mm=22.0,
             equalize_automatic_heights=True,
         )
 
         assert tuple(item.box_height_mm for item in plan.drawers) == (170.0, 170.0)
         assert tuple(item.clear_gap_above_mm for item in plan.drawers) == (22.0, 54.0)
+
+    def test_default_compact_stack_caps_both_drawers_with_three_mm_reveals(self):
+        plan = self.planner.plan(
+            (DrawerStackHeightRequest("lower", 19.0),
+             DrawerStackHeightRequest("upper", 172.75)),
+            top_boundary_mm=326.5,
+        )
+        assert tuple(item.box_height_mm for item in plan.drawers) == (150.75, 150.75)
+        assert tuple(item.clear_gap_above_mm for item in plan.drawers) == (3.0, 3.0)
 
     def test_rejects_a_fixed_height_that_crosses_the_next_boundary(self) -> None:
         with pytest.raises(

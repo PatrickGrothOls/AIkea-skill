@@ -43,7 +43,7 @@ class DrawerStackHeightPlanner:
         requests: tuple[DrawerStackHeightRequest, ...],
         *,
         top_boundary_mm: float,
-        preferred_clear_gap_mm: float = 22.0,
+        preferred_clear_gap_mm: float = 3.0,
         equalize_automatic_heights: bool = False,
     ) -> DrawerStackHeightPlan:
         ordered = tuple(sorted(requests, key=lambda item: item.bottom_height_mm))

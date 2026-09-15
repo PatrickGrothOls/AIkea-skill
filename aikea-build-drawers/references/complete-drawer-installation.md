@@ -33,6 +33,16 @@ building and delivering a box-only drawer.
    export does not establish that the selected generator supplies the installation.
    The [shared recipes](shared-drawer-construction.md) list current fixing gaps.
 
+## Frontage and compact stacks
+
+The default is one structural front wall that also forms the visible drawer front. Calculate visible width from the cabinet opening, chosen side reveals and actual open-door/hinge clearance; calculate the narrower box width separately from runners and compact supports. Do not assume the internal wall width equals the desired visible frontage. Do not automatically add a false/applied front or a second panel: an applied fascia requires a deliberate design choice.
+
+When the structural front overhangs the box sides, join those sides directly into its back face with real paired machining and receiver positions. Trim the side ends where the joint requires it. Keep the bottom captured in all four walls; bound the front groove to the captured bottom instead of exposing it in the overhangs. Include front geometry, hardware, drilling, remaining stock and quantities in the same drawer subassembly and one-face setup audit. A wider rectangle without its changed joints is not a completed front.
+
+Start the lowest drawer immediately above the cabinet floor/base with necessary operating clearance. Stack adjacent visible fronts closely and place a shelf directly above every stack; avoid arbitrary unused vertical gaps and default to shallow useful drawers. Resolve floor, inter-drawer and cap-shelf reveals before runner mounting heights. Keep cap shelves on the shared System32 grid, then derive box heights and runner positions from the resulting space. Runner axes are independent of shelf-pin rows. The height planner defaults to a 3 mm clear gap; this is a starting value to verify against hardware, stock/coating and real motion, not universal clearance proof.
+
+Move compact supports and their actual cabinet/runner holes with the revised layout, removing obsolete holes. Never interpret “straight on the base” as zero rubbing clearance. Check the full-width structural front's swept travel against exact open hinges, doors, adjacent fronts and shelves. Resolve conflicts through real swing/placement/joinery choices; do not hide them with an undersized front. Report actual front and box widths, front heights and floor/inter-drawer/shelf reveals after regenerating the complete assembly.
+
 ## Doors, hinges and spacers
 
 Check the actual door at its usable opening angle, hinge arms and mounting plates
