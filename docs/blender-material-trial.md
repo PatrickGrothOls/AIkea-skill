@@ -31,7 +31,16 @@ Keep one viewer and one Blender process at a time, with bounded render settings.
 - [x] Show actual Blender render images in this conversation.
 - [x] Load the baked GLB in the existing Three.js tab and visually verify orbiting.
 - [ ] Open the prepared Blender scene and verify orbiting when the Mac is unlocked.
-- [ ] Match camera, colour handling, and lighting for a controlled Blender/browser comparison.
+- [x] Confirm the browser quality target: Patrick accepts the current appearance;
+  a controlled Blender/browser comparison is no longer required for this trial.
+
+### WP4 — Explain black edge lines
+
+- [x] Locate the black values in the exported atlas at tabletop edge coordinates.
+- [x] Isolate texture coverage from illumination with a constant-white emission bake.
+- [x] Measure the affected UV strip and identify the missing texel coverage.
+- [ ] Give narrow edge islands sufficient texture coverage and padding, rebake,
+  and visually verify the correction without changing furniture geometry.
 
 ## Current state
 
@@ -52,6 +61,8 @@ existing Three.js tab at `http://127.0.0.1:58686/?render=interactive&title=Dress
 Browser orbiting was visually verified from front/right to the right side, then
 returned to a useful front angle. Only one in-app browser tab is open. Native
 Blender viewport interaction and sustained browser performance remain untested.
+Patrick explicitly approved the current browser appearance as the desired quality
+level. Further photorealism or material-style refinement is not a prerequisite.
 The package-only bpy installation test remains separate from this installed-engine
 trial, following Patrick's instruction to show the Blender outcome first.
 
@@ -70,8 +81,8 @@ this branch records an experiment, not a shipped rendering feature.
 | `export-geometry-check.json` | Independent Blender reimport and world-space triangle comparison |
 
 The photographed oak texture represents unselected stock, not a supplier-approved
-finish. It remains visually busy; successful rendering is not proof of a convincing
-finished product. The atlas stores diffuse color and direct/indirect lighting at
+finish. Patrick accepts its current appearance; the earlier subjective concern
+about busy grain is not a blocker. The atlas stores diffuse color and direct/indirect lighting at
 one assembled configuration. It does not preserve view-dependent specular response,
 normal-map detail, or correct lighting after opening/exploding parts. Export uses
 an emissive texture over black PBR base; it is not a verified browser light-map
@@ -84,6 +95,35 @@ Cycles render. Different camera framing, tone mapping, environment, floor, and
 live hardware lighting prevent assigning a numerical quality loss. Browser shader
 matching remains a separate step; the current result is deliberately the existing
 viewer displaying the unchanged baked export.
+
+## Black edge diagnosis
+
+The reported tabletop line is a missing-coverage artifact in the baked texture.
+It is present in the exported image itself, not a newly created CAD gap. A local
+diagnostic sampled the actual exported tabletop triangles and their UV coordinates.
+On the upper front round, 48 of 86 sampled triangle centroids read black. The upper
+back round has 42 of 86; the two broad top-face triangles are correctly coloured.
+
+A second headless Blender bake replaced the tabletop shader with constant white
+emission. This removes lighting, shadow, and material colour as explanations.
+The same 48 front-edge and 42 back-edge centroids remained black. The affected
+front-edge UV strip spans x=1286.68396 to 1287.48682 in a 4096-pixel atlas: only
+0.80286 pixels wide, entirely between pixel centres 1286.5 and 1287.5. No pixel
+centre covers that strip. The bake's five-pixel margin did not recover it.
+
+Evidence: `local-evidence/edge-coverage-comparison.json`,
+`local-evidence/subpixel-edge-proof.json`, `local-evidence/top-uv-coverage.png`,
+and `local-evidence/top-uv-coverage.log`. The probe modifies no saved scene, CAD,
+viewer asset, or current browser view. The source atlas remains unchanged.
+`inspect_bake_seams.py` owns reading/sampling the GLB; `probe_top_uv_coverage.py`
+owns the separate constant-white bake. Both are ignored trial scripts below
+150 lines; no production file or geometry changed.
+
+Minimum-width UV allocation/packing and suitable padding, followed by rebaking,
+are the next correction to verify. Do not remove actual drawer reveals or joints
+as a cosmetic workaround. Other similar fine rounded-edge lines have the same
+visual signature, but the white-bake isolation above specifically proves the
+tabletop case; it does not classify every dark line on the assembly.
 
 The next reusable slice should accept a source GLB and an explicit material
 specification, preserve geometry/part identity, and produce an assembled-only
@@ -130,3 +170,7 @@ not interactive quality or manufacturing approval.
    Reused the existing tab for the baked GLB, visually verified rotation, and left
    the assembled view open. No extra renderer tab or Blender process was started.
    No code or geometry changed; only this experiment record was updated.
+9. Patrick approved the current browser quality and requested an explanation of
+   black edge strings. The tabletop case is traced to subpixel UV coverage and
+   independently reproduced with constant-white emission. Record the correction
+   as pending; this request was diagnosis, not a new material or CAD design.
