@@ -24,11 +24,11 @@ coverage correction. The original GLB remains the source for open/exploded views
 - [x] Document the required setup, source material contract, assembled/open view
   boundary, visual checks and host capability limits.
 - [x] Run focused tests, skill validation and review the complete diff.
-- [ ] Commit a coherent local checkpoint; publication remains separate.
+- [x] Commit a coherent local checkpoint; publication remains separate.
 
 ## Current state
 
-Implemented on `codex/blender-bake-skill`, stacked on trial commit `723e410`.
+Implemented in `76b42d3` on `codex/blender-bake-skill`, stacked on trial commit `723e410`.
 The engine-only installation downloaded Python 3.13.3 and official bpy 5.2.1;
 Cycles and glTF import/export passed without the installed Blender application.
 The missing-uv bootstrap path downloaded its own uv binary and executed it.
@@ -70,6 +70,8 @@ are separate outstanding features. No push or merge has been performed.
 4. 2026-09-15: Retained the accepted diffuse appearance, 4096² budget and coverage
    correction. Appearance work introduces no construction primitives or renderer
    bevels. Input/output checksums bind the resulting report to its real assets.
+5. 2026-09-15: Committed the reviewed implementation locally as `76b42d3`.
+   The main checkout and installed skill links remain unchanged pending integration.
 
 ## Responsibility review
 
