@@ -1,7 +1,7 @@
 /** Scope: Verify nested exported emitter identity, placement and material ownership. */
 import assert from "node:assert/strict";
 import test from "node:test";
-import { Group, Mesh, MeshStandardMaterial, PlaneGeometry, Texture } from "three";
+import { BoxGeometry, Group, Mesh, MeshStandardMaterial, PlaneGeometry, Texture } from "three";
 import { LightingSource } from "./LightingSource.js";
 import { LightingSurface } from "./LightingSurface.js";
 import { PlywoodSurface } from "./PlywoodSurface.js";
@@ -65,4 +65,21 @@ test("counts the six GLTF primitive meshes of an emitter as one source", () => {
   assert.equal(sources.length, 2);
   assert.equal(sources[0].name, "left_01__light_source__apex__run_01__3200k");
   assert.equal(sources[0].position[2], 0.5);
+});
+
+test("consolidated emitter solid keeps the same outward face and follows its host", () => {
+  const root = new Group();
+  const mesh = LightingFixture.mesh("right_side__light_source__run_01");
+  mesh.geometry = new BoxGeometry(600, 4, 0.2);
+  mesh.geometry.translate(0, 0, -0.1);
+  root.add(mesh);
+  root.position.set(25, 30, 100);
+  root.rotation.y = Math.PI / 2;
+  root.updateMatrixWorld(true);
+  const [source] = LightingSource.collect(root);
+  assert.equal(source.width, 600);
+  assert.equal(source.height, 4);
+  assert.ok(Math.abs(source.position[0] - 25.5) < 1e-6);
+  assert.equal(source.position[1], 30);
+  assert.equal(source.position[2], 100);
 });

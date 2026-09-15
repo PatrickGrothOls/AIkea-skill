@@ -64,11 +64,25 @@ upstream conversion has been checked.
 
 ## One command
 
+First consolidate the static material GLB for efficient import and inspection:
+
+```bash
+python <review-skill>/scripts/pack_review_meshes.py \
+  <assembly>/review/materials.glb <assembly>/review/materials-packed.glb
+```
+
+Require the adjacent packing report to pass. This combines compatible surfaces
+within each part and material; it preserves indexed positions, normals and UVs
+bitwise, plus node transforms and identities. It does not simplify geometry.
+Use the packed result as the bake source and matching inspection model. Static,
+unskinned, embedded-buffer triangle GLBs are supported; animated or unsupported
+primitive data must use a compatible export, never be silently discarded.
+
 Run using the host's activated environment (`direnv exec .` in this repository):
 
 ```bash
 python <review-skill>/scripts/bake_furniture_presentation.py \
-  <assembly>/review/materials.glb <assembly>/review/presentation-01 \
+  <assembly>/review/materials-packed.glb <assembly>/review/presentation-01 \
   --runtime-directory <workspace>/.aikea-runtime
 ```
 

@@ -29,9 +29,11 @@ export class ExplodedGroupLayout {
   }
 
   nearestFace(group, bounds) {
-    const size = group.bounds.getSize(new Vector3());
+    const panels = group.records.filter((record) => record.kind === "panel");
+    const singlePanel = panels.length === 1;
+    const size = (singlePanel ? panels[0].bounds : group.bounds).getSize(new Vector3());
     const axes = ["x", "y", "z"];
-    const candidates = group.records.length === 1
+    const candidates = singlePanel || group.records.length === 1
       ? [axes.reduce((smallest, axis) => size[axis] < size[smallest] ? axis : smallest)]
       : axes;
     const faces = candidates.flatMap((axis) => [

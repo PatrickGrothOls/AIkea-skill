@@ -2,6 +2,7 @@
 
 import { ReviewMeshName } from "./ReviewMeshName.js";
 import { ReviewVisibility } from "./ReviewVisibility.js";
+import { LightingEmitterFace } from "./LightingEmitterFace.js";
 
 import { Vector3 } from "three";
 
@@ -31,6 +32,7 @@ export class LightingSource {
 
   constructor(mesh) {
     this.mesh = mesh;
+    this.bounds = LightingEmitterFace.bounds(mesh.geometry);
   }
 
   sourceId() {
@@ -50,7 +52,6 @@ export class LightingSource {
   }
 
   describe() {
-    const geometry = this.mesh.geometry;
     const bounds = this.#bounds();
     const center = bounds.getCenter(new Vector3());
     const size = bounds.getSize(new Vector3());
@@ -78,8 +79,7 @@ export class LightingSource {
   }
 
   #bounds() {
-    this.mesh.geometry.computeBoundingBox();
-    return this.mesh.geometry.boundingBox;
+    return this.bounds;
   }
 }
 

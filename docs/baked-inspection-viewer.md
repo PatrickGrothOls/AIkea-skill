@@ -14,7 +14,47 @@ keep approval bound to the original presentation artifact.
 - [x] Review boundaries and commit the coherent slice.
 - [ ] Integrate construction defaults and verify the corrected Vilja cabinet in one tab.
 
-## Active handoff — 2026-09-15 13:28 UTC
+## Active handoff — 2026-09-15 14:07 UTC
+Current branch is codex/compact-review-geometry in this same worktree. See
+docs/compact-review-geometry.md. It adds static GLB packing and fixes inspection
+lighting for consolidated solids plus panel-normal separation with attached hardware.
+64 viewer tests and three packing tests pass; bundle built and live inspection checked.
+
+Bake attempt03 IS RUNNING (exec session85208; observed engine PID60238, parent60191).
+It started around13:40UTC. Do not start a duplicate. Output directory:
+local-evidence/vilja-presentation-03. Immutable input remains the source described
+below, SHA659cb44a25c198dc6a50880f762b3b48a628e8802762577d89db6cef8e8a4b13.
+White coverage passed:40panels,344104triangle centroids, zero uncovered. Lighting
+bake is active; no presentation.json yet as of14:06UTC. Last process check showed
+the one engine using173percentCPU. Do not treat the quiet bake.log as a hang.
+
+New inspection delivery candidate is local-evidence/vilja-inspection-attached.glb
+(SHA b7b061da9f61bac2a6da7ac4796013329e61afbbc13b75d31c8e48607621e7fb).
+Packing reduced18,181 to174draw primitives, preserving indexed attributes bitwise;
+local-evidence/packed-independent.json verifies envelope and seven host emitters.
+The attached derivative updates36hinge/plate inspection paths from exact saved
+host declarations, with all binary chunks and other JSON unchanged. Source of
+mapping: ../vilja-skill-trial/local-evidence/project/reviews/hinge-attachment-mapping.json.
+Child reusable source fix is commit9c0c9c4 on codex/cabinet-defaults (not yet
+cherry-picked here); five tests pass. No existing CAD/GLBs changed by that fix.
+
+Once bake03 reports PASS, run local-evidence/apply_hinge_ownership.py with its
+assembled.glb, a NEW output path, and that mapping. This produces a metadata-only
+proof; never edit the original bake reports or source. If baked output has many
+primitives, pack it to another new file first, requiring its packing proof.
+Then serve the derived finished model with --inspection-model pointing to the
+attached inspection derivative above. Current server session9114 on port63332
+serves the attached inspection model only. Stop that session before replacing it.
+Same tab1/browser1 is open; CUA binding viljaReviewTab. Use playwright.evaluate
+for DOM diagnostics; locator('main').evaluate repeatedly timed out despite working
+screenshots. DOM proved7lights/174pieces/1canvas/no photo renderer. Latest visual
+check focused cabinet03/right_side at0percent: actual strip and shelf pins visible.
+Restore whole assembly on final delivery. No final baked visual delivery yet.
+
+Automation remains ACTIVE. Resume existing render, finish checks/one-tab delivery,
+then pause it. Do not regenerate CAD. Manufacturing gaps below remain open.
+
+## Previous handoff — 2026-09-15 13:28 UTC
 Integrated construction defaults plus deck attachment metadata at af631e6. Private
 project: ../vilja-skill-trial/local-evidence/project. Fresh build agent is complete;
 do not rebuild CAD. corrected-closed-materials.glb and corrected-interior-materials.glb
