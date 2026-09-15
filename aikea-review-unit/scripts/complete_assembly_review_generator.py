@@ -13,6 +13,7 @@ from assembly_tree_review_plan_validator import AssemblyTreeReviewPlanValidator
 from cadquery_glb_exporter import CadQueryGlbExporter
 from complete_assembly_review_report import CompleteAssemblyReviewReport
 from generated_assembly_builder_loader import GeneratedAssemblyBuilderLoader
+from drawer_layout_policy_checker import DrawerLayoutPolicyChecker
 from project_hardware_geometry_resolver import ProjectHardwareGeometryResolver
 from purchased_hardware_hydrator import PurchasedHardwareHydrator
 from unit_mockup import MockupPart, UnitMockupInputError
@@ -65,6 +66,7 @@ class CompleteAssemblyReviewGenerator:
         requested = states or {}
         built = self.loader.load_assembly(project_root, assembly_id)
         visits = self.loader.walk(project_root, built)
+        DrawerLayoutPolicyChecker().require(project_root, visits)
         plans = []
         selectors = []
         resolved_states = {}

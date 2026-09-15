@@ -19,7 +19,7 @@ class AssemblyTreeAssembly:
     def __init__(self) -> None:
         self.path = ("cabinet_01",)
         self.assembly = SimpleNamespace(
-            spec=SimpleNamespace(assembly_id="cabinet_01")
+            spec=SimpleNamespace(assembly_id="cabinet_01", purpose="cabinet")
         )
 
 
@@ -62,6 +62,15 @@ class ReviewLoaderProbe:
 
     def walk(self, _root, _assembly):
         return AssemblyTreeAssembly(), AssemblyTreePart()
+
+
+class DrawerReviewLoaderProbe(ReviewLoaderProbe):
+    """Expose an installed drawer with missing policy evidence."""
+
+    def walk(self, root, assembly):
+        visits=super().walk(root,assembly)
+        visits[0].assembly.spec.purpose="drawer"
+        return visits
 
 
 class ReviewFeatureLoaderProbe:
@@ -200,3 +209,11 @@ class TestCompleteAssemblyReviewGenerator:
                 "cabinet_01",
                 tmp_path / "review.glb",
             )
+
+    def test_missing_drawer_layout_blocks_before_hydration_and_export(self,tmp_path):
+        exporter=ExporterProbe()
+        generator=CompleteAssemblyReviewGenerator(loader=DrawerReviewLoaderProbe(),
+            hydrator=HydratorMustNotRun(),exporter=exporter)
+        with pytest.raises(ValueError,match="missing drawer layout policy"):
+            generator.generate(tmp_path,"cabinet_01",tmp_path/"review.glb")
+        assert exporter.call is None

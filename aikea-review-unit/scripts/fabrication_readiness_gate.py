@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Any
 
 from assembly_fabrication_checker import AssemblyFabricationChecker
+from drawer_layout_policy_checker import DrawerLayoutPolicyChecker
 from construction_tree_checker import ConstructionTreeChecker
 from construction_requirement_checker import ConstructionRequirementChecker
 from construction_feature_qualification import ConstructionFeatureQualification
@@ -30,7 +31,8 @@ class FabricationReadinessGate:
         evidence = self.evidence.build(visits)
         qualified, features = ConstructionFeatureQualification().resolve(project_root, evidence, visits)
         checks = (
-            ConstructionTreeChecker().check(visits, qualified)
+            (DrawerLayoutPolicyChecker().check(project_root, visits),)
+            + ConstructionTreeChecker().check(visits, qualified)
             + ConstructionRequirementChecker().check(visits, features)
             + self.assembly.check(visits)
             + self.artifacts.check(project_root, evidence, visits)

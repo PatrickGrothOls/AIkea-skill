@@ -24,7 +24,7 @@ class ConstructionInputFingerprinter:
                                  allow_nan=False).encode()).hexdigest()
 
     def source_inputs(self, root):
-        inputs = [root / "aikea.yaml", *(root / "assemblies").rglob("*.py"),
+        inputs = [root / "aikea.yaml", root / "assemblies/drawer-layout-policy.json", *(root / "assemblies").rglob("*.py"),
                   *(root / "assemblies").rglob("features.json")]
         return {str(path.relative_to(root)): sha256(path.read_bytes()).hexdigest()
                 for path in sorted(set(inputs)) if path.is_file()}

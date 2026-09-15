@@ -35,7 +35,7 @@ building and delivering a box-only drawer.
 
 ## Frontage and compact stacks
 
-The default is one structural front wall that also forms the visible drawer front. Calculate visible width from the cabinet opening, chosen side reveals and actual open-door/hinge clearance; calculate the narrower box width separately from runners and compact supports. Do not assume the internal wall width equals the desired visible frontage. Do not automatically add a false/applied front or a second panel: an applied fascia requires a deliberate design choice.
+The default is one structural front wall that also forms the visible drawer front. Calculate visible width from the cabinet opening, chosen side reveals and actual open-door/hinge clearance; calculate the narrower box width separately from runners and compact supports. Do not assume the internal wall width equals the desired visible frontage. Do not automatically add a false/applied front or a second panel: an applied fascia requires an explicit user request.
 
 When the structural front overhangs the box sides, join those sides directly into its back face with real paired machining and receiver positions. Trim the side ends where the joint requires it. Keep the bottom captured in all four walls; bound the front groove to the captured bottom instead of exposing it in the overhangs. Include front geometry, hardware, drilling, remaining stock and quantities in the same drawer subassembly and one-face setup audit. A wider rectangle without its changed joints is not a completed front.
 
@@ -136,3 +136,11 @@ Run the complete-tree operation and face checks, physical inventory and
 [fabrication gate](../../aikea-review-unit/references/fabrication-readiness.md).
 Missing hardware, holes, fixing data or clearance evidence keeps fabrication
 blocked. A useful inspection artifact is not a CNC production package.
+
+## Enforced review and completion evidence
+
+For every installed drawer, save `assemblies/drawer-layout-policy.json` with `schema_version: 1` and a `stacks` list. Each stack references its actual `cabinet`, `floor`, `cap`, two `opening_sides` and ordered `drawers`; each drawer references its actual `path`, single `front`, two `sides` and `side_reveals_mm`. Use full typed tree paths such as `furniture_01/cabinet_01/drawer_01/part:front`. Record `operating_gaps_mm` in floor/inter-drawer/cap order and a positive `tolerance_mm` no greater than 0.5 mm. Mark the single structural front with role `drawer_front`.
+
+The shared complete-review exporter now rejects missing/nonconforming drawer evidence before export. The fabrication gate reports `design.drawer_layout` as failed. It measures the current solids, checks drawer coverage, direct front-to-side connections and the front's retaining groove, and compares frontage/reveals and floor/stack/cap gaps. Default operating gaps must be positive and at most 5 mm; the height planner's 3 mm is a starting design value, not a hardware qualification. A report does not approve unsupported joints, tools, physical load or motion.
+
+An exception requires `user_requested_exceptions` entries with `rule` (`compact_stack`, `single_front` or `frontage`), `requested_by: "user"`, the actual `request_quote` and a traceable `request_reference`. Agent design choices do not count. The checker requires this provenance; it cannot independently authenticate a conversation quotation. Unavoidable hardware conflicts must be resolved or surfaced, never silently treated as user approval. This gate covers the shared complete-review and fabrication entrypoints; arbitrary custom Python exports remain outside it and must call the same checker before claiming completion.

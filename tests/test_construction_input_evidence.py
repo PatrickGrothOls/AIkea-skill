@@ -71,3 +71,11 @@ class TestConstructionInputEvidence:
     def _position(self, root, digest):
         (root / "assemblies/construction-position-check.json").write_text(json.dumps(
             {"schema_version": 2, "status": "valid", "construction_sha256": digest}))
+
+    def test_drawer_policy_changes_invalidate_unchanged_geometry(self,tmp_path):
+        project=FabricationReadinessTestProject();visits=project.visits()
+        path=tmp_path/'assemblies/drawer-layout-policy.json';path.parent.mkdir()
+        path.write_text('{"schema_version":1,"stacks":[]}')
+        original=ConstructionInputFingerprinter().build(tmp_path,visits)
+        path.write_text('{"schema_version":1,"stacks":[],"changed_exception":true}')
+        assert ConstructionInputFingerprinter().build(tmp_path,visits)!=original
