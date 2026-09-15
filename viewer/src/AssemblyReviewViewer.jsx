@@ -35,6 +35,7 @@ export function AssemblyReviewViewer() {
   });
   const [reviewView] = useState(() => ReviewView.fromSearch(window.location.search));
   const [inspection, setInspection] = useState(() => ExplodedViewState.fromSearch(window.location.search));
+  const [doorsHidden, setDoorsHidden] = useState(false);
   const [assets, setAssets] = useState(null);
   const [loadStatus, setLoadStatus] = useState("Loading model…");
   useEffect(() => {
@@ -48,8 +49,8 @@ export function AssemblyReviewViewer() {
       .catch((error) => { if (!controller.signal.aborted) setLoadStatus(error.message); });
     return () => controller.abort();
   }, []);
-  const asset = assets?.select(inspection);
-  const photo = reviewView.usesPhotoRenderer() && inspection.wholeAssembled && asset && !asset.baked;
+  const asset = assets?.select(inspection, doorsHidden);
+  const photo = reviewView.usesPhotoRenderer() && inspection.wholeAssembled && !doorsHidden && asset && !asset.baked;
   const assemblyScene = (
     <>
       {reviewView.showsStudioFloor() && inspection.wholeAssembled && (
@@ -64,7 +65,7 @@ export function AssemblyReviewViewer() {
         />
         {asset && <ReviewAssetModel key={asset.url} asset={asset} onStatus={setLoadStatus}
           onModelMeasured={setModelBounds} reviewView={reviewView}
-          inspection={inspection}
+          inspection={inspection} doorsHidden={doorsHidden}
           onSelectPart={(name, scope) => setInspection((current) => current.withSelectedPart(name, scope))} />}
       </Suspense>
     </>
@@ -80,6 +81,7 @@ export function AssemblyReviewViewer() {
       data-model-url={asset?.url}
       data-baked-presentation={asset?.baked || false}
       data-photo-renderer={Boolean(photo)}
+      data-doors-hidden={doorsHidden}
     >
       <div className="review-stage">
         <Canvas
@@ -107,7 +109,9 @@ export function AssemblyReviewViewer() {
       {loadStatus && <div className="review-load-status" role="status">{loadStatus}</div>}
       <div className="review-controls">
         <AssemblyInspectionPanel inspection={inspection} onChange={setInspection}
-          scopes={modelBounds.scopes} visibleCount={modelBounds.visibleCount} />
+          hasDoors={modelBounds.hasDoors} doorsHidden={doorsHidden}
+          onToggleDoors={() => setDoorsHidden((hidden) => !hidden)}
+          />
         {inspection.wholeAssembled && (
           <div className="review-action-cards">
             <ReviewApprovalPanel ready={modelBounds.modelRoot !== null} />

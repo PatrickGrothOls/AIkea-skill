@@ -8,8 +8,7 @@ export function MakeItRealCard() {
   const availabilityDialog = useRef(null);
 
   return (
-    <section className="make-real-card review-glass" aria-label="Make this design real">
-      <p>Your design, cut to fit and ready to assemble.</p>
+    <section className="make-real-card" aria-label="Make this design real">
       <button className="make-real-action" type="button"
         onClick={() => availabilityDialog.current.showModal()}>
         Make it real <span aria-hidden="true">↗</span>

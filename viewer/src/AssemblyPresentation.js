@@ -6,6 +6,7 @@ import { ReviewVisibility } from "./ReviewVisibility.js";
 import { ReviewPartCatalog } from "./ReviewPartCatalog.js";
 import { ReviewInspectionPath } from "./ReviewInspectionPath.js";
 import { InspectionGrouping } from "./InspectionGrouping.js";
+import { ReviewDoorVisibility } from "./ReviewDoorVisibility.js";
 
 export class AssemblyPresentation {
   constructor(sourceScene, associations) {
@@ -36,16 +37,21 @@ export class AssemblyPresentation {
     return [...scopes].sort();
   }
 
+  get hasDoors() {
+    return this.records.some((record) => record.visible && ReviewDoorVisibility.owns(record));
+  }
+
   scopeForPart(name) {
     return ReviewInspectionPath.key(this.records.find((part) => part.name === name).path);
   }
 
-  groups(scope, detail) {
+  groups(scope, detail, doorsHidden = false) {
     const scopePath = ReviewInspectionPath.segments(scope);
     const depth = scopePath.length;
     const groups = new Map();
     for (const record of this.records) {
       if (!record.visible || !scopePath.every((segment, index) => record.path[index] === segment)) continue;
+      if (doorsHidden && ReviewDoorVisibility.owns(record)) continue;
       const key = this.grouping.key(record, depth, detail);
       const group = groups.get(key) ?? { key, records: [], bounds: new Box3() };
       group.records.push(record);
@@ -55,12 +61,12 @@ export class AssemblyPresentation {
     return [...groups.values()];
   }
 
-  apply(scope, amount, detail = "assemblies") {
+  apply(scope, amount, detail = "assemblies", doorsHidden = false) {
     for (const record of this.records) {
       record.node.position.copy(record.position);
-      record.node.visible = scope === "" && amount === 0 ? record.originalVisibility : false;
+      record.node.visible = scope === "" && amount === 0 && !doorsHidden ? record.originalVisibility : false;
     }
-    const groups = this.groups(scope, detail);
+    const groups = this.groups(scope, detail, doorsHidden);
     const offsets = this.layout.offsets(groups, amount);
     const bounds = new Box3();
     let visibleCount = 0;
@@ -75,6 +81,8 @@ export class AssemblyPresentation {
         visibleCount += 1;
       }
     }
+    // A focused door can be hidden too; retain a usable camera framing in that empty view.
+    if (bounds.isEmpty()) for (const record of this.records) bounds.union(record.bounds);
     this.scene.updateMatrixWorld(true);
     return { bounds, visibleCount, groupCount: groups.length };
   }

@@ -11,7 +11,7 @@ export class ReviewAssetChoice {
     }
   }
 
-  select(inspection) {
-    return !inspection.wholeAssembled && this.inspection ? this.inspection : this.assembled;
+  select(inspection, doorsHidden = false) {
+    return (!inspection.wholeAssembled || doorsHidden) && this.inspection ? this.inspection : this.assembled;
   }
 }

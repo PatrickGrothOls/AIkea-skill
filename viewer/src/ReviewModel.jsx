@@ -14,7 +14,7 @@ import { ReviewVisibility } from "./ReviewVisibility.js";
 import { ReviewMaterialSurface } from "./ReviewMaterialSurface.js";
 
 // A function component owns the GLB/texture hooks and their scene lifecycle.
-export function ReviewModel({ onModelMeasured, reviewView, inspection, onSelectPart, gltf, resources, baked }) {
+export function ReviewModel({ onModelMeasured, reviewView, inspection, doorsHidden, onSelectPart, gltf, resources, baked }) {
   const { scene, parser } = gltf;
   const presentation = useMemo(() => new AssemblyPresentation(scene, parser.associations), [scene, parser]);
   const framing = useMemo(() => new ReviewCameraFraming(), []);
@@ -26,6 +26,7 @@ export function ReviewModel({ onModelMeasured, reviewView, inspection, onSelectP
   const camera = useThree((state) => state.camera);
   const controls = useThree((state) => state.controls);
   const renderer = useThree((state) => state.gl);
+  const viewportSize = useThree((state) => state.size);
 
   useLayoutEffect(() => {
     const anisotropy = renderer.capabilities.getMaxAnisotropy();
@@ -46,7 +47,7 @@ export function ReviewModel({ onModelMeasured, reviewView, inspection, onSelectP
   }, [baked, colorMap, normalMap, presentation, renderer, resources, reviewView, roughnessMap]);
 
   useLayoutEffect(() => {
-    const { bounds, visibleCount, groupCount } = presentation.apply(inspection.scope, inspection.amount, inspection.detail);
+    const { bounds, visibleCount, groupCount } = presentation.apply(inspection.scope, inspection.amount, inspection.detail, doorsHidden);
     const center = bounds.getCenter(new Vector3());
     const size = bounds.getSize(new Vector3());
     framing.frame(camera, controls, reviewView, center, size);
@@ -55,10 +56,10 @@ export function ReviewModel({ onModelMeasured, reviewView, inspection, onSelectP
       lightingSources: baked ? [] : LightingSource.collect(presentation.scene),
       modelRoot: presentation.scene,
       span: Math.max(size.x, size.y, size.z),
-      scopes: presentation.scopes, visibleCount, groupCount,
+      scopes: presentation.scopes, visibleCount, groupCount, hasDoors: presentation.hasDoors,
     });
-  }, [baked, camera, controls, framing, inspection.amount, inspection.scope, inspection.detail,
-    onModelMeasured, presentation, reviewView]);
+  }, [baked, camera, controls, framing, inspection.amount, inspection.scope, inspection.detail, doorsHidden,
+    onModelMeasured, presentation, reviewView, viewportSize.width, viewportSize.height]);
 
   // Selection filters hidden meshes because Three.js raycasting includes them.
   const selectPart = (event) => {
