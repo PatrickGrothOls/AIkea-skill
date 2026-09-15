@@ -70,9 +70,15 @@ exception.
    cabinet-owned feature that constrains hinge placement. Read every cabinet's
    saved specification and any explicit client opening choices to produce one
    opening-side proposal for the complete run without building later cabinets.
-4. Select an exact registered hinge-and-plate profile that supports the resolved
-   door. If its source CAD is missing, load `$aikea-source-hardware-cad` and
-   resume from the returned project-local hardware directory.
+4. Select an exact hinge-and-plate system that supports the requested door and
+   furniture, whether already registered or newly sourced. If no suitable profile
+   is registered, or its CAD/fixing data is missing, use `$aikea-source-hardware-cad`
+   and the [hardware recovery flow](../aikea-source-hardware-cad/references/resolve-missing-hardware.md)
+   through sourcing and shared profile integration. A cached hinge is not a design
+   constraint. Do not narrow cabinets/doors/fronts, add filler or cover panels, or
+   change the requested arrangement merely to fit it; those compromises require
+   an explicit user request or approval. Source better hardware first, including
+   actual opening/projection, overlay, stock, load and full drawer-front travel.
 5. Let one calculated hinge plan select the required positions from the cabinet's
    saved hardware grid, produce the matching door-side machining and opening
    pose, and save each opening plan beneath its owning cabinet. Use the shared

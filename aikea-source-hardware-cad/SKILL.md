@@ -23,7 +23,12 @@ coordinate frame so local construction can verify and place them later.
    completely.
    If an available item does not fit or a required source is missing, also follow
    [the hardware recovery flow](references/resolve-missing-hardware.md). Keep the
-   requested furniture features in scope while resolving their hardware.
+   requested furniture features and dimensions in scope while resolving their hardware.
+   Select hardware to fit the intended design, including unregistered products;
+   do not silently narrow cabinets/doors/fronts or add fillers/cover panels to fit
+   the current hardware cache. Dimensional or layout compromises require an
+   explicit user request or approval. Continue through source/profile integration
+   and actual fixing/motion checks before treating the better candidate as solved.
 3. Start from the manufacturer's official product page and catalogue item. Use
    its own CAD link when available; do not select a visually similar component.
 4. Prefer a complete STEP assembly in millimetres. Confirm whether one download
