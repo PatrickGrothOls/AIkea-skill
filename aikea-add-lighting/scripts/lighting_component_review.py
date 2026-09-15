@@ -43,7 +43,7 @@ class LightingComponentReview:
                             inspection_path=(plan.part_id, plan.run.run_id, "body"), review_kind="hardware")]
         if state != "off":
             color = {2900: (1.0, 0.68, 0.38, 1.0), 3200: (1.0, 0.76, 0.50, 1.0),
-                     4300: (1.0, 0.90, 0.74, 1.0)}[plan.run.color_temperature_k]
+                     4300: (1.0, 0.98, 0.94, 1.0)}[plan.run.color_temperature_k]
             parts.append(MockupPart(f"light_source__{profile}__{plan.run.run_id}__{plan.run.color_temperature_k}k",
                                    geometry.emitter_face, placement.luminaire_location, color,
                                    inspection_path=(plan.part_id, plan.run.run_id, "emitter"), review_kind="hardware"))

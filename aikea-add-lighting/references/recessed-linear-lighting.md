@@ -62,3 +62,7 @@ effect in the actual furniture.
 
 Electrical supply selection, mains wiring, certification, and custom electronics
 remain outside this skill.
+
+## Inspection illumination
+
+Honor the selected product temperature; neutral-white products must not inherit a warm presentation tint. A lit review must visibly illuminate cabinet interiors in the standard camera, with doors hidden and with parts exploded. A bright line alone is insufficient. Preserve actual recessed bodies, emitters and owning-panel transforms; use the shared bounded, non-shadow inspection lights. Inspection brightness is a presentation aid, not calibrated photometric output.
