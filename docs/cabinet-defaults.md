@@ -8,7 +8,7 @@ Replace the floor-standing rail/brace default with Korrekt adjustable feet, deck
 - [x] WP2: Implement reusable default rules, physical support declarations and targeted regression tests.
 - [x] WP3: Verify exact foot/deck geometry and update the private cabinet recipe with real supports and aligned floor access.
 - [x] WP4: Run targeted tests, scope review and commit one coherent default slice.
-- [ ] WP5: Rebuild current CAD review artifacts once at bounded resource settings and report readiness limits.
+- [x] WP5: Rebuild current CAD review artifacts once at bounded resource settings and report readiness limits.
 
 ## Current state
 Reusable defaults and the private corrective recipe are implemented. Base generation emits only CNC-sized decks/kickboards and applies exact Korrekt pairs through the existing component. The available native foot pose rejects a deck underside below80 mm even though the physical product can adjust down to74 mm. Storage-shelf policy rejects unrecorded Cabineos and top-face fixed pockets. Adjustable shelf support features own four Duplo purchases and matching blind bores; floor access is a separate component.
@@ -17,7 +17,7 @@ The private trial preserves2475×450×2374 mm and95 mm base. Parent approved a c
 
 The native source files match both package hashes and contain valid single solids. At79 mm deck underside, exact foot-to-machined-deck intersection is950.7166 mm³; at80 mm it is0. Plate/foot intersection at80 mm remains2807.8024 mm³. This is a socket-fit qualification boundary, not proven mechanical compatibility. No scaling/articulation was invented.
 
-Bounded targeted suite: **40 passed, 1 deselected in84.18 s**, exit0. Command: `direnv exec . env OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 python -m pytest tests/test_cabinet_construction_defaults.py tests/test_adjustable_shelf_taxonomy_builder.py tests/test_base_taxonomy_builder.py tests/test_configured_base_construction.py tests/test_base_part_geometry.py tests/test_part_placement_taxonomy.py tests/test_korrekt_mounting_geometry.py tests/test_korrekt_component_feature.py -q -k "not custom_parent"`. Syntax compilation and `git diff --check` also pass. A broader retained ConstructionTreeChecker test was interrupted after17 prior passes/133.65 s inside OCC; it remains pending and has not been weakened. No Blender run is queued. Current artifacts are still superseded until the corrected export completes.
+Bounded targeted suite: **40 passed, 1 deselected in84.18 s**, exit0. Command: `direnv exec . env OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 python -m pytest tests/test_cabinet_construction_defaults.py tests/test_adjustable_shelf_taxonomy_builder.py tests/test_base_taxonomy_builder.py tests/test_configured_base_construction.py tests/test_base_part_geometry.py tests/test_part_placement_taxonomy.py tests/test_korrekt_mounting_geometry.py tests/test_korrekt_component_feature.py -q -k "not custom_parent"`. Syntax compilation and `git diff --check` also pass. A broader retained ConstructionTreeChecker test was interrupted after17 prior passes/133.65 s inside OCC; it remains pending and has not been weakened. Parent has started the checked Blender presentation. Corrected exports are complete; the earlier brace-base artifacts remain superseded.
 
 ## Audit log
 1. User-approved correction, relayed by parent: default adjustable Korrekt base; no brace fallback. Default adjustable storage shelves; deliberate fixed shelf selection and hidden underside pockets. This directly authorizes the implementation choices in scope.
@@ -33,3 +33,15 @@ Bounded targeted suite: **40 passed, 1 deselected in84.18 s**, exit0. Command: `
    joint could suppress its support pins. Require a declared shelf-source Cabineo
    joint before removing default supports; geometric adequacy still has its separate
    checks. This guard does not change the current all-adjustable cabinet recipe.
+
+## Attachment metadata follow-up
+
+- [x] Corrected CAD exported once using the integrated parent skills:134 interior and174 closed render meshes. Shared operation/solid validation passed. Inventory is draft:40 manufactured parts,127 hardware components,86 Cabineos and86 inserts.
+- [x] Declare each Korrekt plate/foot's mounting_part_id from its planned BaseModuleSpec and deck ID. This is attachment metadata only; native placement and purchase IDs remain unchanged.
+- [x] Bounded attachment tests:2 passed in10.29 s. No CAD solids or new qualification job were built.
+- [x] Metadata-only GLB refresh preserves the entire binary chunk, mesh/accessor/buffer-view data, node names and transforms;32 hardware paths gain their deck owner.
+- [x] Material outputs and final parent handoff: both corrected material GLBs passed unchanged-geometry/transform checks, contain seven strength-0.35 emitters, and preserve deck attachments and stock/finish IDs.
+
+Audit continuation: exact module ownership now makes feet/plates follow their deck in inspection. This does not qualify socket fit, screws or loads. The completed model exports are distinct from still-incomplete fabrication readiness. Parent owns bake and visual review.
+
+The current interior/closed material assets are `local-evidence/project/reviews/corrected-interior-materials.glb` and `corrected-closed-materials.glb`. Their `.material-check.json` files and the intermediate attached GLBs' `.metadata-check.json` files preserve the full hash chain from the untouched CAD exports. The metadata refresh changes only32 inspection paths. Material preparation adds UV/material data while preserving every original attribute/index accessor and the binary geometry prefix.
