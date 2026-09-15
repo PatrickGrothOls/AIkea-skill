@@ -29,6 +29,8 @@ including all hardware fixing holes.
 For floor-standing cabinets, use the current Korrekt adjustable feet, deck and
 front kickboard; there is no brace-base fallback. Read the [base recipe](../aikea-build-units/references/base-recipe.md)
 and retain the required outside height when checking hardware/deck compatibility.
+Size deck sections from sheet/CNC, handling and seam support, independently of
+cabinet count; preserve the client’s intended segmentation.
 Ordinary storage shelves default to actual adjustable supports and matching bores.
 Read the [storage-shelf policy](../aikea-build-units/references/storage-shelves.md);
 record any fixed Cabineo shelf choice and keep its pockets on the hidden underside.

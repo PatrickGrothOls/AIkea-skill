@@ -46,3 +46,7 @@ kickboard clips, cabinet-to-base fastening and load/anchoring evidence remain
 explicit unresolved requirements until their actual construction is selected.
 Common builders/checks consume the current feature result; do not edit derived
 part solids after export or hide unknown joints merely to obtain a passing check.
+
+## Deck segmentation
+
+Choose deck sections from the client's intended segmentation, sheet size/orientation, usable CNC area, handling and seam support. Deck count is independent of cabinet count; never default to one deck per cabinet. Use `BaseModulePlanner` with the actual constraints and prefer useful cabinet-gap seams. Check the full foot/plate footprint and its required edge margin on each side of every seam, retain aligned cabinet-floor access, and provide deliberate assembly clearance. A section wider than a sheet's short side can still fit along its long side; verify the two-dimensional nesting before adding another seam. Keep the adjustable-foot/deck construction and intended footprint; segmentation does not authorize a brace plinth.
