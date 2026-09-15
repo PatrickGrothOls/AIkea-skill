@@ -8,7 +8,10 @@ description: Build a complete drawer installation with compatible runners, mount
 Every drawer must include its runners and mounting holes. Read and apply the
 [complete installation contract](references/complete-drawer-installation.md)
 before generating drawer parts. Include spacers automatically where door or hinge
-intrusion obstructs installation or travel. Missing source or fixing data starts
+intrusion obstructs installation or travel. Use compact purchased spacers or narrow
+manufactured mounting strips/blocks with verified attachments; do not silently
+replace them with full-height inset support panels. Follow the contract's compact
+support and load checks before sizing the drawer. Missing source or fixing data starts
 the [hardware recovery flow](../aikea-source-hardware-cad/references/resolve-missing-hardware.md);
 pause only the dependent geometry while actively resolving the missing input.
 A box-only prototype or a cabinet with the requested drawers omitted does not

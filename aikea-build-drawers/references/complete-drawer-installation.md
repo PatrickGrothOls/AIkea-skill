@@ -46,6 +46,31 @@ clearance; do not apply a universal spacer thickness. Keep a selected paired
 runner/spacer profile together. A drawer with verified unobstructed travel does
 not need spacers merely because another drawer does.
 
+### Keep spacers compact
+
+Use a compatible purchased spacer or a narrow manufactured mounting strip/block
+behind the runner. Size it for the required bearing area, fixing pattern, edge
+distances and drawer plus intended contents; do not extend it into a full-height
+internal side panel merely because that makes existing joinery easier. Check each
+side independently against hinges, lighting and moving hardware; avoid unnecessary
+symmetric offsets and loss of usable drawer width.
+
+Check depth-compatible purchased alternatives before concluding no spacer fits.
+A missing or oversized registered product does not justify a full-panel fallback.
+A manufactured strip is a valid alternative when its material, dimensions and
+attachment can be established. Include both connections: runner to spacer and
+spacer to the actual cabinet side, with real holes, suitable fasteners, engagement,
+remaining material and the shared one-face machining policy. A rail floating at
+the right offset or a nominally strong strip with unverified attachment is incomplete.
+
+Check support and fastening for the loaded drawer throughout extension, including
+bending and pull-out; source dimensions or valid CAD solids alone do not establish
+load capacity. Report missing physical qualification explicitly. Only propose a
+larger support assembly if compact options are demonstrably unsuitable. Record why,
+show its appearance and lost usable space, and obtain a deliberate design choice
+before replacing compact spacers with panels. Do not present such panels as the
+normal spacer implementation.
+
 Include each required spacer as a real purchased or manufactured part with its
 identity, dimensions, placement and attachment. Recalculate the clear opening,
 box width, runner frames, screw engagement and host drilling together. Verify
