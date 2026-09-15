@@ -31,9 +31,11 @@ failed bake log is preserved; the corrected verifier and hash chain are document
 in docs/bake-geometry-verification.md. No geometry was simplified or regenerated.
 
 The explicitly authorized delivery heartbeat can now be paused. Manufacturing is
-still unresolved: six drawers need compatible runner CAD; selected hinge fit and
-overlay, Korrekt socket/screw/deck qualification and electrical/CNC checks remain
+still unresolved: six drawers need a verified 400 mm runner installation; selected
+hinge fit and overlay, Korrekt socket/screw/deck qualification and electrical/CNC checks remain
 open. Source fixes remain local branches, not main or installed global skills.
+The exact 400 mm STEP has since been retrieved and imported successfully; see
+[hardware recovery and the continuing drawer work](resolve-missing-drawer-hardware.md).
 The small full-engine acceptance fixture rerun remains a pre-merge check because
 another task's Blender render was active. Actual Vilja verification and native
 runtime verifier smoke pass. Do not start another render for this delivered viewer.

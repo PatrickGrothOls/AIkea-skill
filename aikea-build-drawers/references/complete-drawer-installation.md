@@ -19,7 +19,10 @@ building and delivering a box-only drawer.
    diameter/depth. If data is missing, use
    [hardware sourcing](../../aikea-source-hardware-cad/SKILL.md). Obtain it with
    available tools, or give the exact product link, required file/input and visual
-   download guidance for the user. Pause drawer generation until it is resolved.
+   download guidance for the user. Follow the
+   [hardware recovery flow](../../aikea-source-hardware-cad/references/resolve-missing-hardware.md)
+   through retrieval, profile integration and one complete installation. Pause
+   dependent drawer geometry until its inputs are resolved, not the sourcing work.
    Inspecting sourced hardware separately is still useful; scaling another rail,
    inventing holes or substituting an unmachined box is not a resolution.
 4. Resolve the clearance and any spacers below, then calculate the box from the
@@ -84,6 +87,11 @@ machining requirements independently of the operations that satisfy them. Do not
 delete missing requirements or relabel unresolved fixings as manual/nonmachining
 work to obtain a pass. A general incomplete-preview allowance does not waive this
 drawer contract.
+
+Keep the requested count and owning cabinets in the active project plan throughout
+recovery. Report requested versus installed drawers before calling the furniture
+delivered. An intermediate viewer may be useful, but it does not complete the
+furniture request or remove the remaining drawer tasks.
 
 Run the complete-tree operation and face checks, physical inventory and
 [fabrication gate](../../aikea-review-unit/references/fabrication-readiness.md).

@@ -21,6 +21,9 @@ coordinate frame so local construction can verify and place them later.
 1. Resolve the active project from its completed `aikea.yaml`.
 2. Read [references/sourcing-and-storage.md](references/sourcing-and-storage.md)
    completely.
+   If an available item does not fit or a required source is missing, also follow
+   [the hardware recovery flow](references/resolve-missing-hardware.md). Keep the
+   requested furniture features in scope while resolving their hardware.
 3. Start from the manufacturer's official product page and catalogue item. Use
    its own CAD link when available; do not select a visually similar component.
 4. Prefer a complete STEP assembly in millimetres. Confirm whether one download
@@ -44,6 +47,9 @@ For Hettich KA 5332 article 9057405, also read
 [references/hettich-ka-5332.md](references/hettich-ka-5332.md).
 For the Hettich KA 4532 runner and its approved 13952 spacer, instead read
 [references/hettich-ka-4532-spacer.md](references/hettich-ka-4532-spacer.md).
+For the 400 mm KA 4532 article 9114274, read
+[the verified download route](references/hettich-ka-4532-400.md). This is a sourced
+candidate, not an approved shorter version of the 500 mm installation.
 
 ## Project storage
 
