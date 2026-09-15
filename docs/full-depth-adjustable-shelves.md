@@ -30,3 +30,11 @@ or hardware fit claim follows from this instruction update.
 3. Agent proposes 414 mm shelf depth (2 mm front clearance to 416 mm inner back),
    with pins at existing cabinet-depth columns 37/379 mm. This remains subject to
    physical clearance checks and is not yet exported.
+
+4. Patrick explicitly requires obsolete shelf holes removed and selects the pins
+   in his Røverkøb screenshot: Hyldebærer 5mm,24stk,article16415,LN206.129.2.
+   Exact retailer URL: https://www.roverkob.dk/hyldebaerer-5mm-24-stk .
+   Screenshot establishes diameter/pack/retailer identity; insertion and collar
+   dimensions are not yet verified. This project selection does not replace the
+   global default product. Agent notified to rebuild panels without retired cuts,
+   preserve shared-grid/hardware holes and update actual pin purchases.

@@ -12,6 +12,15 @@ clearance to the inside back. Seat the shelf on four pins in the cabinet-owned
 front/rear columns at a common System 32 row. Derive pin positions from that saved
 grid, not from a shortened shelf's ends. Additional columns require a deliberate
 arrangement decision, not an automatic workaround for arbitrary shelf setbacks.
+When replacing an old shelf layout, remove its obsolete drilling declarations and
+rebuild the affected panels from their blanks with only the current operations.
+Verify old non-grid holes are absent from the exported geometry; adding the new
+grid without removing the retired holes does not complete the change. Preserve
+holes still required by the shared grid or independently installed hardware.
+
+An explicitly selected shelf-pin product overrides the default Duplo purchase.
+Record its exact supplier identity and pack quantity; verify its diameter, insertion
+length and bearing/stop geometry before reusing the default profile dimensions.
 
 A shelf may visually cross or interrupt the side lighting line. Do not shorten it
 merely to keep that line continuously visible. Check actual shelf bearing, door
