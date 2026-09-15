@@ -68,9 +68,13 @@ belong on the hidden underside. Structural cabinet floors and tops are separate
 parts, with their own structural connections. Keep shelves clear of lighting,
 hinges and the intended drawer route; requested but unsourced drawers remain required work, not permission to replace the intended installation.
 
-The cabinet recipe declares its System 32 grid explicitly and reuses exact matching
-holes. These choices belong to the configured recipe; the common panel executor
-continues to apply only declared machining, independently of furniture purpose.
+Every cabinet defaults to full-height System 32 rows on its inside side panels,
+including custom compositions. Follow [the cabinet grid contract](references/panel-construction.md#machine-the-cabinet-hardware-grid).
+Omitting, shortening or moving those rows requires a deliberate recorded design
+override; a few holes around a shelf are not the default grid. Declare the grid
+machining and its construction requirement explicitly. The common panel executor
+still applies declared machining only; this is a design default, not a role-based
+side effect in the cutting engine.
 
 ## Responsibility boundary
 

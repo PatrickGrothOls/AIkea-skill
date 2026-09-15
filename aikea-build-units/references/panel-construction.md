@@ -82,11 +82,27 @@ source pocket from its matching receiver cut.
 
 ## Machine the cabinet hardware grid
 
-The standard cabinet recipe explicitly requests one versioned System 32 grid for
-each side panel. The shared builder applies that request after joint cuts and
-checks that every blind bore fits the remaining material. A role name alone never
-requests a grid. Its recipe uses the panel's own depth, height, thickness and named
-inside face; custom arrangements can deliberately include or omit the request.
+Both standard cabinet recipes and custom cabinet compositions default to one
+versioned System 32 grid on each inside side panel, over the full usable height.
+Declare the operation explicitly with `PartMachiningSpec(..., "system_32")` and a
+`ConstructionRequirementSpec` referencing that panel and machining ID. Reuse
+`System32SidePanelGridProfile`; do not recreate the grid from shelf positions.
+The shared builder applies the request after joint cuts and checks that every
+blind bore fits retained material. A role name alone never requests machining.
+
+Before omitting, shortening or moving the grid, record a deliberate design override
+in the active project's design decisions: affected panel IDs, changed dimensions
+or omitted rows, reason, and replacement support/hardware arrangement. Preserve a
+specific user choice when supplied. Never infer an override from a custom builder,
+a reference image, sparse shelf supports or a machining collision. Unresolved
+collisions remain outstanding design work. A local five-hole group around a shelf
+does not fulfil the full-height default.
+
+The current bundled profile starts 100 mm from the panel bottom and stops at least
+100 mm below its top. These are AIkea profile choices, not a claim that every
+manufacturer uses them. Use the panel's actual depth, height, thickness and inside
+face. For a sloped boundary, ensure each column's top rows fit real retained stock;
+record any required adaptation rather than clipping a cutter or omitting the grid.
 
 Rows share one bottom reference so holes remain level across side panels with
 different top heights. The rows repeat every 32 mm; front and rear columns sit
@@ -98,6 +114,17 @@ Construction capabilities consume this saved grid rather than creating another
 panel-hole system. A shelf selects one row. A compatible hinge plate selects two
 adjacent rows. A selected drawer-runner profile declares which grid positions it
 uses and owns any additional preparation, vertical placement, and clearances.
+Recessed shelves may require additional support columns; those do not replace the
+cabinet's default front/rear grid. Plan the complete grid together with the
+lighting channel, Cabineo cuts and hinge/runner preparation. Keep every blind hole
+on the chosen CNC face; a shared partition requiring two faces needs a deliberate
+construction solution rather than an unrecorded second setup.
+
+Before declaring the cabinet complete, reconcile expected rows and columns with
+the declared operations and actual removed material on both sides. Check matching
+world-height rows, bore depth and retained outside skin, hardware alignment and
+collisions. Review the current exported geometry with doors hidden. A passing
+check on the few holes actually declared does not prove the full grid exists.
 
 ## Build adjustable shelves
 

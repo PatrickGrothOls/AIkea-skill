@@ -31,6 +31,10 @@ Read the [storage-shelf policy](../aikea-build-units/references/storage-shelves.
 record any fixed Cabineo shelf choice and keep its pockets on the hidden underside.
 Structural cabinet floors/tops are separate. These defaults apply equally to
 custom compositions and generated recipes.
+Cabinet side panels also default to the [full System 32 grid](../aikea-build-units/references/panel-construction.md#machine-the-cabinet-hardware-grid).
+Declare it before fitting shelves, hinges, runners and lighting. Omitting,
+shortening or moving it requires a recorded design override with affected panels,
+reason and replacement arrangement; custom composition alone is not an override.
 
 Save the envelope, obstacles, chosen materials and functional requirements in the
 active project. Preserve an existing `aikea.yaml`; use its wardrobe calculator

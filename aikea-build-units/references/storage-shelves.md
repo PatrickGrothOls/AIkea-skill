@@ -4,7 +4,11 @@ Ordinary storage shelves are adjustable. `ConfiguredUnitBuilder` passes them
 through `StorageShelfPolicy` and `AdjustableShelfSupportFeature`, which supplies
 four physical Hettich Duplo 46642 support purchases and their side-panel bores.
 A panel plus a System 32 grid is not a supported shelf until the actual support
-positions and purchases are included.
+positions and purchases are included. Conversely, support bores or short adjustment
+groups do not replace the cabinet's [full-height grid](panel-construction.md#machine-the-cabinet-hardware-grid).
+Declare that grid separately before fitting shelves and reuse exactly matching
+holes. Shelf setbacks can require additional columns; retain the default grid
+unless the changed cabinet arrangement is a deliberate recorded override.
 
 The [official Hettich drawing, page 825](https://catalog.hettich.com/General/TA_2025/en_DE/catalogs/TA_2025_en_DE/pdf/save/bk_827.pdf)
 was checked on 2026-09-15. The selected nickel-plated article has Ø5 mm pins,

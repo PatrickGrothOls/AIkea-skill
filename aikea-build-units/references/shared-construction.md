@@ -30,7 +30,10 @@ BUILDER = PanelAssemblyBuilder(spec)
 ```
 
 The dimensions above demonstrate the contract; they are not project defaults.
-Leaving `machining=()` produces an undrilled blank. Use explicit `CabineoJointSpec`
+Leaving `machining=()` produces an undrilled blank; for cabinet side panels this
+omits the required design default unless a deliberate override is recorded under
+[the cabinet grid contract](panel-construction.md#machine-the-cabinet-hardware-grid).
+Use explicit `CabineoJointSpec`
 or a supported miter joint to join actual panels. Joint tools derive both cuts
 from their participants' frames. Unknown operations, incorrect ownership and
 cutters that miss a participant fail construction. Explicit local operations

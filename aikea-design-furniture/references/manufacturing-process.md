@@ -18,6 +18,11 @@ the appearance of a reference image.
   and purchases. A fixed Cabineo shelf needs a deliberate recorded choice and
   underside pockets; structural floors/tops remain separate. Floor-standing
   cabinet bases use the current Korrekt feet/deck/kickboard, with no brace fallback.
+- Cabinet side panels require the full usable-height System 32 grid by default,
+  for both recipes and custom compositions. Reconcile its expected rows and
+  columns with actual holes, including lighting and hardware interference. Any
+  omission, shortened run or relocated column needs a recorded design override;
+  a few shelf-support bores alone do not satisfy this default.
 - Use the shared paired Cabineo construction for selected fixed sheet connections and count
   one matching brass insert per verified connector. Resolve both participants
   from their actual frames, faces and material thicknesses. No self-designed
