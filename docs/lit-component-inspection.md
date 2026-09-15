@@ -42,3 +42,6 @@ large-file refactor report was triggered. Real-model visual verification is pend
    viewer slice will be stacked on its completed commit before final validation.
 3. 2026-09-15: WP1 tests and boundary review passed. Preserve hierarchical mode as
    an explicit choice and deep panel focus for inspecting its attached fittings.
+4. 2026-09-15: Bake integration requires unique body/emitter leaf IDs under their
+   shared luminaire/host path. Added those leaf identities; physical inventory
+   still comes from the one purchased luminaire, never from rendered mesh count.

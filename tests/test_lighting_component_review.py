@@ -36,9 +36,11 @@ class TestLightingComponentReview:
         assert any(part.name.startswith('custom_01__light_source__') for part in nested.rendered_parts)
         for part in nested.rendered_parts:
             if part.review_kind == 'hardware':
-                assert part.inspection_path == ('custom_01', 'host', 'shelf_light_01')
+                assert part.inspection_path[:-1] == ('custom_01', 'host', 'shelf_light_01')
         assert sum(part.review_kind == 'hardware' for part in nested.rendered_parts) == 2
-        assert all(part.inspection_path == ('host', 'shelf_light_01')
+        assert {part.inspection_path[-1] for part in nested.rendered_parts
+                if part.review_kind == 'hardware'} == {'body', 'emitter'}
+        assert all(part.inspection_path[:-1] == ('host', 'shelf_light_01')
                    for part in flat.rendered_parts if part.review_kind == 'hardware')
         assert not any('light_source__' in part.name for part in off.rendered_parts)
         assert len(self._inventory(tmp_path)['purchased_summary']) == 1
