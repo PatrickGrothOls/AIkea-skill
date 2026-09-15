@@ -61,6 +61,12 @@ inspection unmounts the optional photo renderer and releases its resources.
 The assembled Blender bake is a fixed-pose presentation: use the ordinary source
 material asset for separated panels, so baked shadows cannot move with them.
 
+Serve these together with `serve_unit_review.py assembled.glb --inspection-model
+original-materials.glb --no-open`. Both must derive from the same verified CAD
+export. The server snapshots both files; the viewer replaces and disposes its
+active GLB when entering inspection or restoring the intact view. Baked lighting
+is not illuminated a second time, and the bake does not start a browser path tracer.
+
 For the client, show the whole exploded piece and one useful component, such as
 a drawer. Check that each runner and drawer-side fitting follows its declared
 carrier, panels remain intact, spacing is legible and reset restores the full

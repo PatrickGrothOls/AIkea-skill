@@ -2,7 +2,7 @@
 
 import { useLayoutEffect, useMemo } from "react";
 import { useThree } from "@react-three/fiber";
-import { useGLTF, useTexture } from "@react-three/drei";
+import { useTexture } from "@react-three/drei";
 import { Vector3 } from "three";
 
 import { AssemblyPresentation } from "./AssemblyPresentation.js";
@@ -14,8 +14,8 @@ import { ReviewVisibility } from "./ReviewVisibility.js";
 import { ReviewMaterialSurface } from "./ReviewMaterialSurface.js";
 
 // A function component owns the GLB/texture hooks and their scene lifecycle.
-export function ReviewModel({ onModelMeasured, reviewView, inspection, onSelectPart }) {
-  const { scene, parser } = useGLTF("/model.glb");
+export function ReviewModel({ onModelMeasured, reviewView, inspection, onSelectPart, gltf, resources, baked }) {
+  const { scene, parser } = gltf;
   const presentation = useMemo(() => new AssemblyPresentation(scene, parser.associations), [scene, parser]);
   const framing = useMemo(() => new ReviewCameraFraming(), []);
   const [colorMap, normalMap, roughnessMap] = useTexture([
@@ -36,11 +36,14 @@ export function ReviewModel({ onModelMeasured, reviewView, inspection, onSelectP
       if (node.isMesh) {
         node.castShadow = true;
         node.receiveShadow = true;
-        surface.applyTo(node);
-        lightingSurface.applyTo(node);
+        if (!baked) {
+          surface.applyTo(node);
+          lightingSurface.applyTo(node);
+        }
       }
     });
-  }, [colorMap, normalMap, presentation, renderer, reviewView, roughnessMap]);
+    resources.track(presentation.scene, [colorMap, normalMap, roughnessMap]);
+  }, [baked, colorMap, normalMap, presentation, renderer, resources, reviewView, roughnessMap]);
 
   useLayoutEffect(() => {
     const { bounds, visibleCount, groupCount } = presentation.apply(inspection.scope, inspection.amount, inspection.detail);
@@ -49,12 +52,12 @@ export function ReviewModel({ onModelMeasured, reviewView, inspection, onSelectP
     framing.frame(camera, controls, reviewView, center, size);
     onModelMeasured({
       center: center.toArray(), size: size.toArray(),
-      lightingSources: LightingSource.collect(presentation.scene),
+      lightingSources: baked ? [] : LightingSource.collect(presentation.scene),
       modelRoot: presentation.scene,
       span: Math.max(size.x, size.y, size.z),
       scopes: presentation.scopes, visibleCount, groupCount,
     });
-  }, [camera, controls, framing, inspection.amount, inspection.scope, inspection.detail,
+  }, [baked, camera, controls, framing, inspection.amount, inspection.scope, inspection.detail,
     onModelMeasured, presentation, reviewView]);
 
   // Selection filters hidden meshes because Three.js raycasting includes them.

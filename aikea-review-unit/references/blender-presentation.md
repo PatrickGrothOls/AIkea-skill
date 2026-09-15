@@ -101,17 +101,20 @@ below 0.002 mm. The detailed reports and `bake.log` stay next to the result.
 The centroid check detects the reproduced streaks; also inspect edge close-ups
 visually, since it does not prove every texel at every viewing angle.
 
-Show `assembled.glb` with the existing `serve_unit_review.py` command and
-`?render=interactive`. Reuse the existing browser tab. Check the full piece and a
+Show `assembled.glb` with `serve_unit_review.py assembled.glb --inspection-model
+<matching-source-materials.glb> --no-open` and `?render=interactive`. Reuse the
+existing browser tab. Check the full piece and a
 close-up of rounded edges, frames and real drawer gaps. The assembled material
 contains baked illumination, so do not stack extra edge outlines or ambient
 occlusion over it. `source-studio.blend` retains the original materials;
 `assembled.blend` contains the packed bake for native inspection.
 
 The browser remains interactive: rotate, pan and zoom the whole furniture.
-Opening/exploding parts invalidates the assembled shadows, so serve the original
-material GLB in the same tab for those inspection requests. Automatic in-viewer
-switching between the two assets is not implemented. Metallic hardware retains
+Opening/exploding parts invalidates the assembled shadows. The viewer automatically
+switches to the matching original material GLB supplied with `--inspection-model`.
+Reset restores the bake; each switch disposes the previous model's resources.
+Inspection keeps the actual emitters and modest live lights without running a
+path tracer. Metallic hardware retains
 its source material; the panel bake is diffuse and does not recreate all of
 Blender's view-dependent reflections.
 

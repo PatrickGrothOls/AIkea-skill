@@ -1,6 +1,6 @@
 /** Scope: Compose the CAD review stage, inspection controls and assembled-view approval. */
 
-import { lazy, Suspense, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 
 import { AssemblyContactShading } from "./AssemblyContactShading";
@@ -11,7 +11,8 @@ import { AssemblyLighting } from "./AssemblyLighting";
 import { CloseInspectionControls } from "./CloseInspectionControls";
 import { AssemblyInspectionPanel } from "./AssemblyInspectionPanel";
 import { ExplodedViewState } from "./ExplodedViewState";
-import { ReviewModel } from "./ReviewModel";
+import { ReviewAssetChoice } from "./ReviewAssetChoice";
+import { ReviewAssetModel } from "./ReviewAssetModel";
 import { ReviewGuidanceCard } from "./ReviewGuidanceCard";
 import { ReviewGlassFilter } from "./ReviewGlassFilter";
 import { ReviewApprovalPanel } from "./ReviewApprovalPanel";
@@ -34,7 +35,21 @@ export function AssemblyReviewViewer() {
   });
   const [reviewView] = useState(() => ReviewView.fromSearch(window.location.search));
   const [inspection, setInspection] = useState(() => ExplodedViewState.fromSearch(window.location.search));
-  const photo = reviewView.usesPhotoRenderer() && inspection.wholeAssembled;
+  const [assets, setAssets] = useState(null);
+  const [loadStatus, setLoadStatus] = useState("Loading model…");
+  useEffect(() => {
+    const controller = new AbortController();
+    fetch("/review-models.json", { signal: controller.signal, cache: "no-store" })
+      .then((response) => {
+        if (!response.ok) throw new Error("The viewer model manifest could not be loaded.");
+        return response.json();
+      })
+      .then((manifest) => setAssets(new ReviewAssetChoice(manifest)))
+      .catch((error) => { if (!controller.signal.aborted) setLoadStatus(error.message); });
+    return () => controller.abort();
+  }, []);
+  const asset = assets?.select(inspection);
+  const photo = reviewView.usesPhotoRenderer() && inspection.wholeAssembled && asset && !asset.baked;
   const assemblyScene = (
     <>
       {reviewView.showsStudioFloor() && inspection.wholeAssembled && (
@@ -47,9 +62,10 @@ export function AssemblyReviewViewer() {
           enabled={reviewView.showsLighting()}
           sources={modelBounds.lightingSources}
         />
-        <ReviewModel onModelMeasured={setModelBounds} reviewView={reviewView}
+        {asset && <ReviewAssetModel key={asset.url} asset={asset} onStatus={setLoadStatus}
+          onModelMeasured={setModelBounds} reviewView={reviewView}
           inspection={inspection}
-          onSelectPart={(name, scope) => setInspection((current) => current.withSelectedPart(name, scope))} />
+          onSelectPart={(name, scope) => setInspection((current) => current.withSelectedPart(name, scope))} />}
       </Suspense>
     </>
   );
@@ -61,6 +77,9 @@ export function AssemblyReviewViewer() {
       data-inspection-scope={inspection.scope}
       data-explode-amount={inspection.amount}
       data-visible-part-count={modelBounds.visibleCount}
+      data-model-url={asset?.url}
+      data-baked-presentation={asset?.baked || false}
+      data-photo-renderer={Boolean(photo)}
     >
       <div className="review-stage">
         <Canvas
@@ -85,6 +104,7 @@ export function AssemblyReviewViewer() {
       </div>
       <ReviewGlassFilter />
       <ReviewGuidanceCard reviewView={reviewView} />
+      {loadStatus && <div className="review-load-status" role="status">{loadStatus}</div>}
       <div className="review-controls">
         <AssemblyInspectionPanel inspection={inspection} onChange={setInspection}
           scopes={modelBounds.scopes} visibleCount={modelBounds.visibleCount} />

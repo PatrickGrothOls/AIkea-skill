@@ -123,3 +123,16 @@ body,
 .decision-error {
   color: #9d362e;
 }
+
+.review-load-status {
+  position: fixed;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: .65rem 1rem;
+  border-radius: .6rem;
+  background: #ffffffdf;
+  color: #373128;
+  pointer-events: none;
+  z-index: 5;
+}
