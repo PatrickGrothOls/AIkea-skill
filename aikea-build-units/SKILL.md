@@ -65,8 +65,10 @@ Ordinary storage shelves default to four adjustable supports with matching blind
 holes and distinct purchases. Read [storage shelf construction](references/storage-shelves.md).
 Fixed Cabineo storage shelves require a recorded `FixedShelfChoice`; their pockets
 belong on the hidden underside. Structural cabinet floors and tops are separate
-parts, with their own structural connections. Keep shelves clear of lighting,
-hinges and the intended drawer route; requested but unsourced drawers remain required work, not permission to replace the intended installation.
+parts, with their own structural connections. Shelves use nearly the full usable
+depth and rest on pins in the cabinet's shared System 32 rows. They may visually
+cross the lighting line; reduce depth only for an actual physical clearance need.
+Check protruding lighting hardware, hinges and the intended drawer route; requested but unsourced drawers remain required work, not permission to replace the intended installation.
 
 Every cabinet defaults to full-height System 32 rows on its inside side panels,
 including custom compositions. Follow [the cabinet grid contract](references/panel-construction.md#machine-the-cabinet-hardware-grid).
