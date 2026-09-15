@@ -8,12 +8,6 @@
   "cup_boring_distance_mm": 4,
   "plate_height_mm": 0,
   "proposed_opening_width_mm": 586.75,
-  "proposed_single_structural_front_width_mm": 582.75,
-  "front_side_reveals_mm": [
-    2,
-    2
-  ],
-  "proposed_runner_box_width_mm": 511.35,
   "required_preserved_clearances_mm": {
     "floor": 3,
     "between_fronts": 3,
@@ -33,7 +27,8 @@
     "Preserve450 mm total depth with manufacturer1.5 mm closed back gap; reconcile carcass/base coordinates explicitly",
     "Final hinge quantity from actual18 mm leaf mass and height plus650 mm width increment",
     "Exact restricted90/92 degree pose and swept front/adjacent-door/wall clearance",
-    "Delete every retiredNC70 machining request on fresh regeneration"
+    "Delete every retiredNC70 machining request on fresh regeneration",
+    "Compute minimum support separately on each side; zero-protrusion hinge may remove one or both spacers, but source geometry and fixing/load must prove this."
   ],
   "hinge_quantity_preparation": {
     "counts_by_bay": [
@@ -51,5 +46,7 @@
     "cup_fixing_line_from_edge_mm": 31,
     "cup_depth_mm": 13,
     "cup_pattern_authority": "Official v18 p2 45/9.5 screw-pattern reference and p13 CD13; final exact-source alignment remains required"
-  }
+  },
+  "drawer_width_status": "UNRESOLVED: preserve intended hinge mounting pattern, calculate independent side intrusion across actual usable opening and full drawer travel. Previous symmetric25 mm support and2 mm nominal-front-reveal assumptions are superseded.",
+  "visual_symmetry": "Fronts remain centered and aligned: independently measure each side, then apply max(left obstruction+fit,right obstruction+fit) on both visible sides across related drawers. Hidden runner/support offsets can differ if mechanically required."
 }

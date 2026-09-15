@@ -3,6 +3,7 @@ import json
 import re
 from math import isfinite
 from drawer_layout_geometry import DrawerLayoutGeometry
+from drawer_travel_clearance import DrawerTravelClearance
 from fabrication_readiness_report import FabricationReadinessCheck
 
 
@@ -23,10 +24,20 @@ class DrawerLayoutPolicyChecker:
             return self._result((f'invalid drawer layout evidence: {error}',))
         invalid=self._record_problems(record,visits)
         if invalid:return self._result(invalid)
+        clearances,invalid=DrawerTravelClearance().read(root,visits,drawers)
+        if invalid:return self._result(invalid)
+        visible_reveals={}
+        for stack in record['stacks']:
+            group=stack.get('front_alignment_group',stack['cabinet'])
+            required=max(a+b for drawer in stack['drawers']
+                         for a,b in zip(clearances[drawer['path']]['obstruction_deductions_mm'],
+                                        clearances[drawer['path']]['fit_clearances_mm']))
+            visible_reveals[group]=max(visible_reveals.get(group,0),required)
         geometry=DrawerLayoutGeometry(visits);problems=[];covered=[]
         for stack in record['stacks']:
             covered.extend(d['path'] for d in stack['drawers'])
-            failures=geometry.check(stack)
+            group=stack.get('front_alignment_group',stack['cabinet'])
+            failures=geometry.check(stack,clearances,visible_reveals[group])
             exceptions=stack.get('user_requested_exceptions',[])
             allowed={e['rule'] for e in exceptions if e.get('requested_by')=='user' and
                      e.get('request_quote','').strip() and e.get('request_reference','').strip()}
@@ -46,11 +57,11 @@ class DrawerLayoutPolicyChecker:
                 references=[stack['cabinet'],stack['floor'],stack['cap'],*stack['opening_sides']]
                 valid &= 0<float(stack.get('tolerance_mm',.25))<=.5
                 valid &= len(stack['opening_sides'])==2 and bool(stack['drawers'])
+                valid &= isinstance(stack.get('front_alignment_group',stack['cabinet']),str)
                 valid &= all(isinstance(g,(int,float)) and isfinite(g) for g in stack['operating_gaps_mm'])
                 for drawer in stack['drawers']:
                     references.extend((drawer['path'],drawer['front'],*drawer['sides']))
-                    valid &= len(drawer['sides'])==2 and len(drawer['side_reveals_mm'])==2
-                    valid &= all(isinstance(g,(int,float)) and isfinite(g) and g>=0 for g in drawer['side_reveals_mm'])
+                    valid &= len(drawer['sides'])==2
                     valid &= all(p.startswith(drawer['path']+'/part:') for p in (drawer['front'],*drawer['sides']))
                 valid &= set(references)<=identities
                 valid &= all(e['rule'] in {'compact_stack','single_front','frontage'} and

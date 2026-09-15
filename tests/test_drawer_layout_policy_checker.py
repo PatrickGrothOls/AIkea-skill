@@ -3,6 +3,7 @@ import json
 from types import SimpleNamespace as N
 import cadquery as cq
 from drawer_layout_policy_checker import DrawerLayoutPolicyChecker
+from construction_input_fingerprint import ConstructionInputFingerprinter
 
 
 class LayoutFixture:
@@ -21,8 +22,13 @@ class LayoutFixture:
             joints=tuple(N(participant_ids=('front',side)) for side in ('left_wall','right_wall')),
             )
         self.owner.spec.machining=(N(part_id='front',operation_type='surface_groove'),)
-        self.visits.extend((N(path=tuple(self.drawer.split('/')),assembly=self.owner),
-                            N(path=tuple(self.root.split('/')),assembly=N(spec=N(assembly_id='cabinet_01',purpose='cabinet')))))
+        self.visits.extend((N(path=tuple(self.drawer.split('/')),assembly=self.owner,local_to_root=self.frame),
+                            N(path=tuple(self.root.split('/')),local_to_root=self.frame,
+                              assembly=N(spec=N(assembly_id='cabinet_01',purpose='cabinet'),joints=()))))
+        self.clearance={'path':self.drawer,'status':'PASS','method':'full_travel_sweep','travel_mm':400,
+            'constraint_paths':[self.root+'/part:left',self.root+'/part:right'],
+            'obstruction_deductions_mm':[0,0],'fit_clearances_mm':[2,2],
+            'support_offsets_mm':[25,25],'runner_installation_widths_mm':[12.7,12.7]}
         self.stack={'cabinet':self.root,'floor':self.root+'/part:floor','cap':self.root+'/part:cap',
             'opening_sides':[self.root+'/part:left',self.root+'/part:right'],'operating_gaps_mm':[3,3],
             'drawers':[{'path':self.drawer,'front':self.drawer+'/part:front',
@@ -37,6 +43,9 @@ class LayoutFixture:
     def write(self,root):
         path=root/'assemblies/drawer-layout-policy.json';path.parent.mkdir(exist_ok=True)
         path.write_text(json.dumps({'schema_version':1,'stacks':[self.stack]}))
+        (root/'assemblies/drawer-travel-clearance.json').write_text(json.dumps({'schema_version':1,
+            'construction_sha256':ConstructionInputFingerprinter().build(root,self.visits),
+            'drawers':[self.clearance]}))
 
 
 class TestDrawerLayoutPolicy:
@@ -84,4 +93,42 @@ class TestDrawerLayoutPolicy:
             v.part.solid=cq.Workplane(obj=v.part.solid.val().scale(.8))
         f.stack['operating_gaps_mm']=[2.4,2.4]
         f.stack['drawers'][0]['side_reveals_mm']=[1.6,1.6];f.write(tmp_path)
+        for key in ('obstruction_deductions_mm','fit_clearances_mm','support_offsets_mm','runner_installation_widths_mm'):
+            f.clearance[key]=[v*.8 for v in f.clearance[key]]
+        f.write(tmp_path)
         assert DrawerLayoutPolicyChecker().check(tmp_path,f.visits).passed
+
+    def test_asymmetric_hinge_deduction_produces_centered_symmetric_front(self,tmp_path):
+        f=LayoutFixture()
+        for v in f.visits:
+            if hasattr(v,'part') and v.path[-1]=='part:front':
+                v.part.solid=cq.Workplane('XY').box(542,16,144.5,centered=False).translate((28,2,19))
+        f.clearance['obstruction_deductions_mm']=[10,0];f.write(tmp_path)
+        assert DrawerLayoutPolicyChecker().check(tmp_path,f.visits).passed
+
+    def test_offcenter_front_fails_even_when_both_sides_clear_hardware(self,tmp_path):
+        f=LayoutFixture()
+        for v in f.visits:
+            if hasattr(v,'part') and v.path[-1]=='part:front':
+                v.part.solid=cq.Workplane('XY').box(552,16,144.5,centered=False).translate((28,2,19))
+        f.clearance['obstruction_deductions_mm']=[10,0];f.write(tmp_path)
+        assert any('symmetric' in p for p in DrawerLayoutPolicyChecker().check(tmp_path,f.visits).problems)
+
+    def test_hidden_supports_may_differ_while_front_stays_centered(self,tmp_path):
+        f=LayoutFixture();f.clearance['support_offsets_mm']=[25,0]
+        for v in f.visits:
+            if hasattr(v,'part') and v.path[-1]=='part:right_wall':
+                v.part.solid=v.part.solid.translate((25,0,0))
+        f.write(tmp_path)
+        assert DrawerLayoutPolicyChecker().check(tmp_path,f.visits).passed
+
+    def test_missing_or_stale_travel_evidence_fails(self,tmp_path):
+        f=LayoutFixture();f.write(tmp_path)
+        (tmp_path/'aikea.yaml').write_text('changed_hinge_layout: true')
+        assert any('stale' in p for p in DrawerLayoutPolicyChecker().check(tmp_path,f.visits).problems)
+        (tmp_path/'assemblies/drawer-travel-clearance.json').unlink()
+        assert any('missing verified' in p for p in DrawerLayoutPolicyChecker().check(tmp_path,f.visits).problems)
+
+    def test_unnecessary_symmetric_supports_fail_current_clearance(self,tmp_path):
+        f=LayoutFixture();f.clearance['support_offsets_mm']=[25,0];f.write(tmp_path)
+        assert any('box width' in p for p in DrawerLayoutPolicyChecker().check(tmp_path,f.visits).problems)

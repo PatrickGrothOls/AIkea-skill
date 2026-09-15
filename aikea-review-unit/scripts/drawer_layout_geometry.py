@@ -10,7 +10,7 @@ class DrawerLayoutGeometry:
         visit=self.visits[path]
         return visit.part.solid.val().located(LocalToParentLocation().build(visit.local_to_root)).BoundingBox()
 
-    def check(self,stack):
+    def check(self,stack,clearances,visible_reveal):
         floor=self.box(stack['floor']);cap=self.box(stack['cap'])
         left,right=(self.box(p) for p in stack['opening_sides'])
         tolerance=stack.get('tolerance_mm',.25)
@@ -35,11 +35,18 @@ class DrawerLayoutGeometry:
                 if (other.ymax<=front.ymin+tolerance and other.zlen>front.zlen/2 and
                     min(other.xmax,front.xmax)-max(other.xmin,front.xmin)>front.xlen/2):
                     problems.append('single_front: an additional panel doubles the visible structural front')
-            reveals=drawer['side_reveals_mm']
+            clearance=clearances[drawer['path']]
+            reveals=(visible_reveal,visible_reveal)
             actual=(front.xmin-left.xmax,right.xmin-front.xmax)
             if any(abs(a-b)>tolerance for a,b in zip(actual,reveals)):
-                problems.append('frontage: front does not span the opening minus declared operating reveals')
+                problems.append('frontage: front must maximize verified travel width with centered, aligned symmetric reveals')
             if any(g<0 for g in actual):problems.append('frontage: front crosses the cabinet opening')
+            box_left,box_right=(self.box(p) for p in drawer['sides'])
+            box_offsets=(box_left.xmin-left.xmax,right.xmin-box_right.xmax)
+            required=tuple(a+b for a,b in zip(clearance['support_offsets_mm'],
+                                             clearance['runner_installation_widths_mm']))
+            if any(abs(a-b)>tolerance for a,b in zip(box_offsets,required)):
+                problems.append('frontage: box width or placement wastes or exceeds verified runner/support space')
         if fronts:
             gaps=(fronts[0].zmin-floor.zmax,
                   *(b.zmin-a.zmax for a,b in zip(fronts,fronts[1:])),cap.zmin-fronts[-1].zmax)
