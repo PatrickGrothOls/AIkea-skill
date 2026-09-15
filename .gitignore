@@ -8,6 +8,7 @@ __pycache__/
 .venv/
 venv/
 env/
+.aikea-runtime/
 
 # macOS
 .DS_Store
@@ -17,6 +18,8 @@ env/
 *.stp
 *.glb
 *.gltf
+*.blend
+*.blend1
 *.bgcode
 
 # Local viewer dependencies and intermediate builds

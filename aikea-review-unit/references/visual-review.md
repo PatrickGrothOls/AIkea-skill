@@ -105,10 +105,11 @@ Keep the viewer open while asking for the visual decision; do not make the clien
 locate files or run terminal commands.
 
 Perspective review should make the generated cabinet easy to judge as a finished
-physical object. Use the packaged photographic lighting and material presentation,
-keep a clean interactive image visible while the client moves or while photographic
-samples are still gathering, then fade into the refined image after the client
-settles on an angle.
+physical object. For the assembled finish, use
+[the checked Blender bake](blender-presentation.md) in the interactive viewer.
+The skill provisions the engine automatically. The resulting lighting remains
+visible while rotating the whole piece; no stationary photograph replaces the
+model. Keep the source material GLB for open and exploded inspection.
 
 Preserve the manufactured design in every presentation. Bevels, edge rounding,
 grooves, and other physical details must come from the source CAD and its recorded

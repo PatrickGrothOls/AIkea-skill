@@ -45,6 +45,14 @@ and repetition boundary; a single custom piece need not wait on a run-wide door
 proposal. Preserve the existing left-hinge proposal for applicable fitted doors.
 Use that same real root ID for inventory and the fabrication gate below.
 
+For the finished, assembled presentation, follow
+[the Blender bake workflow](references/blender-presentation.md). Its command
+automatically provisions the required background Blender engine and compatible
+Python; the client need not install or operate Blender. Require the coverage and
+geometry reports before showing the baked model. Use the original material GLB
+for open or exploded inspection; baked assembled shadows do not follow moved
+parts. Preserve all CAD geometry and the selected material identities.
+
 The following first-cabinet, structural-base, full-wardrobe and drawer-run
 sequences apply to the standard wardrobe configurator.
 
