@@ -34,7 +34,7 @@ class TestPartPlacementTaxonomy(AssemblyCompositionTestCase):
         )
         assert right.local_z_in_parent == (-1.0, 0.0, 0.0)
         assert door.origin_in_parent_mm[2] == cabinet.door_bottom_mm
-        assert shelf.origin_in_parent_mm[0] == 18.0
+        assert shelf.origin_in_parent_mm[0] == 18.5
         assert shelf.local_z_in_parent == (0.0, 0.0, 1.0)
 
     def test_base_taxonomy_contains_module_relative_part_frames(self) -> None:
@@ -44,15 +44,10 @@ class TestPartPlacementTaxonomy(AssemblyCompositionTestCase):
         )
 
         deck = self._part(base, "deck_01").local_to_parent
-        front = self._part(base, "front_rail_01").local_to_parent
-        back = self._part(base, "back_rail_01").local_to_parent
-        brace = self._part(base, "brace_01_01").local_to_parent
-
+        front = self._part(base, "kickboard_01").local_to_parent
         assert deck.origin_in_parent_mm == (0.0, 0.0, base.height_mm - 18.0)
         assert front.origin_in_parent_mm[1] == base.plinth_recess_mm + 18.0
-        assert back.origin_in_parent_mm[1] == base.depth_mm
-        assert brace.local_x_in_parent == (0.0, 1.0, 0.0)
-        assert brace.local_z_in_parent == (1.0, 0.0, 0.0)
+        assert front.local_z_in_parent == (0.0,-1.0,0.0)
 
     def test_generated_spec_builds_a_complete_walkable_part_tree(
         self, generated_values

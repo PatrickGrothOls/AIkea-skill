@@ -16,7 +16,7 @@ from assembly_taxonomy_generator import AssemblyTaxonomyGenerator
 
 @unittest.skipUnless(find_spec("cadquery"), "requires the project's CadQuery environment")
 class TestBasePartGeometry(unittest.TestCase):
-    """Build every planned deck, rail, and brace from its generated local spec."""
+    """Build every planned deck and kickboard from its generated local spec."""
 
     _FIXTURE = Path(__file__).parent / "fixtures" / "review-unit-aikea.yaml"
 
@@ -31,7 +31,7 @@ class TestBasePartGeometry(unittest.TestCase):
         self.temporary_directory.cleanup()
 
     def test_every_base_part_matches_its_local_manufacturing_size(self) -> None:
-        self.assertEqual(len(self.built.parts), 19)
+        self.assertEqual(len(self.built.parts), 4)
         for part in self.built.parts:
             bounds = part.solid.val().BoundingBox()
             expected = part.spec.local_size_mm

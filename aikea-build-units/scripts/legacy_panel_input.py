@@ -22,7 +22,7 @@ class LegacyPanelInput:
             fields = (("depth", "height", "thickness") if part.role == "side_panel"
                       else ("length", "depth", "thickness"))
             size = tuple(float(dimensions[name]) for name in fields)
-        elif part.role in ("shelf_panel", "base_deck", "base_rail", "base_brace"):
+        elif part.role in ("shelf_panel", "base_deck", "base_rail", "base_brace", "base_kickboard"):
             size = part.local_size_mm
         else:
             raise PartConstructionError(f"unsupported legacy part role: {part.role}")

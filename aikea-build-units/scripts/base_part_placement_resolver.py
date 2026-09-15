@@ -19,6 +19,7 @@ class BasePartPlacementResolver:
         self._role_resolvers = {
             "base_deck": self._deck,
             "base_rail": self._rail,
+            "base_kickboard": self._rail,
             "base_brace": self._brace,
         }
 

@@ -4,13 +4,13 @@
 class ConfiguredPanelModuleRenderer:
     """Expose editable construction inputs and views of the complete result."""
 
-    def assembly_builder(self, assembly_id):
+    def assembly_builder(self, assembly_id, recipe="cabinet"):
         return (
             f'"""Scope: Construct the editable {assembly_id} recipe with shared tools."""\n\n'
-            "from assemblies.panel_assembly import PanelAssemblyBuilder\n"
+            "from configured_unit_builder import ConfiguredUnitBuilder\n"
             "from .spec import SPEC\n\n\n"
             "# Unselected fittings remain declared unresolved joints in this preview.\n"
-            "BUILDER = PanelAssemblyBuilder(SPEC, allow_unresolved=True)\n"
+            f"BUILDER = ConfiguredUnitBuilder(SPEC, recipe={recipe!r})\n"
         )
 
     def part_builder(self, assembly_id, part_id):

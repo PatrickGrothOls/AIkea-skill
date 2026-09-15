@@ -32,8 +32,8 @@ class DoorAndPlinthPositionChecker:
     ) -> DoorAndPlinthPositionResult:
         base = built_base.spec
         cabinet = built_cabinet.spec
-        front_rail = PlacedBounds.from_parts(
-            part for part in base_parts if part.name == "front_rail_01"
+        front_panel = PlacedBounds.from_parts(
+            part for part in base_parts if part.name in {"kickboard_01", "front_rail_01"}
         )
         deck = PlacedBounds.from_parts(
             part for part in base_parts if part.name == "deck_01"
@@ -47,7 +47,7 @@ class DoorAndPlinthPositionChecker:
             "door_bottom_z_mm": door.z_min_mm,
             "plinth_front": base.plinth_front,
             "plinth_recess_mm": float(base.plinth_recess_mm),
-            "plinth_front_y_mm": front_rail.y_min_mm,
+            "plinth_front_y_mm": front_panel.y_min_mm,
             "base_deck_bottom_z_mm": deck.z_min_mm,
         }
         checks = (
@@ -57,7 +57,7 @@ class DoorAndPlinthPositionChecker:
             ),
             AssemblyPositionReport.check(
                 "plinth front reaches its selected depth",
-                self._same(front_rail.y_min_mm, base.plinth_recess_mm),
+                self._same(front_panel.y_min_mm, base.plinth_recess_mm),
             ),
         )
         return DoorAndPlinthPositionResult(relationships, checks)

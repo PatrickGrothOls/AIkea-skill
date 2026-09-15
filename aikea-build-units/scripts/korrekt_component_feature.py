@@ -58,9 +58,9 @@ class KorrektComponentFeature:
                 tuple(f"part:{name}" for name in affected)+tuple(f"hardware:{name}" for name in ids),
                 (f"feature:{self.module}",), "operations"),
             ConstructionRequirementSpec(prefix+"_physical_fit",
-                "Confirm plug/socket fit, screw engagement, top access, adjustment and deck support/load",
+                "Confirm relative plate/foot pose, plug/socket fit, screw engagement, top access, adjustment and deck support/load",
                 tuple(f"part:{name}" for name in self.deck_part_ids)+tuple(f"hardware:{name}" for name in ids),
-                basis="Sourced CAD and successful subtraction alone do not resolve these installation checks"),
+                basis="Sourced CAD and successful subtraction alone do not resolve these installation checks; a floor-anchored single-solid foot and a separately positioned plate do not prove telescopic adjustment at any height"),
         )
         declared = result.spec.requirements
         return replace(result, spec=replace(result.spec,

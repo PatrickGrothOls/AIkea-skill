@@ -52,16 +52,25 @@ For the base's input, placement and evidence contract, read
    client's visual approval before producing other units. Use the plain cabinet
    review only for an assembly that is intentionally doorless.
 
-The bundled construction now supplies full-height tall storage and the structural
-base beneath the complete run. The base inherits the cabinet footprint, divides
-long panels into CNC-sized modules, and owns its decks, rails, braces, and module
-relationships. Each brace-to-rail relationship resolves the brace pockets and
-matching blind rail receivers together. Every cabinet side also owns one System
-32 hardware grid that shelves, hinges, drawer runners, and later compatible
-fittings can share without recalculating their own panel holes. The cabinet recipe
-declares that grid explicitly. An arrangement without a standard recipe can use
-the shared construction inputs directly; no new furniture-purpose registration
-is required for that route.
+The default floor-standing cabinet base uses Korrekt 61854 plates and 70151
+adjustable feet, a deck, and a front kickboard. Never substitute a rail-and-brace
+base when hardware, height or installation evidence is missing. Read the
+[base recipe](references/base-recipe.md) and [Korrekt mounting contract](references/korrekt-mounting.md).
+Check the required overall base height minus deck stock against both the product
+adjustment range and the available exact CAD pose; report a conflict instead of
+silently changing the room envelope. Exact source files are supplied through
+`$aikea-source-hardware-cad`.
+
+Ordinary storage shelves default to four adjustable supports with matching blind
+holes and distinct purchases. Read [storage shelf construction](references/storage-shelves.md).
+Fixed Cabineo storage shelves require a recorded `FixedShelfChoice`; their pockets
+belong on the hidden underside. Structural cabinet floors and tops are separate
+parts, with their own structural connections. Keep shelves clear of lighting,
+hinges and the intended drawer route; requested but unsourced drawers remain required work, not permission to replace the intended installation.
+
+The cabinet recipe declares its System 32 grid explicitly and reuses exact matching
+holes. These choices belong to the configured recipe; the common panel executor
+continues to apply only declared machining, independently of furniture purpose.
 
 ## Responsibility boundary
 
@@ -73,7 +82,7 @@ assembly build. The complete assembly builder remains the stable entry point.
 `$aikea-review-unit` consumes that built result without reconstructing its
 geometry.
 
-For selected adjustable feet, reuse the [Korrekt mounting operation](references/korrekt-mounting.md) through shared construction.
+For the default adjustable feet, reuse the [Korrekt mounting operation](references/korrekt-mounting.md) through shared construction.
 
 For a straight rectangular panel groove, use `SurfaceGrooveSpec` through the
 common machining list. Its surface frame points +Z into the material, with +X

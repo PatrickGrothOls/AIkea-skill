@@ -14,7 +14,11 @@ the appearance of a reference image.
 - Include every structural pocket, insert receiver, rail pilot, hinge fixing,
   handle hole and other required opening. Track unselected hardware and missing
   hole patterns as unresolved obligations; omission is not a compatible setup.
-- Use the shared paired Cabineo construction for sheet connections and count
+- Ordinary storage shelves use adjustable supports with actual matching bores
+  and purchases. A fixed Cabineo shelf needs a deliberate recorded choice and
+  underside pockets; structural floors/tops remain separate. Floor-standing
+  cabinet bases use the current Korrekt feet/deck/kickboard, with no brace fallback.
+- Use the shared paired Cabineo construction for selected fixed sheet connections and count
   one matching brass insert per verified connector. Resolve both participants
   from their actual frames, faces and material thicknesses. No self-designed
   replacement pockets or unpaired visual connector symbols.

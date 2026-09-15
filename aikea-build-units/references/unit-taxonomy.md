@@ -45,7 +45,7 @@ The current construction taxonomy produces:
 - left and right side panels;
 - one back panel retaining the complete local outline;
 - one door panel;
-- three removable shelf panels whose supports use rows shared by both sides;
+- three removable shelf panels with four declared supports each, on rows shared by both sides;
 - one top panel for every segment of the local top boundary;
 - one authoritative list of the physical relationships between those parts.
 
@@ -59,9 +59,12 @@ adjusted separately inside each assembly, so the same unit can use either a
 full-length door or a door ending at the plinth.
 
 Shelf count, dimensions, and support rows are owned by the local assembly. Each
-shelf closes the clear opening between the side panels and stops at the front face
+shelf leaves 0.5 mm clearance at each side of the clear opening and stops at the front face
 of the structural back. Its support row must exist in both side-panel hole patterns,
 including when a confirmed top profile gives the two sides different heights.
+The [storage-shelf policy](storage-shelves.md) requires actual support hardware and
+matching bores; fixed Cabineo storage shelves need a recorded deliberate choice
+and hidden underside pockets. Structural cabinet floors/tops are separate.
 
 The default structural carcass uses a load-bearing back and the lower support
 assembly as physical participants. On a flat unit, the top spans and bears directly
@@ -74,23 +77,16 @@ producing a through-cut receiver.
 
 ## Structural base
 
-The base is one generated assembly beneath the complete cabinet run. Its local
-specification owns the calculated base modules and each module's deck, front and
-back rail, and full-height braces. Overall base height includes the deck; the
-support frame fills the remaining height. Cross-brace length closes between the
-front and back rails, and the brace count follows the local construction spacing.
-The plinth-front choice positions the front rail and the front end of every brace.
-A recessed front shortens that support span while the deck retains the complete
-cabinet footprint. This choice is independent of the door lower line.
+The base is one generated assembly beneath the cabinet run. It owns CNC-sized
+deck and front-kickboard modules plus exact Korrekt 61854/70151 purchases and their
+mounting operations. There is no rail/brace fallback. Overall base height includes
+the deck. Check both the product adjustment range and the unchanged source pose,
+full plate edge margins, floor access and whole-foot kickboard clearance using
+[the base recipe](base-recipe.md).
 
-Long bases divide at useful cabinet boundaries so every deck and rail fits the
-selected CNC working area. Each module begins and ends with a brace, and each seam
-between modules remains visible in the joint specification. Every brace owns one
-paired Cabineo joint to the front rail and one to the back rail. Each joint derives
-the brace pockets and matching blind rail receivers from the same geometry. Module
-seam machining, cabinet-to-base receiving features, assembly placement, and visual
-approval remain later construction checks and must not be claimed merely because
-the folders exist.
+Module seams, kickboard clips, screws, cabinet attachment, socket fit and load
+qualification remain explicit construction requirements. A generated folder or
+valid cut does not qualify these connections.
 
 ## Safe regeneration
 

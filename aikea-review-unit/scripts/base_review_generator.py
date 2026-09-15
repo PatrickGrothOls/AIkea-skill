@@ -77,7 +77,7 @@ class BaseReviewGenerator:
         return tuple(
             part
             for part in base_parts
-            if part.name in {"deck_01", "front_rail_01", "back_rail_01"}
+            if part.name in {"deck_01", "kickboard_01", "front_rail_01", "back_rail_01"}
             or part.name.startswith("brace_01_")
         )
 

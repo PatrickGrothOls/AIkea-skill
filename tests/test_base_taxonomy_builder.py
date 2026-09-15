@@ -40,67 +40,18 @@ class TestBaseTaxonomyBuilder:
             for part in self.base.parts
         )
 
-    def test_deck_and_frame_close_the_overall_base_dimensions(self) -> None:
-        decks = [part for part in self.base.parts if part.role == "base_deck"]
-        rails = [part for part in self.base.parts if part.role == "base_rail"]
-        braces = [part for part in self.base.parts if part.role == "base_brace"]
+    def test_deck_and_kickboard_close_the_overall_base_dimensions(self):
+        decks = [p for p in self.base.parts if p.role == "base_deck"]
+        fronts = [p for p in self.base.parts if p.role == "base_kickboard"]
+        assert len(decks) == len(fronts) == 2
+        assert len(self.base.parts) == 4
+        assert sum(p.local_size_mm[0] for p in decks) == 2978
+        assert {p.local_size_mm[1] for p in fronts} == {82}
+        assert not any(p.role in {"base_rail","base_brace"} for p in self.base.parts)
 
-        assert len(decks) == 2
-        assert len(rails) == 4
-        assert len(braces) == 13
-        assert sum(part.local_size_mm[0] for part in decks) == 2978.0
-        assert {part.local_size_mm[1] for part in decks} == {582.0}
-        assert {part.local_size_mm[1] for part in rails} == {82.0}
-        assert {part.local_size_mm[:2] for part in braces} == {(546.0, 82.0)}
-
-    def test_brace_centers_include_module_ends_and_stay_within_spacing(self) -> None:
-        for module_index, module in enumerate(self.base.modules, start=1):
-            brace_prefix = f"brace_{module_index:02d}_"
-            positions = [
-                dict(part.dimensions_mm)["center_x"]
-                for part in self.base.parts
-                if part.part_id.startswith(brace_prefix)
-            ]
-            assert positions[0] == 9.0
-            assert positions[-1] == module.width_mm - 9.0
-            assert max(
-                right - left for left, right in zip(positions, positions[1:])
-            ) <= 320.0
-
-    def test_every_brace_has_paired_cabineo_joints_to_both_rails(self) -> None:
-        corners = [
-            joint for joint in self.base.joints if joint.purpose == "base_frame_corner"
-        ]
-
-        assert len(corners) == 26
-        assert all(joint.joint_type == "cabineo" for joint in corners)
-        assert all(joint.source_part_id.startswith("brace_") for joint in corners)
-        assert all(joint.source_face == ">Z" for joint in corners)
-        assert all(joint.connector_layout == "bounded_spacing" for joint in corners)
-        assert {
-            (joint.target_part_id.split("_")[0], joint.source_edge)
-            for joint in corners
-        } == {("front", "<X"), ("back", ">X")}
-        for brace in {
-            joint.source_part_id for joint in corners
-        }:
-            assert {
-                joint.target_part_id.split("_")[0]
-                for joint in corners
-                if joint.source_part_id == brace
-            } == {"front", "back"}
-
-    def test_module_seam_is_an_explicit_assembly_relationship(self) -> None:
-        seams = [
-            joint for joint in self.base.joints if joint.purpose == "base_module_seam"
-        ]
-
+    def test_module_seam_and_kickboard_attachment_remain_explicit(self):
+        seams = [j for j in self.base.joints if j.purpose == "base_module_seam"]
         assert len(seams) == 1
-        assert seams[0].participant_ids == (
-            "deck_01",
-            "deck_02",
-            "front_rail_01",
-            "front_rail_02",
-            "back_rail_01",
-            "back_rail_02",
-        )
+        assert seams[0].participant_ids == ("deck_01","deck_02")
+        assert len([j for j in self.base.joints if j.purpose == "select_korrekt_kickboard_clips"]) == 2
+        assert all(j.joint_type == "unresolved" for j in self.base.joints)

@@ -47,18 +47,13 @@ class TestDoorAndPlinthGeometry(unittest.TestCase):
             base_parts = generator.base_geometry.build(built_base)
             built_cabinet = generator.loader.load_first(project_root, project)
             cabinet_parts = generator.cabinet_geometry.build(built_cabinet)
-            front = next(part for part in base_parts if part.name == "front_rail_01")
-            brace = next(part for part in base_parts if part.name == "brace_01_01")
+            front = next(part for part in base_parts if part.name == "kickboard_01")
             door = next(part for part in cabinet_parts if part.name == "door_panel")
 
             self.assertEqual(report["status"], "valid")
             self.assertAlmostEqual(door.placed_shape().BoundingBox().zmin, door_z_mm)
             self.assertAlmostEqual(front.placed_shape().BoundingBox().ymin, front_y_mm)
-            self.assertAlmostEqual(
-                brace.placed_shape().BoundingBox().ymin,
-                front_y_mm + 18,
-            )
-            self.assertAlmostEqual(brace.placed_shape().BoundingBox().ymax, 564)
+            self.assertAlmostEqual(front.placed_shape().BoundingBox().zmax,82)
             self.assertTrue(
                 all(part.solid.val().isValid() for part in (*base_parts, *cabinet_parts))
             )

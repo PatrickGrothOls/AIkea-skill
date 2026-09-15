@@ -17,7 +17,7 @@ class TestBaseGeometry(BaseReviewTestCase):
         parts = self.generator.base_geometry.build(built_base)
         bounds = [part.placed_shape().BoundingBox() for part in parts]
 
-        self.assertEqual(len(parts), 19)
+        self.assertEqual(len(parts), 4)
         self.assertAlmostEqual(min(bound.xmin for bound in bounds), 0.0)
         self.assertAlmostEqual(max(bound.xmax for bound in bounds), 2978.0)
         self.assertAlmostEqual(min(bound.ymin for bound in bounds), 0.0)
@@ -34,21 +34,14 @@ class TestBaseGeometry(BaseReviewTestCase):
                     0.0,
                 )
 
-    def test_braces_close_between_both_rails_and_bear_the_deck(self) -> None:
-        built_base = self.generator.loader.load_assembly(self.project_root, "base_01")
-        parts = self.generator.base_geometry.build(built_base)
-        front = next(part for part in parts if part.name == "front_rail_01")
-        back = next(part for part in parts if part.name == "back_rail_01")
-        brace = next(part for part in parts if part.name == "brace_01_03")
-        deck = next(part for part in parts if part.name == "deck_01")
-        front_bounds = front.placed_shape().BoundingBox()
-        back_bounds = back.placed_shape().BoundingBox()
-        brace_bounds = brace.placed_shape().BoundingBox()
-        deck_bounds = deck.placed_shape().BoundingBox()
-
-        self.assertAlmostEqual(front_bounds.ymax, brace_bounds.ymin)
-        self.assertAlmostEqual(brace_bounds.ymax, back_bounds.ymin)
-        self.assertAlmostEqual(brace_bounds.zmax, deck_bounds.zmin)
+    def test_kickboard_meets_deck_and_base_owns_adjustable_feet(self):
+        built = self.generator.loader.load_assembly(self.project_root,"base_01")
+        parts = self.generator.base_geometry.build(built)
+        front = next(p for p in parts if p.name == "kickboard_01")
+        deck = next(p for p in parts if p.name == "deck_01")
+        self.assertAlmostEqual(front.placed_shape().BoundingBox().zmax,deck.placed_shape().BoundingBox().zmin)
+        self.assertGreater(len(built.purchased_hardware),0)
+        self.assertEqual({p.spec.product_code for p in built.purchased_hardware},{"61854","70151"})
 
     def _bounding_overlap_volume(self, left, right) -> float:
         lengths = (

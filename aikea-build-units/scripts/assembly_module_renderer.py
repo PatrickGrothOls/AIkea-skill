@@ -13,7 +13,8 @@ class AssemblyModuleRenderer:
     """Create importable entry points around one authoritative local spec."""
 
     def assembly_builder(self, assembly: AssemblyTaxonomy) -> str:
-        return ConfiguredPanelModuleRenderer().assembly_builder(assembly.assembly_id)
+        recipe = "korrekt_base" if isinstance(assembly, BaseAssemblyTaxonomy) else "cabinet"
+        return ConfiguredPanelModuleRenderer().assembly_builder(assembly.assembly_id,recipe)
 
     def part_spec(self, assembly_id: str, part: PartTaxonomy) -> str:
         return (

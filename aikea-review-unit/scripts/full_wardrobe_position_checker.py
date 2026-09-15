@@ -35,8 +35,8 @@ class FullWardrobePositionChecker:
             part for part in base_parts if part.name.startswith("deck_")
         )
         deck_global = deck_local.shifted(base_zero)
-        front_rail = PlacedBounds.from_parts(
-            part for part in base_parts if part.name.startswith("front_rail_")
+        front_panel = PlacedBounds.from_parts(
+            part for part in base_parts if part.name.startswith(("kickboard_", "front_rail_"))
         )
         assemblies = {
             base.assembly_id: AssemblyPositionReport.assembly_values(
@@ -51,7 +51,7 @@ class FullWardrobePositionChecker:
             "base_top_z_mm": base_local.z_max_mm,
             "plinth_front": base.plinth_front,
             "plinth_recess_mm": float(base.plinth_recess_mm),
-            "plinth_front_y_mm": front_rail.y_min_mm,
+            "plinth_front_y_mm": front_panel.y_min_mm,
             "cabinet_gaps_mm": self._cabinet_gaps(built_cabinets),
             "door_bottoms_z_mm": {},
         }
@@ -63,7 +63,7 @@ class FullWardrobePositionChecker:
             ),
             AssemblyPositionReport.check(
                 "plinth front reaches its selected depth",
-                self._same(front_rail.y_min_mm, base.plinth_recess_mm),
+                self._same(front_panel.y_min_mm, base.plinth_recess_mm),
             ),
         ]
         for built, parts in zip(built_cabinets, cabinet_parts):

@@ -1,46 +1,48 @@
-# Structural-base recipe
+# Adjustable cabinet-base recipe
 
-The existing sheet base is an optional dimension recipe over `PanelAssemblyBuilder`.
-It is useful when the design calls for a segmented deck supported by rails and
-braces. Other support arrangements can use the same construction contracts.
+Floor-standing cabinets use Hettich Korrekt adjustable feet, a deck and a front
+kickboard. `BaseTaxonomyBuilder` now emits deck/kickboard modules; the configured
+builder applies `KorrektBaseFeature` through the existing `KorrektComponentFeature`.
+It never substitutes sheet braces for a missing foot installation. Older saved
+rail/brace projects remain historical inputs and require explicit migration.
 
-## Inputs and placement
+## Height and stock
 
-`BaseTaxonomyBuilder` takes the cabinet spans, depth, height, panel thickness and
-plinth-front/recess choice. It divides long decks and rails using the existing
-CNC work area and calculates brace locations with the existing construction
-profile. Its output passes through the same part-placement resolver and spec
-renderer as the rest of the generated run.
+Overall base height includes the deck. `KorrektBaseLayout` checks the remaining
+support height against article 70151's official 74–110 mm adjustment range.
+The supplied checksum-bound foot CAD is one 80 mm-high solid. The current builder
+rejects a deck underside below that source pose; it does not scale the foot or
+pretend that the available solid has an adjustable joint. For example, 95 mm
+base minus 16 mm deck leaves 79 mm: physically inside the article range, but the
+unchanged CAD plug intrudes into the deck. A separately declared 15 mm deck
+proposal leaves 80 mm without altering cabinet/room height. Obtain suitable stock
+or a verified adjusted source pose before accepting a different arrangement.
 
-The resulting `BaseAssemblySpec` contains explicit part outlines/sizes and
-`local_to_parent` frames, paired joints, requirements and `machining=()`.
-Empty local machining means no implicit shelf grid or drilling selected by a
-part's name. Add only supported, explicit operations when adapting the recipe.
+A source-derived floor placement does not prove the socket fit. Keep measured
+plate/foot intersections, insertion depth, installation, load distribution,
+anti-tip fixing and selected fasteners visible as outstanding qualifications.
 
-In the configured wardrobe, the root places the base alongside its other children.
-A custom parent can wrap the same result in `BuiltChildAssembly` using its declared
-frame, or use its parts/joints in `PanelAssemblySpec`. Keep every physical panel
-owned once; do not copy a shared deck into both the base and a cabinet inventory.
-Preserve requirements, placements, children and purchases when adapting the spec.
+## Ownership and machining
 
-## Effects and evidence
+The base owns each deck, kickboard, exact 61854 plate and exact 70151 foot once.
+Every article has its own one-piece purchase identity. Four plate screws are
+additional purchases/selection work; they are not included with the plate.
+Source files stay local-only via `$aikea-source-hardware-cad`; never ship them in
+the skill. Review resolves the exact source solids and retains their native shape.
 
-Brace-to-rail Cabineo joints machine both participants and contribute one connector
-and one insert per occurrence through the existing inventory reconciliation.
-Deck attachments, module seams and unsupported support decisions stay declared
-and unresolved. A valid set of cuts does not establish load capacity, anchoring,
-floor suitability or the missing connection mechanism.
+Use the existing [Korrekt mounting operation](korrekt-mounting.md): four Ø3 mm
+through pilots and one Ø8 mm adjustment passage. Check the **whole rotated plate**
+against the assembled deck boundary, with a declared margin (default proposal
+15 mm), not only its screw holes. Keep the foot's whole contact disk behind the
+kickboard. Station spacing is a proposal, not a calculated load rating.
 
-All generated assembly and individual-part entry points use the complete shared
-construction result. Regenerating a saved project uses its generated-file hashes;
-an authored change stops regeneration before files are overwritten. Preserve and
-reconcile older unrecorded builders instead of guessing their provenance.
+A cabinet floor above the deck is a separate owner. Apply
+`KorrektFloorAccessFeature` with the same axes transformed into that cabinet's
+frame; it cuts aligned Ø8 mm passages through the floor. The real tool route must
+remain open after drawers, shelf loads and floor finishing are installed.
 
-Removing the component removes its owned parts, joints, cuts and purchases from
-the composed tree. Requirements on other owners that still reference it must be
-revised explicitly; they should become missing-work findings if left behind.
-Do not remove those requirements simply to obtain a passing check.
-
-Adjustable purchased feet are a separate component. Replacing the sheet support
-requires the chosen mounting interface, screw/receiver checks and support evidence;
-this recipe does not imply that a particular leg can support the result.
+`BaseModulePlanner` retains CNC-sized deck/kickboard segments. Module seams,
+kickboard clips, cabinet-to-base fastening and load/anchoring evidence remain
+explicit unresolved requirements until their actual construction is selected.
+Common builders/checks consume the current feature result; do not edit derived
+part solids after export or hide unknown joints merely to obtain a passing check.

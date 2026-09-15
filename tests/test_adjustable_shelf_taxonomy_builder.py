@@ -27,7 +27,7 @@ class TestAdjustableShelfTaxonomyBuilder:
             1636.0,
         ]
         assert all(
-            shelf.local_size_mm == (955.333333, 564.0, 18.0)
+            shelf.local_size_mm == (954.333333, 564.0, 18.0)
             for shelf in shelves
         )
 

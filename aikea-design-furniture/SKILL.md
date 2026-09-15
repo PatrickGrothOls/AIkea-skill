@@ -19,8 +19,18 @@ Keep implementation details out of the customer conversation unless requested.
 
 Read [the manufacturing process](references/manufacturing-process.md) before
 placing panels or joints. The standard process is three-axis CNC with one chosen
-broad machining face per physical part, no flipping, and paired Cabineo/insert
-connections. This constrains the arrangement, including all hardware fixing holes.
+broad machining face per physical part and no flipping. Selected fixed structural
+sheet connections use paired Cabineo/insert work. This constrains the arrangement,
+including all hardware fixing holes.
+
+For floor-standing cabinets, use the current Korrekt adjustable feet, deck and
+front kickboard; there is no brace-base fallback. Read the [base recipe](../aikea-build-units/references/base-recipe.md)
+and retain the required outside height when checking hardware/deck compatibility.
+Ordinary storage shelves default to actual adjustable supports and matching bores.
+Read the [storage-shelf policy](../aikea-build-units/references/storage-shelves.md);
+record any fixed Cabineo shelf choice and keep its pockets on the hidden underside.
+Structural cabinet floors/tops are separate. These defaults apply equally to
+custom compositions and generated recipes.
 
 Save the envelope, obstacles, chosen materials and functional requirements in the
 active project. Preserve an existing `aikea.yaml`; use its wardrobe calculator
