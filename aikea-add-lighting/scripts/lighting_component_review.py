@@ -24,7 +24,7 @@ class LightingComponentReview:
             raise ValueError("lighting review and owning assembly differ")
         host = next(part for part in context.assembly.parts if part.spec.part_id == plan.part_id)
         hardware = next(item for item in context.assembly.purchased_hardware if item.spec.hardware_id == plan.run.run_id)
-        if hardware.spec != LightingPurchase().build(plan.run, hardware.spec.local_to_parent):
+        if hardware.spec != LightingPurchase().build(plan.run, hardware.spec.local_to_parent, plan.part_id):
             raise ValueError("lighting review differs from its current purchased variant")
         geometry = PartLightingBuilder().prepare(host, plan)
         placement = CabinetLightingPlacementBuilder().build(context.assembly.spec, host.spec, plan)

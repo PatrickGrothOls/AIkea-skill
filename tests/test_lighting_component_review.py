@@ -68,6 +68,10 @@ class TestLightingComponentReview:
         with pytest.raises(ValueError, match='purchased variant'):
             LightingComponentReview(changed_plan).plan(context, 'on')
         hardware = built.purchased_hardware[0]
+        assert hardware.spec.mounting_part_id == 'host'
+        wrong_owner = replace(hardware, spec=replace(hardware.spec, mounting_part_id=None))
+        with pytest.raises(ValueError, match='purchased variant'):
+            review.plan(replace(context, assembly=replace(built, spec=replace(built.spec, purchased_hardware=(wrong_owner.spec,)), purchased_hardware=(wrong_owner,))), 'on')
         changed = replace(hardware, solid=hardware.solid.translate((1, 0, 0)))
         with pytest.raises(ValueError, match='current owned hardware'):
             review.plan(replace(context, assembly=replace(built, purchased_hardware=(changed,))), 'on')

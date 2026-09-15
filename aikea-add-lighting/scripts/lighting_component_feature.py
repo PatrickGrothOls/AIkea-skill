@@ -23,7 +23,7 @@ class LightingComponentFeature:
         request = LightingMachiningRecipe().build(host.spec, plan)
         geometry = PartLightingBuilder().prepare(host, plan)
         placement = CabinetLightingPlacementBuilder().build(assembly.spec, host.spec, plan)
-        hardware_spec = LightingPurchase().build(run, placement.luminaire_in_cabinet.as_project_placement())
+        hardware_spec = LightingPurchase().build(run, placement.luminaire_in_cabinet.as_project_placement(), plan.part_id)
         requirements = (
             ConstructionRequirementSpec(run.run_id+"_mounting", "Machine the saved light groove",
                 (f"part:{plan.part_id}",), (f"machining:{request.machining_id}",), "operations"),
