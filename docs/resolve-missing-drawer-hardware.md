@@ -82,3 +82,8 @@ The real browser retrieval and exact-CAD import are the execution evidence.
 6. The original Vilja build agent resumed with the stored exact STEP and official
    installation drawing. Its next bounded slice is exact member/datum/fixing
    verification on its own branch before one complete drawer installation.
+
+7. During the subsequent viewer-control work, the resumed drawer agent stopped
+   on an account usage limit. Its branch codex/ka4532-400-profile and checked plan
+   are saved in vilja-skill-trial; it reported source/provenance verification but
+   no production code change yet. Do not describe that agent as still running.
