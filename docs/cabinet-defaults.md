@@ -45,3 +45,15 @@ Bounded targeted suite: **40 passed, 1 deselected in84.18 s**, exit0. Command: `
 Audit continuation: exact module ownership now makes feet/plates follow their deck in inspection. This does not qualify socket fit, screws or loads. The completed model exports are distinct from still-incomplete fabrication readiness. Parent owns bake and visual review.
 
 The current interior/closed material assets are `local-evidence/project/reviews/corrected-interior-materials.glb` and `corrected-closed-materials.glb`. Their `.material-check.json` files and the intermediate attached GLBs' `.metadata-check.json` files preserve the full hash chain from the untouched CAD exports. The metadata refresh changes only32 inspection paths. Material preparation adds UV/material data while preserving every original attribute/index accessor and the binary geometry prefix.
+
+## Hinge attachment metadata follow-up
+
+- [x] Trace explicit DoorHostSpec ownership: slab hinge to door_part_id, plate to support_part_id.
+- [x] Add these mounting_part_id values in the shared Riex purchase factory without changing placement or purchase identity.
+- [x] Bounded owner/pose tests: 5 passed in 81.90 s, exit 0; both hands and both support-face orientations passed without constructing CAD solids.
+- [x] Saved new `local-evidence/project/reviews/hinge-attachment-mapping.json`: all 36 purchases reconcile to saved plans and current GLB IDs. Active bake input SHA-256 remains `659cb44a25c198dc6a50880f762b3b48a628e8802762577d89db6cef8e8a4b13`; no existing GLB was written.
+- [x] Scope/diff review complete; attachment-only checkpoint prepared for parent integration. Production factory 36 lines, focused tests 62 lines, private mapping script 77 lines; each has one coherent scope.
+
+Audit continuation: parent requested the bounded hinge ownership correction for panel explosion. The slab and carcass owners come directly from the installer declaration, never proximity. Layered-front hinge ownership remains unchanged because its door ID is an assembly datum and the current mounting_part_id contract requires an actual directly owned panel. Plate ownership is still explicit for that route. Door width, overlay, fit and motion qualification remain unresolved. Parent owns any later metadata-only derived baked/inspection assets and their geometry proof.
+
+Validation command: `direnv exec . env OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 python -m pytest tests/test_riex_hinge_attachment.py -q`. Mapping command: `direnv exec . python local-evidence/project/scripts/map_hinge_attachments.py`. Mapping application and resulting geometry preservation are explicitly pending parent work on new derived files. The first private mapping run assumed positional purchase arguments; the saved repr uses keyword arguments. Corrected the literal AST reader and reran successfully before writing its new report.
