@@ -42,6 +42,8 @@ mode. The source exporter does not yet automatically assign these material IDs:
 this slice supports authored materials and proves them with the existing dresser.
 Study preparation scripts and generated models remain under ignored
 `local-evidence/`, separate from the reusable viewer and licensed material assets.
+Blender 5.2.1 headless Python execution is now verified locally; the lighting-bake
+and browser-export pipeline itself remains unimplemented and untested.
 
 ## Validation and evidence
 
@@ -116,3 +118,9 @@ material test is 45 lines. No subagent size-refactor report is required.
    without requiring those static shadows to stay correct during explosion.
    A scripted Blender preparation stage is being discussed; no bake pipeline
    has been implemented or validated yet.
+9. On 2026-09-15, tested installed Blender 5.2.1 with `--background`, factory
+   startup, disabled auto-execution, one thread, and a tiny Python expression.
+   It reported `bpy.app.background == True` and exited successfully without a UI.
+   The restricted run crashed during Metal initialization; the identical command
+   passed outside the sandbox. This proves headless execution only, not baking.
+   No connected Blender MCP was found; direct Python control is available.
