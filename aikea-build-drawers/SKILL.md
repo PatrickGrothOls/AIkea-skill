@@ -72,6 +72,11 @@ and spacer width are not furniture defaults. Source a compatible exact option
 when needed; do not silently substitute a different length or omit the runners.
 Use KA 5332 only when the active project or client explicitly selects it.
 
+For a 400 mm KA 4532 candidate, use the [exact article 9114274 source/profile
+verification](references/hettich-ka-4532-400-hardware.md). This checks both hands
+and the size-specific official fixing axes; continue through the complete
+installation contract before generating or repeating a drawer.
+
 ## Use a drawer in an authored parent
 
 For an authored or mixed tree, follow [the explicit host contract](references/drawer-host-interface.md)
