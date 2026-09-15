@@ -73,6 +73,8 @@ class TestCabinetConstructionDefaults(AssemblyCompositionTestCase):
         with pytest.raises(PartConstructionError,match="deliberate"):
             policy.adjustable_ids(spec)
         choice = (FixedShelfChoice("shelf","Deliberate structural divider"),)
+        with pytest.raises(PartConstructionError,match="declared Cabineo joints"):
+            policy.adjustable_ids(replace(spec,joints=()),choice)
         with pytest.raises(PartConstructionError,match="hidden underside"):
             policy.adjustable_ids(spec,choice)
         assert policy.adjustable_ids(replace(spec,joints=(replace(joint,source_face="<Z"),)),choice) == ()

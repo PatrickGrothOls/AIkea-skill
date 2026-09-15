@@ -29,3 +29,7 @@ Bounded targeted suite: **40 passed, 1 deselected in84.18 s**, exit0. Command: `
 7. Scope review found coherent planner/component/orchestration boundaries. Shared generic cutters remain unchanged; legacy base review helpers only gained kickboard compatibility. Existing brace-based evaluation fixtures remain untouched and require later expectation migration.
 
 8. Targeted operation/geometry suite passed40 tests. One broad custom-parent construction check remains explicitly pending; untouched legacy evaluation expectations are not claimed passing.
+9. Independent integration review found that a fixed-shelf choice without any actual
+   joint could suppress its support pins. Require a declared shelf-source Cabineo
+   joint before removing default supports; geometric adequacy still has its separate
+   checks. This guard does not change the current all-adjustable cabinet recipe.

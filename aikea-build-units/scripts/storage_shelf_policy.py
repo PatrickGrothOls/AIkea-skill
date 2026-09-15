@@ -16,6 +16,9 @@ class StorageShelfPolicy:
         if len(choices) != len(fixed_choices) or any(
                 key not in shelves or not value.reason.strip() for key,value in choices.items()):
             raise PartConstructionError("Fixed storage shelves need distinct shelf IDs and a recorded reason")
+        fixed_joint_owners = {joint.source_part_id for joint in spec.joints if joint.joint_type == "cabineo"}
+        if choices.keys() - fixed_joint_owners:
+            raise PartConstructionError("Fixed storage shelf choices require declared Cabineo joints before omitting supports")
         for joint in spec.joints:
             touched = shelves.intersection(joint.participant_ids)
             if joint.joint_type != "cabineo" or not touched:
