@@ -85,21 +85,33 @@ Sources: [APEX84 DIY compatibility](https://www.domusline.com/product/apex-84-di
 [SHE6 SE specification](https://www.domusline.com/product/flexyled-she6-se/),
 [SHE6 SE instruction sheet, page1](https://www.domusline.com/wp-content/uploads/2025/02/M0011000144_r2_FLEXYLED_SHE6-SE_instruction_sheet.pdf).
 
-### Straight joins and sloped transitions
+### Separate feeds for the slope and vertical light
 
-Prefer a back-to-back connector for a compatible straight strip join. It is
-rigid: verify that both strip ends align in position, direction and plane. Do
-not bend that connector or use a fixed corner connector for an arbitrary slope.
-At a side-to-sloped-top change of direction, use a short flexible joining lead
-unless the selected connector explicitly supports the actual angle and planes.
+Route the sloped strip's feed from a connector pocket at its lower end, across
+the panel joint and down behind the vertical profile to the base service space.
+The vertical strip has its own downward lead and connector below the base. Do
+not add a recessed connector pocket at the vertical strip's upper end or assume
+the two strips connect directly at the slope. Under-base connections remain
+accessible without a machined pocket; provide slack and support so cable weight
+or handling cannot pull on the strip contacts.
 
 Set the lower end of the sloped light back from the joint far enough to host its
-connector pocket; coordinate the upper end of the vertical light in the same
-way. Calculate setbacks from the installed mated connectors, insertion space,
-cable bends and profile end details. Then respect the strip's marked cut pitch.
-Show the resulting unlit transition honestly in the viewer and record it in the
-run lengths and BOM. Do not invent a universal setback or an unsupported bend
-to make the light appear continuous.
+connector pocket. Calculate this setback from the installed mated connector,
+insertion space, cable bend and profile end details, then respect the strip's
+marked cut pitch. Show the resulting unlit end honestly in the viewer. Size the
+rear relief and base passage for every lead actually sharing each route segment.
+Verify the path through the panel joint, not merely matching groove centerlines.
+
+Install and connect the sloped feed, lay its cable into the open rear relief and
+pass the required leads through the aligned base openings before seating the
+vertical profile. Verify this sequence against the actual purchased parts and
+their retention method; a removable profile or other documented access must
+allow connector servicing. Select a compatible under-base distribution system
+and check total load and lead reach before closing the electrical requirements.
+
+Back-to-back connectors are only an option for a separately requested straight
+strip join with compatible, aligned ends. They are not the default connection
+between these independently fed vertical and sloped runs.
 
 The CH6 V2 installation drawing dimensions its back-to-back body at
 17 x 8 x 4.5 mm and each flexible-lead connector body at 22.5 x 8 x 4.5 mm.

@@ -181,3 +181,14 @@ lighting installation remains provisional until these tasks are complete.
   - [ ] Calculate installed pockets/setbacks and generate and verify the cuts.
   This documentation update does not change the current cabinet or purchased
   light selection; its lighting connections remain provisional.
+
+- User corrected the connection architecture: only the lower end of the sloped
+  strip needs a recessed connector. Its long lead runs behind the vertical
+  profile to the base; the vertical strip's own lead/connector exits underneath.
+  This supersedes the preceding short bridge and paired-pocket interpretation.
+  - [x] Correct shared guidance to separate feeds, one slope pocket and accessible
+    under-base connections; include cable-first assembly and joint continuity.
+  - [ ] Qualify connector/profile fit, cable envelope, seating and distribution.
+  - [ ] Prove one side/slope/base detail, including remaining stock, exact material
+    removal and installation/service access, before replicating it in the build.
+  Cabinet geometry remains unchanged by this correction.
