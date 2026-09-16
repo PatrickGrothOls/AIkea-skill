@@ -55,3 +55,27 @@ class TestPanelSetupChecker:
         joints = tuple(Value(joint_type="cabineo", joint_id="seam" + edge, source_part_id="shelf", target_part_id="divider", source_face=">Z", source_edge=edge) for edge in ("<X", ">X"))
         report = PanelSetupChecker().check(Value(spec=Value(parts=parts, machining=()), joints=joints))
         assert report["parts"][1]["allowed_faces"] == []
+
+    def test_korrekt_through_bores_share_a_blind_panel_setup(self):
+        frame=self.placement((0,0,0),((1,0,0),(0,1,0),(0,0,1)))
+        assembly=self.assembly((self.request('top',-1,5),))
+        assembly.spec.parts[0].local_to_parent=frame
+        plate=Value(hardware_id='plate',local_to_parent=frame)
+        assembly.spec.purchased_hardware=(plate,)
+        assembly.joints=(Value(joint_type='korrekt_mounting',joint_id='feet',part_id='panel',hardware_id='plate'),)
+        assert PanelSetupChecker().check(assembly)['parts'][0]['allowed_faces']==['>Z']
+        plate.local_to_parent=self.placement((0,0,0),((1,0,0),(0,0,1),(0,-1,0)))
+        assert PanelSetupChecker().check(assembly)['status']=='conflict_or_unsupported'
+
+    def test_miter_half_spaces_resolve_each_actual_access_face(self):
+        side=Value(part_id='side',inside_face='>Z',local_size_mm=(200,200,16),
+            local_to_parent=self.placement((0,0,0),((0,1,0),(0,0,1),(1,0,0))))
+        top=Value(part_id='top',inside_face='<Z',local_size_mm=(200,200,16),
+            local_to_parent=self.placement((0,0,184),((1,0,0),(0,1,0),(0,0,1))))
+        joint=Value(joint_type='equal_thickness_miter',joint_id='corner',participant_ids=('side','top'))
+        assembly=Value(spec=Value(parts=(side,top),machining=()),joints=(joint,))
+        result=PanelSetupChecker().check(assembly)
+        assert [p['allowed_faces'] for p in result['parts']]==[['>Z'],['<Z']]
+        opposite=self.request('opposing_blind_cut',1,5);opposite.part_id='side'
+        assembly.spec.machining=(opposite,)
+        assert PanelSetupChecker().check(assembly)['parts'][0]['allowed_faces']==[]

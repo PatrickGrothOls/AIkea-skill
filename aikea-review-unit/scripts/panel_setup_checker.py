@@ -1,7 +1,7 @@
 """Scope: Audit broad-face setup demands of supported declared panel operations."""
 
 import cadquery as cq
-from local_to_parent_location import LocalToParentLocation
+from panel_joint_setup_faces import PanelJointSetupFaces
 
 
 class PanelSetupChecker:
@@ -13,21 +13,8 @@ class PanelSetupChecker:
         parts = {part.part_id: part for part in assembly.spec.parts}
         demands = {part_id: [] for part_id in parts}
         for joint in assembly.joints:
-            if joint.joint_type != "cabineo":
-                for part_id in joint.participant_ids:
-                    demands[part_id].append((joint.joint_id, set()))
-                continue
-            source = parts[joint.source_part_id]
-            target = parts[joint.target_part_id]
-            source_faces = {joint.source_face} & self._FACES
-            demands[source.part_id].append((joint.joint_id, source_faces))
-            location = LocalToParentLocation()
-            transform = location.build(target.local_to_parent).inverse * location.build(source.local_to_parent)
-            sign = 1 if joint.source_edge.startswith(">") else -1
-            axis = tuple(sign if name == joint.source_edge[-1] else 0 for name in "XYZ")
-            origin = cq.Vertex.makeVertex(0, 0, 0).located(transform).Center()
-            endpoint = cq.Vertex.makeVertex(*axis).located(transform).Center()
-            demands[target.part_id].append((joint.joint_id, self._entry_faces(endpoint - origin)))
+            for part_id,faces in PanelJointSetupFaces().resolve(assembly.spec,joint).items():
+                demands[part_id].append((joint.joint_id,faces))
         for request in assembly.spec.machining:
             part = parts[request.part_id]
             demands[part.part_id].append((request.machining_id, self._operation_faces(part, request)))
@@ -44,7 +31,7 @@ class PanelSetupChecker:
                                for name, faces in demands[part.part_id]],
             })
         return {
-            "scope": "Declared broad-face access for built-in Cabineo and surface operations only",
+            "scope": "Declared broad-face access for Cabineo, miter, Korrekt and surface operations",
             "machining_ready": False,
             "remaining": "Actual subtraction, connection coverage, stock, tool reach, workholding and CAM remain separate checks",
             "status": "compatible" if all(row["allowed_faces"] for row in rows) else "conflict_or_unsupported",
