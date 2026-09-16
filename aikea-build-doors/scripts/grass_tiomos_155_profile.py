@@ -14,6 +14,7 @@ class GrassTiomos155Profile:
     cup_fixing_spacing_mm: float = 45
     plate_height_mm: float = 3
     plate_reference_line_mm: float = 37
+    rear_door_gap_mm: float = 1.5
     native_cup_back_y_mm: float = -38.5
     native_plate_back_x_mm: float = -3
     plate_bounds_mm: tuple = (-3,10.5,-25.55,39.95,-24,24)
@@ -31,15 +32,17 @@ class GrassTiomos155Profile:
             raise ValueError('GRASS source configuration requires 15 mm overlay')
         if not self.minimum_door_thickness_mm <= d['thickness'] <= self.maximum_door_thickness_mm:
             raise ValueError('door thickness outside sourced GRASS range')
+        if abs(host.support_front_mm-host.front_mm-self.rear_door_gap_mm)>1e-6:
+            raise ValueError('GRASS native pair requires its 1.5 mm rear-door gap and 37 mm plate line')
         if d['thickness'] > 25:
             raise ValueError('thicker door requires separate gap and restrictor configuration')
 
     def source_origin(self, host, height_mm):
-        # Both native files retain their relative frame. Mounting the complete
-        # pair 1.5 mm deeper than the reference line gives a zero rear-door gap;
-        # catalogue page519 permits zero gap for the selected18 mm door.
+        # Match both native datums simultaneously: cup plane at door rear,
+        # mounting line37mm from carcass front. This requires1.5mm rear gap.
+        # The catalogue's minimum lateral reveal is NOT a rear-door clearance.
         return (host.inside_x_mm-self.native_plate_back_x_mm,
-                host.front_mm-self.native_cup_back_y_mm,height_mm)
+                host.support_front_mm+self.plate_reference_line_mm,height_mm)
 
 
 GRASS_TIOMOS_155=GrassTiomos155Profile()

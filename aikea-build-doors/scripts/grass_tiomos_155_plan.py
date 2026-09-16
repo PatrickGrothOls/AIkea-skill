@@ -16,7 +16,7 @@ class GrassTiomos155Planner:
         # Centers on grid rows place the wood-screw pair HALF a pitch away
         # from existing5 mm holes. The plate's other pair is on different depths.
         candidates=tuple(z for z in System32SidePanelGrid().row_heights_mm(host.support.local_size_mm[1])
-                         if spread.contains(z-offset,height))
+                         if spread.contains(z-offset,height) and self._clears_roof(host,z))
         chosen=[]
         occupied=list(reservations)+list(host.fixed_reservations)
         for target in spread.ideal_centers_mm(height,count):
@@ -34,6 +34,22 @@ class GrassTiomos155Planner:
             ('Provisional reference-width choice: supplier/trial-fit load qualification pending',
              'Moving hinge-arm/open-position evidence pending; no full-motion approval',
              'Stock, finish, moving hardware mass and screw holding require qualification'),host.spec)
+
+    def _clears_roof(self,host,center):
+        # The side-edge margin alone misses roofs descending over the hinge arm.
+        # A source-body bounding box below the actual inner roof plane gives a
+        # conservative closed clearance; this is not an opening-envelope proof.
+        left=host.inside_x_mm+3-13;right=host.inside_x_mm+3+53.953542539
+        top=host.support_bottom_mm+center+31
+        for part in host.assembly.parts:
+            if part.role!='top_panel':continue
+            frame=host._frame(part);origin=frame.origin_mm;normal=frame.local_z_in_owner
+            end=frame.to_owner((part.local_size_mm[0],0,0))
+            low=max(left,min(origin[0],end[0]));high=min(right,max(origin[0],end[0]))
+            if low>high:continue
+            ceiling=min(origin[2]-normal[0]*(x-origin[0])/normal[2] for x in (low,high))
+            if top+2>ceiling:return False
+        return True
 
     def reservation(self, host, center):
         p=GRASS_TIOMOS_155

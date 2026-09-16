@@ -35,7 +35,7 @@ class FixingHardware:
             # face. Its placement is resolved separately below, not guessed here.
             return None
         if request.machining_id.endswith('_mounting_clearance'):
-            return '0201010400353 / Ø4×35',35,0
+            return ('0201010400605 / Ø4×60',60,0) if '_left_' in request.machining_id else ('0201010400503 / Ø4×50',50,0)
         return None
 
     def moving_screws(self,built):

@@ -17,12 +17,14 @@ class BaseBuilder:
 
     @classmethod
     def axes(cls,index):
-        return cls.layout.station_axes(0,I.cabinet_width,432,35)
+        # Two decks stop1mm short of the shared seam. Keep the full mounting
+        # plate15mm inside that actual edge; floor access follows these axes.
+        return cls.layout.station_axes(1,I.cabinet_width-1,432,35)
 
     def build(self):
         parts=[];stations=[]
         # Long-axis sheet orientation fits two 1236.5  x 432 decks in 1220 x2440.
-        # End spans include the fitting zones; the middle cabinet gap is the seam.
+        # Cabinet-run boundaries locate the split; deck clearance is independent.
         spans=((0,I.cabinet_x(0)+I.cabinet_width),(I.cabinet_x(1),I.cabinet_x(1)+I.cabinet_width),
                (I.cabinet_x(2),I.cabinet_x(2)+I.cabinet_width),(I.cabinet_x(3),2475))
         modules=BaseModulePlanner(CncWorkArea('1220x2440-sheet-8mm-tool',2440,1220,8)).plan(spans,432)

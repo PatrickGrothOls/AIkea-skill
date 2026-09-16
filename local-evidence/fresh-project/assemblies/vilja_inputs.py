@@ -14,14 +14,19 @@ class ViljaInputs:
     door_stock: float = 18
     back_stock: float = 16
     deck_stock: float = 15
-    cabinet_width: float = 598
-    cabinet_pitch: float = 602
-    first_x: float = 35.5
-    door_overlay: float = 17
+    cabinet_width: float = 618.75
+    cabinet_pitch: float = 618.75
+    first_x: float = 0
+    door_overlay: float = 15
     top_fit: float = 5
+    carcass_front: float = 1.5
     shelf_rows: tuple = ((324,708,1092,1476,1860), (324,708,1092,1476), (164,484,804), (164,))
     drawer_counts: tuple = (2,2,1,1)
     operating_gap: float = 3
+    # CLOSED source diagnostic only; full-motion maximum-width evidence is pending.
+    front_side_reveal: float = 54
+    support_offsets: tuple = (46.3,41.3)
+    runner_installation_width: float = 12.7
 
     @property
     def opening_width(self):
@@ -29,11 +34,19 @@ class ViljaInputs:
 
     @property
     def drawer_box_width(self):
-        return self.opening_width-2*25-2*12.7
+        return self.opening_width-sum(self.support_offsets)-2*self.runner_installation_width
 
     @property
     def drawer_front_width(self):
-        return self.opening_width-2*2
+        return self.opening_width-2*self.front_side_reveal
+
+    @property
+    def drawer_box_x(self):
+        return self.carcass_stock+self.support_offsets[0]+self.runner_installation_width
+
+    @property
+    def drawer_front_offset(self):
+        return self.carcass_stock+self.front_side_reveal-self.drawer_box_x
 
     @property
     def door_width(self):

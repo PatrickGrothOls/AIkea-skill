@@ -16,7 +16,7 @@ class DrawerRecipe:
         w,d=self.width,self.depth
         parts=[P.panel('left_wall',(d-16,height,16),(0,16,0),axes=((0,1,0),(0,0,1),(1,0,0))),
                P.panel('right_wall',(d-16,height,16),(w,d,0),((0,-1,0),(0,0,1),(-1,0,0))),
-               P.panel('front_wall',(self.front_width,height,16),((w-self.front_width)/2,16,0),((1,0,0),(0,0,1),(0,-1,0)),face='<Z',role='drawer_front'),
+               P.panel('front_wall',(self.front_width,height,16),(I.drawer_front_offset,16,0),((1,0,0),(0,0,1),(0,-1,0)),face='<Z',role='drawer_front'),
                P.panel('back_wall',(w-32,height,16),(16,d,0),((1,0,0),(0,0,1),(0,-1,0))),
                P.panel('captured_bottom',(w-16,d-16,6),(8,8,8.1),material='hdf_6')]
         joints=[];operations=[]
@@ -24,7 +24,7 @@ class DrawerRecipe:
             length=panel.local_size_mm[0]
             start=(0,11.1)
             if panel.part_id=='front_wall':
-                length=w-16;start=((self.front_width-w)/2+8,11.1)
+                length=w-16;start=(8-I.drawer_front_offset,11.1)
             operations.append(P.groove(panel.part_id+'_bottom_groove',panel,start,length,6.2,8))
         for side,front_edge,back_edge in (('left_wall','<X','<X'),('right_wall','>X','>X')):
             joints.append(CabineoJointSpec(side+'_front',side,'front_wall','>Z',front_edge,'explicit',connector_positions_mm=(50,height-35)))
