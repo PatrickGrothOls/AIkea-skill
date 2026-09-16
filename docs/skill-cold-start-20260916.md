@@ -153,3 +153,9 @@ boards, preserving the selected CNC face and accessible kickboard service space.
   service access; add the selected connection components to the lighting BOM.
 No cabinet geometry or viewer was changed by this policy capture. Existing
 lighting installation remains provisional until these tasks are complete.
+
+- Cut-to-length follow-up: official APEX84 DIY page lists compatible SHE6 SE;
+  its instruction sheet supplies33.3mm cut pitch,max3000mm run andØ8mm passage
+  for the pre-wired version. This resolves a candidate's passage specification,
+  not the current factory-made APEX84 HI installation. Asked user to select DIY
+  versus factory lengths before changing the project's purchased-light identity.

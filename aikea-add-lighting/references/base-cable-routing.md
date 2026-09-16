@@ -34,6 +34,25 @@ as fabrication-ready; record any proposed clearance separately as provisional.
 
 Source: [APEX 84 installation sheet, page 1](https://www.domusline.com/wp-content/uploads/2020/03/3493200_r1_APEX-84_instruction_sheet.pdf).
 
+### Verified cut-to-length alternative
+
+APEX 84 DIY accepts the FLEXYLED SHE6 SE strip in the same4x8mm groove.
+The strip is24V,10W/m, available in4300K, and cuttable at marked33.3mm intervals.
+The SHE6 SE instruction sheet specifies a maximum3000mm run and an8mm diameter
+passage for its pre-wired version. This is a dimensioned passage recommendation,
+not a measured plug diameter, and does not automatically qualify every Micro24
+connector or the assembled APEX84 HI product.
+
+Keep factory-made APEX84 HI and the DIY profile/strip separate in the selection
+and BOM. Do not claim the complete factory-made light can be shortened merely
+because its DIY counterpart exists. For DIY, resolve stock lengths, marked strip
+cuts, profile lengths and separate feeds at corners before deriving purchases.
+Do not bend the strip through the side-to-sloped-roof joint without product evidence.
+
+Sources: [APEX84 DIY compatibility](https://www.domusline.com/product/apex-84-diy/),
+[SHE6 SE specification](https://www.domusline.com/product/flexyled-she6-se/),
+[SHE6 SE instruction sheet, page1](https://www.domusline.com/wp-content/uploads/2025/02/M0011000144_r2_FLEXYLED_SHE6-SE_instruction_sheet.pdf).
+
 ## Build and verify
 
 - Each crossed part owns its actual through-cut and machining operation. Drill
