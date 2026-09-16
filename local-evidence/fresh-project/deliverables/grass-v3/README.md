@@ -2,7 +2,7 @@
 
 Four 618.75 mm bays across 2475 mm; four 616.75 mm leaves, six complete drawers, thirteen shelves, two base decks and sixteen foot/plate pairs. No filler strips. The six fronts are single structural panels, centered with equal side reveals and 3 mm floor/stack/cap clearances. Neutral-white recessed lighting is included.
 
-**Baked appearance is being regenerated; use the matching inspection GLB until its presentation report passes.**
+**Baked appearance verified:** all four geometry/coverage/export checks pass. Output SHA256 `f9968c556ea28dac14f9faebddebf6e77ac80894942c43f9f6628517114f05ad`; matching inspection SHA256 `ebd4013871b0a1376ee38ade83ee532e0d5a42b3ea753184f48e87b0c350941f`. Visual acceptance remains pending.
 
 The six centered front and box widths are468.75 mm, with59 mm equal side reveals and46.3 mm supports.
 
@@ -19,7 +19,7 @@ The six centered front and box widths are468.75 mm, with59 mm equal side reveals
 
 ## Verified scope
 
-The corrected closed GRASS hardware has no positive overlap with the 84 machined wood parts across 61 exact candidate intersections. All 12 assembly nodes pass declared broad-face access. The baked appearance retains 743 item identities, covers all 775,824 panel triangles at tested UV centroids and stays within 0.000784 mm export rounding. Its complete source, coverage and geometry reports accompany the model.
+The corrected closed GRASS hardware has no positive overlap with the 84 machined wood parts across 59 exact candidate intersections. All 12 assembly nodes pass declared broad-face access. The baked appearance retains 743 item identities, covers all 775,824 panel triangles at tested UV centroids and stays within 0.000784 mm export rounding. Its complete source, coverage and geometry reports accompany the model.
 
 ## Remaining qualifications
 
