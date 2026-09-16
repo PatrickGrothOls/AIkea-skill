@@ -7,7 +7,11 @@ application the client must already own. The agent runs setup and rendering.
 
 ## Runtime comes with the workflow
 
-`scripts/bake_furniture_presentation.py` automatically provisions an isolated
+`scripts/bake_furniture_presentation.py` reuses its existing provisioned runtime
+or an installed `blender` CLI, with the same exact-version/background/Cycles/glTF
+probe before baking. `--blender-executable <path>` selects a known installation
+outside PATH. It needs no GUI interaction, including on a locked Mac.
+If neither runtime exists, it automatically provisions an isolated
 Python 3.13 and Blender's official `bpy==5.2.1` engine package. It uses `uv`,
 installing the pinned bootstrap tool into the runtime directory if absent. This
 does not modify the project's CadQuery environment or require Blender's UI.
@@ -101,10 +105,17 @@ studio scaled to the furniture bounds, keeps a native material scene, then:
 5. Checks source meshes, placements and UVs, exports the baked GLB, independently
    reimports it and compares world-space triangles and part identities.
 
-Defaults are one 4096² atlas, three CPU threads and 16 lighting samples. Keep
+Defaults are one 4096² atlas, one CPU thread and 16 lighting samples. Keep
 one Blender job and one 3D browser tab at a time. Lower atlas sizes and samples
 are available for small acceptance fixtures; they are not the approved dresser
 quality setting. Do not increase render budgets in response to a memory crash.
+
+On a restricted host, a Blender CLI crash before Python at Metal/device discovery
+can be an execution-permission problem. Retain the log and try the same tiny
+background engine probe through the host's authorized execution flow. Do not
+duplicate the installation, change lock/security settings, or bypass a rejection.
+Check free disk before provisioning or accumulating another bake. The previous
+artifact remains the review reference until all checks for its replacement pass.
 
 ## Delivery checks
 
