@@ -34,13 +34,19 @@ class AdjustableShelfSupportFeature:
             if shelf.local_to_parent.axis_basis.local_z_in_parent.z < .999999:
                 raise PartConstructionError("Adjustable shelf supports require a horizontal shelf")
             z = point.z_mm-profile.pin_diameter_mm/2
-            y_positions = (point.y_mm+self.front_rear_setback_mm,point.y_mm+depth-self.front_rear_setback_mm)
             subjects = ["part:"+shelf_id]
             sides = ((self.left_side_id,point.x_mm-profile.shelf_side_clearance_mm,1),
                      (self.right_side_id,point.x_mm+width+profile.shelf_side_clearance_mm,-1))
             for side_id,x,direction in sides:
                 side = assembly.spec.part(side_id)
-                inverse = LocalToParentLocation().build(side.local_to_parent).inverse
+                location = LocalToParentLocation().build(side.local_to_parent)
+                inverse = location.inverse
+                # The side owns grid columns; changing shelf clearance must not move them.
+                y_positions = tuple(cq.Vector(column,0,0).transform(
+                    cq.Matrix(location.wrapped.Transformation())).y for column in
+                    (self.front_rear_setback_mm,side.local_size_mm[0]-self.front_rear_setback_mm))
+                if any(y < point.y_mm or y > point.y_mm+depth for y in y_positions):
+                    raise PartConstructionError("Shelf depth does not reach both cabinet-owned support columns")
                 if side.inside_face != ">Z":
                     raise PartConstructionError("Shelf support recipe requires the side's inside broad face to be >Z")
                 for index,y in enumerate(y_positions,1):

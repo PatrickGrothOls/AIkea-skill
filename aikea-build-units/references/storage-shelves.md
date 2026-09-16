@@ -8,7 +8,10 @@ positions and purchases are included. Conversely, support bores or short adjustm
 groups do not replace the cabinet's [full-height grid](panel-construction.md#machine-the-cabinet-hardware-grid).
 Declare that grid separately before fitting shelves and reuse exactly matching
 holes. Default to nearly the full usable cabinet depth, from the necessary front
-clearance to the inside back. Seat the shelf on four pins in the cabinet-owned
+clearance to the inside back, with positive rear fitting clearance as well.
+The standard shelf recipe starts with 2 mm front and rear gaps; verify these
+against actual stock/coating and hardware rather than treating them as universal.
+Seat the shelf on four pins in the cabinet-owned
 front/rear columns at a common System 32 row. Derive pin positions from that saved
 grid, not from a shortened shelf's ends. Additional columns require a deliberate
 arrangement decision, not an automatic workaround for arbitrary shelf setbacks.
@@ -34,8 +37,9 @@ was checked on 2026-09-15. The selected nickel-plated article has Ø5 mm pins,
 8 mm insertion and a 0.5 mm stop. The recipe uses 0.5 mm shelf clearance per
 side and four supports. Standard columns are 37 mm from the cabinet side panel's
 front/rear edges; a shelf setback must not shift those columns. Existing
-`AdjustableShelfSupportFeature` inputs are shelf-relative: reconcile their output
-with the cabinet grid before claiming the supports follow this policy.
+`AdjustableShelfSupportFeature` derives columns from each side panel's actual
+frame, so shortening or setting back a shelf does not shift the support holes.
+It rejects a shelf that no longer reaches those columns.
 The shelf underside is 2.5 mm above the pin centre. Side holes retain the shared
 Ø5 × 13 mm blind grid, giving 8 mm pin insertion and 5 mm depth allowance.
 Sixteen-millimetre sides retain 3 mm material behind these bores.

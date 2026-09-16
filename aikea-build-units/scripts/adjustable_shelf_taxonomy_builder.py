@@ -16,6 +16,8 @@ class AdjustableShelfProfile:
     """Define the supplied shelf count without making it a room-wide setting."""
 
     shelf_count: int = 3
+    front_clearance_mm: float = 2.0
+    rear_clearance_mm: float = 2.0
 
 
 class AdjustableShelfTaxonomyBuilder:
@@ -38,6 +40,9 @@ class AdjustableShelfTaxonomyBuilder:
         thickness_mm: float,
     ) -> tuple[PartTaxonomy, ...]:
         shelf_width_mm = width_mm - (2.0 * thickness_mm) - 1.0
+        shelf_depth_mm = depth_mm-self.profile.front_clearance_mm-self.profile.rear_clearance_mm
+        if min(self.profile.front_clearance_mm,self.profile.rear_clearance_mm) <= 0 or shelf_depth_mm <= 0:
+            raise AssemblyTaxonomyInputError(["Adjustable shelves require positive front/rear fit clearance"])
         shared_rows = self.hardware_grid.row_heights_mm(
             min(left_side_height_mm, right_side_height_mm)
         )
@@ -49,14 +54,14 @@ class AdjustableShelfTaxonomyBuilder:
                 role="shelf_panel",
                 dimensions_mm=(
                     ("width", shelf_width_mm),
-                    ("depth", depth_mm),
+                    ("depth", shelf_depth_mm),
                     ("thickness", thickness_mm),
                     ("assembly_x", thickness_mm + 0.5),
-                    ("assembly_y", 0.0),
+                    ("assembly_y", self.profile.front_clearance_mm),
                     ("support_row_height", row_height_mm),
                     ("bottom_height", row_height_mm + support_offset_mm),
                 ),
-                local_size_mm=(shelf_width_mm, depth_mm, thickness_mm),
+                local_size_mm=(shelf_width_mm, shelf_depth_mm, thickness_mm),
             )
             for number, row_height_mm in enumerate(selected_rows, start=1)
         )

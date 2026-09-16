@@ -27,9 +27,10 @@ class TestAdjustableShelfTaxonomyBuilder:
             1636.0,
         ]
         assert all(
-            shelf.local_size_mm == (954.333333, 564.0, 18.0)
+            shelf.local_size_mm == (954.333333, 560.0, 18.0)
             for shelf in shelves
         )
+        assert all(dict(shelf.dimensions_mm)["assembly_y"] == 2.0 for shelf in shelves)
 
     def test_every_shelf_uses_a_row_present_on_both_unequal_sides(self) -> None:
         pattern = System32SidePanelGrid()
