@@ -24,6 +24,15 @@ Read [references/lighting-price-and-removal.md](references/lighting-price-and-re
 for the separate quote section and removal workflow. Do not report a complete
 lighting installation while its supply or cable route remains unresolved.
 
+Default a new lighting selection to visibly illuminating neutral white: 4300 K
+for the supported APEX 84 HI profile. Preserve an explicitly selected temperature
+or existing saved variant. Warm wood must not turn the emitter itself golden.
+For a side run continuing along a sloped roof, declare separately owned runs on
+the side and roof with a coordinated transition; derive channels, emitters and
+purchases from their actual frames. Do not force a slope into one straight side
+run or repeatedly overwrite the single-feature convenience command. Use the
+shared composition path for multiple panel-owned runs.
+
 ## Build from one saved run
 
 1. Read `references/recessed-linear-lighting.md` completely.

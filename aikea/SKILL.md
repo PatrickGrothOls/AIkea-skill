@@ -189,7 +189,7 @@ It must include compatible runners, mounting holes and any needed hinge-clearanc
 spacers, save each complete installation under its real parent, and return that
 same composed assembly to the complete furniture review.
 
-When the client adds recessed lighting to a generated furniture part, load
+Include lighting by default unless the client opts out. When designing its runs, load
 `$aikea-add-lighting`. Let that subskill save one part-local run, derive the host
 groove and complete purchased luminaire from it, and show the same assembly lit
 and unlit before repeating the feature.

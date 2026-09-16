@@ -63,7 +63,7 @@ def main() -> int:
     parser.add_argument("--run-id", required=True)
     parser.add_argument("--start", nargs=2, type=float, required=True)
     parser.add_argument("--end", nargs=2, type=float, required=True)
-    parser.add_argument("--color-temperature", type=int, default=3200)
+    parser.add_argument("--color-temperature", type=int, default=4300)
     try:
         return AddCabinetLightingCommand().run(parser.parse_args())
     except (OSError, ValueError) as error:

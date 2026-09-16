@@ -30,7 +30,7 @@ class GenerateLightingPanelReviewCommand:
         parser.add_argument("--panel-thickness-mm", type=float, default=18.0)
         parser.add_argument("--run-start-mm", nargs=2, type=float)
         parser.add_argument("--run-end-mm", nargs=2, type=float)
-        parser.add_argument("--color-temperature-k", type=int, default=3200)
+        parser.add_argument("--color-temperature-k", type=int, default=4300)
         return parser
 
     def run(self, arguments: argparse.Namespace) -> int:
