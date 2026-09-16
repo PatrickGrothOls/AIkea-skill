@@ -20,6 +20,22 @@ machining and purchased-component requirement, not a completed electrical design
 
 ## Size for the purchased components
 
+Use one shared recess for the light and its routed wires: the wires sit behind
+the LED profile, not in an adjacent exposed channel. Preserve the product's
+seating and retention surfaces; add a deeper cable relief within the same recess
+where needed. Derive both regions from the same saved route and keep them
+machinable from the selected face without inaccessible undercuts. Do not simply
+deepen the whole profile seat if that changes the installed light position.
+
+Size the rear relief from the actual insulated cable envelope, number of leads,
+bend requirements and installation clearance. Small conductors do not establish
+the outside dimensions of a jacketed cable or its plug. Account for insertion
+order: a plug need only traverse the rear relief if the assembly sequence requires
+it. Check that the profile cannot pinch the leads and that enough wood remains
+behind the deepest cut, including machining tolerance. If the selected product
+and panel cannot accommodate this arrangement, report that conflict before
+changing to an adjacent channel or changing panel thickness.
+
 The groove dimensions come from the exact selected luminaire profile. The cable
 passage comes from the largest plug/lead component that must pass through during
 the stated assembly sequence, with a recorded fit allowance. Do not equate groove

@@ -159,3 +159,9 @@ lighting installation remains provisional until these tasks are complete.
   for the pre-wired version. This resolves a candidate's passage specification,
   not the current factory-made APEX84 HI installation. Asked user to select DIY
   versus factory lengths before changing the project's purchased-light identity.
+
+- User clarified the routing choice: light and wires share one recess, with
+  wires behind the profile rather than beside it. Captured a rear cable relief
+  that preserves profile seating, actual insulated cable clearance, one-face
+  cutter access and remaining panel stock. Dimensions and actual cuts remain
+  outstanding; this records the accepted arrangement, not a proven installation.
