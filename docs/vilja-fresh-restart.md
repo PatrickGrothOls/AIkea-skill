@@ -136,7 +136,7 @@ Public authority: https://www.grass.eu/en/tec-center/cad-data/ ; https://mediace
 - [x] Define reference-chart versus hard-limit handling in the shared door skill, including actual material/door mass and hinge configuration.
 - [x] Require a user decision before adding leaves, narrowing cabinets or introducing fillers; preserve a labelled provisional review for unresolved reference-width qualification.
 - [x] Validate the revised skill and review the policy diff for conflicting instructions. Skill Creator quick validation passed; targeted search and manual review confirm the forced-redesign rules were replaced. No CAD or motion test is implied by this documentation check.
-- [ ] Present the current cabinet's concrete door/load choices once actual mass and applicable hardware evidence are assembled; no specific GRASS width-risk choice has been inferred.
+- [x] Present the concrete mass/width choices; Patrick subsequently chose to retain the full doors provisionally, as recorded below.
 
 Audit decision (explicit user direction): consider dividing genuinely wide leaves where it solves the problem, then seek other hardware/construction when division is unsuitable. For small reference-width overruns, explain the measured difference, material/weight dependency and practical options instead of making the layout decision for the user. The existing opposed rules plausibly explain the unwanted side strips. This changes decision guidance, not the current CAD or its motion/fabrication status.
 
@@ -166,3 +166,19 @@ Decision-ready options for Patrick:
 3. Continue with alternative hardware preserving four leaves. Blum71B7550 has stronger published width guidance already saved, but native conversion is blocked by the locked Mac. Unlocking enables the already-authorized Fusion attempt; no success is assumed.
 
 Fitting strips/narrowing remain rejected and are not applied; they would require a new explicit user decision.
+
+### User decision: retain full doors
+
+- [x] Patrick explicitly chose “Retain full door”. Retain all four intended616.75 mm leaves provisionally, with the previously disclosed reference-chart width qualification unresolved. No fillers, narrowing or extra leaves. This choice does not approve load, fixings or motion, but width uncertainty alone does not block independent construction or labelled provisional review.
+- [ ] Integrate exact GRASS hinge/plate closed placement and source-derived drilling.
+- [ ] Verify intended hinge positions, actual fixings and compact drawer clearance; preserve centered fronts with hardware-constrained symmetry.
+- [ ] Regenerate the complete provisional assembly when its actual geometry checks permit; retain all load/motion/manufacturing qualifications explicitly.
+
+### GRASS closed installation checkpoint
+
+- [x] Added shared exact-source loader, K3/3 mm profile, feature-aware placement, four-point drilling and purchased-body placement. Five focused tests pass. The full-width preflight places hinge centers at132/612/1156/1668/2148 mm in bays1–2,228/708/1284/1892 in bay3, and228/644/1188 in bay4. Source mounting bodies avoid shelves and runner strips; mounting pilots avoid the existing Ø5 grid.
+- [x] Cup bores retain6.5 mm of18 mm door stock; provisional Ø2.5×12 pilots retain4 mm in16 mm carcass. Pilot sizes and stock screw-holding still need qualification. Native source cup/plate datums reconcile15 mm overlay and the selected zero rear-door gap by shifting the whole pair1.5 mm deeper than the37 mm reference.
+- [x] Exact closed source first-drawer intersection reachesX67.913152 mm in the Y2..18 mm front slab andX72.953543 mm in the Y18..402 mm side-wall span. The side inside face isX16. These are closed-only obstructions, not a certified moving-arm envelope. Source pair overlap536.39245 mm³ remains explicitly unresolved (clip engagement versus simplified source solids).
+- [ ] Integrate this closed placement into the full-width project with provisional drawer geometry; preserve a separate diagnostic artifact while the complete-review motion gate remains unsatisfied. Do not issue a full-travel certificate from these closed measurements.
+
+Skill review: the source/paired-machining/retained-stock obligations are represented; exact moving-arm poses, hardware/stock screw qualification, full-tree collision proof and load/trial-fit acceptance remain open. No original source STEP was modified and no NC70 motion was reused for GRASS.
