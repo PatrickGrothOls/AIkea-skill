@@ -8,11 +8,13 @@ from panel_machining_feature import PanelMachiningFeature
 from part_lighting_builder import PartLightingBuilder
 from part_lighting_plan import PartLightingPlan
 from lighting_purchase import LightingPurchase
+from stepped_surface_recess import SteppedSurfaceRecessSpec
 
 
 @dataclass(frozen=True)
 class LightingComponentFeature:
     plan: PartLightingPlan
+    routed_machining: SteppedSurfaceRecessSpec | None = None
 
     def apply(self, assembly):
         from assemblies.specification import BuiltPurchasedHardware, ConstructionRequirementSpec
@@ -20,7 +22,9 @@ class LightingComponentFeature:
         plan, run = self.plan, self.plan.run
         self.validate_owner(assembly.spec)
         host = next(part for part in assembly.parts if part.spec.part_id == plan.part_id)
-        request = LightingMachiningRecipe().build(host.spec, plan)
+        request = self.routed_machining or LightingMachiningRecipe().build(host.spec, plan)
+        if request.part_id != plan.part_id:
+            raise ValueError("lighting machining and installed light must share their host")
         geometry = PartLightingBuilder().prepare(host, plan)
         placement = CabinetLightingPlacementBuilder().build(assembly.spec, host.spec, plan)
         hardware_spec = LightingPurchase().build(run, placement.luminaire_in_cabinet.as_project_placement(), plan.part_id)

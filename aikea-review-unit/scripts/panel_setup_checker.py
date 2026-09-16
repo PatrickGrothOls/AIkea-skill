@@ -41,7 +41,7 @@ class PanelSetupChecker:
     def _operation_faces(self, part, request):
         if request.operation_type == "system_32":
             return {part.inside_face} & self._FACES
-        if request.operation_type not in {"surface_holes", "surface_pocket", "surface_groove"}:
+        if request.operation_type not in {"surface_holes", "surface_pocket", "surface_groove", "stepped_surface_recess"}:
             return set()
         axis = request.surface_to_part.axis_basis.local_z_in_parent
         faces = self._entry_faces(cq.Vector(axis.x, axis.y, axis.z))

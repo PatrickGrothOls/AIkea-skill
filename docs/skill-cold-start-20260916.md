@@ -192,3 +192,9 @@ lighting installation remains provisional until these tasks are complete.
   - [ ] Prove one side/slope/base detail, including remaining stock, exact material
     removal and installation/service access, before replicating it in the build.
   Cabinet geometry remains unchanged by this correction.
+
+- Implemented the requested reusable face/front-edge/connector-end Python
+  module, with skill instructions and synthetic STEP coupons. See
+  [module plan and validation](lighting-routing-module.md). Local geometry,
+  single-face auditing, installed light fit and unrelated-cut rejection pass;
+  Domus qualification and complete side/slope/base wiring remain outstanding.

@@ -31,6 +31,12 @@ and cable exit, so low-voltage connections can be assembled and accessed below.
 Size the groove for the selected light and the passage for its actual connector;
 both must be real machining features, not only visible lighting in the viewer.
 
+For a rear cable relief or a connector pocket, use the shared
+[Python routing module](references/python-routing-module.md). Declare the chosen
+broad face, directed front edge and connector end (`none`, `start` or `end`);
+derive the actual cuts and the light placement together. Do not write a separate
+one-off cutter or assume the connector pocket is needed on both adjoining lights.
+
 Default a new lighting selection to visibly illuminating neutral white: 4300 K
 for the supported APEX 84 HI profile. Preserve an explicitly selected temperature
 or existing saved variant. Warm wood must not turn the emitter itself golden.
