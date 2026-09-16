@@ -26,3 +26,6 @@ popup offset corrected to clear the enlarged desktop header.
 - 2026-09-16: Browser checks confirmed the logo, title and help fit a narrow
   354 CSS-pixel viewport. Restored normal viewport and retained one viewer tab.
   Review identified the old help popup offset; it now follows the header height.
+- 2026-09-16: Patrick specified a blue A, a blue-and-white striped I, and white
+  kea. Split the lettering into styled spans while retaining a single accessible
+  AIkea label. Rebuild and browser verification accompany this visual change.

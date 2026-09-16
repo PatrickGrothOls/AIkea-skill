@@ -11,7 +11,11 @@ export function ReviewGuidanceCard({ reviewView }) {
         <summary aria-label="Viewer help">?</summary>
         <p className="review-glass">{reviewView.guidance()}</p>
       </details>
-      <span className="review-brand" aria-label="AIkea">AIkea</span>
+      <span className="review-brand" role="img" aria-label="AIkea">
+        <span className="review-brand-a" aria-hidden="true">A</span>
+        <span className="review-brand-i" aria-hidden="true">I</span>
+        <span aria-hidden="true">kea</span>
+      </span>
     </section>
   );
 }
