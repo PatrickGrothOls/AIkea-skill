@@ -39,6 +39,21 @@ The default is one structural front wall that also forms the visible drawer fron
 
 When the structural front overhangs the box sides, join those sides directly into its back face with real paired machining and receiver positions. Trim the side ends where the joint requires it. Keep the bottom captured in all four walls; bound the front groove to the captured bottom instead of exposing it in the overhangs. Include front geometry, hardware, drilling, remaining stock and quantities in the same drawer subassembly and one-face setup audit. A wider rectangle without its changed joints is not a completed front.
 
+Check the full front slab against both fixed and moving runner solids in the
+closed position as well as throughout travel. Even a small side overhang can
+cover a rail that starts within the front's thickness. Do not assume shifting the
+rail backward fits the cabinet depth. If required, resolve a centered front and
+box without that overhang using the actual runner/hinge clearances; do not copy
+one project's width or add a second fascia. Recheck the corresponding joints.
+Include spacer-mounting screw heads, not only their shanks and hole axes, in the
+fixed-rail clearance check. Derive support holes and screw poses together.
+
+The bottom's stock is a separate material choice from its walls. Preserve a
+selected 6 mm HDF bottom and capture it in four wall grooves with fit clearance;
+do not revert to the legacy 16 mm default or add a brace without an actual
+runner/load requirement. Confirm the chosen bottom and groove geometry against
+the exact runner and intended load. Six millimetres is not universal load proof.
+
 Start the lowest drawer immediately above the cabinet floor/base with necessary operating clearance. Stack adjacent visible fronts closely and place a shelf directly above every stack; avoid arbitrary unused vertical gaps and default to shallow useful drawers. Resolve floor, inter-drawer and cap-shelf reveals before runner mounting heights. Keep cap shelves on the shared System32 grid, then derive box heights and runner positions from the resulting space. Runner axes are independent of shelf-pin rows. The height planner defaults to a 3 mm clear gap; this is a starting value to verify against hardware, stock/coating and real motion, not universal clearance proof.
 
 Move compact supports and their actual cabinet/runner holes with the revised layout, removing obsolete holes. Never interpret “straight on the base” as zero rubbing clearance. Check the structural front's swept travel against exact open hinges, doors, adjacent fronts and shelves. A front narrower than the nominal cabinet opening is correct when actual hinge or door intrusion or the unified visual symmetry requires it; it is not a policy exception. Avoid unused width beyond verified obstruction, fit allowances and the symmetry requirement. Do not move or repattern hinges merely to enlarge the drawer. Report the nominal opening, independent left/right deductions, fit allowances, front and box widths, front heights and floor/inter-drawer/shelf reveals after regenerating the complete assembly.

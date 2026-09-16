@@ -41,10 +41,11 @@ viewer. Do not create GLBs for later assemblies before approval.
 ## Structural base review
 
 Once the first cabinet is approved, execute the generated `base_01` builder and
-place its deck, front and back rails, and braces from the base specification. The
-parts must close the complete base bounds without overlapping material. Rails and
-braces meet at their edges, braces bear the deck, and the cabinet sides begin on
-the deck's top face. The review must show the selected door lower line and
+place its deck, Korrekt plates/feet and front kickboard from the base specification.
+Do not resurrect the historical rail/brace base. Check whole mounting-plate edge
+margins against each actual deck segment and seam, plus aligned adjustment access
+through any cabinet floor above it. The cabinet sides bear on the deck's top
+face. The review must show the selected door lower line and
 plinth-front position while keeping the structural deck beneath the complete
 cabinet footprint.
 

@@ -37,6 +37,12 @@ face. Never infer a process exception from a reference image.
   Cabineo/insert receivers into through-holes to evade an entry-face conflict.
 - Check the complete tool footprint, remaining material, edge clearances, corner
   radii and reachable depth, not only hole centres or non-overlapping solid boxes.
+- When moving a carcass face or changing stock, regenerate every dependent grid,
+  pin, runner/support fixing, hinge and access hole from the same panel frame.
+  A correct hole pattern with stale hardware placements is an installation error.
+  Check whole-tree closed contacts after these changes, including runner/front
+  slabs, screw heads, shelf supports and actual foot-plate seam margins. A
+  hardware-versus-wood subset does not replace the complete contact check.
 
 ## Resolve a machining-face conflict
 
