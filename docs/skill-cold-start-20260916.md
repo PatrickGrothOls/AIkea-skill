@@ -165,3 +165,9 @@ lighting installation remains provisional until these tasks are complete.
   that preserves profile seating, actual insulated cable clearance, one-face
   cutter access and remaining panel stock. Dimensions and actual cuts remain
   outstanding; this records the accepted arrangement, not a proven installation.
+
+- User also requires sized connector recesses at connection points. Shared
+  guidance now derives each pocket from the selected mated connector, installation
+  clearance and wire bends, in the same routing frame. Verify accessible machining,
+  remaining stock and coverage; do not assume a narrow LED profile hides a wider
+  connector. Product dimensions and generated CAD remain pending.

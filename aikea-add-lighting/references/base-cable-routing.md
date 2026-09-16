@@ -36,6 +36,22 @@ behind the deepest cut, including machining tolerance. If the selected product
 and panel cannot accommodate this arrangement, report that conflict before
 changing to an adjacent channel or changing panel thickness.
 
+At each connection located in the recessed route, add a local connector pocket
+joined to the shared light/wire recess. Derive its position from the actual
+connection node, including side-to-sloped-panel transitions. Size length, width
+and depth from the selected connector's complete mated envelope, with recorded
+fit clearance, wire exits/bends and room for the required insertion or latch
+movement. A cable pass-through diameter is not a connector pocket specification.
+Record the connector identity, dimensional source and pocket dimensions together.
+
+Keep the pocket accessible in the stated assembly/service sequence and concealed
+where the design permits. Check actual cutter access and corner radii, profile
+support, remaining stock and nearby fittings. Do not create an inaccessible wider
+cavity behind a narrower opening or assume the LED profile covers a widened
+pocket. If the pocket crosses a panel joint, each part owns its matching cut from
+the same connection frame. Missing connector dimensions remain unresolved rather
+than being replaced by a guessed universal pocket size.
+
 The groove dimensions come from the exact selected luminaire profile. The cable
 passage comes from the largest plug/lead component that must pass through during
 the stated assembly sequence, with a recorded fit allowance. Do not equate groove
