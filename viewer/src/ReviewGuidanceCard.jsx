@@ -1,4 +1,6 @@
-/** Scope: Present the short title and interaction guidance for one visual review. */
+/** Scope: Present the viewer header with its title, help and AIkea identity. */
+
+import "./ReviewBrand.css";
 
 // A function component presents the title without adding independent state.
 export function ReviewGuidanceCard({ reviewView }) {
@@ -9,6 +11,7 @@ export function ReviewGuidanceCard({ reviewView }) {
         <summary aria-label="Viewer help">?</summary>
         <p className="review-glass">{reviewView.guidance()}</p>
       </details>
+      <span className="review-brand" aria-label="AIkea">AIkea</span>
     </section>
   );
 }

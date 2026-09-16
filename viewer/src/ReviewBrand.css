@@ -1,0 +1,29 @@
+/** Scope: Keep the AIkea wordmark prominent without crowding viewer guidance. */
+
+.review-brand {
+  margin-left: auto;
+  flex-shrink: 0;
+  color: #244b3b;
+  font-size: clamp(40px, 6vw, 72px);
+  font-weight: 800;
+  letter-spacing: -0.065em;
+  line-height: 1;
+  user-select: none;
+}
+
+.review-card h1 {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.review-help { flex-shrink: 0; }
+
+.review-card .review-help p {
+  top: calc(24px + clamp(40px, 6vw, 72px));
+}
+
+@media (max-width: 480px) {
+  .review-shell .review-card { left: 12px; right: 12px; gap: 8px; }
+}
