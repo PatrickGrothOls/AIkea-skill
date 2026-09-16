@@ -45,12 +45,15 @@ source-evidence and paired-machining requirements to authored hosts as well.
 
 ## Resolve the front first
 
-Confirm that the cabinet run can be divided into supported door leaves before
-building any hinge hardware. Read the door-layout section in
+Assess the cabinet run's proposed leaves and hinge requirements before
+building hinge hardware. Read the door-layout section in
 [references/door-and-hinge-construction.md](references/door-and-hinge-construction.md).
-If the resolved cabinets would create unsuitable leaves, revise the arrangement
-before local door construction instead of treating the result as a hardware
-search problem.
+Distinguish an explicit product limit from a load chart's reference dimensions.
+For unsuitable leaves, assess an additional door leaf and compatible alternative
+hardware; present any layout change for the user's decision before applying it.
+A small overrun of a reference width is a disclosed qualification question, not
+automatic permission to narrow the cabinets or add fillers. Follow the linked
+door-layout decision process, including actual door weight and user choices.
 
 Treat a left-side hinge as the ordinary single-door arrangement. Apply it to
 every single door before visual review unless the project already contains an
@@ -77,8 +80,9 @@ exception.
    through sourcing and shared profile integration. A cached hinge is not a design
    constraint. Do not narrow cabinets/doors/fronts, add filler or cover panels, or
    change the requested arrangement merely to fit it; those compromises require
-   an explicit user request or approval. Source better hardware first, including
-   actual opening/projection, overlay, stock, load and full drawer-front travel.
+   an explicit user request or approval. Assess leaf division and source better
+   hardware as appropriate to the requested layout, including actual
+   opening/projection, overlay, stock, load and full drawer-front travel.
 5. Let one calculated hinge plan select the required positions from the cabinet's
    saved hardware grid, produce the matching door-side machining and opening
    pose, and save each opening plan beneath its owning cabinet. Use the shared

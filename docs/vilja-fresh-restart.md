@@ -58,6 +58,7 @@ Use `direnv exec .` for commands/scripts and the existing venv. Limit numerical 
 
 ## Current checkpoint
 
+- Door policy correction: distinguish explicit limits from reference-width load charts; assess additional leaves and alternative hardware without silently changing the approved layout. A modest reference-width overrun can remain a disclosed provisional design pending the user's choice and qualification. The present 616.75 mm choice has not yet been accepted as a GRASS load exception; actual movement checks remain separate.
 - Current inspection export contains four bays, six complete drawers, thirteen shelves, two base deck sections, sixteen exact Korrekt plate/foot pairs and nine emitters. Parent verified compact stacks and the neutral-white interior illumination in the single viewer.
 - The current preview still contains the rejected NC70-driven narrow cabinets and two side fitting panels. It is preserved for inspection while exact replacement Blum hardware is integrated; it is not the final intended full-width design.
 - All 86 manufactured parts have individual STEP/DXF exports. Full assembly STEP and GLB exist. DXF is perimeter-only; manufacturing release, full closed collision audit and Blender presentation remain unfinished.
@@ -128,3 +129,15 @@ The user explicitly rejected tall drawers and exposed vertical gaps. Two-drawer 
 - [ ] Verify native placement, exact intended hinge pattern, fixing engagement and full drawer travel before selecting this alternative and replacing the rejected NC70 arrangement. The supplied STEP is one closed-position solid, not separately articulated links or an open-pose proof.
 
 Public authority: https://www.grass.eu/en/tec-center/cad-data/ ; https://mediacenter.grass.eu/Katalog/EN/518/ ; https://mediacenter.grass.eu/Katalog/EN/519/ ; https://mediacenter.grass.eu/Katalog/EN/580/ ; https://mediacenter.grass.eu/Katalog/EN/594/ . Vendor CAD bytes remain ignored and local-only.
+
+### WP: user-owned door layout and reference-width decisions
+
+- [x] Locate and remove the contradictory instruction to revise the arrangement instead of sourcing hardware.
+- [x] Define reference-chart versus hard-limit handling in the shared door skill, including actual material/door mass and hinge configuration.
+- [x] Require a user decision before adding leaves, narrowing cabinets or introducing fillers; preserve a labelled provisional review for unresolved reference-width qualification.
+- [x] Validate the revised skill and review the policy diff for conflicting instructions. Skill Creator quick validation passed; targeted search and manual review confirm the forced-redesign rules were replaced. No CAD or motion test is implied by this documentation check.
+- [ ] Present the current cabinet's concrete door/load choices once actual mass and applicable hardware evidence are assembled; no specific GRASS width-risk choice has been inferred.
+
+Audit decision (explicit user direction): consider dividing genuinely wide leaves where it solves the problem, then seek other hardware/construction when division is unsuitable. For small reference-width overruns, explain the measured difference, material/weight dependency and practical options instead of making the layout decision for the user. The existing opposed rules plausibly explain the unwanted side strips. This changes decision guidance, not the current CAD or its motion/fabrication status.
+
+- Further public-source verification: saved official pages518/519 as small standalone PDFs with checksums in the GRASS candidate technical folder. The12 mm/8 mm opening dimensions on page518 apply to the different K9.5/8 mm plate mitred application and are explicitly excluded from this K3/3 mm installation. Door flushness at90° is not the complete moving-arm envelope. Exact distributor article44.012.51/F028122660 routes its CAD link to the same manufacturer ZIP catalogue; the GRASS iFurn route requires login. Current EU600 mm and US24-inch load guides both require trial fitting and provide no explicit616.75 mm approval. No approximation, narrowed cabinet, new drilling or replacement export was introduced to hide these qualifications.
