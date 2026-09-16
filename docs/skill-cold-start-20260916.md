@@ -1,0 +1,68 @@
+# Vilja independent skill cold start
+
+## Scope
+Use only branch reusable skills and vendor assets, preserving all previous projects. User envelope: 2475 wide x 450 deep; overall left height 2374, flat to x990, descending to right height724; base95. Four full doors; 16mm white painted MDF carcass/shelves/back,18mm MDF doors,6mm HDF bottoms. Six drawers,13 adjustable shelves and right-side/sloped-top lighting. No reusable-code changes.
+
+## Workpackages
+- [x] Read routing, construction, drawer, door, lighting and presentation skills.
+- [x] Verify branch54f67b2, direnv, shared Python and installed Blender; 1.9GiB disk free.
+- [x] Generate four equal bays with shelf distribution4/4/3/2; drawer distribution3/3/0/0.
+- [x] Build all requested proposed drawers, doors, shelves, lighting and95mm base.
+- [ ] Qualify exact adjusted feet, fasteners, hinge contact/motion, drawer travel and lighting installation.
+- [x] Build actual tree, inventory, setup, position and fabrication reports; preserve failed gates.
+- [x] Produce material inspection GLBs and checked Blender presentation without opening viewer.
+- [ ] Parent captures the three requested states in the existing tab and checks visible edge quality.
+
+## Current state
+The full proposed assembly and exactly three requested door-state views are generated.243 shapes are valid and inside the envelope; no wood/drawer/runner/support interference.27 unresolved hardware contacts remain. All three material conversions and mesh packing reports PASS. Blender 4096 / 16-sample / one-CPU closed presentation PASS: all four checks passed, zero uncovered triangle centroids, maximum vertex error 0.000785649 mm. The 250 rendered identities comprise 243 construction objects plus seven light emitters. Parent visual capture/review remains pending. Fabrication_ready:false. Initial unassisted reports are preserved under unassisted-evidence/.
+
+## Qualifications
+- Korrekt base retains 95 mm total and 16 mm deck. Exact mounting plates and source-derived drilling are present. Ten 79 mm foot collision envelopes are explicitly representative; exact adjusted source shape, socket fit, clips, fixings and load remain unqualified. The original 80 mm vendor source is untouched.
+- Six complete proposed KA4532 400 mm drawer installations are now present, using exact rails and paired machined box joinery with captured HDF bottoms. Generic primitives support the proposed composition, but selected screw pilots, support attachment, front/runner fastener fit and real full travel remain unqualified. Fully qualified drawers: zero.
+- Retaining four full doors above600mm reference chart is authorized provisionally, not a hardware load or motion qualification.
+- Exact MDF/HDF supplier/stock, fasteners, load, anti-tip, electrical supply/cable route and manufacturing qualification remain open.
+
+## Audit log
+1. User authorizes autonomous arrangement and full evaluation. Equal bays, drawers in taller two bays, shelf counts4/4/3/2 are evaluation proposals within that scope.
+2. Use authored-project contract to preserve exact supplied envelope without inventing repeated site readings. Propose2mm cabinet gaps and1mm leaf edge reveals. No fillers or divided doors.
+3. Base CAD conflict and drawer capability gap retained as blockers; continue independent cabinetry without misrepresenting omitted work as delivered.
+
+4. GRASS15mm-overlay native configuration selected, preserving450mm overall depth with1.5mm rear-door gap and414.5mm side depth. All dependent side grids, shelves, floors and backs derive from this changed carcass depth.17 hinges with exact matching plates are provisional height-count proposals, not load certification.
+5. Runner source check PASS: unchanged9114274 source, both hands and12 axes. Exact screw thread-root/pilot, spacer attachment and real GRASS moving envelope remain unavailable; these prevent compliant drawer delivery, independently of whether panel primitives can make boxes.
+6. Full roof lighting failed retained-stock check at acute miter end. Revised only roof run end clearance to48mm after deriving16mm stock / tan(21degrees) approximately42mm inner-face setback. Corner/end details remain a supplier installation qualification.
+7. The generated bay specification files exceed150 lines; reviewed as single declarative bay ownership with per-part records. Authored executable owners stay short; no shared file edited.
+
+8. Full root exported with zero invalid solids and zero envelope violations. The17 native closed hinge/plate pairs each intersect536.39245mm3. Retained these as unresolved source contact; did not fabricate a contact allowance.
+9. Corrected root requirement subject paths to real cabinet floor paths and added independent GRASS hardware attachment requirements. Rebuilding once through a cached common loader so shared position, inventory, setup, complete-review and fabrication classes inspect the same immutable actual tree sequentially.
+10. Current screenshots must be labelled incomplete: six drawers and exact79mm base installation are not present. No manufacturing, travel or finished-delivery claim.
+
+11. Parent added a bounded provisional drawer review route after the initial cold-start failure. Continuation is assisted: complete source-backed proposed geometry may be shown with unknown pilots and travel explicitly unresolved. No completion or fabrication gate is relaxed.
+12. Propose three16mm laminated runner strips on each side,48mm total, deriving drawer width463.85mm from617.25mm bay minus32mm sides,96mm supports and25.4mm runner allowance. This gives3.746mm closed front-to-native-hinge lateral clearance, not travel evidence. Exact4x14 fastening pilot data remains missing. First prototype is checked before repeating3/3.
+13. Screenshot request clarified to exactly three matching views: all closed; all removed; cabinet1 illustrative open with doors2–4 removed. The open pose omits unsourced moving hinge bodies and is not mechanically verified.
+
+14. First complete drawer closed-fit:52 valid shapes, none outside envelope, no drawer/wood/runner/support collisions. Only five pre-existing native hinge/plate contacts. Repeated six proposed drawers after this check.
+15. Official Hettich70151 eShop confirms74–110mm adjustment, nominal80mm; PARTcommunity observed X80.000 andØ80.300. No exact adjusted79mm source recovered. Parent accepted existing simplified-preview allowance: exact plate/drilling plus clearly labelled conservative79mm foot envelopes only for design review. Ten envelopes are not exact feet, do not prove socket/load, and retain purchasing identity. Deck16/base95 preserved.
+16. Full provisional job generates one actual tree then all three views, inventory, broad-face setup audit, and unchanged failing complete-review/fabrication gates. Nothing is presented as full-travel PASS.1.6GiB disk free before bake; installedBlender5.2.1 only, one CPU.
+
+17. Full proposed closed check completed:243 valid solids inside envelope; zero wood, drawer, rail or support collisions.27 unresolved hardware intersections retained (17 native GRASS pairs;10 conservative foot-envelope/plate pairs). Inventory106 manufactured panels,137 hardware components,142 Cabineos and142 inserts. Declared panel setup audit has zero conflicts; this does not qualify missing cuts, CAM or tooling.
+
+18. Material conversion preserves original CAD buffers, transforms and identities; all three packed views PASS. White-painted MDF and unfinished HDF are distinct representative finishes. Normal complete-review gate remains failed for missing verified drawer travel.
+19. Sandbox Blender startup crashed before Python; retained sandbox-startup-failure.log. Authorized same installed-engine probe PASS; unchanged one-CPU bake proceeds. Atlas fits9343 islands and coverage passes685824 triangle centroids with zero missing. Disk monitored:350MiB free after host pressure, bake directory47MB; no new runtime or prior-artifact deletion.
+
+20. Closed presentation completed successfully with installed Blender5.2.1. `reviews/presentation-01/presentation.json` PASS; source/material/shaded/export identities and world-space triangle checks pass below0.002mm. No new renders or exports after this checkpoint. Parent owns the existing-tab screenshot capture. This is a completed provisional presentation, not an unassisted cold-start pass, completed drawer motion qualification or fabrication approval.
+
+
+## Three screenshot delivery — 2026-09-16
+
+- [x] Parent viewed and captured actual completed proposal in one browser tab:
+  `/private/tmp/vilja-fresh-all-closed.png`,
+  `/private/tmp/vilja-fresh-no-doors.png`,
+  `/private/tmp/vilja-fresh-door1-open-others-removed.png`.
+- [x] Closed view uses checked Blender bake; interior views use matching live
+  material geometry to avoid moving assembled shadows. All six drawers are present.
+- [x] Third view combines cabinet1 illustrative90-degree open with doors2–4 removed.
+- [x] Heavy jobs finished; sole viewer now serves third inspection state on
+  port51696, exec session28229. Ten-minute screenshot follow-up paused at delivery.
+- These are provisional design screenshots: representative foot envelopes, unknown
+  fixing preparation and unverified movement remain. This is not fabrication approval
+  or a clean unassisted cold-start pass.
