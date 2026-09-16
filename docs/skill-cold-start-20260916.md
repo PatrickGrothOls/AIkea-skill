@@ -171,3 +171,13 @@ lighting installation remains provisional until these tasks are complete.
   clearance and wire bends, in the same routing frame. Verify accessible machining,
   remaining stock and coverage; do not assume a narrow LED profile hides a wider
   connector. Product dimensions and generated CAD remain pending.
+
+- User selected back-to-back joins where possible, with a setback at the lower
+  end of a sloped light if connectors require room. Captured rigid straight-join
+  constraints and the flexible-lead fallback at a slope; both adjoining light
+  ends need coordinated pockets, clearances and honest unlit transition lengths.
+  - [x] Record CH6 V2 manufacturer body dimensions and the transition rule.
+  - [ ] Verify exact SHE6 SE contact compatibility and APEX84 DIY end fit.
+  - [ ] Calculate installed pockets/setbacks and generate and verify the cuts.
+  This documentation update does not change the current cabinet or purchased
+  light selection; its lighting connections remain provisional.

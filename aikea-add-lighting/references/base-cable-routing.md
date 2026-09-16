@@ -85,6 +85,31 @@ Sources: [APEX84 DIY compatibility](https://www.domusline.com/product/apex-84-di
 [SHE6 SE specification](https://www.domusline.com/product/flexyled-she6-se/),
 [SHE6 SE instruction sheet, page1](https://www.domusline.com/wp-content/uploads/2025/02/M0011000144_r2_FLEXYLED_SHE6-SE_instruction_sheet.pdf).
 
+### Straight joins and sloped transitions
+
+Prefer a back-to-back connector for a compatible straight strip join. It is
+rigid: verify that both strip ends align in position, direction and plane. Do
+not bend that connector or use a fixed corner connector for an arbitrary slope.
+At a side-to-sloped-top change of direction, use a short flexible joining lead
+unless the selected connector explicitly supports the actual angle and planes.
+
+Set the lower end of the sloped light back from the joint far enough to host its
+connector pocket; coordinate the upper end of the vertical light in the same
+way. Calculate setbacks from the installed mated connectors, insertion space,
+cable bends and profile end details. Then respect the strip's marked cut pitch.
+Show the resulting unlit transition honestly in the viewer and record it in the
+run lengths and BOM. Do not invent a universal setback or an unsupported bend
+to make the light appear continuous.
+
+The CH6 V2 installation drawing dimensions its back-to-back body at
+17 x 8 x 4.5 mm and each flexible-lead connector body at 22.5 x 8 x 4.5 mm.
+These native body dimensions are not finished pocket dimensions: transform the
+installed orientation into the panel frame and add the clearances above. The
+family is specified for 6 mm FLEXYLED; confirm the exact SHE6 SE contact/LED
+layout and APEX84 DIY profile-end fit before qualifying this combination.
+
+Source: [CH6 V2 installation drawing, page 1](https://www.domusline.com/wp-content/uploads/2026/03/M0011000227_r1_CH6-V2_instruction_sheet.pdf).
+
 ## Build and verify
 
 - Each crossed part owns its actual through-cut and machining operation. Drill
