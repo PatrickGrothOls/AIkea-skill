@@ -100,3 +100,27 @@ The full proposed assembly and exactly three requested door-state views are gene
   correction before exporting the third state, preventing regeneration back to
   white paint or missing cups. Shared GRASS reference captures the ownership rule
   and measured source partition with explicit limits.
+
+## Complete hinge correction — current state
+
+- User correctly rejected the cup-only result: the hinge arms were still absent.
+  The previous claim that this fixed the visible hinges was too broad.
+- [x] Prepare an additional closed-hardware inspection: hide only four wooden
+  door meshes and retain all17 complete supplier hinges plus their mounting plates.
+  `prepare_hinge_inspection.py` verifies unchanged meshes, binary geometry and
+  placements. This is inspection presentation, not a change to the furniture.
+- [x] Serve `reviews/birch-full-hinges-inspection.glb` on51696, session53762;
+  visually verify complete cups and arms. Close-up saved to
+  `/private/tmp/vilja-complete-hinges-close.png`.
+- [ ] Resolve complete open-position hinge mechanism. Cup partitions do not meet
+  this requirement. Public STEP is fused/closed; official iFurn browser route
+  requires a GRASS login, and no authenticated session is available.
+- Bounded source research completed without a complete open mechanism. The DWG
+  decoder found one3DSOLID and no open-state blocks/dimensions, but warning68 and
+  missing ACIS payload limit that evidence. Product photo shows appearance only;
+  page518 does not establish a complete pose. Report:
+  `reviews/hinge-open-source/open-hinge-source-report.json`.
+- Missing input is an exact90degree supplier assembly registered to cup/plate
+  frames, or separate links with pivot axes and constraints. No fabricated linkage
+  or transferred dimensions from another configuration are accepted. This
+  inspection does not supersede the requested mixed open/removed-door review.

@@ -67,3 +67,11 @@ and seating plane before/after the illustrative pose. Preserve fixed plates and
 all other parts; omit only unsourced moving linkage and state that limitation.
 Retain the pose/partition provenance. This view provides no full-travel or
 fabrication proof.
+
+Cup-only views are incomplete hardware reviews: never describe restoring cups as
+restoring the complete hinges. When the open linkage cannot yet be represented,
+provide a separate inspection view that hides only the wooden door slabs and
+retains every complete supplier hinge and plate at the unchanged closed pose.
+Label this closed pose explicitly. It exposes the actual hardware without
+pretending to solve opening movement; the requested open-hinge review remains
+unresolved until its complete mechanism is represented with defensible evidence.
