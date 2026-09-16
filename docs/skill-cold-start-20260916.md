@@ -135,3 +135,21 @@ The full proposed assembly and exactly three requested door-state views are gene
   review PASS. Live Hide doors visibly retains complete hinges; Show doors restores
   all four wooden slabs. Existing51696 viewer serves original complete birch model
   in session75630, with the reusable toggle rather than a permanently stripped GLB.
+
+## Lighting feed through the base
+
+User selected an aligned opening below the LED groove, allowing connections to
+be assembled underneath the base. Derive one continuous path through all crossed
+boards, preserving the selected CNC face and accessible kickboard service space.
+
+- [x] Capture the rule in the shared lighting skill and linked routing reference.
+- [x] Verify APEX84 groove4(+0.3/-0)x8(+0.5/-0)mm and Micro24 lead from the official
+  instruction sheet. The groove dimensions are not a connector-passage diameter.
+- [ ] Establish the exact plug insertion envelope and fit allowance. The APEX
+  sheet does not dimension it; no hole diameter has been invented or released.
+- [ ] Generate the continuous cable path and actual cuts in this cabinet/base,
+  including the current gap between the side groove end and supporting boards.
+- [ ] Verify material removal, alignment, leg/joinery clearance, cable reach and
+  service access; add the selected connection components to the lighting BOM.
+No cabinet geometry or viewer was changed by this policy capture. Existing
+lighting installation remains provisional until these tasks are complete.
