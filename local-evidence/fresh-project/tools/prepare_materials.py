@@ -1,5 +1,6 @@
 """Scope: Add representative stock materials and local UVs without touching CAD buffers."""
 from pathlib import Path
+import argparse
 import hashlib
 import json
 import struct
@@ -80,5 +81,7 @@ class MaterialPreparation:
 
 
 if __name__=='__main__':
-    root=Path(__file__).resolve().parents[1]
-    MaterialPreparation().run(root/'reviews/furniture_01-lit.glb',root/'reviews/materials.glb')
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('source',type=Path);parser.add_argument('output',type=Path)
+    args=parser.parse_args()
+    MaterialPreparation().run(args.source.resolve(),args.output.resolve())

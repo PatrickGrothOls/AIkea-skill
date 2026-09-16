@@ -1,13 +1,11 @@
 """Scope: Reuse the verified installed Blender5.2.1 engine for the shared one-thread bake."""
 from pathlib import Path
-import hashlib,json,shutil,subprocess
+import argparse,hashlib,json,shutil,subprocess
 
 
 class ExistingEnginePresentation:
-    def run(self):
-        package=Path.cwd();root=package/'local-evidence/fresh-project/reviews'
-        source=root/'grass-v2-materials-packed.glb'
-        output=root/'presentation-grass-v2-02'
+    def run(self,source,output):
+        package=Path.cwd()
         output.mkdir(exist_ok=False)
         config=dict(source=str(source),source_sha256=hashlib.sha256(source.read_bytes()).hexdigest(),
             unit_scale=.001,atlas_size=4096,threads=1,samples=16)
@@ -24,4 +22,7 @@ class ExistingEnginePresentation:
 
 
 if __name__=='__main__':
-    ExistingEnginePresentation().run()
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('source',type=Path);parser.add_argument('output',type=Path)
+    args=parser.parse_args()
+    ExistingEnginePresentation().run(args.source.resolve(),args.output.resolve())
