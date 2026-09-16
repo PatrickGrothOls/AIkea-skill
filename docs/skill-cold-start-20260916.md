@@ -66,3 +66,37 @@ The full proposed assembly and exactly three requested door-state views are gene
 - These are provisional design screenshots: representative foot envelopes, unknown
   fixing preparation and unverified movement remain. This is not fabrication approval
   or a clean unassisted cold-start pass.
+
+
+## Birch plywood revision
+
+- [x] User requested birch plywood instead of white MDF. Updated all panel material
+  declarations; retained16mm panels,18mm doors and6mm HDF drawer bottoms.
+- [x] Export material-only derivatives of all three review states and verify
+  original CAD buffers/transforms remain unchanged; refresh the existing viewer.
+- Prior white bake and material-specific reports remain historical. Geometry is
+  retained; revised material load/fixing qualification and pricing are not implied.
+
+- All three birch material/packing checks PASS. Closed tree has100 birch panels
+  and6 HDF bottoms; removed-door states retain all6 HDF bottoms. Original CAD
+  binary attributes and node transforms are unchanged. The bundled CC0 plywood
+  grain is representative, not an exact birch supplier sample. Existing viewer
+  refreshed with the open birch state; previous white artifacts preserved.
+- [x] Correct the open view's omitted door-owned hinge cups. The previous exporter
+  omitted the complete fused hinge because it lacked articulation. Retain native
+  cup/flange geometry through a documented source-derived visual partition; do
+  not imply that this verifies linkage movement or drilling authority.
+
+- Restored five cup/flange visual partitions from unchanged supplier source.
+  All five measured seating-plane and opening-axis alignment errors are0mm;
+  original node transforms/binary geometry and17 fixedplates are retained.
+  Partition plane is the measured native flange face, not certified articulation.
+- Birch conversion and packing of corrected open GLB PASS; viewer session94544
+  now serves `reviews/birch-open-cups-inspection.glb` on51696. Parent verified
+  visible cup flanges, birch finish and retained HDF bottoms; screenshots at
+  `/private/tmp/vilja-birch-hinge-cups.png` and
+  `/private/tmp/vilja-birch-hinge-cups-close.png`. No full render/bake ran.
+- Project presentation recipe reads saved material selection and applies cup
+  correction before exporting the third state, preventing regeneration back to
+  white paint or missing cups. Shared GRASS reference captures the ownership rule
+  and measured source partition with explicit limits.

@@ -48,6 +48,22 @@ full fore/aft endpoint or moving-arm envelope. Nearby 12/8 mm dimensions belong
 to the different K9.5 mitred installation and cannot be borrowed.
 
 An explicitly labelled illustrative open-door view may help inspect the layout.
-State which placement is assumed and omit unavailable fused moving hardware
-instead of rotating it as a rigid hinge. Keep other doors/parts unchanged and
-retain a pose record. Such a view never provides full-travel or fabrication proof.
+State which placement is assumed. Keep the door-owned cup/flange attached to its
+cup opening and the fixed mounting plate on the carcass; missing arm articulation
+must not silently remove all the door hardware. Do not rotate the complete fused
+closed hinge as one rigid body with the door.
+
+For the checksum-bound F028122660 source documented above, a source-derived visual
+cup partition can retain native y <= -35.35 mm at the observed outer flange face;
+its seating plane is y=-38.5 mm and native cup axis is x=5.5,z=0. The resulting
+bounds are x[-13,27],y[-49.5,-35.35],z[-31,31] mm. Verify these source datums before
+using them; they are not generic hinge dimensions. Preserve the original STEP,
+record its hash, retain the partition's exact source surfaces, and declare the
+artificial closure at the splitting plane. This is a visual partition, not a
+supplier-certified separate component or machining authority.
+
+Transform this cup region with the same door frame and check its opening axis
+and seating plane before/after the illustrative pose. Preserve fixed plates and
+all other parts; omit only unsourced moving linkage and state that limitation.
+Retain the pose/partition provenance. This view provides no full-travel or
+fabrication proof.
