@@ -141,3 +141,28 @@ Public authority: https://www.grass.eu/en/tec-center/cad-data/ ; https://mediace
 Audit decision (explicit user direction): consider dividing genuinely wide leaves where it solves the problem, then seek other hardware/construction when division is unsuitable. For small reference-width overruns, explain the measured difference, material/weight dependency and practical options instead of making the layout decision for the user. The existing opposed rules plausibly explain the unwanted side strips. This changes decision guidance, not the current CAD or its motion/fabrication status.
 
 - Further public-source verification: saved official pages518/519 as small standalone PDFs with checksums in the GRASS candidate technical folder. The12 mm/8 mm opening dimensions on page518 apply to the different K9.5/8 mm plate mitred application and are explicitly excluded from this K3/3 mm installation. Door flushness at90° is not the complete moving-arm envelope. Exact distributor article44.012.51/F028122660 routes its CAD link to the same manufacturer ZIP catalogue; the GRASS iFurn route requires login. Current EU600 mm and US24-inch load guides both require trial fitting and provide no explicit616.75 mm approval. No approximation, narrowed cabinet, new drilling or replacement export was introduced to hide these qualifications.
+
+### Full-width door decision calculation
+
+- [x] Read the revised door policy in10d4e96 and retain the current layout while calculating the intended full-width proposal.
+- [x] Calculate all four actual polygon areas using the authored18 mm single-slab painted-MDF construction, with618.75 mm bay pitch and15 mm overlay. No frames or second front layers are present. The616.75 mm width exceeds the600 mm chart reference by16.75 mm/2.7917%; this is not a demonstrated hard maximum.
+- [x] Save reproducible calculator `local-evidence/fresh-project/tools/calculate_door_proposal.py` and local result `reviews/door-proposal-mass.json`. Shoelace areas agree with piecewise integration and the actual CarcassRecipe proposal outlines. The active project parameters and preview remain unchanged.
+
+| Door, left to right | Width × thickness (mm) | Left → right height (mm) | Blank mass (kg) | Estimated painted panel (kg) | Proposed hinges |
+| --- | --- | --- | --- | --- | --- |
+| 1 | 616.75 ×18 | 2272 →2272 | 18.92 | 19.64 | 5 |
+| 2 | 616.75 ×18 | 2272 →1998.11; first370.25 mm flat | 18.46 | 19.17 | 5 |
+| 3 | 616.75 ×18 | 1995.89 →1310.61 | 13.77 | 14.30 | 4 |
+| 4 | 616.75 ×18 | 1308.39 →623.11 | 8.04 | 8.35 | 3 |
+
+These are estimates, not measured finished masses. MDF density750 kg/m³ is an explicit assumption because no stock supplier/density is selected. Coating allowance0.25 kg/m² covers both faces and all edges; it is not a specified paint product. With700–800 kg/m³ stock, painted-panel estimates are18.38–20.90 /17.94–20.40 /13.38–15.21 /7.82–8.89 kg. Moving hinge parts, screws and unselected handles remain additional unknown masses, not zero. Unfinalized drilling is not subtracted. The shared DoorHingePlanner’s650 kg/m³ plywood/left-height-rectangle estimate is unsuitable for these sloping MDF leaves and was not used.
+
+The GRASS F028122660/F058139748 proposal uses5/5/4/3 hinges, corresponding to the reference chart’s2500/22,2500/22,2000/17 and1600/10 height/weight regions for600 mm leaves. These comparisons do not extrapolate capacity to616.75 mm. Left-hand layout remains intended; exact centers and fastener engagement require the new hardware installation and obstruction check. Existing NC70 positions are not represented as GRASS-approved.
+
+Decision-ready options for Patrick:
+
+1. Retain four616.75 mm leaves as an explicitly accepted provisional proposal, then resolve stock/finished mass and obtain supplier confirmation or the prescribed trial fit. This would not waive actual drawer collision or fixing checks, and no acceptance is recorded yet.
+2. Divide selected openings into two leaves (about307.38 mm each with an additional2 mm central reveal), changing the visual pattern and access. Requires a user layout decision and new hinge/weight checks; no automatic split.
+3. Continue with alternative hardware preserving four leaves. Blum71B7550 has stronger published width guidance already saved, but native conversion is blocked by the locked Mac. Unlocking enables the already-authorized Fusion attempt; no success is assumed.
+
+Fitting strips/narrowing remain rejected and are not applied; they would require a new explicit user decision.
