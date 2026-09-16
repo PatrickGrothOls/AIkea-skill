@@ -109,6 +109,11 @@ python <this-skill>/scripts/generate_door_hinge_review.py \
 
 ## Current capability
 
+The shared [GRASS Tiomos 155 Plus option](references/grass-tiomos-155-plus.md)
+supports verified source loading, closed placement and paired machining with its
+matching plate. Read its sourcing and qualification limits before selecting it;
+it does not yet provide verified opening kinematics.
+
 The first construction slice supports one full-overlay 18 mm slab door with the
 registered Riex NC70 F000001 soft-close 35 mm hinge and F000049 H0 Euro-screw
 plate. It derives the published cup and plate datums, places the published hinge

@@ -56,6 +56,10 @@ For the 400 mm KA 4532 article 9114274, read
 [the verified download route](references/hettich-ka-4532-400.md). This is a sourced
 candidate, not an approved shorter version of the 500 mm installation.
 
+For GRASS Tiomos 155 Plus F028122660 and its F058139748 plate, use
+[the verified public STEP archive route](references/grass-tiomos-155-plus.md).
+Do not stop at the separate configurator's login screen.
+
 ## Project storage
 
 Purchased CAD is shared project input, not part of one cabinet assembly:

@@ -23,6 +23,19 @@ requested count, owning assembly and constraints in the active project plan.
    the supported browser route if available; never bypass access controls. If a
    different neutral format is available, assess a verified conversion separately.
    A DXF archive is not a STEP file, and renamed or scaled geometry is not exact CAD.
+5. Before handing off a login blocker, check the manufacturer's public CAD
+   catalogue/product-family archives and authorised distributor links for the
+   exact item and companion parts. The GRASS public ZIP route and logged-in
+   configurator are separate routes. If no usable source exists, assess another
+   compatible product without changing the user's furniture silently.
+
+For conversion, distinguish 2D DXF drawings from embedded 3D ACIS bodies. Extracted
+SAT is still ACIS, not converted STEP. Reuse an installed, authorised converter
+such as Fusion where its supported import/export can retain solids. Check export
+permissions, units, solid counts and geometry after conversion; do not install
+large runtimes blindly or treat a format viewer as an export-capable converter.
+A locked GUI does not stop public downloads, source analysis or other independent
+work. Preserve the pending conversion input and resume it when access returns.
 
 ## When the user must act
 
