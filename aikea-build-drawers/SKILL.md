@@ -15,7 +15,10 @@ support and load checks before sizing the drawer. Missing source or fixing data 
 the [hardware recovery flow](../aikea-source-hardware-cad/references/resolve-missing-hardware.md);
 pause only the dependent geometry while actively resolving the missing input.
 A box-only prototype or a cabinet with the requested drawers omitted does not
-satisfy this skill.
+satisfy this skill. For a requested design review, use the bounded
+[provisional installation review](references/provisional-installation-review.md)
+when exact hardware is available but physical qualification is still pending.
+That route does not waive completion or fabrication checks.
 
 For a wooden drawer, capture the bottom in grooves in all four walls so joining
 the walls retains it. Keep wall-connector pockets and tool access above the floor;

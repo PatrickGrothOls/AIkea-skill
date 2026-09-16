@@ -6,6 +6,12 @@ drawers and image-led designs. A wooden box is an intermediate calculation, not
 a completed drawer. Recording missing runners as unresolved does not authorize
 building and delivering a box-only drawer.
 
+For design inspection with exact sourced hardware but outstanding physical
+qualification, the [provisional review stage](provisional-installation-review.md)
+permits complete proposed geometry with explicit unresolved requirements. This is
+an exception to the pre-generation sequencing below, not to machining authority,
+full-travel proof or completed delivery. All normal completion gates remain.
+
 ## Resolve the installation before generating the drawer
 
 1. Read the actual opening, supporting panels, materials, door/hinge geometry,

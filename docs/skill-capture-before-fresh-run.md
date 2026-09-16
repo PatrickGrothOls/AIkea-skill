@@ -82,3 +82,20 @@ Capture procedures and configurable calculations, not Vilja dimensions as defaul
   Previous project code/evidence is excluded; shared skill changes during the
   evaluation must be reported rather than silently folded into its result.
   Viewer replacement and finished-build inspection remain pending.
+
+
+### Cold-start finding: design inspection and fabrication were conflated
+
+- [x] Fresh agent independently reproduced the missing 400 mm drawer installation
+  and the 79 mm versus 80 mm foot source-pose limitation. These remain recorded
+  cold-start failures, not retrospectively passed evaluations.
+- [x] Add a bounded provisional drawer review route under the user's ongoing
+  request to inspect a complete design: exact hardware and actual proposed
+  construction, explicit unknown pilot/motion requirements, no fabricated PASS
+  and no changes to complete-review/fabrication gates. This matches the existing
+  provisional hinge-review boundary and keeps sourcing active.
+- [x] Independent review and skill validation passed; continue the agent as an assisted
+  continuation. Its later outputs must not be reported as an unassisted pass.
+
+- Named the existing construction GLB exporter for provisional inspection; no
+  validator or completed-review gate was bypassed or changed.
