@@ -146,9 +146,10 @@ perspective. `title` supplies the short client-facing label shown with that view
 The packaged viewer keeps the cabinet visually primary: a compact title, optional
 help, and a small toolbar containing only door visibility and a separation slider. Use
 Hide doors / Show doors to reveal the interior without separating the cabinet.
-The toggle follows exported inspection paths named `door`, `door_panel`, or
-numbered door groups, including their mounted fittings; side-mounted hinge plates
-stay with the cabinet. Preserve this ownership in exports. Arbitrary names such
+The toggle hides only records with kind `panel` beneath exported inspection paths
+named `door`, `door_panel`, or numbered door groups. All hinges, cups, arms,
+mounting plates and other hardware stay visible, including door-owned fittings.
+Preserve both ownership and the panel/hardware distinction in exports. Arbitrary names such
 as `front` are not sufficient to distinguish a door from a drawer front.
 With paired presentation/inspection assets, hiding doors selects the lit inspection
 asset and restoring them returns to the bake. This is reversible visibility,

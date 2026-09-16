@@ -124,3 +124,14 @@ The full proposed assembly and exactly three requested door-state views are gene
   frames, or separate links with pivot axes and constraints. No fabricated linkage
   or transferred dimensions from another configuration are accepted. This
   inspection does not supersede the requested mixed open/removed-door review.
+
+## Hide doors control — panels only
+
+- User explicitly confirmed that Hide doors must retain every hinge and hide only
+  wooden door panels. This changes visibility only, not hardware ownership.
+- [x] Filter by panel kind as well as door path; preserve door-owned hinges,
+  cabinet plates, drawers and lights. Update shared visual-review guidance.
+- [x] All67 viewer tests pass; production bundle rebuilt. Independent narrow
+  review PASS. Live Hide doors visibly retains complete hinges; Show doors restores
+  all four wooden slabs. Existing51696 viewer serves original complete birch model
+  in session75630, with the reusable toggle rather than a permanently stripped GLB.

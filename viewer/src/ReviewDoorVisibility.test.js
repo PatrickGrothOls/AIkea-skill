@@ -26,13 +26,13 @@ class DoorFixture {
   }
 }
 
-test("hide doors and door-mounted hinges, retain plates, drawers and lights, then restore exactly", () => {
+test("hide only door panels, retain hinges, plates, drawers and lights, then restore exactly", () => {
   const { model, root } = new DoorFixture();
   const original = model.records.map(({ node }) => node.matrix.toArray());
   assert.equal(model.hasDoors, true);
-  assert.equal(model.apply("", 0, "panels", true).visibleCount, 4);
-  assert.deepEqual(model.records.map(({ node }) => node.visible), [false, false, true, true, true, true]);
-  assert.equal(model.apply("", 1, "panels", true).visibleCount, 4);
+  assert.equal(model.apply("", 0, "panels", true).visibleCount, 5);
+  assert.deepEqual(model.records.map(({ node }) => node.visible), [false, true, true, true, true, true]);
+  assert.equal(model.apply("", 1, "panels", true).visibleCount, 5);
   assert.equal(model.apply("", 0, "panels", false).visibleCount, 6);
   assert.deepEqual(model.records.map(({ node }) => node.matrix.toArray()), original);
   assert.ok(root.children.every((node) => node.visible));
@@ -43,7 +43,7 @@ test("hiding an isolated door retains finite framing and can be restored", () =>
   const { model } = new DoorFixture();
   const scope = ReviewInspectionPath.key(["cabinet", "door_panel"]);
   const hidden = model.apply(scope, .65, "panels", true);
-  assert.equal(hidden.visibleCount, 0);
+  assert.equal(hidden.visibleCount, 1);
   assert.equal(hidden.bounds.isEmpty(), false);
   assert.equal(model.apply(scope, .65, "panels", false).visibleCount, 2);
 });
