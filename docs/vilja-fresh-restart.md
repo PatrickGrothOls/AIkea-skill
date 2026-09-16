@@ -250,3 +250,17 @@ Review distinction: source registration and actual wood collision checks now act
 - [x] Re-read official GRASS page518 and v3 source. K3+3 mm plate documents lateral flush at90°, not the fore/aft endpoint. The neighbouring mitred dimensions concern K9.5 and cannot supply the missing datum.
 - [x] Parent authorized an explicitly illustrative90° endpoint for the screenshot. `reviews/grass-v3-first-door-open-illustrative.glb` moves only cabinet1 door and its10 owned cup screws, omits its5 fused hinge bodies and retains fixed plates and all other nodes unchanged. Doors2–4 remain closed; original mesh/material buffers and original files are preserved. The `.pose.json` records the missing fore/aft datum, assumedY0 hinge edge/X16 flush rearface and no articulation/motion/manufacturing authority. Parent received the path immediately, before any commit; no CAD rebuild/bake or viewer takeover occurred.
 - [x] Parent delivered `/private/tmp/vilja-cabinet-1-door-open.png` from the same port51696 viewer (session99233). Cabinet1 open and other3 closed were visually verified; title explicitly says illustrative. The live packed material was used, so assembled baked shadows were not moved. This records screenshot delivery, not motion or fabrication approval.
+
+
+### Branch skill capture and independent rerun — 2026-09-16
+
+- [x] Patrick corrected the release instruction: rebase this branch on main and
+  run the fresh agent here. Fetched `origin/main` at `52facbf`; rebase was already
+  up to date. No merge, push or installed-skill promotion.
+- [x] Capture and review shared lessons in [skill-capture-before-fresh-run.md](skill-capture-before-fresh-run.md).
+  Six coherent checkpoints committed; 48 focused tests before review and 21
+  overlapping targeted tests after review fixes passed. Seven skills validate.
+- [x] Launch a fresh no-history agent against branch-local skills with the original
+  envelope and material/function brief, excluding the existing project's answers.
+- [ ] Inspect new deliverables and compare against the skill's stated contract.
+  Track execution in `docs/skill-cold-start-20260916.md` once the agent creates it.
