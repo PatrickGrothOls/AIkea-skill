@@ -5,6 +5,12 @@ description: Start and route an AIkea frameless sheet-material furniture project
 
 # AIkea
 
+Before starting a new design session, follow
+[the version check](references/version-check.md). Check for a newer published
+bundle before intake or setup; ask before downloading an update. Preserve the
+installed version when declined or unavailable, and never replace a development
+checkout with an older release. Check once per session, not at every design step.
+
 Use explicit user messages to create or revise saved measurements and shared
 design settings. For the standard wardrobe route, `aikea.yaml` is the global
 specification; complete and validate it with the bundled calculator. For a custom
