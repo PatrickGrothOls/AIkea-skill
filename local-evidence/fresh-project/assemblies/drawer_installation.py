@@ -19,8 +19,8 @@ class DrawerInstallation:
                     ('left','left_side',16,20,(0,1,0),(1,0,0)),
                     ('right','right_side',I.cabinet_width-16,416,(0,-1,0),(-1,0,0))):
                 name=f'{identity}_{hand}_support'
-                # Closed diagnostic: left hardware and right front-wall joinery
-                # determine different compact offsets; visible fronts stay centered.
+                # Closed diagnostic: the left hinge sets the minimum support;
+                # equal supports center the single front without a rail-clashing overhang.
                 thickness=I.support_offsets[0 if hand=='left' else 1]
                 strip=P.panel(name,(396,80,thickness),(x,y if hand=='left' else 416,row-35),
                     (xaxis,(0,0,1),zaxis),material='calibrated_birch_support')
@@ -28,7 +28,7 @@ class DrawerInstallation:
                 # The pair remains2mm behind the door rear, now0.5mm behind the carcass front.
                 rail_x=(19,147,211) if hand=='left' else (416-39,416-167,416-231)
                 operations.append(P.drill(name+'_rail_pilots',strip,tuple((d,35) for d in rail_x),3,13))
-                fixing_depths=(65,305) if hand=='left' else (85,325);fixing_heights=(15,65)
+                fixing_depths=(65,305) if hand=='left' else (85,325);fixing_heights=(6,70)
                 coords=tuple((d,h) for d in fixing_depths for h in fixing_heights)
                 operations.append(P.drill(name+'_mounting_clearance',strip,coords,4.5,thickness))
                 side=spec.part(side_name)
@@ -40,5 +40,5 @@ class DrawerInstallation:
         new=replace(spec,parts=tuple(parts),machining=tuple(operations),
             child_assemblies=tuple(c.spec for c in children),purchased_hardware=tuple(h.spec for h in hardware),
             requirements=spec.requirements+tuple(P.unresolved(p.part_id+'_attachment',('part:'+p.part_id,),
-                'Closed diagnostic: calibrated birch support stock/lamination remains unselected. Runner Ø4x14; support screws Ø4x60 left (13.7mm penetration) and Ø4x50 right (8.7mm). Stock, engagement/load and full motion require qualification.') for p in parts[len(spec.parts):]))
+                'Closed diagnostic: calibrated birch support stock/lamination remains unselected. Runner Ø4x14; support screws Ø4x60 on both sides (13.7mm penetration). Stock, engagement/load and full motion require qualification.') for p in parts[len(spec.parts):]))
         return new,tuple(children),tuple(hardware)

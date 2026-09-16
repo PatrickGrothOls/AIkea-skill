@@ -20,6 +20,10 @@ from physical_item_counter import PhysicalItemCounter
 from panel_setup_checker import PanelSetupChecker
 from check_grass_closed_contacts import ClosedContactsCheck
 from construction_input_fingerprint import ConstructionInputFingerprinter
+from construction_position_evidence import ConstructionPositionEvidence
+from construction_envelope_authority import ConstructionEnvelopeAuthority
+from construction_tree_checker import ConstructionTreeChecker
+from export_current_parts import CurrentPartExport
 
 
 class ClosedDiagnosticExport:
@@ -36,7 +40,7 @@ class ClosedDiagnosticExport:
         lights=loader.runtime.execute(root,partial(self.lights,visits))
         plan=AssemblyTreeReviewPlan(overlays=tuple(o for f in lights for o in f.overlays))
         parts=AssemblyTreeReviewGeometry().build(visits,{},plan)
-        output=root/'reviews/furniture_01-grass-closed-diagnostic-v2.glb'
+        output=root/'reviews/furniture_01-grass-closed-diagnostic-v3.glb'
         CadQueryGlbExporter().export('furniture_01',parts,output)
         fingerprint.require_unchanged_sources(root,source_state)
         counts=PhysicalItemCounter().count(visits)
@@ -49,13 +53,21 @@ class ClosedDiagnosticExport:
             load='User retains616.75mm leaves provisionally;600mm reference chart qualification remains open.',
             counts=counts,panel_setups=setups,render_items=len(parts),
             emitters=sum('light_source__' in p.name for p in parts),artifact=str(output))
-        (root/'reviews/grass-closed-diagnostic-v2.json').write_text(json.dumps(record,indent=2)+'\n')
+        (root/'reviews/grass-closed-diagnostic-v3.json').write_text(json.dumps(record,indent=2)+'\n')
         print(json.dumps({k:v for k,v in record.items() if k not in ('counts','panel_setups')},indent=2),flush=True)
         closed=ClosedContactsCheck()
         result=closed.evaluate(visits)
         closed.export_step(visits)
         fingerprint.require_unchanged_sources(root,source_state)
         print('Closed source-versus-wood check',result['status'],flush=True)
+        envelope,allowances,source=ConstructionEnvelopeAuthority().read(root,'furniture_01')
+        position=ConstructionPositionEvidence().write(root,visits,envelope,allowances,source)
+        (root/'reviews/grass-v3-whole-tree-position.json').write_text(json.dumps(position,indent=2)+'\n')
+        checks=ConstructionTreeChecker().check(visits)
+        (root/'reviews/grass-v3-applied-operations.json').write_text(json.dumps([c.as_dict() for c in checks],indent=2)+'\n')
+        print('Whole-tree closed status',position['status'],flush=True)
+        CurrentPartExport().export(visits,record['construction_sha256'])
+        fingerprint.require_unchanged_sources(root,source_state)
         faulthandler.cancel_dump_traceback_later()
 
     def lights(self,visits):

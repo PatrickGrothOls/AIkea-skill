@@ -15,7 +15,7 @@ class ShelvesRecipe:
             name=f'shelf_{n:02d}'
             parts.append(P.panel(name,(I.opening_width-2,410,16),(17,2,row+2.5),role='shelf_panel'))
             for hand,x,zaxis in (('left',8,(1,0,0)),('right',I.cabinet_width-8,(-1,0,0))):
-                for column,y in (('front',37),('rear',379)):
+                for column,y in (('front',I.carcass_front+37),('rear',379)):
                     items.append(P.hardware(name+'_'+hand+'_'+column,'Røverkøb','16415 / LN 206.129.2',pin,
                         P.frame((x,y,row),(0,1,0),(0,0,1),zaxis) if hand=='left' else P.frame((x,y,row),(0,-1,0),(0,0,1),zaxis),hand+'_side'))
         requirements=spec.requirements+tuple(P.unresolved(p.part_id+'_support',('part:'+p.part_id,),

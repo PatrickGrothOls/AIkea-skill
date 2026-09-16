@@ -24,7 +24,7 @@ class ClosedContactsCheck:
         built=loader.load_assembly(root,'furniture_01')
         built=loader.runtime.execute(root,partial(PurchasedHardwareHydrator(ProjectHardwareGeometryResolver()).hydrate,root,built))
         visits=loader.walk(root,built);current=fingerprint.build(root,visits)
-        expected=json.loads((root/'reviews/grass-closed-diagnostic-v2.json').read_text())['construction_sha256']
+        expected=json.loads((root/'reviews/grass-closed-diagnostic-v3.json').read_text())['construction_sha256']
         if current!=expected:raise ValueError('closed-contact construction differs from exported diagnostic')
         self.evaluate(visits)
         self.export_step(visits)
@@ -54,7 +54,7 @@ class ClosedContactsCheck:
             status='FAIL' if findings else 'PASS',construction_sha256=current,hardware_bodies=len(hardware),
             wood_parts=len(panels),exact_intersections=tested,findings=findings,
             excluded='Opening/moving-arm path, hardware-to-hardware engagement and machining/load qualification')
-        (root/'reviews/grass-closed-wood-contact-v2.json').write_text(json.dumps(result,indent=2)+'\n')
+        (root/'reviews/grass-closed-wood-contact-v3.json').write_text(json.dumps(result,indent=2)+'\n')
         print(json.dumps(result,indent=2),flush=True)
         return result
 
@@ -62,7 +62,7 @@ class ClosedContactsCheck:
         assembly=cq.Assembly(name='furniture_01_grass_closed_provisional')
         for part in AssemblyTreeReviewGeometry().build(visits,{}):
             assembly.add(part.solid,name=part.name,loc=part.location)
-        output=root/'reviews/furniture_01-grass-closed-provisional-v2.step'
+        output=root/'reviews/furniture_01-grass-closed-provisional-v3.step'
         assembly.save(str(output),exportType='STEP')
         print('Matching provisional STEP exported',output,flush=True)
 

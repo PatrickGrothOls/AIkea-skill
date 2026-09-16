@@ -24,8 +24,8 @@ class ViljaInputs:
     drawer_counts: tuple = (2,2,1,1)
     operating_gap: float = 3
     # CLOSED source diagnostic only; full-motion maximum-width evidence is pending.
-    front_side_reveal: float = 54
-    support_offsets: tuple = (46.3,41.3)
+    front_side_reveal: float = 59
+    support_offsets: tuple = (46.3,46.3)
     runner_installation_width: float = 12.7
 
     @property

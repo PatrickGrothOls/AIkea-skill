@@ -1,4 +1,4 @@
-"""Scope: Export the unchanged v2 manufactured parts and current declared-face audit separately from old evidence."""
+"""Scope: Export the current v3 manufactured parts and current declared-face audit separately from old evidence."""
 from pathlib import Path
 from functools import partial
 import json,sys
@@ -26,9 +26,13 @@ class CurrentPartExport:
         built=loader.load_assembly(root,'furniture_01')
         built=loader.runtime.execute(root,partial(PurchasedHardwareHydrator(ProjectHardwareGeometryResolver()).hydrate,root,built))
         visits=loader.walk(root,built);current=fingerprint.build(root,visits)
-        expected=json.loads((root/'reviews/grass-closed-diagnostic-v2.json').read_text())['construction_sha256']
-        if current!=expected:raise ValueError('Current part export differs from corrected v2 construction')
-        output=root/'deliverables/grass-v2'
+        expected=json.loads((root/'reviews/grass-closed-diagnostic-v3.json').read_text())['construction_sha256']
+        if current!=expected:raise ValueError('Current part export differs from corrected v3 construction')
+        self.export(visits,current)
+        fingerprint.require_unchanged_sources(root,initial)
+
+    def export(self,visits,current):
+        output=root/'deliverables/grass-v3'
         (output/'reviews').mkdir(parents=True,exist_ok=True)
         setups=[{'path':list(v.path),**PanelSetupChecker().check(v.assembly)} for v in visits if hasattr(v,'assembly')]
         report=dict(construction_sha256=current,fabrication_ready=False,assemblies=setups,
@@ -40,7 +44,6 @@ class CurrentPartExport:
         (output/'manufacturing/item-counts.json').write_text(json.dumps(counts,indent=2)+'\n')
         requirements=ConstructionRequirementChecker().check(visits,{})
         (output/'reviews/unresolved-requirements.json').write_text(json.dumps([r.as_dict() for r in requirements],indent=2)+'\n')
-        fingerprint.require_unchanged_sources(root,initial)
         print('Manufactured exports complete',counts['totals'],output,flush=True)
 
 
