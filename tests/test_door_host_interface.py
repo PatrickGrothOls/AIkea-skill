@@ -13,6 +13,7 @@ from door_hinge_plan import DoorHingePlanner, DoorHingePlan
 from door_hinge_side import DoorHingeSide
 from door_host import DoorHost
 from door_host_test_support import DoorHostTestSupport
+from door_mass_estimate import DoorMassEstimator
 from generated_assembly_builder_loader import GeneratedAssemblyBuilderLoader
 from physical_item_counter import PhysicalItemCounter
 from riex_nc70_door_review_feature import RiexNc70DoorReviewFeature
@@ -27,8 +28,11 @@ class TestDoorHostInterface:
     @pytest.mark.parametrize("face", ("<Z", ">Z"))
     def test_saved_custom_front_cuts_and_source_axes_match_inset_translated_hosts(self, tmp_path, hand, face):
         host = DoorHostTestSupport().create(tmp_path, hand, face)
-        plan = DoorHingePlanner().plan(host, PROFILE, hand)
-        assert plan.overlay_mm == 17 and not plan.compatibility_issues
+        mass = DoorMassEstimator().estimate(host, {"mdf": 750}, {"mdf": 0},
+            attached_hardware_kg=0.2, basis="Explicit synthetic test stock and hardware")
+        plan = DoorHingePlanner().plan(host, PROFILE, hand, mass_estimate=mass)
+        assert plan.overlay_mm == 17
+        assert plan.compatibility_issues == ("Manufacturer load/count qualification unresolved: hinge count is height-based",)
         path = tmp_path/'assemblies/niche_01/door_hinges/installation.json'
         plan.write(path)
         assert DoorHingePlan.read(path) == plan

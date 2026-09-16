@@ -13,6 +13,7 @@ from door_host import DoorHost, DoorHostSpec
 from riex_nc70_hinge_profile import RiexNc70HingeProfile
 from system_32_hinge_placement_resolver import System32HingePlacementResolver
 from panel_hardware_reservation import PanelHardwareReservation
+from door_mass_estimate import DoorMassEstimate
 
 
 @dataclass(frozen=True, slots=True)
@@ -36,11 +37,12 @@ class DoorHingePlan:
     door_width_mm: float
     door_height_mm: float
     door_thickness_mm: float
-    door_mass_kg: float
+    door_mass_kg: float | None
     overlay_mm: float
     placements: tuple[DoorHingePlacement, ...]
     compatibility_issues: tuple[str, ...]
     host_spec: DoorHostSpec | None = None
+    mass_basis: str | None = None
 
     @property
     def door_part_id(self):
@@ -86,8 +88,6 @@ class DoorHingePlan:
 class DoorHingePlanner:
     """Fit the manufacturer quantity around this cabinet's owned features."""
 
-    _PLYWOOD_DENSITY_KG_PER_M3 = 650.0
-
     def __init__(self) -> None:
         self.compatibility = DoorHingeCompatibilityChecker()
         self.placement_resolver = System32HingePlacementResolver()
@@ -98,6 +98,7 @@ class DoorHingePlanner:
         profile: RiexNc70HingeProfile,
         hinge_side: DoorHingeSide = DoorHingeSide.LEFT,
         blocked_reservations: tuple[PanelHardwareReservation, ...] = (),
+        mass_estimate: DoorMassEstimate | None = None,
     ) -> DoorHingePlan:
         host = DoorHost.resolve(assembly, hinge_side)
         dimensions = host.dimensions
@@ -112,6 +113,10 @@ class DoorHingePlanner:
         )
         overlay_mm = host.overlay_mm
         issues = self.compatibility.check(dimensions, overlay_mm, profile)
+        mass = mass_estimate.total_kg if mass_estimate is not None else None
+        if mass is None:
+            issues += ("Finished door mass unresolved: supply material, finish and moving hardware inputs",)
+        issues += ("Manufacturer load/count qualification unresolved: hinge count is height-based",)
         return DoorHingePlan(
             assembly_id=assembly.assembly_id,
             profile_id=profile.profile_id,
@@ -120,7 +125,7 @@ class DoorHingePlanner:
             door_width_mm=dimensions["width"],
             door_height_mm=height_mm,
             door_thickness_mm=dimensions["thickness"],
-            door_mass_kg=self._door_mass(dimensions),
+            door_mass_kg=mass,
             overlay_mm=overlay_mm,
             placements=tuple(
                 DoorHingePlacement(
@@ -133,15 +138,7 @@ class DoorHingePlanner:
             ),
             compatibility_issues=issues,
             host_spec=host.spec,
+            mass_basis=mass_estimate.basis if mass_estimate is not None else None,
         )
-
-    def _door_mass(self, dimensions: dict[str, float]) -> float:
-        volume_m3 = (
-            dimensions["width"]
-            * dimensions["left_height"]
-            * dimensions["thickness"]
-            / 1_000_000_000.0
-        )
-        return round(volume_m3 * self._PLYWOOD_DENSITY_KG_PER_M3, 2)
 
 __all__ = ["DoorHingePlacement", "DoorHingePlan", "DoorHingePlanner"]

@@ -34,6 +34,16 @@ using `exclude_features=('door_hinges.feature',)`, resolve its declaration throu
 The ordinary complete builder and registered door review feature build and show
 the same result. The standard workflow performs these steps automatically.
 
+Use `DoorMassEstimator.estimate(host, densities_kg_m3, coatings_kg_m2,
+attached_hardware_kg=..., basis=...)` with explicit maps keyed by each physical
+panel's material ID. It uses actual slab outlines or the real panels of a
+multi-part front, never a filled bounding rectangle. Include coating on both
+faces/edges and moving fittings/handles, with sources or stated assumptions.
+Save this estimate with the door evidence and pass `mass_estimate=...` to
+`DoorHingePlanner.plan`. Missing finished mass remains `None` and a compatibility
+issue; no plywood density is silently substituted. An estimated mass alone does
+not qualify the manufacturer's hinge count or installation load.
+
 Custom hosts must pass relevant `PanelHardwareReservation` entries to the planner
 and complete parent-level position/contact and opening checks. These reservations
 use canonical support front-to-back depth and support-bottom height, even if its
@@ -43,5 +53,6 @@ The host contract does not infer every structural obstacle or certify movement.
 Review regeneration rebuilds the host without its old door feature and retains
 other composed features. A plan with changed dimensions, overlay or mismatched
 door/support fixing heights is rejected before generated files are written.
-The existing height/density mass value is an estimate; material-specific strength
+Hinge quantity is still height-based and retains a manufacturer load/count
+qualification issue even when finished mass is known. Material-specific strength
 and multi-part/framed front construction require their own applicable evidence.
