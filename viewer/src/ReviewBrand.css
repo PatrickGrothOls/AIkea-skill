@@ -6,6 +6,11 @@
   width: clamp(150px, 23vw, 285px);
   height: auto;
   display: block;
+  color: #244b3b;
+  font-family: inherit;
+  font-size: 100px;
+  font-weight: 650;
+  letter-spacing: -0.035em;
   pointer-events: none;
   user-select: none;
 }

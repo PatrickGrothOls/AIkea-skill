@@ -7,13 +7,13 @@ cabinet and compact controls on desktop and mobile. No CAD or material changes.
 
 ## Current state
 
-Implemented and bundled. The selected original logo now uses petrol blue with
-champagne-gold kea at 48–60% opacity over the live scene. SVG masks preserve the
-approved raster silhouette; no opaque image background sits behind the lettering.
+Implemented and bundled. Following Patrick's correction, the logo inherits the
+viewer's sans-serif font and uses the same #244b3b green as Make it real. The kea
+letters are cut out of the green field and tinted with warm-white glass at 35–55%
+opacity. The petrol/gold serif treatment and its 1.13 MB raster asset are removed.
 The build and live DOM/render check passed in the existing viewer tab. Browser
 scroll automation did not change camera zoom, so cabinet-overlap inspection remains
-a manual visual check. The source silhouette adds a 1.13 MB asset; vector tracing
-is a future optimisation, not part of this colour/opacity change.
+a manual visual check.
 
 ## Work packages
 
@@ -25,6 +25,9 @@ is a future optimisation, not part of this colour/opacity change.
 - [x] WP3: Make kea translucent over the scene without changing CAD or materials.
 - [x] WP3: Rebuild and verify the logo and alpha settings in the existing tab.
 - [ ] WP3: Inspect cabinet detail passing directly behind kea during manual zoom.
+- [x] WP4: Match the actual viewer typography and palette after user review.
+- [x] WP4: Remove the superseded raster asset and colour-extraction filters.
+- [x] WP4: Rebuild and visually verify the sans-serif logo in the existing tab.
 
 ## Audit log
 
@@ -42,3 +45,8 @@ is a future optimisation, not part of this colour/opacity change.
   a small SVG compositor using the approved original silhouette as two masks.
   Petrol ink remains opaque; gold uses a 48–60% opacity gradient. Masking is confined
   to the logo and pointer events pass through it; no extra 3D rendering is added.
+- 2026-09-17: Patrick rejected the serif/petrol/gold logo in context because it
+  conflicts with the surrounding UI. His correction supersedes the earlier logo
+  study: use the inherited sans-serif family and exact CTA green, with warm-white
+  translucency matching the glass controls. Native SVG text supplies both the
+  field cutout and tinted lettering, avoiding image masks and their download.
