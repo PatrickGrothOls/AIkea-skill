@@ -3,23 +3,11 @@
 .review-brand {
   margin-left: auto;
   flex-shrink: 0;
-  color: #fff;
-  font-size: clamp(40px, 6vw, 72px);
-  font-weight: 800;
-  letter-spacing: -0.065em;
-  line-height: 1;
+  width: clamp(150px, 23vw, 285px);
+  height: auto;
+  display: block;
+  pointer-events: none;
   user-select: none;
-}
-
-.review-brand-a { color: #1674d1; }
-
-.review-brand-i {
-  background: repeating-linear-gradient(
-    to bottom, #1674d1 0 .07em, #fff .07em .14em
-  );
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
 }
 
 .review-card h1 {

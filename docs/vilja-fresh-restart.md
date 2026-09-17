@@ -2,6 +2,10 @@
 
 ## Scope and current state
 
+Viewer branding update (2026-09-17): selected petrol logo with translucent gold
+kea is implemented; see [viewer branding](viewer-branding.md) for verification
+and the remaining manual cabinet-overlap check. This changes presentation only.
+
 Restart the four-bay Vilja wardrobe using the updated local skills. The previous agent stopped after an incomplete drawer prototype. Its project remains evidence only, not a design implementation to copy. Fresh worktree starts at 60f32aa plus reusable exact runner profile 3d18301. Environment reuses the existing CadQuery venv.
 
 ## User brief

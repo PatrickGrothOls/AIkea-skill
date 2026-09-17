@@ -1,6 +1,7 @@
 /** Scope: Present the viewer header with its title, help and AIkea identity. */
 
 import "./ReviewBrand.css";
+import { ReviewBrand } from "./ReviewBrand.jsx";
 
 // A function component presents the title without adding independent state.
 export function ReviewGuidanceCard({ reviewView }) {
@@ -11,11 +12,7 @@ export function ReviewGuidanceCard({ reviewView }) {
         <summary aria-label="Viewer help">?</summary>
         <p className="review-glass">{reviewView.guidance()}</p>
       </details>
-      <span className="review-brand" role="img" aria-label="AIkea">
-        <span className="review-brand-a" aria-hidden="true">A</span>
-        <span className="review-brand-i" aria-hidden="true">I</span>
-        <span aria-hidden="true">kea</span>
-      </span>
+      <ReviewBrand />
     </section>
   );
 }

@@ -7,9 +7,13 @@ cabinet and compact controls on desktop and mobile. No CAD or material changes.
 
 ## Current state
 
-Implemented and bundled. The existing cabinet viewer shows the logo; normal and
-narrow viewport checks passed. Independent boundary review passed, with the help
-popup offset corrected to clear the enlarged desktop header.
+Implemented and bundled. The selected original logo now uses petrol blue with
+champagne-gold kea at 48–60% opacity over the live scene. SVG masks preserve the
+approved raster silhouette; no opaque image background sits behind the lettering.
+The build and live DOM/render check passed in the existing viewer tab. Browser
+scroll automation did not change camera zoom, so cabinet-overlap inspection remains
+a manual visual check. The source silhouette adds a 1.13 MB asset; vector tracing
+is a future optimisation, not part of this colour/opacity change.
 
 ## Work packages
 
@@ -17,6 +21,10 @@ popup offset corrected to clear the enlarged desktop header.
 - [x] WP1: Keep the title and help alongside it, truncating long titles on narrow screens.
 - [x] WP2: Build the distributed viewer and inspect the existing cabinet tab.
 - [x] WP2: Review the focused diff and commit the reusable viewer change.
+- [x] WP3: Preserve the selected original logo and add petrol/gold compositing.
+- [x] WP3: Make kea translucent over the scene without changing CAD or materials.
+- [x] WP3: Rebuild and verify the logo and alpha settings in the existing tab.
+- [ ] WP3: Inspect cabinet detail passing directly behind kea during manual zoom.
 
 ## Audit log
 
@@ -29,3 +37,8 @@ popup offset corrected to clear the enlarged desktop header.
 - 2026-09-16: Patrick specified a blue A, a blue-and-white striped I, and white
   kea. Split the lettering into styled spans while retaining a single accessible
   AIkea label. Rebuild and browser verification accompany this visual change.
+- 2026-09-17: Patrick chose the petrol/champagne concept and explicitly requested
+  gold-tinted letters that reveal the scene during zoom. Replaced text spans with
+  a small SVG compositor using the approved original silhouette as two masks.
+  Petrol ink remains opaque; gold uses a 48–60% opacity gradient. Masking is confined
+  to the logo and pointer events pass through it; no extra 3D rendering is added.
