@@ -7,13 +7,13 @@ cabinet and compact controls on desktop and mobile. No CAD or material changes.
 
 ## Current state
 
-Implemented and bundled. Following Patrick's correction, the logo inherits the
-viewer's sans-serif font and uses the same #244b3b green as Make it real. The kea
-letters are cut out of the green field and tinted with warm-white glass at 35–55%
-opacity. The petrol/gold serif treatment and its 1.13 MB raster asset are removed.
-The build and live DOM/render check passed in the existing viewer tab. Browser
-scroll automation did not change camera zoom, so cabinet-overlap inspection remains
-a manual visual check.
+The selected 2026-09-18 image is now the source of the upper-right logo.
+Its exact silhouette is retained through an SVG luminance mask, with the pale
+background and letter cutouts transparent over the scene. No font substitution
+or newly drawn letter contours. The source JPEG is bundled locally (157 KB).
+Production build passed; the actual header was visually checked in an isolated
+browser preview. The previous wardrobe GLBs and server are absent, so this check
+covers branding placement, not a restored cabinet scene.
 
 ## Work packages
 
@@ -28,6 +28,12 @@ a manual visual check.
 - [x] WP4: Match the actual viewer typography and palette after user review.
 - [x] WP4: Remove the superseded raster asset and colour-extraction filters.
 - [x] WP4: Rebuild and visually verify the sans-serif logo in the existing tab.
+- [x] WP4: Restore the shared I/k counterform after user review.
+
+- [x] WP5: Bundle Patrick's selected image and retain its exact silhouette.
+- [x] WP5: Preserve upper-right placement and transparent cutouts.
+- [x] WP5: Build and visually check the actual header component.
+- [ ] WP5: Check over the cabinet when its preview assets are restored.
 
 ## Audit log
 
@@ -50,3 +56,14 @@ a manual visual check.
   study: use the inherited sans-serif family and exact CTA green, with warm-white
   translucency matching the glass controls. Native SVG text supplies both the
   field cutout and tinted lettering, avoiding image masks and their download.
+- 2026-09-17: Patrick identified that switching to ordinary SVG text lost the
+  shared I/k idea. Replaced the separate I and k glyphs with a single field whose
+  custom k cutout also defines the I's right contour. Kept the UI font for A/ea,
+  CTA green, translucency and gesture pass-through. Build and browser check passed.
+
+- 2026-09-18: Patrick selected the attached lowercase-ea logo and requested it in
+  the top-right corner. This supersedes the generated uppercase/striped E trials
+  and the earlier hand-drawn lettering. Bundled the exact JPEG as a mask source,
+  retained the viewer green and transparent letter cutouts, and verified the
+  header in-browser after a successful production build. Existing preview GLBs
+  were absent; no furniture regeneration or geometry changes were made.

@@ -1,31 +1,31 @@
-/** Scope: Render the viewer identity in its native sans-serif and glass palette. */
+/** Scope: Display the approved logo silhouette without replacing its lettering. */
 
 import { Component } from "react";
+import approvedLogo from "./assets/aikea-approved-logo.jpg";
 
 export class ReviewBrand extends Component {
   render() {
     return (
-      <svg className="review-brand" viewBox="0 0 300 88"
+      <svg className="review-brand" viewBox="124 235 1078 350"
         role="img" aria-label="AIkea" focusable="false">
         <defs>
-          <text id="brand-kea" x="105" y="75" textLength="183"
-            lengthAdjust="spacingAndGlyphs">kea</text>
-          <mask id="brand-field" maskUnits="userSpaceOnUse"
-            x="98" y="0" width="202" height="88" style={{ maskType: "luminance" }}>
-            <rect x="98" y="0" width="202" height="88" fill="white" />
-            <use href="#brand-kea" fill="black" />
+          {/* Separate dark ink from the light reference background, preserving contours. */}
+          <filter id="brand-ink" colorInterpolationFilters="sRGB">
+            <feColorMatrix type="matrix" values="
+              -1 -1 -1 0 1.5
+              -1 -1 -1 0 1.5
+              -1 -1 -1 0 1.5
+               0  0  0 1 0" />
+          </filter>
+          <mask id="brand-silhouette" maskUnits="userSpaceOnUse"
+            x="124" y="235" width="1078" height="350"
+            style={{ maskType: "luminance" }}>
+            <image href={approvedLogo} width="1280" height="853"
+              filter="url(#brand-ink)" />
           </mask>
-          <linearGradient id="brand-glass" x1="0" y1="0" x2="1" y2="1">
-            <stop stopColor="#fffdf8" stopOpacity=".55" />
-            <stop offset=".5" stopColor="#f2f6f2" stopOpacity=".35" />
-            <stop offset="1" stopColor="#fffdf8" stopOpacity=".5" />
-          </linearGradient>
         </defs>
-        <text x="0" y="75" textLength="93" lengthAdjust="spacingAndGlyphs"
-          fill="currentColor">AI</text>
-        <rect x="98" y="0" width="202" height="88" rx="5"
-          fill="currentColor" mask="url(#brand-field)" />
-        <use href="#brand-kea" fill="url(#brand-glass)" />
+        <rect x="124" y="235" width="1078" height="350"
+          fill="currentColor" mask="url(#brand-silhouette)" />
       </svg>
     );
   }
