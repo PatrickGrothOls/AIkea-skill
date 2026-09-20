@@ -1,6 +1,6 @@
 # AIkea
 
-**Custom-fit furniture to cut and assemble—with material guidance and price calculations.**
+**AIkea turns your AI into a furniture designer—creating precision CAD files for wardrobes ready to cut and assemble, tailored to your exact measurements, with material guidance, complete parts and hardware lists, and cost calculations.**
 
 AIkea helps you turn your room's measurements into furniture you can actually
 build. Your AI assistant guides material choices, compares supplier prices,

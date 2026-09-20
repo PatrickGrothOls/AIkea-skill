@@ -27,3 +27,6 @@ Reviewed and committed as a documentation-only change. Not pushed or merged.
    quantities, but inventory alone is neither a selling price nor fabrication
    approval. The introduction retains those distinctions and links to the alpha
    gaps rather than presenting every preview as ready to manufacture.
+3. Patrick approved the exact opening sentence beginning "AIkea turns your AI
+   into a furniture designer" and emphasizing wardrobes ready to cut and assemble.
+   Applied it verbatim; the following alpha-readiness explanation remains.
