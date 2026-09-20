@@ -14,7 +14,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        shard: [0, 1, 2, 3]
+        shard: [0, 1, 2, 3, 4, 5, 6, 7]
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
@@ -37,6 +37,7 @@ jobs:
       - name: Run the Python suite partition
         env:
           TEST_SHARD: ${{ matrix.shard }}
+          TEST_SHARD_COUNT: ${{ strategy.job-total }}
         run: |
           # Every test file belongs to exactly one runner; retain module fixtures.
           direnv exec . python - <<'PYTEST'
@@ -45,7 +46,7 @@ jobs:
           import subprocess
           import sys
           tests = sorted(str(path) for path in Path("tests").rglob("test_*.py"))
-          selected = tests[int(os.environ["TEST_SHARD"])::4]
+          selected = tests[int(os.environ["TEST_SHARD"])::int(os.environ["TEST_SHARD_COUNT"])]
           print(f"Running {len(selected)} of {len(tests)} test files", flush=True)
           raise SystemExit(subprocess.run([sys.executable, "-m", "pytest", "-v", "--tb=short", *selected]).returncode)
           PYTEST

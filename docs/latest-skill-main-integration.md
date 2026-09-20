@@ -92,3 +92,12 @@ Only the local node_modules link was untracked; it is not a deliverable.
   for the original export. Common configured build and sloped position evidence
   both passed locally after this correction; panel migration's four tests passed.
   Six immutable-artifact/approval API tests also passed with localhost permitted.
+
+- The complete focused integration run passed 16 tests. Hosted candidate 26a1ef6
+  passed the viewer and three Python partitions (767 passed, four optional skips);
+  the fourth partition exceeded the available time in the earlier diagnostic run.
+  Split coverage across eight runners, keeping the 30-minute bound and deriving
+  the stride from the matrix size so no test is omitted or duplicated.
+- The local remaining partition exposed dataclass identity changing across
+  generated-module reloads. Door-feature removal now compares all serialized
+  hardware fields as well as the existing solid-difference checks.
