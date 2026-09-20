@@ -42,11 +42,12 @@ jobs:
           direnv exec . python - <<'PYTEST'
           import os
           from pathlib import Path
-          import pytest
+          import subprocess
+          import sys
           tests = sorted(str(path) for path in Path("tests").rglob("test_*.py"))
           selected = tests[int(os.environ["TEST_SHARD"])::4]
           print(f"Running {len(selected)} of {len(tests)} test files", flush=True)
-          raise SystemExit(pytest.main(["-v", "--tb=short", *selected]))
+          raise SystemExit(subprocess.run([sys.executable, "-m", "pytest", "-v", "--tb=short", *selected]).returncode)
           PYTEST
 
   viewer:
