@@ -30,6 +30,7 @@ class TestCommonConfiguredBuild:
         saved = json.loads((tmp_path / ConstructionPositionEvidence.REPORT).read_text())
         assert saved["envelope_source"] == "configured_measurements"
         built = builder.loader.load_assembly(tmp_path, "wardrobe_01")
+        built = PanelReviewHydrationFixture().hydrate(tmp_path, built)
         visits = builder.loader.walk(tmp_path, built)
         check = ConstructionPositionEvidence().check(
             tmp_path, FabricationTreeEvidenceBuilder().build(visits), visits)

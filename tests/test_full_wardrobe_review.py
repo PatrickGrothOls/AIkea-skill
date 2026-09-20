@@ -169,6 +169,7 @@ class TestFullWardrobeReview(unittest.TestCase):
             self.project_root,
             "wardrobe_01",
         )
+        wardrobe = PanelReviewHydrationFixture().hydrate(self.project_root, wardrobe)
         visits = self.generator.loader.walk(self.project_root, wardrobe)
         all_parts = self.generator.tree_geometry.build(
             visits,

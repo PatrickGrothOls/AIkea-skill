@@ -34,6 +34,7 @@ class TestConfiguredPositionEvidence:
         assert data["status"] == "valid", data["geometry"]
         assert data["envelope_source"] == "configured_measurements"
         built = generator.loader.load_assembly(tmp_path, "wardrobe_01")
+        built = PanelReviewHydrationFixture().hydrate(tmp_path, built)
         visits = generator.loader.walk(tmp_path, built)
         tree = FabricationTreeEvidenceBuilder().build(visits)
         check = ConstructionPositionEvidence().check(tmp_path, tree, visits)

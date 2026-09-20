@@ -87,3 +87,8 @@ Only the local node_modules link was untracked; it is not a deliverable.
   Thirteen focused viewer/server/process checks passed outside socket restrictions.
 - CI partition launch uses a real pytest module subprocess so multiprocessing
   spawn can import its entry point (unlike a stdin Python harness).
+
+- Revalidation and direct tree-review tests now hydrate the same test markers used
+  for the original export. Common configured build and sloped position evidence
+  both passed locally after this correction; panel migration's four tests passed.
+  Six immutable-artifact/approval API tests also passed with localhost permitted.
