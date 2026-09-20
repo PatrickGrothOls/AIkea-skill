@@ -72,3 +72,8 @@ Only the local node_modules link was untracked; it is not a deliverable.
   Split hosted verification into four deterministic, disjoint file partitions
   without skips; preserve module/class fixtures and independent memory per runner.
   Local CAD execution remains limited to one heavy process.
+
+- Continued regression corrected per-feature runner counts to preserve the twelve
+  default shelf pins rather than treat them as extra drawer hardware. CLI status
+  integration uses the same explicitly synthetic marker fixture. The >150-line
+  spacer generator test passed the required responsibility review without a split.

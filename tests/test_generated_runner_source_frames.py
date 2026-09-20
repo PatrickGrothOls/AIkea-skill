@@ -23,7 +23,8 @@ class TestGeneratedRunnerSourceFrames:
         }
         planned_names.update({f"drawer_01_spacer_{side}": f"spacer_{side}_in_cabinet"
                               for side in ("left", "right")})
-        hardware = (*cabinet.purchased_hardware, *drawer.purchased_hardware)
+        hardware = tuple(item for item in (*cabinet.purchased_hardware, *drawer.purchased_hardware)
+                         if item.spec.hardware_id in planned_names)
         assert len(hardware) == len(planned_names) == 6
         for item in hardware:
             actual = item.spec.local_to_parent

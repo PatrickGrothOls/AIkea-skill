@@ -36,10 +36,12 @@ class TestHettichKa4532SpacerCabinetDrawerGenerator:
         assert len(cabinet.child_assemblies) == 1
         drawer = cabinet.child_assemblies[0].assembly
         assert len(drawer.parts) == 5
-        assert len(cabinet.purchased_hardware) == 4
+        assert len(cabinet.purchased_hardware) == 16
+        assert sum(item.spec.product_code == "46642" for item in cabinet.purchased_hardware) == 12
         specs = tuple(item.spec for item in cabinet.purchased_hardware)
         runners = tuple(item for item in specs if "runner" in item.hardware_id)
         spacers = tuple(item for item in specs if "spacer" in item.hardware_id)
+        assert len(runners) == len(spacers) == 2
         moving = tuple(item.spec for item in drawer.purchased_hardware)
         assert tuple(item.geometry_selector for item in runners) == (
             "left-fixed",

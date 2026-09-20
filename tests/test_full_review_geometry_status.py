@@ -5,12 +5,19 @@ from pathlib import Path
 import pytest
 import yaml
 
+from panel_review_hydration_fixture import PanelReviewHydrationFixture
+from full_wardrobe_review_generator import FullWardrobeReviewGenerator
 from assembly_taxonomy_generator import AssemblyTaxonomyGenerator
 from configured_construction_evidence import ConfiguredConstructionEvidence
 from generate_full_wardrobe_review import GenerateFullWardrobeReviewCommand
 
 
 class TestFullReviewGeometryStatus:
+    @pytest.fixture(autouse=True)
+    def panel_marker_geometry(self, monkeypatch):
+        monkeypatch.setattr(FullWardrobeReviewGenerator, "_hydrate",
+                            staticmethod(PanelReviewHydrationFixture().hydrate))
+
     def project(self, root):
         fixture = Path(__file__).parent / "fixtures/review-unit-aikea.yaml"
         project = yaml.safe_load(fixture.read_text())

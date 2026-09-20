@@ -120,7 +120,9 @@ class TestHettichKa5332CabinetDrawerGenerator(unittest.TestCase):
         self.assertEqual(drawer_spec.purchased_hardware, ())
         self.assertEqual(len(built.child_assemblies), 1)
         self.assertEqual(len(built.child_assemblies[0].assembly.parts), 5)
-        self.assertEqual(len(built.purchased_hardware), 2)
+        self.assertEqual(len(built.purchased_hardware), 14)
+        self.assertEqual(sum(item.spec.product_code == "46642" for item in built.purchased_hardware), 12)
+        self.assertEqual(tuple(item.spec for item in built.purchased_hardware[-2:]), installation.PURCHASED_HARDWARE)
         cabinet_side = next(part for part in built.parts if part.spec.part_id == "left_side")
         drawer_side = built.child_assemblies[0].assembly.parts[0]
         self.assertFalse(cabinet_side.solid.val().isInside(Vector(128.0, 388.0, 17.0)))
