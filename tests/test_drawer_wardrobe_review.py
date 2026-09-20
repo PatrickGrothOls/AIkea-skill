@@ -10,6 +10,7 @@ import unittest
 
 import yaml
 
+from panel_review_hydration_fixture import PanelReviewHydrationFixture
 from assembly_taxonomy_generator import AssemblyTaxonomyGenerator
 from cabinet_drawer_generator import CabinetDrawerGenerator
 from cabinet_drawer_plan import DrawerLayout
@@ -46,6 +47,7 @@ class TestDrawerWardrobeReview(unittest.TestCase):
         self.generator = DrawerWardrobeReviewGenerator(
             DrawerHardwareReviewBuilderTestDouble()
         )
+        self.generator.full_wardrobe._hydrate = PanelReviewHydrationFixture().hydrate
 
     def tearDown(self) -> None:
         self.temporary_directory.cleanup()

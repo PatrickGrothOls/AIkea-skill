@@ -10,7 +10,8 @@ from purchased_hardware_hydrator import PurchasedHardwareHydrator
 
 
 class KorrektPlacementMarkerProvider:
-    """Only stand in for the two external assets absent from isolated test projects."""
+    """Only stand in for the two external assets outside this test scope."""
+    # Marker centers are arbitrary fixture geometry, not article or fit dimensions.
     ASSETS = {"hettich_korrekt_61854": ("61854", (-16, 0, -1)),
               "hettich_korrekt_70151": ("70151", (0, 0, -53))}
 
