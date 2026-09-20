@@ -1,4 +1,4 @@
-# AIkea
+# AIkea Skill
 
 **AIkea turns your AI into a furniture designer—creating precision CAD files for wardrobes ready to cut and assemble, tailored to your exact measurements, with material guidance, complete parts and hardware lists, and cost calculations.**
 
@@ -52,17 +52,25 @@ screws and cabinet pilot specification unresolved.
 
 ## Try a first project
 
-### Desktop Work / Cowork — in testing
+### Desktop Work / Cowork
 
-The intended experience is one pasted prompt: your assistant downloads the skill,
-installs its CAD and headless Blender dependencies, verifies the setup, opens an
-interactive preview and starts asking about your project. Normal permission or
-sign-in prompts may still need your approval.
+Copy this prompt into a fresh chat:
 
-The candidate installer has passed a fresh isolated macOS installation and a
-repeat run, including real CAD export and Blender baking. The complete flow
-inside ChatGPT desktop Work and Claude Cowork is still awaiting acceptance tests;
-there is not yet a verified public one-prompt installer to link here.
+```text
+Set up AIkea Skill and help me design my furniture. Go to https://github.com/PatrickGrothOls/AIkea-skill and follow the getting-started instructions. Handle the setup and ask me for any necessary approvals.
+```
+
+Your assistant follows [Getting started](START_HERE.md), downloads the skill,
+installs Python, CadQuery and headless Blender, verifies the setup, and starts
+your furniture project. Normal permission or sign-in prompts may need approval.
+
+[Download AIkea Skill](https://github.com/PatrickGrothOls/AIkea-skill/releases/download/v0.1.0-desktop.1/aikea-skill.zip)
+· [Installation details](docs/desktop-installation.md)
+
+The installer has passed isolated macOS runtime checks and run in Claude's hosted
+Linux workspace. Full hosted interactive delivery and ChatGPT Work acceptance
+remain unverified. Setup is complete only when the interactive viewer works and
+the furniture intake has started.
 
 ### Repository workflow — available now
 
