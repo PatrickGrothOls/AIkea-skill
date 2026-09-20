@@ -1,12 +1,12 @@
 # AIkea Skill
 
-**AIkea turns your AI into a furniture designer—creating precision CAD files for wardrobes ready to cut and assemble, tailored to your exact measurements, with material guidance, complete parts and hardware lists, and cost calculations.**
+**AIkea turns your AI into a furniture designer, creating precision CAD files for wardrobes ready to cut and assemble, tailored to your exact measurements, with material guidance, complete parts and hardware lists, and cost calculations.**
 
 AIkea helps you turn your room's measurements into furniture you can actually
 build. Your AI assistant guides material choices, compares supplier prices,
 and uses parts, sheet and hardware quantities to work out estimated costs.
 Review the design in 3D, inspect how it assembles, and refine it around your space
-and budget—from sloping ceilings to shelves, drawers and integrated lighting.
+and budget, from sloping ceilings to shelves, drawers and integrated lighting.
 
 The goal is a complete package ready for CNC cutting and assembly. The current
 alpha still has [fabrication gaps](#what-the-alpha-can-do); a design is only ready
@@ -72,7 +72,7 @@ Linux workspace. Full hosted interactive delivery and ChatGPT Work acceptance
 remain unverified. Setup is complete only when the interactive viewer works and
 the furniture intake has started.
 
-### Repository workflow — available now
+### Repository workflow (available now)
 
 Install the Python environment below, open this repository as your Codex or
 Claude Code working folder, and start a fresh conversation with:
