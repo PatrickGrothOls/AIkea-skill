@@ -1,12 +1,27 @@
-# AIkea — fitted furniture design skills (alpha)
+# AIkea
 
-This repository contains the source-available AIkea skills, deterministic furniture
-builders, tests, and editable interactive-viewer source. Generated client
-projects and licensed manufacturer CAD remain local and outside source control.
+**Furniture that fits your room. Designed with your AI assistant.**
 
-Open the cloned repository as a Codex or Claude working folder. Its
-`.agents/skills/` and `.claude/skills/` links expose the complete AIkea skill
-set, beginning with `$aikea`.
+AIkea turns your measurements and ideas into an editable furniture design you can
+explore in 3D. Plan storage around a sloping ceiling, choose shelves and drawers,
+add lighting, and inspect how the parts fit together before moving toward manufacture.
+
+<img src="docs/images/wardrobe-assembled.jpg" alt="Fitted wooden wardrobe beneath a sloping ceiling, with doors hidden to show shelves, drawer stacks, hinges and interior lighting." width="760">
+
+*An example from the AIkea viewer: a fitted wardrobe with shelves, drawers and
+integrated lighting. The doors are hidden for inspection; these are digital
+design previews.*
+
+## From the whole cabinet to every part
+
+Rotate and zoom to review the design, hide the doors to see inside, or explode
+the assembly to inspect its panels and hardware. The furniture is generated from
+saved specifications and reusable construction tools, so changes remain in the
+design code.
+
+<img src="docs/images/wardrobe-exploded.jpg" alt="Exploded view of the same wardrobe, separating cabinet panels, shelves, drawers, hardware and the adjustable-leg base for inspection." width="760">
+
+*The same wardrobe, expanded into its component parts.*
 
 ## What the alpha can do
 
@@ -30,8 +45,22 @@ screws and cabinet pilot specification unresolved.
 
 ## Try a first project
 
+### Desktop Work / Cowork — in testing
+
+The intended experience is one pasted prompt: your assistant downloads the skill,
+installs its CAD and headless Blender dependencies, verifies the setup, opens an
+interactive preview and starts asking about your project. Normal permission or
+sign-in prompts may still need your approval.
+
+The candidate installer has passed a fresh isolated macOS installation and a
+repeat run, including real CAD export and Blender baking. The complete flow
+inside ChatGPT desktop Work and Claude Cowork is still awaiting acceptance tests;
+there is not yet a verified public one-prompt installer to link here.
+
+### Repository workflow — available now
+
 Install the Python environment below, open this repository as your Codex or
-Claude working folder, and start a fresh conversation with:
+Claude Code working folder, and start a fresh conversation with:
 
 ```text
 $aikea
@@ -44,6 +73,10 @@ The sibling folder keeps client files outside this source repository. Supply
 measurements from your own room. The skill's example and test files are
 not measurements for your project. Keep the generated project private; its
 dimensions, local hardware downloads, and approval records belong to you.
+
+The repository's `.agents/skills/` and `.claude/skills/` links expose the complete
+skill set, beginning with `$aikea`. Source includes the builders, tests and editable
+viewer; generated client projects and licensed manufacturer CAD stay local.
 
 The current release has been exercised on macOS with Apple Silicon. Native
 Windows is not supported by the viewer approval lock, which uses POSIX `fcntl`.
