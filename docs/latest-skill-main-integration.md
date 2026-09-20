@@ -9,20 +9,24 @@ not publish a public skill release or assert fabrication readiness.
 
 ## Current state
 
-The existing branch contains 140 coherent commits above origin/main 52facbf.
-The stack includes shared construction, drawer/base policies, hardware sourcing,
-Blender provisioning and checked baking, viewer inspection, lighting routes,
-release checks and the approved logo. No divergent remote commits were found.
-Only the local node_modules link was untracked; it is not a deliverable.
+The complete stack was fast-forwarded from 52facbf to 50eb7df and pushed to
+private origin/main; the remote SHA was independently verified. It includes
+shared construction, drawer/base policies, hardware sourcing, Blender provisioning
+and checked baking, viewer inspection, lighting routes and the approved logo.
+Verification across hosted and local runs accounts for all 1,002 Python cases:
+996 passed and six optional-asset checks skipped. All 67 viewer tests passed and
+the viewer build reproduced tracked output. The final eight-partition hosted run
+is still pending; it is not claimed green. Local dependencies and project evidence
+remain excluded from Git.
 
 ## Work packages and tasks
 
 - [x] WP1: Verify origin, fetch main and check ancestry and local changes.
 - [x] WP1: Verify dependencies and all 11 skill metadata/discovery links.
 - [x] WP2: Pass 67 viewer tests and reproduce the committed viewer bundle.
-- [ ] WP2: Complete the Python suite and resolve integration failures.
-- [ ] WP2: Verify hosted CI on the candidate before updating main.
-- [ ] WP3: Fast-forward main and push normally; verify the remote commit.
+- [x] WP2: Account for the complete Python suite and resolve integration failures.
+- [ ] WP2: Finish the independent eight-partition hosted verification.
+- [x] WP3: Fast-forward main and push normally; verify the remote commit.
 
 ## Audit log
 
@@ -104,3 +108,13 @@ Only the local node_modules link was untracked; it is not a deliverable.
 - Both hinge hands and the full door-machining file passed locally. The runner
   assertion now checks both the model family (KA 5332) and its exact purchase
   article (9057405) in their respective fields rather than conflating them.
+- Final remaining partition coverage passed in three local segments: 44 passed;
+  10 passed/one optional skip; 175 passed/one optional skip. Combined with the
+  three hosted partitions, every collected case has a passing or optional-skip
+  result on the final code. This evidence replaces waiting for the earlier
+  four-partition hosted timeout before integration; the fresh hosted run remains
+  an explicit pending verification, not a claimed pass.
+- Fast-forwarded and pushed main normally, preserving the logical commit history.
+  git ls-remote verified origin/main at 50eb7df157c0b710d0bd30cf512cb7fc5ec5973f.
+  This documentation-only follow-up records the completed integration and does
+  not change the tested code or resolve outstanding fabrication/release gates.
