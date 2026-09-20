@@ -4,6 +4,7 @@ from pathlib import Path
 
 import yaml
 
+from panel_review_hydration_fixture import PanelReviewHydrationFixture
 from assembly_taxonomy_generator import AssemblyTaxonomyGenerator
 from build_furniture_design import FurnitureDesignBuild
 from construction_position_evidence import ConstructionPositionEvidence
@@ -23,6 +24,7 @@ class TestCommonConfiguredBuild:
         (tmp_path / "aikea.yaml").write_text(yaml.safe_dump(project))
         AssemblyTaxonomyGenerator().generate(project, tmp_path)
         builder = FurnitureDesignBuild()
+        builder._hydrate = PanelReviewHydrationFixture().hydrate
         result = builder.build(tmp_path, "wardrobe_01", tmp_path / "reviews/wardrobe.glb")
         assert result["status"] == "valid", result
         saved = json.loads((tmp_path / ConstructionPositionEvidence.REPORT).read_text())

@@ -48,3 +48,13 @@ Only the local node_modules link was untracked; it is not a deliverable.
 - Required independent review of the existing >150-line taxonomy test concluded
   its integration/regen concerns are coherent; no line-count-only split needed.
   Preserve current safety gates and do not reinterpret provisional CAD as ready.
+
+- Remaining legacy door/plinth eval now asserts the full 582 mm deck and 82 mm
+  kickboard, independently of the door length and front recess (2 tests passed).
+- Panel migration comparison targets the unfeatured shared executor; adjustable
+  supports are separately covered by feature tests. Door feature removal compares
+  hardware specifications and solid differences rather than Python object identity.
+- Panel pipeline test projects lack licensed Korrekt sources. A narrowly injected
+  test-only provider supplies synthetic placement markers; these tests exercise
+  panel geometry/export/evidence plumbing, not vendor fit or fabrication readiness.
+  Production providers and checksum rejection remain unchanged.

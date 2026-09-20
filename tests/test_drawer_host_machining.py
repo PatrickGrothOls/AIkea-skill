@@ -48,7 +48,12 @@ class TestDrawerHostMachining:
         assert len(composed.cuts) == len(base.cuts) + 2
         assert all(request.reuse_machining_ids for request in installation.HOST_MACHINING)
         assert ConstructionResultValidator().validate(composed) == ()
-        assert len(composed.child_assemblies) == 1 and len(composed.purchased_hardware) == 2
+        assert len(composed.child_assemblies) == 1
+        prior = tuple(item.spec for item in base.purchased_hardware)
+        assert tuple(item.spec for item in composed.purchased_hardware[:len(prior)]) == prior
+        runners = composed.purchased_hardware[len(prior):]
+        assert len(runners) == 2
+        assert {item.spec.product_code for item in runners} == {"9057405"}
 
     def test_missing_host_operations_leave_saved_requirements_unresolved(self, generated):
         root, _, (base, _, installation, _) = generated

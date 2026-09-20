@@ -20,13 +20,13 @@ scoring:
 cases:
   - name: full-length doors with flush plinth
     resolved_input: {door_bottom: floor, plinth_front: flush, plinth_recess_mm: 0}
-    answer_key: {door_bottom_mm: 0, door_height_mm: 2384, plinth_front_y_mm: 0, brace_depth_mm: 546}
+    answer_key: {door_bottom_mm: 0, door_height_mm: 2384, plinth_front_y_mm: 0, deck_depth_mm: 582, kickboard_height_mm: 82}
   - name: full-length doors with recessed plinth
     resolved_input: {door_bottom: floor, plinth_front: recessed, plinth_recess_mm: 60}
-    answer_key: {door_bottom_mm: 0, door_height_mm: 2384, plinth_front_y_mm: 60, brace_depth_mm: 486}
+    answer_key: {door_bottom_mm: 0, door_height_mm: 2384, plinth_front_y_mm: 60, deck_depth_mm: 582, kickboard_height_mm: 82}
   - name: doors ending at the plinth with flush plinth
     resolved_input: {door_bottom: plinth, plinth_front: flush, plinth_recess_mm: 0}
-    answer_key: {door_bottom_mm: 82, door_height_mm: 2302, plinth_front_y_mm: 0, brace_depth_mm: 546}
+    answer_key: {door_bottom_mm: 82, door_height_mm: 2302, plinth_front_y_mm: 0, deck_depth_mm: 582, kickboard_height_mm: 82}
   - name: doors ending at the plinth with recessed plinth
     resolved_input: {door_bottom: plinth, plinth_front: recessed, plinth_recess_mm: 60}
-    answer_key: {door_bottom_mm: 82, door_height_mm: 2302, plinth_front_y_mm: 60, brace_depth_mm: 486}
+    answer_key: {door_bottom_mm: 82, door_height_mm: 2302, plinth_front_y_mm: 60, deck_depth_mm: 582, kickboard_height_mm: 82}

@@ -11,6 +11,7 @@ import unittest
 
 import yaml
 
+from panel_review_hydration_fixture import PanelReviewHydrationFixture
 from assembly_taxonomy_generator import AssemblyTaxonomyGenerator
 from test_unit_mockup_generator import GlbTestDocument
 
@@ -32,6 +33,7 @@ class TestFourUnitFullWardrobeReview(unittest.TestCase):
             self.project_root,
         )
         self.generator = FullWardrobeReviewGenerator()
+        self.generator._hydrate = PanelReviewHydrationFixture().hydrate
 
     def tearDown(self) -> None:
         self.temporary_directory.cleanup()

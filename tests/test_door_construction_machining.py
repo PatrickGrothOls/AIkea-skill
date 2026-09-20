@@ -49,7 +49,14 @@ class TestDoorConstructionMachining:
             shape, previous = parts[name].solid.val(), expected_part.val()
             assert shape.cut(previous).Volume()+previous.cut(shape).Volume() < 1e-5
         restored = loader.load_assembly(root, spec.assembly_id, exclude_features=("door_hinges.feature",))
-        assert len(restored.cuts) == len(before.cuts) and restored.purchased_hardware == before.purchased_hardware
+        assert len(restored.cuts) == len(before.cuts)
+        assert tuple(item.spec for item in restored.purchased_hardware) == tuple(
+            item.spec for item in before.purchased_hardware)
+        for actual, original in zip(restored.purchased_hardware, before.purchased_hardware):
+            assert actual.has_geometry == original.has_geometry
+            if actual.has_geometry:
+                left, right = actual.solid.val(), original.solid.val()
+                assert left.cut(right).Volume()+right.cut(left).Volume() < 1e-5
         fresh_plan = self._plan(restored.spec, hand)
         generator.generate(root, restored.spec, fresh_plan, RIEX_NC70_FULL_OVERLAY)
         built = loader.load_assembly(root, spec.assembly_id)
@@ -62,7 +69,8 @@ class TestDoorConstructionMachining:
         assert requests[1].reuse_machining_ids
         assert len(built.cuts) == len(before.cuts)+2
         assert len(built.parts) == len(before.parts) and built.child_assemblies == before.child_assemblies
-        assert {item.spec.product_code for item in built.purchased_hardware} == {"F000001", "F000049"}
+        assert {item.spec.product_code for item in built.purchased_hardware} == (
+            {"F000001", "F000049"} | {item.spec.product_code for item in before.purchased_hardware})
         report = PhysicalItemCounter().count(loader.walk(root, built))
         assert len(report["manufactured_parts"]) == len(before.parts)
         assert {item.requirement_id for item in built.spec.requirements} >= {"door_hinge_installation", "door_fixing_pilots"}

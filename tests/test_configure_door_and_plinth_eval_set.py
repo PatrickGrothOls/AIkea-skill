@@ -29,13 +29,16 @@ class TestConfigureDoorAndPlinthEvalSet:
             taxonomy = AssemblyTaxonomyResolver().resolve(project)
             cabinet, base = taxonomy.assemblies[0], taxonomy.assemblies[-1]
             door = next(part for part in cabinet.parts if part.part_id == "door_panel")
-            brace = next(part for part in base.parts if part.role == "base_brace")
+            deck = next(part for part in base.parts if part.role == "base_deck")
+            kickboard = next(part for part in base.parts if part.role == "base_kickboard")
             answer = case["answer_key"]
 
             assert cabinet.door_bottom_mm == answer["door_bottom_mm"]
             assert door.local_size_mm[1] == answer["door_height_mm"]
             assert base.plinth_recess_mm == answer["plinth_front_y_mm"]
-            assert brace.local_size_mm[0] == answer["brace_depth_mm"]
+            assert deck.local_size_mm[1] == answer["deck_depth_mm"]
+            assert kickboard.local_size_mm[1] == answer["kickboard_height_mm"]
+            assert not any(part.role in {"base_rail", "base_brace"} for part in base.parts)
 
     def test_scoring_preserves_independent_choices_and_full_depth_deck(self) -> None:
         scoring = yaml.safe_load(self._EVAL.read_text(encoding="utf-8"))["scoring"]

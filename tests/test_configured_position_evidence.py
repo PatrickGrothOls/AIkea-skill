@@ -6,6 +6,7 @@ from pathlib import Path
 import pytest
 import yaml
 
+from panel_review_hydration_fixture import PanelReviewHydrationFixture
 from assembly_taxonomy_generator import AssemblyTaxonomyGenerator
 from configured_review_envelope import ConfiguredReviewEnvelope
 from construction_position_evidence import ConstructionPositionEvidence
@@ -27,6 +28,7 @@ class TestConfiguredPositionEvidence:
         (tmp_path / "aikea.yaml").write_text(fixture.read_text())
         AssemblyTaxonomyGenerator().generate(project, tmp_path)
         generator = FullWardrobeReviewGenerator()
+        generator._hydrate = PanelReviewHydrationFixture().hydrate
         generator.generate(tmp_path, project)
         data = json.loads((tmp_path / ConstructionPositionEvidence.REPORT).read_text())
         assert data["status"] == "valid", data["geometry"]

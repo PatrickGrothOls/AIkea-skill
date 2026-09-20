@@ -29,7 +29,10 @@ class TestConfiguredPanelConstruction:
         values = importlib.import_module("assemblies.specification")
         panels = importlib.import_module("assemblies.panel_assembly")
         tree = importlib.import_module("assemblies.assembly_tree").AssemblyTreeWalker()
-        configured = importlib.import_module("assemblies.tall_storage_01.builder").BUILDER.build()
+        # Compare the migrated panel executor before optional support hardware features.
+        # Their drilling, inventory and placement have dedicated feature tests.
+        recipe = importlib.import_module("assemblies.tall_storage_01.builder").BUILDER
+        configured = panels.PanelAssemblyBuilder(recipe.spec, allow_unresolved=True).build()
         spec = configured.spec
         legacy_cuts = AssemblyJointMachiningBuilder().build(spec, spec.joints)
         legacy = values.BuiltAssembly(
