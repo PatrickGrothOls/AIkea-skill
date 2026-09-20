@@ -53,7 +53,8 @@ class TestDrawerHostMachining:
         assert tuple(item.spec for item in composed.purchased_hardware[:len(prior)]) == prior
         runners = composed.purchased_hardware[len(prior):]
         assert len(runners) == 2
-        assert {item.spec.product_code for item in runners} == {"9057405"}
+        assert {item.spec.product_code for item in runners} == {"KA 5332"}
+        assert {item.spec.purchase.product_code for item in runners} == {"9057405"}
 
     def test_missing_host_operations_leave_saved_requirements_unresolved(self, generated):
         root, _, (base, _, installation, _) = generated

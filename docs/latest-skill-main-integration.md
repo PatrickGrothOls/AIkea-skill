@@ -101,3 +101,6 @@ Only the local node_modules link was untracked; it is not a deliverable.
 - The local remaining partition exposed dataclass identity changing across
   generated-module reloads. Door-feature removal now compares all serialized
   hardware fields as well as the existing solid-difference checks.
+- Both hinge hands and the full door-machining file passed locally. The runner
+  assertion now checks both the model family (KA 5332) and its exact purchase
+  article (9057405) in their respective fields rather than conflating them.
