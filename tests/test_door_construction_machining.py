@@ -1,6 +1,6 @@
 """Scope: Verify hinge recipe geometry, paired machining and exact owned purchases."""
 
-from dataclasses import replace
+from dataclasses import asdict, replace
 import importlib
 from math import pi
 from pathlib import Path
@@ -50,8 +50,9 @@ class TestDoorConstructionMachining:
             assert shape.cut(previous).Volume()+previous.cut(shape).Volume() < 1e-5
         restored = loader.load_assembly(root, spec.assembly_id, exclude_features=("door_hinges.feature",))
         assert len(restored.cuts) == len(before.cuts)
-        assert tuple(item.spec for item in restored.purchased_hardware) == tuple(
-            item.spec for item in before.purchased_hardware)
+        # Generated modules reload their dataclass types; compare saved values.
+        assert tuple(asdict(item.spec) for item in restored.purchased_hardware) == tuple(
+            asdict(item.spec) for item in before.purchased_hardware)
         for actual, original in zip(restored.purchased_hardware, before.purchased_hardware):
             assert actual.has_geometry == original.has_geometry
             if actual.has_geometry:
