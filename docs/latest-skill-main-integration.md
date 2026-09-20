@@ -67,3 +67,8 @@ Only the local node_modules link was untracked; it is not a deliverable.
 - Independent scope review accepted the existing full-run and drawer-state test
   files as coherent. The injected markers validate synthetic pipeline behavior,
   never exact hardware fit or fabrication readiness.
+
+- The 1,000-test CAD suite is expensive and sequential validation remains running.
+  Split hosted verification into four deterministic, disjoint file partitions
+  without skips; preserve module/class fixtures and independent memory per runner.
+  Local CAD execution remains limited to one heavy process.

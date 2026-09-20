@@ -11,6 +11,10 @@ permissions:
 
 jobs:
   python:
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3]
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
@@ -30,8 +34,20 @@ jobs:
         run: |
           direnv exec . python -m pip check
           direnv exec . python scripts/verify_skill_package.py
-      - name: Run the Python suite
-        run: direnv exec . python -m pytest -q
+      - name: Run the Python suite partition
+        env:
+          TEST_SHARD: ${{ matrix.shard }}
+        run: |
+          # Every test file belongs to exactly one runner; retain module fixtures.
+          direnv exec . python - <<'PYTEST'
+          import os
+          from pathlib import Path
+          import pytest
+          tests = sorted(str(path) for path in Path("tests").rglob("test_*.py"))
+          selected = tests[int(os.environ["TEST_SHARD"])::4]
+          print(f"Running {len(selected)} of {len(tests)} test files", flush=True)
+          raise SystemExit(pytest.main(["-v", "--tb=short", *selected]))
+          PYTEST
 
   viewer:
     runs-on: ubuntu-24.04
