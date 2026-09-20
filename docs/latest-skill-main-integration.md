@@ -77,3 +77,13 @@ Only the local node_modules link was untracked; it is not a deliverable.
   default shelf pins rather than treat them as extra drawer hardware. CLI status
   integration uses the same explicitly synthetic marker fixture. The >150-line
   spacer generator test passed the required responsibility review without a split.
+
+- Current mixed-run inventory is 47 panels, 88 hardware components and 79 paired
+  Cabineos/inserts: removing the brace frame removes 14 panels and 48 connectors;
+  add 48 shelf pins plus 16 feet and 16 plates. Damage tests now target a Cabineo
+  joint explicitly instead of accidentally damaging the new base drilling.
+- Shelf geometry tests now retain 0.5 mm each-side and 2 mm front/rear clearance.
+  Photo configuration checks follow PhotoRenderSession's owned renderer lifetime.
+  Thirteen focused viewer/server/process checks passed outside socket restrictions.
+- CI partition launch uses a real pytest module subprocess so multiprocessing
+  spawn can import its entry point (unlike a stdin Python harness).

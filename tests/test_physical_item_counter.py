@@ -59,24 +59,28 @@ class TestPhysicalItemCounter:
     def test_counts_panels_connectors_and_exact_purchase_sets(self, counted_project):
         _, visits = counted_project
         report = PhysicalItemCounter().count(visits)
-        assert report["totals"] == dict(manufactured_parts=61, hardware_components=8,
-                                         verified_cabineos=127, brass_inserts=127)
+        assert report["totals"] == dict(manufactured_parts=47, hardware_components=88,
+                                         verified_cabineos=79, brass_inserts=79)
         purchased = {row["product_code"]: row for row in report["purchased_summary"]}
         assert {sku: purchased[sku]["quantity"] for sku in ("9057405", "9114276", "13952", "267.91.314")} == {
-            "9057405": 1, "9114276": 1, "13952": 2, "267.91.314": 127,
+            "9057405": 1, "9114276": 1, "13952": 2, "267.91.314": 79,
         }
         assert purchased["267.91.314"]["supplier_pack_quantity"] == 100
-        assert all(row["mounting_fasteners_included"] for row in report["purchased_units"])
+        assert all(row["mounting_fasteners_included"] == (row["product_code"] != "61854")
+                   for row in report["purchased_units"])
+        assert {sku: purchased[sku]["quantity"] for sku in ("46642", "61854", "70151")} == {
+            "46642": 48, "61854": 16, "70151": 16,
+        }
         pair = next(row for row in report["purchased_units"] if row["product_code"] == "9114276")
         assert len(pair["component_paths"]) == 4
         assert sum("/drawer_01/" in path for path in pair["component_paths"]) == 2
         paths = [row["path"] for row in report["manufactured_parts"]]
-        assert len(paths) == len(set(paths)) == 61
+        assert len(paths) == len(set(paths)) == 47
         assert any("tall_storage_01/drawer_01/" in path for path in paths)
         assert any("tall_storage_02/drawer_01/" in path for path in paths)
         codes = [row["code"] for row in report["unresolved"]]
-        assert codes.count("part.material_missing") == 61
-        assert codes.count("joint.unresolved") == 21
+        assert codes.count("part.material_missing") == 47
+        assert codes.count("joint.unresolved") == 7
         assert "shelf.support_product_undefined" in codes
         assert report["status"] == "draft"
 
@@ -85,20 +89,23 @@ class TestPhysicalItemCounter:
         _, original = counted_project
         visits = list(original)
         position = next(index for index, visit in enumerate(visits)
-                        if hasattr(visit, "assembly") and visit.assembly.cuts)
+                        if hasattr(visit, "assembly") and any(
+                            joint.joint_type == "cabineo" for joint in visit.assembly.joints))
         visit = visits[position]
         cuts = list(visit.assembly.cuts)
-        cut = cuts[0]
+        connector_joints = {joint.joint_id for joint in visit.assembly.joints if joint.joint_type == "cabineo"}
+        cut_index = next(index for index, cut in enumerate(cuts) if cut.joint_id in connector_joints)
+        cut = cuts[cut_index]
         if damage == "missing":
-            cuts.pop(0)
+            cuts.pop(cut_index)
         elif damage == "duplicate":
             cuts.append(cut)
         else:
             field = {"wrong_index": dict(connector_index=999), "wrong_part": dict(part_id="unknown")}[damage]
-            cuts[0] = replace(cut, **field)
+            cuts[cut_index] = replace(cut, **field)
         visits[position] = replace(visit, assembly=replace(visit.assembly, cuts=tuple(cuts)))
         report = PhysicalItemCounter().count(visits)
-        assert report["totals"]["verified_cabineos"] < 127
+        assert report["totals"]["verified_cabineos"] < 79
         assert report["totals"]["verified_cabineos"] == report["totals"]["brass_inserts"]
         assert any(row["code"] == "cabineo.cut_mismatch" for row in report["unresolved"])
 
@@ -117,7 +124,7 @@ class TestPhysicalItemCounter:
         assert {group["thickness_mm"]: group["sheet_count"] for group in report["groups"]} == {
             9.0: 1, 15.0: 1, 18.0: 16,
         }
-        assert report["part_count"] == 61
+        assert report["part_count"] == 47
         assert report["oversized_part_paths"] == []
 
     def test_command_writes_draft_without_replacing_fabrication_bom(self, counted_project):
@@ -127,7 +134,7 @@ class TestPhysicalItemCounter:
         bom.write_text("preserve fabrication evidence", encoding="utf-8")
         assert CountPhysicalItemsCommand().run(root) == 2
         report = json.loads((root / "manufacturing/item-counts.json").read_text())
-        assert report["totals"]["brass_inserts"] == 127
+        assert report["totals"]["brass_inserts"] == 79
         assert bom.read_text() == "preserve fabrication evidence"
 
     def test_failed_builder_revokes_previous_count(self, tmp_path):

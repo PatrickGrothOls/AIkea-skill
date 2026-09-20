@@ -75,13 +75,13 @@ class TestReviewViewerInteraction:
         assert "panCameraByPixels(-deltaX, deltaY" in binding_source
 
     def test_photo_sampling_keeps_a_clean_interactive_preview(self) -> None:
-        source = (self.viewer_source / "AssemblyPhotoRenderer.jsx").read_text(
+        source = (self.viewer_source / "PhotoRenderSession.js").read_text(
             encoding="utf-8"
         )
 
-        assert "dynamicLowRes={false}" in source
-        assert "rasterizeScene" in source
-        assert "renderDelay={350}" in source
+        assert "this.tracer.dynamicLowRes = false" in source
+        assert "this.tracer.rasterizeScene = true" in source
+        assert "this.tracer.renderDelay = 350" in source
 
     def test_prebuilt_viewer_contains_the_close_zoom_controller(self) -> None:
         asset_root = self.installed_viewer / "assets"
@@ -105,9 +105,9 @@ class TestReviewViewerInteraction:
         assert len(bundles) == 1
         bundle = bundles[0].read_text(encoding="utf-8")
 
-        assert "dynamicLowRes:!1" in bundle
-        assert "rasterizeScene:!0" in bundle
-        assert "renderDelay:350" in bundle
+        assert "dynamicLowRes=!1" in bundle
+        assert "rasterizeScene=!0" in bundle
+        assert "renderDelay=350" in bundle
 
     def test_door_review_ends_with_two_concrete_client_actions(self) -> None:
         source = (self.viewer_source / "ReviewApprovalPanel.jsx").read_text(

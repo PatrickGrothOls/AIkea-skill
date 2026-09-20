@@ -36,9 +36,9 @@ class TestUnitPartAssembly(unittest.TestCase):
             "right_side": (spec.inside_depth_mm, 2266.0, 18.0),
             "back_panel": (spec.width_mm, 2284.0, 18.0),
             "door_panel": (spec.door_width_mm, 2302.0, 18.0),
-            "shelf_01": (spec.width_mm - 36.0, spec.inside_depth_mm, 18.0),
-            "shelf_02": (spec.width_mm - 36.0, spec.inside_depth_mm, 18.0),
-            "shelf_03": (spec.width_mm - 36.0, spec.inside_depth_mm, 18.0),
+            "shelf_01": (spec.width_mm - 37.0, spec.inside_depth_mm - 4.0, 18.0),
+            "shelf_02": (spec.width_mm - 37.0, spec.inside_depth_mm - 4.0, 18.0),
+            "shelf_03": (spec.width_mm - 37.0, spec.inside_depth_mm - 4.0, 18.0),
             "top_panel_01": (spec.width_mm, spec.inside_depth_mm, 18.0),
         }
 
@@ -57,9 +57,9 @@ class TestUnitPartAssembly(unittest.TestCase):
             "right_side": (spec.width_mm - 18.0, spec.width_mm, 0.0, 564.0, 100.0, 2366.0),
             "back_panel": (0.0, spec.width_mm, 564.0, 582.0, 100.0, 2384.0),
             "door_panel": (-17.0, 1.0, -spec.door_width_mm, 0.0, 82.0, 2384.0),
-            "shelf_01": (18.0, spec.width_mm - 18.0, 0.0, 564.0, 714.5, 732.5),
-            "shelf_02": (18.0, spec.width_mm - 18.0, 0.0, 564.0, 1226.5, 1244.5),
-            "shelf_03": (18.0, spec.width_mm - 18.0, 0.0, 564.0, 1738.5, 1756.5),
+            "shelf_01": (18.5, spec.width_mm - 18.5, 2.0, 562.0, 714.5, 732.5),
+            "shelf_02": (18.5, spec.width_mm - 18.5, 2.0, 562.0, 1226.5, 1244.5),
+            "shelf_03": (18.5, spec.width_mm - 18.5, 2.0, 562.0, 1738.5, 1756.5),
             "top_panel_01": (0.0, spec.width_mm, 0.0, 564.0, 2366.0, 2384.0),
         }
 
@@ -79,17 +79,17 @@ class TestUnitPartAssembly(unittest.TestCase):
             (1.0, 990.3333333333334, -18.0, 0.0, 82.0, 2384.0),
         )
 
-    def test_shelves_close_the_clear_opening_without_overlapping_the_carcass(self) -> None:
+    def test_shelves_preserve_fit_clearances_without_overlapping_the_carcass(self) -> None:
         spec, parts = self._build(self.project)
         by_name = {part.name: part.placed_shape() for part in parts}
 
         for shelf_id in ("shelf_01", "shelf_02", "shelf_03"):
             shelf = by_name[shelf_id]
             bounds = shelf.BoundingBox()
-            self.assertAlmostEqual(bounds.xmin, 18.0)
-            self.assertAlmostEqual(bounds.xmax, spec.width_mm - 18.0)
-            self.assertAlmostEqual(bounds.ymin, 0.0)
-            self.assertAlmostEqual(bounds.ymax, spec.inside_depth_mm)
+            self.assertAlmostEqual(bounds.xmin, 18.5)
+            self.assertAlmostEqual(bounds.xmax, spec.width_mm - 18.5)
+            self.assertAlmostEqual(bounds.ymin, 2.0)
+            self.assertAlmostEqual(bounds.ymax, spec.inside_depth_mm - 2.0)
             for carcass_id in ("left_side", "right_side", "back_panel"):
                 self.assertAlmostEqual(shelf.intersect(by_name[carcass_id]).Volume(), 0.0)
 
