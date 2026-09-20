@@ -105,5 +105,3 @@ class ReviewRequestHandler(BaseHTTPRequestHandler):
 
     def log_message(self, _format: str, *_args) -> None:
         return
-
-
