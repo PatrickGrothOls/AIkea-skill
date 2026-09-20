@@ -5,7 +5,6 @@ from pathlib import Path
 import yaml
 
 from base_taxonomy_builder import BaseTaxonomyBuilder
-from cabineo_connector_layout import CabineoConnectorLayout
 
 
 class TestBuildStructuralBaseEvalSet:
@@ -29,7 +28,7 @@ class TestBuildStructuralBaseEvalSet:
             assert base.width_mm == answer["width_mm"]
             self._assert_modules(base, answer["modules"])
             self._assert_parts(base, answer)
-            self._assert_brace_to_rail_joints(base, answer)
+            self._assert_kickboard_attachments(base, answer)
 
     def _assert_modules(self, base, expected_modules: list[dict]) -> None:
         assert [
@@ -46,36 +45,20 @@ class TestBuildStructuralBaseEvalSet:
         assert roles.count("base_rail") == answer["rail_count"]
         if "brace_count" in answer:
             assert roles.count("base_brace") == answer["brace_count"]
+        assert roles.count("base_kickboard") == answer["kickboard_count"]
         assert {
-            part.local_size_mm[1]
-            for part in base.parts
-            if part.role in {"base_rail", "base_brace"}
+            part.local_size_mm[1] for part in base.parts if part.role == "base_kickboard"
         } == {answer["support_height_mm"]}
-        assert {
-            part.local_size_mm[0]
-            for part in base.parts
-            if part.role == "base_brace"
-        } == {answer["clear_depth_mm"]}
         assert len(
             [joint for joint in base.joints if joint.purpose == "base_module_seam"]
         ) == answer["module_seam_count"]
 
-    def _assert_brace_to_rail_joints(self, base, answer: dict) -> None:
-        joints = [
-            joint for joint in base.joints if joint.purpose == "base_frame_corner"
+    def _assert_kickboard_attachments(self, base, answer: dict) -> None:
+        assert not any(joint.purpose == "base_frame_corner" for joint in base.joints)
+        clips = [joint for joint in base.joints if joint.purpose == "select_korrekt_kickboard_clips"]
+        assert len(clips) == answer["kickboard_count"]
+        assert all(joint.joint_type == "unresolved" for joint in clips)
+        assert [joint.participant_ids for joint in clips] == [
+            (f"deck_{index:02d}", f"kickboard_{index:02d}")
+            for index in range(1, answer["kickboard_count"] + 1)
         ]
-        layout = CabineoConnectorLayout()
-        parts_by_id = {part.part_id: part for part in base.parts}
-
-        assert len(joints) == answer["brace_to_rail_joint_count"]
-        assert all(joint.joint_type == "cabineo" for joint in joints)
-        assert all(joint.source_face == ">Z" for joint in joints)
-        assert {
-            (joint.target_part_id.split("_")[0], joint.source_edge)
-            for joint in joints
-        } == {("front", "<X"), ("back", ">X")}
-        assert {
-            layout.positions(joint, parts_by_id[joint.source_part_id])
-            for joint in joints
-        } == {tuple(answer["connector_positions_mm"])}
-        assert answer["cuts_per_connector"] == 2

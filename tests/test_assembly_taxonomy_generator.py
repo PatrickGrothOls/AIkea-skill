@@ -8,6 +8,7 @@ import sys
 import pytest
 
 from assembly_taxonomy_generator import AssemblyTaxonomyGenerator
+from generated_project_module_runtime import GeneratedProjectModuleRuntime
 from assembly_taxonomy_writer import AssemblyTaxonomyConflict
 from overall_wardrobe_test_project import OverallWardrobeTestProject
 
@@ -71,9 +72,13 @@ class TestAssemblyTaxonomyGenerator:
         part_builder = (
             unit / "parts" / "left_side" / "builder.py"
         ).read_text(encoding="utf-8")
-        assembly_builder = (unit / "builder.py").read_text(encoding="utf-8")
         assert "ASSEMBLY_BUILDER.build().parts" in part_builder
-        assert "PanelAssemblyBuilder(SPEC, allow_unresolved=True)" in assembly_builder
+        builder = GeneratedProjectModuleRuntime().execute(
+            tmp_path, lambda: importlib.import_module("assemblies.tall_storage_01.builder").BUILDER
+        )
+        assert builder.spec.assembly_id == spec.assembly_id
+        assert [part.part_id for part in builder.spec.parts] == [part.part_id for part in spec.parts]
+        assert callable(builder.build)
         assert [request.part_id for request in spec.machining] == ["left_side", "right_side"]
 
         base = result.assemblies[-1]

@@ -107,7 +107,7 @@ cases:
         side_panel_height_mm: 2266
         top_panel_width_mm: 991.333333
         shelf_count: 3
-        shelf_width_mm: 955.333333
+        shelf_width_mm: 954.333333
         shelf_support_rows_mm: [612, 1124, 1636]
         side_hole_columns_mm: [37, 527]
       expected_first_joint:
@@ -129,8 +129,8 @@ cases:
           - [0, 992.333333]
           - [992.333333, 2978]
         deck_count: 2
-        rail_count: 4
-        brace_count: 13
+        rail_count: 0
+        brace_count: 0
         paths:
           - spec.py
           - builder.py
@@ -191,6 +191,6 @@ cases:
         width_mm: 2978
         module_spans_mm: [[0, 1489], [1489, 2978]]
         deck_count: 2
-        rail_count: 4
-        brace_count: 12
+        rail_count: 0
+        brace_count: 0
       expected_generated_record: assemblies/generated-files.json

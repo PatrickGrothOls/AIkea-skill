@@ -36,3 +36,15 @@ Only the local node_modules link was untracked; it is not a deliverable.
   not a new exhaustive audit of all 621 changed files. Existing cold-start and
   hardware/lighting qualifications remain documented and unresolved.
 - Removed one trailing blank line flagged by git diff --check. No behavior change.
+
+- Broad regression exposed a stale preview-role gate still requiring retired rails
+  and braces. The preview now requires the common deck/kickboard parts; existing
+  Korrekt geometry/inventory tests retain purchased foot and plate checks.
+- Updated structural-base eval answers to zero rails/braces, matching kickboards
+  and explicit unresolved clip attachments. Shelf eval retains 0.5 mm side fit
+  clearance. Generated-builder test now imports the actual recipe and verifies
+  its specification instead of pinning obsolete constructor text. Six focused
+  taxonomy/eval tests passed.
+- Required independent review of the existing >150-line taxonomy test concluded
+  its integration/regen concerns are coherent; no line-count-only split needed.
+  Preserve current safety gates and do not reinterpret provisional CAD as ready.

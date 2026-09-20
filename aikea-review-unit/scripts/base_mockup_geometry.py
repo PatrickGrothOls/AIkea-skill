@@ -13,7 +13,7 @@ class BaseMockupGeometry:
 
     _DECK = (0.82, 0.74, 0.61, 1.0)
     _FRAME = (0.67, 0.58, 0.46, 1.0)
-    _REQUIRED_ROLES = {"base_deck", "base_kickboard", "base_rail", "base_brace"}
+    _REQUIRED_ROLES = {"base_deck", "base_kickboard"}
 
     def __init__(self) -> None:
         self.locator = BasePartLocator()
