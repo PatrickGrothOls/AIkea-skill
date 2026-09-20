@@ -17,7 +17,8 @@ class CompleteReviewProbe:
     def __init__(self) -> None:
         self.calls = []
 
-    def generate(self, project_root, assembly_id, output, states):
+    def generate(self, project_root, assembly_id, output, states, *, component_proof=False):
+        assert component_proof is True
         self.calls.append((project_root, assembly_id, output, states))
         output.parent.mkdir(parents=True, exist_ok=True)
         report_path = output.with_suffix(".review.json")

@@ -59,12 +59,14 @@ class HettichKa4532SpacerProofGenerator:
             assembly_id,
             output_directory / "closed.glb",
             {**states, selector: "closed"},
+            component_proof=True,
         )
         opened = self.review.generate(
             project_root,
             assembly_id,
             output_directory / "open.glb",
             {**states, selector: "open"},
+            component_proof=True,
         )
         machining_path = (
             project_root / "assemblies" / assembly_id / "drawers" / "machining-authority.json"

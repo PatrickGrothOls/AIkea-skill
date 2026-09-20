@@ -21,6 +21,8 @@ class CompleteAssemblyReviewReport:
         glb_path: Path,
         parts: tuple,
         feature_states: dict[str, str],
+        *,
+        component_proof: bool = False,
     ) -> Path:
         artifact = GlbArtifactSnapshot.load(glb_path)
         self._validate_feature_states(feature_states)
@@ -28,7 +30,7 @@ class CompleteAssemblyReviewReport:
         items = self._validated_items(parts)
         report = {
             "schema_version": 1,
-            "review_type": "complete_recursive_assembly",
+            "review_type": "component_proof" if component_proof else "complete_recursive_assembly",
             "status": "valid",
             "manufacturing_authority": False,
             "assembly_id": assembly_id,

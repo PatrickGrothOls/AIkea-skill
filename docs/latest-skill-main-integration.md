@@ -58,3 +58,12 @@ Only the local node_modules link was untracked; it is not a deliverable.
   test-only provider supplies synthetic placement markers; these tests exercise
   panel geometry/export/evidence plumbing, not vendor fit or fabrication readiness.
   Production providers and checksum rejection remain unchanged.
+
+- Found a prerequisite cycle: component movement proof called the complete review
+  path, which demanded finished drawer-layout/travel evidence. Technical component
+  proofs now explicitly label their review scope and remain non-manufacturing
+  authority; ordinary reviews still reject missing layout evidence before hydration.
+  Nine focused proof/review tests passed, including the unchanged rejection gate.
+- Independent scope review accepted the existing full-run and drawer-state test
+  files as coherent. The injected markers validate synthetic pipeline behavior,
+  never exact hardware fit or fabrication readiness.

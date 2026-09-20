@@ -62,11 +62,15 @@ class CompleteAssemblyReviewGenerator:
         assembly_id: str,
         output: Path,
         states: dict[str, str] | None = None,
+        *,
+        component_proof: bool = False,
     ) -> CompleteAssemblyReviewResult:
         requested = states or {}
         built = self.loader.load_assembly(project_root, assembly_id)
         visits = self.loader.walk(project_root, built)
-        DrawerLayoutPolicyChecker().require(project_root, visits)
+        # Movement/fit proofs supply evidence needed by the finished layout gate.
+        if not component_proof:
+            DrawerLayoutPolicyChecker().require(project_root, visits)
         plans = []
         selectors = []
         resolved_states = {}
@@ -103,11 +107,13 @@ class CompleteAssemblyReviewGenerator:
         )
         output.parent.mkdir(parents=True, exist_ok=True)
         self.exporter.export(assembly_id, rendered, output)
+        report_options = {"component_proof": True} if component_proof else {}
         report_path = self.reporter.write(
             assembly_id,
             output,
             rendered,
             resolved_states,
+            **report_options,
         )
         return CompleteAssemblyReviewResult(
             assembly_id,
