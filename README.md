@@ -1,10 +1,17 @@
 # AIkea
 
-**Furniture that fits your room. Designed with your AI assistant.**
+**Custom-fit furniture to cut and assemble—with material guidance and price calculations.**
 
-AIkea turns your measurements and ideas into an editable furniture design you can
-explore in 3D. Plan storage around a sloping ceiling, choose shelves and drawers,
-add lighting, and inspect how the parts fit together before moving toward manufacture.
+AIkea helps you turn your room's measurements into furniture you can actually
+build. Your AI assistant guides material choices, compares supplier prices,
+and uses parts, sheet and hardware quantities to work out estimated costs.
+Review the design in 3D, inspect how it assembles, and refine it around your space
+and budget—from sloping ceilings to shelves, drawers and integrated lighting.
+
+The goal is a complete package ready for CNC cutting and assembly. The current
+alpha still has [fabrication gaps](#what-the-alpha-can-do); a design is only ready
+to cut once its manufacturing checks pass. Price calculations are estimates until
+the material, hardware, machining and finishing costs are confirmed.
 
 <img src="docs/images/wardrobe-assembled.jpg" alt="Fitted wooden wardrobe beneath a sloping ceiling, with doors hidden to show shelves, drawer stacks, hinges and interior lighting." width="760">
 
