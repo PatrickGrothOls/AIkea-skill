@@ -30,8 +30,11 @@ that rejects blob fetches and checks the retained emissive texture and UV channe
 User review rejected the pale, uniform exposed edges as misleading. The local
 preparation assigned a flat core colour; it did not represent the plywood layers.
 The skill now requires a saved face/core/treatment mapping and visual edge review.
-Automatic material reconciliation and a corrected edge render remain unfinished;
-the current render is not approved as a finished-product appearance.
+Automatic material reconciliation remains unfinished. The corrected edge bake now
+uses the active project's existing sanded, clear-matt exposed birch-core decision,
+with representative layered material instead of a flat pale colour. All four
+bake checks pass; the viewer shows the new material. User appearance approval
+remains pending.
 
 ## Work packages
 
@@ -63,7 +66,7 @@ the current render is not approved as a finished-product appearance.
 - [x] Require surface treatments to match the saved build and finishing lists.
 - [x] Separate geometry/bake validation from material-fidelity approval.
 - [ ] Implement automatic reconciliation of declared surfaces and render materials.
-- [ ] Resolve the selected plywood core reference, correct the material and rebake.
+- [x] Resolve the selected plywood core reference, correct the material and rebake.
 - [ ] Review edge detail and obtain appearance approval.
 
 ## Audit log
@@ -87,3 +90,8 @@ the current render is not approved as a finished-product appearance.
   decorative changes cannot be introduced solely in rendering. Captured as a
   required skill review. The existing automated gate proves geometry and coverage,
   not stock or finish truth. Its success must not be represented otherwise.
+- 2026-09-21: User accepts a convincing representation rather than an exact sample
+  match and requests a new render. Bake-02 follows the existing exposed-edge
+  selection, uses representative layer density without claiming a supplier ply
+  count, and retains all 123 parts. Coverage has zero missing samples; maximum
+  vertex error remains 0.000780341 mm. Reused the same viewer tab and port.
