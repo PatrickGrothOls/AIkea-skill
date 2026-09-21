@@ -21,6 +21,7 @@ class PartSpecSourceRenderer:
             f"            outline_mm={self._points(part.outline_mm)},\n"
             f"            local_size_mm={part.local_size_mm!r},\n"
             f"            inside_face={part.inside_face!r},\n"
+            f"            material_id={part.material_id!r},\n"
             "        ),"
         )
 

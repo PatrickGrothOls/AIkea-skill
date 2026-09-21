@@ -38,11 +38,11 @@ composed result in an interactive 3D viewer. Construction comes from reusable
 CadQuery builders and saved project specifications. Begin with one complete
 cabinet and visually approve it before repeating the design.
 
-This is an experimental design and review workflow. Exact material choices are
-not yet propagated into generated part specifications, so those parts cannot
-pass the fabrication-readiness gate. A complete manufacturing pack and a fresh
-end-to-end fabrication proof remain unfinished. The checker rejects missing
-evidence; a successful preview does not establish that a project is ready to cut.
+The standard generator carries your material choices into each panel's saved
+specification and parts list. Before cutting, the project must also pass its
+hardware, machining and assembly checks. Validation of a complete manufacturing
+pack from a fresh session remains unfinished; a preview alone is not cutting
+approval.
 
 Supported hardware profiles require exact manufacturer CAD downloaded into the
 active project's local hardware library. Some suppliers require an account and

@@ -61,6 +61,7 @@ class PartTaxonomy:
     local_size_mm: tuple[float, float, float] = ()
     inside_face: str = ""
     local_to_parent: PartPlacementTaxonomy | None = None
+    material_id: str = ""
 
 
 @dataclass(frozen=True)
