@@ -18,6 +18,7 @@ class HettichKa5332DrawerLayoutRecord:
         return {
             "id": layout.drawer_id,
             "requested_bottom_height_mm": layout.bottom_height_mm,
+            "snap_to_system_32": layout.snap_to_system_32,
             "bottom_height_mm": mounting.resolved_drawer_bottom_height_mm,
             "box": {
                 "height_mm": layout.box_height_mm,
@@ -54,6 +55,10 @@ class HettichKa5332DrawerLayoutRecord:
                     "recommended_width_met": mounting.recommended_width_met,
                 },
                 "system_32": {
+                    # Retain legacy axis keys for saved-plan readers; exact axes
+                    # are not evidence of a shared shelf-grid node.
+                    "on_shared_grid": all(bool(r.system_32_node_rows_mm)
+                                          for r in plan.hardware_reservations),
                     "front_node_row_height_mm": (
                         mounting.system_32_row_height_mm
                     ),

@@ -1,4 +1,4 @@
-"""Scope: Select a collision-free System 32 row for one KA 5332 runner pair."""
+"""Scope: Resolve an exact or grid-snapped KA 5332 runner height with reservations."""
 
 from __future__ import annotations
 
@@ -56,6 +56,17 @@ class HettichKa5332System32RowResolver:
         raise HettichKa5332System32RowError(
             f"no collision-free System 32 row remains for {drawer_id}"
         )
+
+    def resolve_exact(self, cabinet, drawer_id, requested_bottom_height_mm,
+                      runner, blocked=()) -> float:
+        """Preserve the planned bottom; reject conflicts instead of moving a drawer."""
+        host = DrawerHost.resolve(cabinet)
+        world_height = (host.spec.bottom_mm + requested_bottom_height_mm
+                        + runner.runner_center_from_drawer_bottom_mm)
+        row = host.row_in_part("left", world_height)
+        for reservation in self.reservations.build(drawer_id, row, runner, host=host):
+            self.compatibility.require_compatible(reservation, blocked)
+        return row
 
 
 __all__ = [

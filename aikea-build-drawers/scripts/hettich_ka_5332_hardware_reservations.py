@@ -47,8 +47,10 @@ class HettichKa5332HardwareReservations:
             front_offset = host.spec.front_mm - panel_front
             row = host.row_in_part(side, world_height)
             front_column = System32SidePanelGrid().column_positions_mm(host.part(side).local_size_mm[0])[0]
-            uses_node = any(abs(value+front_offset-front_column) < 1e-6
-                            for value in runner.cabinet_fixing_positions_from_front_mm)
+            rows = System32SidePanelGrid().row_heights_mm(host.part(side).local_size_mm[1])
+            uses_node = (any(abs(row-grid_row) < 1e-6 for grid_row in rows)
+                         and any(abs(value+front_offset-front_column) < 1e-6
+                                 for value in runner.cabinet_fixing_positions_from_front_mm))
             resolved.append(replace(reservation, side_part_id=host.part(side).part_id,
                 system_32_node_rows_mm=(row,) if uses_node else (),
                 depth_interval_mm=tuple(value+front_offset for value in depth_interval_mm),

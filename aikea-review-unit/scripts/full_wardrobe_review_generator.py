@@ -25,6 +25,7 @@ from purchased_hardware_hydrator import PurchasedHardwareHydrator
 from unit_mockup import UnitMockupInputError
 from construction_input_fingerprint import ConstructionInputFingerprinter
 from configured_construction_evidence import ConfiguredConstructionEvidence
+from drawer_layout_policy_checker import DrawerLayoutPolicyChecker
 
 
 class FullWardrobeReviewGenerator:
@@ -66,6 +67,10 @@ class FullWardrobeReviewGenerator:
         door_states = resolved_door_plan.states_for(assembly_ids)
         resolved_review_plan = review_plan or AssemblyTreeReviewPlan()
         wardrobe = self.loader.load_assembly(project_root, self._ROOT_ASSEMBLY_ID)
+        drawer_layout = DrawerLayoutPolicyChecker().check(
+            project_root, self.loader.walk(project_root, wardrobe), compact_only=True)
+        if not drawer_layout.passed:
+            raise UnitMockupInputError(list(drawer_layout.problems))
         self.review_plan_validator.validate(
             self.loader.walk(project_root, wardrobe),
             resolved_review_plan,

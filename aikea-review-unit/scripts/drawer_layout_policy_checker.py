@@ -10,7 +10,7 @@ from fabrication_readiness_report import FabricationReadinessCheck
 class DrawerLayoutPolicyChecker:
     RECORD='assemblies/drawer-layout-policy.json'
 
-    def check(self,root,visits):
+    def check(self,root,visits, *, compact_only=False):
         drawers={"/".join(v.path) for v in visits if hasattr(v,'assembly') and
                  (re.fullmatch(r'drawer_[0-9]+',v.assembly.spec.assembly_id) or
                   'drawer' in v.assembly.spec.purpose.lower())}
@@ -24,20 +24,20 @@ class DrawerLayoutPolicyChecker:
             return self._result((f'invalid drawer layout evidence: {error}',))
         invalid=self._record_problems(record,visits)
         if invalid:return self._result(invalid)
-        clearances,invalid=DrawerTravelClearance().read(root,visits,drawers)
-        if invalid:return self._result(invalid)
+        clearances,invalid=({}, ()) if compact_only else DrawerTravelClearance().read(root,visits,drawers)
         visible_reveals={}
-        for stack in record['stacks']:
+        for stack in (() if compact_only or invalid else record['stacks']):
             group=stack.get('front_alignment_group',stack['cabinet'])
             required=max(a+b for drawer in stack['drawers']
                          for a,b in zip(clearances[drawer['path']]['obstruction_deductions_mm'],
                                         clearances[drawer['path']]['fit_clearances_mm']))
             visible_reveals[group]=max(visible_reveals.get(group,0),required)
-        geometry=DrawerLayoutGeometry(visits);problems=[];covered=[]
+        geometry=DrawerLayoutGeometry(visits);problems=list(invalid);covered=[]
         for stack in record['stacks']:
             covered.extend(d['path'] for d in stack['drawers'])
             group=stack.get('front_alignment_group',stack['cabinet'])
-            failures=geometry.check(stack,clearances,visible_reveals[group])
+            failures=(geometry.compact_stack(stack) if compact_only or invalid else
+                      geometry.check(stack,clearances,visible_reveals[group]))
             exceptions=stack.get('user_requested_exceptions',[])
             allowed={e['rule'] for e in exceptions if e.get('requested_by')=='user' and
                      e.get('request_quote','').strip() and e.get('request_reference','').strip()}

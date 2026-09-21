@@ -90,7 +90,9 @@ class HettichKa5332CabinetDrawerPlanner:
             box_height_mm=layout.box_height_mm,
         )
         box = self.box_planner.plan(opening, sizing)
-        system_32_row_mm = self.row_resolver.resolve(
+        resolve_height = (self.row_resolver.resolve if layout.snap_to_system_32
+                          else self.row_resolver.resolve_exact)
+        system_32_row_mm = resolve_height(
             cabinet,
             layout.drawer_id,
             layout.bottom_height_mm,

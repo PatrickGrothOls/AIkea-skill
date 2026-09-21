@@ -41,6 +41,7 @@ class HettichKa5332DrawerLayoutCollectionLoader:
             selected_depth_mm = box["side_length_mm"]
         return DrawerLayout(
             drawer_id=record["id"],
+            snap_to_system_32=record.get("snap_to_system_32", True),
             bottom_height_mm=float(
                 record.get(
                     "requested_bottom_height_mm",

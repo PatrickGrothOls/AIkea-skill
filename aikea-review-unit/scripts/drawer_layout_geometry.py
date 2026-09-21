@@ -11,13 +11,12 @@ class DrawerLayoutGeometry:
         return visit.part.solid.val().located(LocalToParentLocation().build(visit.local_to_root)).BoundingBox()
 
     def check(self,stack,clearances,visible_reveal):
-        floor=self.box(stack['floor']);cap=self.box(stack['cap'])
         left,right=(self.box(p) for p in stack['opening_sides'])
         tolerance=stack.get('tolerance_mm',.25)
-        problems=[];fronts=[]
+        problems=[]
         for drawer in stack['drawers']:
             owner=self.visits[drawer['path']].assembly
-            fronts.append(self.box(drawer['front']))
+            front=self.box(drawer['front'])
             front_id=drawer['front'].split('part:')[-1]
             declared=[p for p in owner.spec.parts if p.role=='drawer_front']
             if len(declared)!=1 or declared[0].part_id!=front_id:
@@ -28,7 +27,6 @@ class DrawerLayoutGeometry:
                     problems.append('single_front: structural front must join directly to both box sides')
             if not any(r.part_id==front_id and r.operation_type=='surface_groove' for r in owner.spec.machining):
                 problems.append('single_front: structural front must capture the bottom')
-            front=fronts[-1]
             for panel in owner.spec.parts:
                 if panel.part_id==front_id or panel.role=='drawer_front':continue
                 other=self.box(drawer['path']+'/part:'+panel.part_id)
@@ -47,6 +45,15 @@ class DrawerLayoutGeometry:
                                              clearance['runner_installation_widths_mm']))
             if any(abs(a-b)>tolerance for a,b in zip(box_offsets,required)):
                 problems.append('frontage: box width or placement wastes or exceeds verified runner/support space')
+        problems.extend(self.compact_stack(stack))
+        return tuple(problems)
+
+    def compact_stack(self, stack):
+        """Measure vertical layout without requiring unrelated movement evidence."""
+        floor = self.box(stack['floor']); cap = self.box(stack['cap'])
+        fronts = [self.box(drawer['front']) for drawer in stack['drawers']]
+        tolerance = stack.get('tolerance_mm', .25)
+        problems = []
         if fronts:
             gaps=(fronts[0].zmin-floor.zmax,
                   *(b.zmin-a.zmax for a,b in zip(fronts,fronts[1:])),cap.zmin-fronts[-1].zmax)

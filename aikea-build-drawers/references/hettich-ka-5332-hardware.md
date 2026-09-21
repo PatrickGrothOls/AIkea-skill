@@ -34,17 +34,21 @@ For 500 mm article `9057405`, Hettich's installation sheet defines cabinet-side
 fixings at 37, 128, 224, 352, and 416 mm from the cabinet front. The matching
 drawer-member fixings are 37, 128, 192, 352, and 442 mm from the drawer front.
 The fixing center is 23 mm above the drawer bottom inside a 46 mm installation
-envelope. Only the first cabinet fixing is the runner's occupied node on the
-front System 32 column; the remaining four are separate horizontal machining.
+envelope. The first cabinet fixing aligns with the front System 32 column;
+it occupies a shared node only when its height also matches a shelf row.
+The remaining four are separate horizontal machining.
 
-`HettichKa5332System32RowResolver` selects the nearest compatible shared row.
+`HettichKa5332System32RowResolver` retains nearest-row placement for saved
+grid-snapped layouts. Its exact route preserves compact planned positions and
+rejects reservation conflicts. Use [compact stack placement](compact-stack-placement.md)
+to size a collection without lifting its first drawer to the shelf-grid start.
 `HettichKa5332PanelMachining` applies the handed blind-hole patterns in each
-part's manufacturing frame. `hardware-reservations.json` records the one node
-and complete rail envelope on both cabinet sides so other hardware can avoid it.
+part's manufacturing frame. `hardware-reservations.json` records actual shared
+nodes, if any, and the full rail envelope on both sides so other hardware can avoid it.
 
 `generate_hettich_ka_5332_cabinet_drawer.py` saves the wooden box as a
 cabinet-owned child, one cabinet-owned purchased runner pair, and the distinct
 left and right translations used for all six source members. The visual review
 must load that composed child and its saved frames. The composed builder now
-loads the saved System 32 rows and produces the matching panel machining;
+loads the saved runner axes and produces the matching panel machining;
 drawer-box joinery and manufacturing toolpaths remain later gates.

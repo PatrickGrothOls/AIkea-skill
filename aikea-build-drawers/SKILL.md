@@ -115,7 +115,10 @@ authored-host route above.
    the box heights, resolve a floor-adjacent, closely stacked layout and its
    cap shelf first, derive the mounting positions, then use `DrawerStackHeightPlanner` to turn the available intervals
    into useful box capacity with a deliberate clear gap. Keep explicitly chosen
-   heights unchanged.
+   heights unchanged only when fixed by the client, not merely proposed by the
+   agent. Use [compact stack placement](references/compact-stack-placement.md)
+   to fit proposed proportions to the actual cap shelf. Measure the resulting
+   floor/front/shelf gaps on rebuilt geometry.
 4. Resolve the exact source STEP files named by the selected runner profile. If
    they are absent, load `$aikea-source-hardware-cad` and resume with the returned
    project-local `hardware_directory`. Before invoking a generator, also resolve
@@ -151,9 +154,11 @@ authored-host route above.
    drawer child rather than reconstructing either assembly. Later proposals may
    regenerate files still owned by AIkea, while a locally changed file stops the
    complete revision for client review.
-   For MOVENTO and KA 5332, require the resolved runner center to occupy a real
-   shared System 32 row and save its cabinet and drawer machining plus physical
-   hardware reservation with the generated child. For KA 4532 with article
+   Preserve each runner's resolved installation datum and save its cabinet and
+   drawer machining plus physical hardware reservation with the generated child.
+   KA 5332 compact stacks use exact mounting heights independently of shelf-pin
+   rows; existing saved grid-snapped installations remain unchanged until revised.
+   Do not move drawers to shelf rows merely to reuse a hole. For KA 4532 with article
    13952, require both panel reservations, the four official fixed-member axes,
    exact-CAD evidence that every axis crosses the spacer's solid centre web, and
    the remaining screw-and-pilot blocker. Do not select the spacer's separate

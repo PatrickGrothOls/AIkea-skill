@@ -38,6 +38,7 @@ class DrawerLayout:
     bottom_underside_recess_mm: float = 13.0
     box_height_mm: float = 160.0
     box_depth_mm: float | None = None
+    snap_to_system_32: bool = True
 
     def __post_init__(self) -> None:
         if not self._ID_PATTERN.fullmatch(self.drawer_id):

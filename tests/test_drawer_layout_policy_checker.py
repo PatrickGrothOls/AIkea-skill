@@ -56,6 +56,18 @@ class TestDrawerLayoutPolicy:
     def test_missing_policy_blocks_installed_drawer(self,tmp_path):
         assert not DrawerLayoutPolicyChecker().check(tmp_path,LayoutFixture().visits).passed
 
+    def test_compact_check_runs_without_travel_proof(self,tmp_path):
+        f=LayoutFixture();f.write(tmp_path)
+        (tmp_path/'assemblies/drawer-travel-clearance.json').unlink()
+        checker=DrawerLayoutPolicyChecker()
+        assert checker.check(tmp_path,f.visits,compact_only=True).passed
+        assert not checker.check(tmp_path,f.visits).passed
+        for v in f.visits:
+            if hasattr(v,'part') and v.path[-1]=='part:front':
+                v.part.solid=v.part.solid.translate((0,0,40))
+        assert any('compact_stack' in p for p in checker.check(tmp_path,f.visits).problems)
+        assert not checker.check(tmp_path,f.visits,compact_only=True).passed
+
     def test_tall_empty_floor_gap_fails_even_if_declared_as_intent(self,tmp_path):
         f=LayoutFixture()
         for v in f.visits:
