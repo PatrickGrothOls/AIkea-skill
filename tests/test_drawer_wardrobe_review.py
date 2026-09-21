@@ -44,6 +44,12 @@ class TestDrawerWardrobeReview(unittest.TestCase):
             DrawerLayout("drawer_01", bottom_height_mm=356.0),
             hardware_directory=TEST_HARDWARE_DIRECTORY,
         )
+        # This synthetic client deliberately requests an elevated drawer for
+        # placement inspection. Ordinary builds still require compact spacing.
+        policy = self._FIXTURE.with_name("elevated-drawer-review-policy.json")
+        (self.project_root / "assemblies/drawer-layout-policy.json").write_text(
+            policy.read_text(encoding="utf-8"), encoding="utf-8"
+        )
         self.generator = DrawerWardrobeReviewGenerator(
             DrawerHardwareReviewBuilderTestDouble()
         )
