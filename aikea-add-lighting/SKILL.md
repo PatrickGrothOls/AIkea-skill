@@ -24,12 +24,26 @@ Read [references/lighting-price-and-removal.md](references/lighting-price-and-re
 for the separate quote section and removal workflow. Do not report a complete
 lighting installation while its supply or cable route remains unresolved.
 
+For wardrobe side lighting, default to the full usable height on the inside
+right-hand panel, from the base/floor junction to the top/roof junction. Continue
+along a sloped roof as a separately owned run when present. Derive endpoints from
+the actual faces; do not apply arbitrary top/bottom margins or stop at shelves.
+Only product end fittings, connection space, machining/strength requirements or
+an explicit design choice may shorten the light. Record each real end allowance
+and connect the remaining cable route through it. Use the selected product's
+allowed lengths or cut marks; a shortened emitter must not hide an uncut board.
+
 For a floor-standing cabinet, follow
 [base cable routing](references/base-cable-routing.md): derive aligned passages
 through the base deck and any intervening boards from the actual light groove
 and cable exit, so low-voltage connections can be assembled and accessed below.
 Size the groove for the selected light and the passage for its actual connector;
 both must be real machining features, not only visible lighting in the viewer.
+This is required installation work, even when the convenient single-panel
+lighting command does not generate base drilling. Compose its missing cuts with
+the shared construction tools from the same feed frame. A floor-standing lit
+wardrobe is incomplete until every crossed board has the aligned passage and
+its actual removed material has been checked.
 
 For a rear cable relief or a connector pocket, use the shared
 [Python routing module](references/python-routing-module.md). Declare the chosen

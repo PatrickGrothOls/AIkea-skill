@@ -48,6 +48,14 @@ For a through-milled run, place both endpoints at the useful physical boundaries
 of the host face. For a blind run or cable exit, use the exact installation data
 for the selected product before adding geometry.
 
+In a wardrobe, these boundaries normally span the usable right-side interior
+from the floor/base to the top, plus the roof run where it slopes. Calculate the
+host groove, light body, emitting span and cable exit separately from the same
+route. Reconcile their endpoints: any gap must have an identified product fitting,
+connection clearance or recorded design reason, rather than an arbitrary inset.
+Shelves may overlap the lighting visually; do not shorten every run to a single
+shelf bay. Check physical clearances and retain shelf adjustability.
+
 ## Approval gates
 
 Prove a new lighting profile on one standalone sheet first. Show the same model

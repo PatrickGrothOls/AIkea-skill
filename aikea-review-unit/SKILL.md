@@ -64,6 +64,15 @@ every new presentation. Do not recreate a project-specific lighting rig. Preserv
 verified product output and explicitly requested lighting overrides. Check that
 compartments are readable as well as the exterior before delivery.
 Every GLB generated in the sequences below is a bake input, not a presentation.
+Before a complete-furniture delivery, reconcile the actual exported parts and
+machined solids with the requested features. For every door require the full
+hinges (cup/arm and plates), not holes alone. For each lighting run check its
+full usable span and justified end allowances, and follow its feed through real
+aligned cuts in every board down into the base service space. Use the owning
+door/lighting skills to finish missing work. A bright render, hardware download
+or groove-fit check does not complete those installations. Keep unresolved work
+open and continue the supported recovery paths; do not substitute a partial
+model for the requested complete result.
 Use the original material GLB for open or exploded inspection; baked assembled
 shadows do not follow moved
 parts. Preserve all CAD geometry and the selected material identities.

@@ -24,6 +24,20 @@ door. The result must connect the visible slab, the selected purchased hinge
 system, both participating panels, and the real opening movement through shared
 placements.
 
+Every fitted hinged door includes its complete purchased hinge assemblies by
+default: cup, arm and matching cabinet plates, plus paired mounting cuts and
+fixing requirements. A cup hole or a base plate alone is not a fitted hinge.
+Reconcile the required hinge quantity against actual exported hardware on every
+door before presenting the complete furniture. Hiding door panels for inspection
+must retain the hinges so they can be checked.
+
+If a stock cabinet adapter cannot express a selected hinge's overlay or rear gap,
+use the shared authored door/front host below, preserving the requested outside
+envelope and interior arrangement. A convenience generator's missing parameter
+is not a reason to omit hinges or invent incompatible mounting geometry. Follow
+the hardware recovery flow for exact CAD and compatible alternatives; do not
+declare the wardrobe complete while this installation is unfinished.
+
 For physical multi-part fronts, use [the whole-front host](references/assembly-fronts.md).
 Read [component interfaces](../aikea-design-furniture/references/component-interfaces.md) when selecting or adapting a host.
 
