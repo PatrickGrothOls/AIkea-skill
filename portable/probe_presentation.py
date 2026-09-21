@@ -37,7 +37,7 @@ class PresentationProbe:
         output = directory / "presentation"
         output.mkdir()
         config = {"source": str(prepared), "source_sha256": hashlib.sha256(prepared.read_bytes()).hexdigest(),
-                  "unit_scale": 0.001, "atlas_size": 512, "threads": 1, "samples": 1}
+                  "unit_scale": 0.001, "atlas_size": 4096, "threads": 1, "samples": 16}
         (output / "job.json").write_text(json.dumps(config))
         BlenderBakeJob(output).run()
 
