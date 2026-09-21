@@ -123,6 +123,16 @@ artifact remains the review reference until all checks for its replacement pass.
 
 ## Delivery checks
 
+Inspect interior lighting as well as the exterior. The studio uses broad frontal
+room light so deep compartments remain readable. Verify each installed diffuser
+emits toward the usable interior, rather than merely showing a bright line.
+Keep emitter geometry and placement tied to the actual light component; do not
+hide invented lamps inside compartments to conceal a poor physical layout.
+Use the selected product's output when it is known. Otherwise retain explicit
+representative-output provenance and do not claim measured lux, lumens or a
+supplier-calibrated lighting simulation. Adjust illumination before baking, not
+the wood colour or a finished screenshot to make the interior look brighter.
+
 The shared viewer enforces this contract before binding a port or opening a tab.
 It requires the adjacent `presentation.json`, all four detailed check reports,
 and `--inspection-model`. Both model hashes must match the snapshotted files;

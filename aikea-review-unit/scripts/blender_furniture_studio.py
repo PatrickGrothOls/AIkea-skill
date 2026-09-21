@@ -15,12 +15,13 @@ class BlenderFurnitureStudio:
         scene.unit_settings.system = 'METRIC'
         world = bpy.data.worlds.new('Soft ambient studio')
         world.use_nodes = True
-        world.node_tree.nodes['Background'].inputs[0].default_value = (0.78,0.84,1,1)
-        world.node_tree.nodes['Background'].inputs[1].default_value = 0.18
+        world.node_tree.nodes['Background'].inputs[0].default_value = (0.9,0.94,1,1)
+        world.node_tree.nodes['Background'].inputs[1].default_value = 0.3
         scene.world = world
-        self.area('Large window', (-2.8,-3.0,3.5), 500, 3.0, (1,0.90,0.78))
-        self.area('Gentle fill', (3.0,-0.2,2.0), 100, 2.4, (0.83,0.91,1))
-        self.area('Top softbox', (0.3,1.5,3.8), 200, 2.0, (1,0.96,0.89))
+        # Broad frontal sources reach recesses without fictitious lights inside shelves.
+        self.area('Large window', (-2.0,-3.5,1.6), 500, 3.5, (1,0.97,0.92))
+        self.area('Gentle fill', (2.0,-3.0,0.6), 300, 3.2, (0.94,0.97,1))
+        self.area('Top softbox', (0.3,1.5,3.8), 150, 2.0, (1,0.98,0.94))
         bpy.ops.mesh.primitive_plane_add(size=200*self.scale, location=(self.center.x,self.center.y,self.source.minimum.z-0.001*self.scale))
         floor = bpy.context.object
         floor.name = 'STUDIO_floor_not_a_furniture_part'
@@ -52,7 +53,7 @@ class BlenderFurnitureStudio:
         scene.render.resolution_percentage = 100
         scene.render.image_settings.file_format = 'PNG'
         scene.view_settings.view_transform = 'AgX'
-        scene.view_settings.look = 'AgX - Medium High Contrast'
+        scene.view_settings.look = 'AgX - Medium Low Contrast'
         scene.view_settings.exposure = 0.1
         scene.render.film_transparent = False
         return scene
