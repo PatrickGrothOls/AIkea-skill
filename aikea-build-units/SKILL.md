@@ -78,6 +78,11 @@ machining and its construction requirement explicitly. The common panel executor
 still applies declared machining only; this is a design default, not a role-based
 side effect in the cutting engine.
 
+Requested hanging sections require a complete [hanging-rail installation](references/hanging-rails.md):
+rail, both supports, their fastening bores, cut length and purchases. Use
+`HangingRailFeature` on the existing assembly. Missing CAD or fixing evidence
+remains active sourcing work; never omit the rail or call a bare box complete.
+
 ## Responsibility boundary
 
 This stage materializes local boundaries, part ownership, executable builders,
