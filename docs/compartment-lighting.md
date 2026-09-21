@@ -19,7 +19,12 @@ simulation or proof of supplier output. The full bake passed all four checks:
 The existing viewer serves the new checked artifact and was visually verified
 while rotating. The 1300 by 1100 overview is rendered and inspected: back panels
 and shelves remain readable. Skill validation, Python compilation and diff checks
-pass. User appearance approval remains pending; no fabrication claim is added.
+pass. The user approved the appearance and requested it as the shared default;
+no fabrication claim is added. The bake command now applies representative LED
+defaults before taking the source hash. It preserves calibrated output, explicit
+overrides and the original input. Its returned inspection path identifies the
+prepared source so inspection and bake remain paired. These changes are local
+on this branch, not published to the installer yet.
 
 ## Work packages
 
@@ -37,6 +42,16 @@ pass. User appearance approval remains pending; no fabrication claim is added.
 - [x] Render and inspect the full-resolution overview with compartments visible.
 - [x] Review the diff, document validation and commit the focused change.
 
+### WP3: Make the approved appearance the default
+
+- [x] Apply representative LED output in the shared bake entry point.
+- [x] Preserve calibrated brightness, explicit overrides and non-emitter materials.
+- [x] Document default lighting and the exact prepared inspection-model path.
+- [x] Test source preservation, idempotence and CLI source hashing: 27 tests pass
+  including the existing runtime and verified-presentation checks.
+- [x] Verify the shared studio placement and scaling in Blender 5.2.1: PASS.
+- [x] Review the focused diff and record the default-lighting checkpoint.
+
 ## Audit log
 
 - 2026-09-21: User requests better illumination inside the compartments. The
@@ -49,3 +64,9 @@ pass. User appearance approval remains pending; no fabrication claim is added.
   UVs, embedded textures, transforms and non-LED materials unchanged. The full
   bake passed the same geometry tolerance; source emission alone changes from
   5 to representative 40. Studio sources remain outside the furniture.
+- 2026-09-21: User approves this appearance and explicitly asks that it always be
+  the viewer default. Reuse the existing room setup and normalize explicitly
+  representative emitters to 40 before source hashing. This removes the remaining
+  project-local brightness dependency without replacing product calibration or
+  changing the existing approved render. Retain the simple live inspection mode;
+  moved parts must not carry stale assembled shadows.

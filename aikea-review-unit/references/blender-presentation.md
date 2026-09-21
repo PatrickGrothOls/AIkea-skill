@@ -72,6 +72,24 @@ upstream conversion has been checked.
 
 ## One command
 
+The approved default is broad frontal room fill, soft ambient illumination and
+low-contrast AgX, already installed by `BlenderFurnitureStudio` on every bake.
+For installed LED emitting faces without verified output, retain the chosen light
+colour and set material `extras.aikea.appearance_status: representative_output`
+and `photometric_calibration: false`, with a nonzero `emissiveFactor`. The command
+automatically applies the approved representative emission strength of 40 before
+hashing its source. This is a presentation value, not a wattage or lumen claim.
+Do not assign emission to wood, hardware housings or nonexistent lights.
+Calibrated output is preserved. An explicitly requested representative override
+uses `extras.aikea.preserve_emission: true`; record the user's choice in the brief.
+
+When defaults change a material, the command writes `inspection-materials.glb`
+and `lighting-defaults.json` inside the new presentation directory. All geometry,
+textures and non-emitter materials are preserved, and the original input is
+untouched. Always use the `inspection_model` path from the resulting
+`presentation.json` when serving; it identifies the exact source used for baking.
+Existing presentations keep their recorded appearance until deliberately rebaked.
+
 First consolidate the static material GLB for efficient import and inspection:
 
 ```bash

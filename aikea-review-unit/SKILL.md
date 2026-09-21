@@ -59,6 +59,10 @@ CAD, missing/failed bake reports, stale model hashes and reduced-quality test
 bakes. There is no raw-preview fallback or bypass flag. If baking cannot finish,
 retain the previous verified presentation and report the unfinished update.
 Require the coverage and geometry reports before showing the baked model.
+Use the shared broad frontal studio lighting and representative LED defaults for
+every new presentation. Do not recreate a project-specific lighting rig. Preserve
+verified product output and explicitly requested lighting overrides. Check that
+compartments are readable as well as the exterior before delivery.
 Every GLB generated in the sequences below is a bake input, not a presentation.
 Use the original material GLB for open or exploded inspection; baked assembled
 shadows do not follow moved

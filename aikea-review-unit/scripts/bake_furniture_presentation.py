@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 import subprocess
 from blender_bake_runtime import BlenderBakeRuntime
+from presentation_light_defaults import PresentationLightDefaults
 
 
 class FurniturePresentationCommand:
@@ -24,6 +25,7 @@ class FurniturePresentationCommand:
         source = args.source.resolve(strict=True)
         output = args.output_directory.resolve()
         output.mkdir(parents=True, exist_ok=False)
+        source = PresentationLightDefaults().prepare(source, output)
         config = {"source": str(source), "source_sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
                   "unit_scale": 0.001 if args.units == "mm" else 1.0,
                   "atlas_size": args.atlas_size, "threads": args.threads, "samples": args.samples}
