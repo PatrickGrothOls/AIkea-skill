@@ -24,7 +24,7 @@ been published or declared fabrication-ready by this integration test.
 - [x] Implement reusable installation and geometry checks.
 - [x] Exercise installation, purchases, drilled volumes and existing features.
 - [x] Document agent usage and CAD acquisition.
-- [ ] Update README and review the focused diff.
+- [x] Update README and review the focused diff.
 
 ## Audit log
 - 2026-09-21: User requested the missing rail and two export fixes. Export fixes
@@ -41,3 +41,8 @@ been published or declared fabrication-ready by this integration test.
 - 2026-09-21: Collision review caught the need to inspect child assemblies as well
   as direct panels. Reused the shared recursive tree walker and added a nested
   obstruction regression; it now rejects that collision too.
+
+- 2026-09-21: Replaced the README experimental/not-ready paragraph with the
+  intended cut-and-assemble output and per-project completion checks, as requested.
+  Kept actual product-specific and desktop-delivery limitations visible; no gate
+  or validation result was changed to support marketing wording.
