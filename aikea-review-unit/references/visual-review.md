@@ -93,8 +93,10 @@ plinth front remains at its selected depth.
 
 The skill bundles a prebuilt browser viewer and a loopback-only Python server. The
 server requires no application backend, package installation, database, Docker,
-or Node runtime. It serves only the bundled viewer and the chosen GLB, opens the
-browser automatically, and remains active until stopped.
+or Node runtime. It serves the bundled viewer and a verified Blender presentation
+with its matching inspection GLB, opens the browser automatically, and remains
+active until stopped. Raw CAD cannot start this viewer; follow the required
+[Blender workflow](blender-presentation.md) before every client-facing view.
 
 The client can point at a visible detail and scroll to bring that exact area
 closer without losing it beneath the pointer. Dragging rotates the cabinet around

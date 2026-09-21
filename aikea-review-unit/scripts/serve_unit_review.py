@@ -1,4 +1,4 @@
-"""Scope: Start the terminal-launched browser review for one cabinet GLB."""
+"""Scope: Start the browser review only for a verified Blender presentation pair."""
 
 from __future__ import annotations
 
@@ -52,13 +52,13 @@ class ServeUnitReviewCommand:
 # A small function is the direct adapter from Python's CLI entry point to the command object.
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="Open one AIkea cabinet GLB in the bundled local viewer."
+        description="Open a verified Blender assembled.glb and its matching inspection model."
     )
     parser.add_argument("glb", type=Path)
     parser.add_argument("--port", type=int, default=0)
     parser.add_argument("--no-open", action="store_true")
     parser.add_argument("--review-data", type=Path)
-    parser.add_argument("--inspection-model", type=Path,
+    parser.add_argument("--inspection-model", type=Path, required=True,
                         help="Original material GLB for inspecting the assembled Blender bake")
     arguments = parser.parse_args()
     return ServeUnitReviewCommand().run(

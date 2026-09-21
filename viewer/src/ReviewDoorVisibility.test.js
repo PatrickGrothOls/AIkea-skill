@@ -56,5 +56,5 @@ test("door removal chooses the inspection asset without changing explosion state
   assert.equal(assets.select(state, true), manifest.inspection);
   assert.equal(state.amount, 0);
   assert.equal(assets.select(state, false), manifest.assembled);
-  assert.equal(new ReviewAssetChoice({ ...manifest, inspection: null }).select(state, true), manifest.assembled);
+  assert.throws(() => new ReviewAssetChoice({ ...manifest, inspection: null }), /Blender/);
 });

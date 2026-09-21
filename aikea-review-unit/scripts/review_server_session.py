@@ -7,6 +7,7 @@ import secrets
 
 from glb_artifact_snapshot import GlbArtifactSnapshot
 from review_decision_store import ReviewDecisionStore
+from verified_blender_presentation import VerifiedBlenderPresentation
 
 
 class ReviewServerSession:
@@ -15,6 +16,7 @@ class ReviewServerSession:
     def __init__(self, model_path: Path, review_path: Path | None, inspection_path: Path | None = None) -> None:
         self.artifact = GlbArtifactSnapshot.load(model_path)
         self.inspection = GlbArtifactSnapshot.load(inspection_path) if inspection_path else None
+        VerifiedBlenderPresentation().require(self.artifact, self.inspection)
         self.store = ReviewDecisionStore(review_path) if review_path else None
         self.token = secrets.token_urlsafe(32) if self.store else None
         self.construction_sha256 = ""
@@ -24,10 +26,10 @@ class ReviewServerSession:
     def models(self) -> dict:
         """Describe only fixed session routes; decision authority remains the primary artifact."""
         return {
-            "assembled": {"url": "/model.glb", "baked": self.inspection is not None,
+            "assembled": {"url": "/model.glb", "baked": True,
                           "sha256": self.artifact.sha256},
             "inspection": {"url": "/inspection.glb", "baked": False,
-                           "sha256": self.inspection.sha256} if self.inspection else None,
+                           "sha256": self.inspection.sha256},
         }
 
     def display_artifact(self, path: str) -> GlbArtifactSnapshot | None:

@@ -119,6 +119,20 @@ artifact remains the review reference until all checks for its replacement pass.
 
 ## Delivery checks
 
+The shared viewer enforces this contract before binding a port or opening a tab.
+It requires the adjacent `presentation.json`, all four detailed check reports,
+and `--inspection-model`. Both model hashes must match the snapshotted files;
+coverage and geometry evidence must pass at the existing 0.002 mm tolerance.
+The presentation must use the approved 4096 atlas and at least 16 samples.
+Reduced-budget engine probes remain installation tests and cannot be shown as
+furniture presentations. Supplying a second GLB does not establish a bake.
+Keep these reports beside `assembled.glb` when moving or packaging a presentation.
+Do not edit reports to make a raw or stale model pass; regenerate the bake.
+Decision records remain bound to the exact primary GLB displayed. If an existing
+record names an earlier CAD export, regenerate its proposal through the existing
+review-record workflow for the verified presentation while retaining the current
+construction evidence. Do not manually substitute approval hashes.
+
 Require `presentation.json` with `status: PASS`, matching input/output hashes,
 zero uncovered triangle centroids, and the same physical part identities and
 world-space triangle connectivity. The comparison permits only export rounding

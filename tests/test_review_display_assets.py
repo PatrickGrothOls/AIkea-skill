@@ -2,8 +2,10 @@
 
 from hashlib import sha256
 import json
+import pytest
 
 from review_server_test_support import ReviewServerTestSupport
+from blender_presentation_test_evidence import BlenderPresentationTestEvidence
 from unit_review_server import UnitReviewServer
 
 
@@ -15,6 +17,7 @@ class TestReviewDisplayAssets:
         model = support.write_model()
         inspection = support.write_model("inspection.glb", 12)
         primary_bytes, inspection_bytes = model.read_bytes(), inspection.read_bytes()
+        BlenderPresentationTestEvidence().write(model, inspection)
         server = UnitReviewServer(support.viewer, model, inspection_model_path=inspection)
         model.write_bytes(b"replaced after startup")
         inspection.unlink()
@@ -32,16 +35,15 @@ class TestReviewDisplayAssets:
         finally:
             server.close()
 
-    def test_ordinary_single_model_remains_available_without_inspection(self, tmp_path):
+    def test_raw_cad_cannot_start_a_viewer(self, tmp_path):
         support = ReviewServerTestSupport(tmp_path)
         model = support.write_model()
-        server = UnitReviewServer(support.viewer, model)
-        try:
-            status, body = support.request(server, "review-models.json")
-            manifest = json.loads(body)
-            assert status == 200
-            assert manifest["inspection"] is None
-            assert manifest["assembled"]["baked"] is False
-            assert support.request(server, "inspection.glb")[0] == 404
-        finally:
-            server.close()
+        with pytest.raises(ValueError, match="verified Blender"):
+            UnitReviewServer(support.viewer, model)
+
+    def test_companion_file_alone_does_not_establish_a_bake(self, tmp_path):
+        support = ReviewServerTestSupport(tmp_path)
+        model = support.write_model()
+        inspection = support.write_model("inspection.glb")
+        with pytest.raises(ValueError, match="presentation.json"):
+            UnitReviewServer(support.viewer, model, inspection_model_path=inspection)

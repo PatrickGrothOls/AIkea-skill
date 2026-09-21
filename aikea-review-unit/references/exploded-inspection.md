@@ -1,6 +1,8 @@
 # Exploded inspection of an existing assembly
 
-Use the current real generated GLB and the bundled `serve_unit_review.py` viewer.
+Start the bundled `serve_unit_review.py` viewer with a verified Blender
+presentation and its matching source GLB, following [the bake workflow](blender-presentation.md).
+Raw CAD alone cannot start a viewer, including for an inspection-first URL.
 Do not write a dresser-specific explosion script, change part geometry, or
 regenerate manufacturing files just to separate the pieces on screen.
 

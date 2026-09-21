@@ -1,6 +1,6 @@
 ---
 name: aikea-review-unit
-description: Build and show generated AIkea cabinets, structural bases, or the complete furniture run as real CadQuery GLB assemblies for visual approval. Use after local unit folders are generated or when reviewing how approved assemblies meet.
+description: Build and show AIkea furniture through verified Blender presentations with matching CAD inspection models. Use after local unit folders are generated or when reviewing how approved assemblies meet.
 ---
 
 # AIkea review unit
@@ -35,8 +35,8 @@ and [closed construction checks](references/construction-position.md): run
 `build_furniture_design.py <project> --assembly <root-id>` and inspect its report.
 For registered component states, run `generate_complete_assembly_review.py` with
 that same root and the complete feature selectors from its result. Serve the real
-GLB with `serve_unit_review.py`; do not require the legacy wardrobe calculator or
-invent a standard cabinet run. Read [visual presentation](references/visual-review.md)
+GLB through the required Blender presentation below; do not require the legacy
+wardrobe calculator or invent a standard cabinet run. Read [visual presentation](references/visual-review.md)
 for useful viewing angles and client communication, applying wardrobe-specific
 steps only when the actual design is a configured wardrobe.
 
@@ -45,12 +45,17 @@ and repetition boundary; a single custom piece need not wait on a run-wide door
 proposal. Preserve the existing left-hinge proposal for applicable fitted doors.
 Use that same real root ID for inventory and the fabrication gate below.
 
-For the finished, assembled presentation, follow
+Before opening any client-facing furniture viewer, follow
 [the Blender bake workflow](references/blender-presentation.md). Its command
 automatically provisions the required background Blender engine and compatible
-Python; the client need not install or operate Blender. Require the coverage and
-geometry reports before showing the baked model. Use the original material GLB
-for open or exploded inspection; baked assembled shadows do not follow moved
+Python; the client need not install or operate Blender. The viewer rejects raw
+CAD, missing/failed bake reports, stale model hashes and reduced-quality test
+bakes. There is no raw-preview fallback or bypass flag. If baking cannot finish,
+retain the previous verified presentation and report the unfinished update.
+Require the coverage and geometry reports before showing the baked model.
+Every GLB generated in the sequences below is a bake input, not a presentation.
+Use the original material GLB for open or exploded inspection; baked assembled
+shadows do not follow moved
 parts. Preserve all CAD geometry and the selected material identities.
 
 The following first-cabinet, structural-base, full-wardrobe and drawer-run
@@ -85,10 +90,12 @@ sequences apply to the standard wardrobe configurator.
    each feature's saved fit, movement, and reservation reports are the evidence
    for visual review; manufacturing authority remains with the later fabrication
    readiness gate.
-6. Serve the generated complete GLB:
+6. Apply the Blender workflow to the generated complete GLB, then serve its
+   verified presentation and matching source model:
 
    ```bash
-   python <skill-directory>/scripts/serve_unit_review.py <generated-glb> \
+   python <skill-directory>/scripts/serve_unit_review.py <presentation>/assembled.glb \
+     --inspection-model <matching-source-materials.glb> \
      --review-data <project>/reviews/door-openings.json
    ```
 
@@ -120,7 +127,8 @@ and inspect both the legacy relationship report and `construction_position_statu
 An invalid shared result exits 2 and retains the GLB for inspection: show its gaps
 and resolve them before requesting fabrication approval. An open/presentation
 view has no new closed-geometry status. Follow [the shared evidence rules](references/construction-position.md).
-Open the generated GLB in the same viewer. Present all saved cabinets with their doors closed on the complete base
+Bake the generated GLB through the required Blender workflow and open the checked
+presentation in the same viewer. Present all saved cabinets with their doors closed on the complete base
 so the client can judge the finished facade, spacing, and overall proportions.
 Ask whether that complete visible result looks right before moving into the next
 construction or manufacturing stage.

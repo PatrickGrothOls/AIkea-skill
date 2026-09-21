@@ -13,6 +13,7 @@ import cadquery as cq
 from cadquery_glb_exporter import CadQueryGlbExporter
 from unit_mockup import MockupPart
 from unit_review_server import UnitReviewServer
+from blender_presentation_test_evidence import BlenderPresentationTestEvidence
 
 
 class ReviewServerTestSupport:
@@ -48,7 +49,8 @@ class ReviewServerTestSupport:
         return path
 
     def start(self, model: Path, review: Path) -> UnitReviewServer:
-        return UnitReviewServer(self.viewer, model, 0, review)
+        BlenderPresentationTestEvidence().write(model, model)
+        return UnitReviewServer(self.viewer, model, 0, review, model)
 
     def request(
         self,

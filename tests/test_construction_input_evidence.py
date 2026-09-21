@@ -10,6 +10,7 @@ from fabrication_closed_assembly_approval_checker import FabricationClosedAssemb
 from fabrication_readiness_test_project import FabricationReadinessTestProject
 from review_server_session import ReviewServerSession
 from review_decision_store import ReviewDecisionConflict
+from blender_presentation_test_evidence import BlenderPresentationTestEvidence
 
 
 class TestConstructionInputEvidence:
@@ -61,7 +62,8 @@ class TestConstructionInputEvidence:
         writer = FabricationAssemblyReviewRecord()
         self._position(tmp_path, "old-inputs")
         writer.write_proposal(tmp_path, model, "old-inputs")
-        session = ReviewServerSession(model, record)
+        BlenderPresentationTestEvidence().write(model, model)
+        session = ReviewServerSession(model, record, model)
         self._position(tmp_path, "new-inputs")
         writer.write_proposal(tmp_path, model, "new-inputs")
         with pytest.raises(ReviewDecisionConflict, match="inputs changed"):

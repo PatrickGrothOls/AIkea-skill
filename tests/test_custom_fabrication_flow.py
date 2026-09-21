@@ -11,6 +11,7 @@ from check_fabrication_readiness import CheckFabricationReadinessCommand
 from furniture_design_project import FurnitureDesignProject
 from generated_assembly_builder_loader import GeneratedAssemblyBuilderLoader
 from review_server_session import ReviewServerSession
+from blender_presentation_test_evidence import BlenderPresentationTestEvidence
 
 
 class TestCustomFabricationFlow:
@@ -34,7 +35,8 @@ class TestCustomFabricationFlow:
         command = CheckFabricationReadinessCommand()
         assert command.run(tmp_path / "aikea.yaml", "furniture_01") == 2
         model = tmp_path / "assemblies/full_wardrobe_review.glb"
-        session = ReviewServerSession(model, tmp_path / "reviews/fabrication-assembly.json")
+        BlenderPresentationTestEvidence().write(model, model)
+        session = ReviewServerSession(model, tmp_path / "reviews/fabrication-assembly.json", model)
         session.decide("approved", session.token)
         assert command.run(tmp_path / "aikea.yaml", "furniture_01") == 0
         assert not (tmp_path / "assemblies/full-wardrobe-position-check.json").exists()

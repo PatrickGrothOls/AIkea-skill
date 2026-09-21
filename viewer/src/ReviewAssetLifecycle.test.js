@@ -16,8 +16,8 @@ test("assembled restores the bake; separated or isolated panels use the source m
     assert.equal(assets.select(state), manifest.inspection);
   }
   assert.equal(assets.select(new ExplodedViewState()), manifest.assembled);
-  const ordinary = new ReviewAssetChoice({ ...manifest, inspection: null });
-  assert.equal(ordinary.select(new ExplodedViewState(1)), manifest.assembled);
+  assert.throws(() => new ReviewAssetChoice({ ...manifest, inspection: null }), /Blender/);
+  assert.throws(() => new ReviewAssetChoice({ ...manifest, assembled: { url: "/model.glb", baked: false } }), /Blender/);
   assert.throws(() => new ReviewAssetChoice({ assembled: { url: "https://untrusted.invalid/model" } }));
 });
 
