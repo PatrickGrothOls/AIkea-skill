@@ -41,6 +41,10 @@ and [pinned Blender package](https://pypi.org/project/bpy/5.2.1/).
 
 ## Source contract
 
+First apply [material appearance](material-appearance.md). Exposed cores and
+edge treatments must match the saved physical build before a material GLB is
+baked; a passing geometry/coverage report cannot validate an invented finish.
+
 Start from the active design's checked, assembled GLB with its actual materials
 and part-local texture UVs. Every mesh needs unique
 `extras.aikea.inspection_path` and `kind: panel|hardware`. All panels need material

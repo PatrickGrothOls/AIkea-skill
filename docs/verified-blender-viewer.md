@@ -27,6 +27,12 @@ texture. The viewer now uses image-element texture decoding, verified with the
 actual 4096 atlas and rotation. All 68 viewer tests pass, including a regression
 that rejects blob fetches and checks the retained emissive texture and UV channel.
 
+User review rejected the pale, uniform exposed edges as misleading. The local
+preparation assigned a flat core colour; it did not represent the plywood layers.
+The skill now requires a saved face/core/treatment mapping and visual edge review.
+Automatic material reconciliation and a corrected edge render remain unfinished;
+the current render is not approved as a finished-product appearance.
+
 ## Work packages
 
 ### WP1: Enforce the presentation contract
@@ -51,6 +57,15 @@ that rejects blob fetches and checks the retained emissive texture and UV channe
 - [x] Verify the baked viewer visually and rotate it with one browser tab open.
 - [x] Add a regression test and rebuild the bundled viewer.
 
+### WP4: Match finishes to the physical build
+
+- [x] Identify the source of the misleading pale edge material.
+- [x] Require surface treatments to match the saved build and finishing lists.
+- [x] Separate geometry/bake validation from material-fidelity approval.
+- [ ] Implement automatic reconciliation of declared surfaces and render materials.
+- [ ] Resolve the selected plywood core reference, correct the material and rebake.
+- [ ] Review edge detail and obtain appearance approval.
+
 ## Audit log
 
 - 2026-09-21: User explicitly requires the skill to allow only Blender-backed
@@ -67,3 +82,8 @@ that rejects blob fetches and checks the retained emissive texture and UV channe
   the same blob URL fails. Using Three's existing image-element loader fixes this
   host compatibility problem without changing the bake or substituting raw CAD.
   Overview and detail images remain local evidence, not fabrication approval.
+- 2026-09-21: User requires the rendered finish to represent what will be made.
+  Saved stock and surface treatments must drive both appearance and production;
+  decorative changes cannot be introduced solely in rendering. Captured as a
+  required skill review. The existing automated gate proves geometry and coverage,
+  not stock or finish truth. Its success must not be represented otherwise.

@@ -45,6 +45,12 @@ and repetition boundary; a single custom piece need not wait on a run-wide door
 proposal. Preserve the existing left-hinge proposal for applicable fitted doors.
 Use that same real root ID for inventory and the fabrication gate below.
 
+Before assigning presentation materials, apply
+[material appearance](references/material-appearance.md): broad faces, exposed
+cores and edge treatments must come from the saved build specification and its
+material/finishing lists. Unspecified or invented finishes block delivery as a
+finished-product representation, even if Blender geometry checks pass.
+
 Before opening any client-facing furniture viewer, follow
 [the Blender bake workflow](references/blender-presentation.md). Its command
 automatically provisions the required background Blender engine and compatible
