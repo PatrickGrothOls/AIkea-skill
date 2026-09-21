@@ -58,7 +58,10 @@ Python; the client need not install or operate Blender. The viewer rejects raw
 CAD, missing/failed bake reports, stale model hashes and reduced-quality test
 bakes. There is no raw-preview fallback or bypass flag. If baking cannot finish,
 retain the previous verified presentation and report the unfinished update.
-Require the coverage and geometry reports before showing the baked model.
+Require coverage, geometry and `lighting-signal.json` before showing the baked
+model. A completed Blender job or geometry PASS does not establish a usable
+image. An empty diffuse atlas blocks delivery; inspect source material metalness
+and lighting, correct the cause and rebake. Never mark that presentation complete.
 Use the shared broad frontal studio lighting and representative LED defaults for
 every new presentation. Do not recreate a project-specific lighting rig. Preserve
 verified product output and explicitly requested lighting overrides. Check that

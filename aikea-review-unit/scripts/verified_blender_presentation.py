@@ -6,7 +6,7 @@ from math import isfinite
 
 class VerifiedBlenderPresentation:
     CHECKS = ("prepared-geometry.json", "all-panel-coverage.json",
-              "shaded-geometry.json", "export-geometry.json")
+              "shaded-geometry.json", "export-geometry.json", "lighting-signal.json")
     REMEDY = ("Run bake_furniture_presentation.py at the approved quality, then serve "
               "assembled.glb with --inspection-model pointing to its source GLB.")
 
@@ -43,6 +43,12 @@ class VerifiedBlenderPresentation:
         if (coverage.get("uncovered_centroids") != 0
                 or not self._number(coverage.get("triangles"), 1, float("inf"))):
             raise ValueError("Blender coverage check contains missing panel coverage.")
+        lighting = checks["lighting-signal.json"]
+        if (lighting.get("finite") is not True
+                or lighting.get("sampled_triangle_centroids") != coverage["triangles"]
+                or not self._number(lighting.get("lit_triangle_centroids"), 1, coverage["triangles"])
+                or not self._number(lighting.get("maximum_luminance"), 1e-6, float("inf"))):
+            raise ValueError("Blender lighting evidence is missing, empty or invalid.")
         geometry = checks["export-geometry.json"]
         expected = {"source_sha256": inspection.sha256, "exported_sha256": assembled.sha256,
                     "physical_parts": report["physical_parts"],

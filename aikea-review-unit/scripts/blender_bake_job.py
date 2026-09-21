@@ -71,7 +71,7 @@ class BlenderBakeJob:
                                   export_animations=False, export_cameras=False, export_lights=False)
 
     def complete(self):
-        names = ("prepared-geometry", "all-panel-coverage", "shaded-geometry", "export-geometry")
+        names = ("prepared-geometry", "all-panel-coverage", "shaded-geometry", "export-geometry", "lighting-signal")
         reports = {name: json.loads((self.directory / f"{name}.json").read_text()) for name in names}
         if any(report["status"] != "PASS" for report in reports.values()):
             raise RuntimeError("A required bake check failed; do not deliver assembled.glb")

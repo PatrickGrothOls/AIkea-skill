@@ -4,6 +4,7 @@ from pathlib import Path
 import json
 import bpy
 import numpy as np
+from baked_lighting_signal import BakedLightingSignal
 
 
 class PanelBakePass:
@@ -61,7 +62,7 @@ class PanelBakePass:
         bpy.ops.wm.open_mainfile(filepath=str(self.root/'bake-ready.blend'))
         panels = [obj for obj in bpy.context.scene.objects if obj.type=='MESH'
                   and obj.get('aikea',{}).get('kind')=='panel']
-        samples = self.samples(panels) if white else []
+        samples = self.samples(panels)
         image = bpy.data.images['Assembled diffuse lighting']
         if white:
             material = self.white_material(image)
@@ -92,4 +93,18 @@ class PanelBakePass:
         image.save()
         if white:
             self.check(image,samples)
+        else:
+            self.check_lighting(image, samples)
         print('BAKE_COMPLETE',flush=True)
+
+    def check_lighting(self, image, samples):
+        width, height = image.size
+        pixels = np.empty(width*height*4, dtype=np.float32)
+        image.pixels.foreach_get(pixels)
+        pixels = pixels.reshape((height, width, 4))
+        uv = np.concatenate([points for _, points in samples])
+        xy = np.clip(np.floor(uv*[width, height]).astype(int), 0, [width-1, height-1])
+        report = BakedLightingSignal().measure(pixels[xy[:, 1], xy[:, 0], :3])
+        (self.root/'lighting-signal.json').write_text(json.dumps(report, indent=2))
+        if report['status'] != 'PASS':
+            raise ValueError('Empty or invalid panel lighting bake; inspect source material metalness and studio lights')
