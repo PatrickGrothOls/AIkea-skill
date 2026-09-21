@@ -11,7 +11,11 @@ Carry forward the reviewed drawer-spacing and Blender presentation fixes.
 
 The previous Claude conversation is preserved as evidence. Claude's installed
 Skills screen lists five Anthropic skills and no AIkea skill. Its old hosted
-project must not be reused. The new public package and fresh run are pending.
+project must not be reused. An incognito chat with no project attached is ready.
+All 49 targeted drawer/viewer tests and the eleven-skill package check pass.
+The actual packaged Blender probe passes all four reports and the required viewer
+gate at 4096/16, with zero geometry error. Public rollout and the fresh run are
+in progress; no independent furniture result has been accepted yet.
 
 ## Work packages
 
@@ -19,16 +23,16 @@ project must not be reused. The new public package and fresh run are pending.
 - [x] Inspect the prior Claude result and existing skill contracts.
 - [x] Carry forward tested compact drawers and verified Blender presentation.
 - [x] Clarify full hinges, lighting endpoints and cross-board cable cuts.
-- [ ] Validate the skills and the combined changed paths.
+- [x] Validate the skills and the combined changed paths.
 
 ### WP2: Publish a testable installer
-- [ ] Commit and build an immutable package with its checksum.
+- [x] Commit and build an immutable package with its checksum.
 - [ ] Publish the updated source and package at the ordinary starter-prompt route.
 - [ ] Download and verify the public archive before testing.
 
 ### WP3: Independent Claude desktop acceptance
 - [x] Inspect registered skills: no AIkea registration found.
-- [ ] Start a fresh context without access to the old skill/project as input.
+- [x] Start a fresh incognito context with no project or old skill supplied.
 - [ ] Give only the public starter prompt, then the envelope/interior brief.
 - [ ] Approve authorized steps without supplying implementation advice or repairs.
 - [ ] Inspect the actual resulting hinges, lights, cable passages and viewer.

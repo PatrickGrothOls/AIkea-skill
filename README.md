@@ -64,7 +64,7 @@ Your assistant follows [Getting started](START_HERE.md), downloads the skill,
 installs Python, CadQuery and headless Blender, verifies the setup, and starts
 your furniture project. Normal permission or sign-in prompts may need approval.
 
-[Download AIkea Skill](https://github.com/PatrickGrothOls/AIkea-skill/releases/download/v0.1.0-desktop.1/aikea-skill.zip)
+[Download AIkea Skill](https://github.com/PatrickGrothOls/AIkea-skill/releases/download/v0.1.0-desktop.2/aikea-skill.zip)
 · [Installation details](docs/desktop-installation.md)
 
 The installer has passed isolated macOS runtime checks and run in Claude's hosted
