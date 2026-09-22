@@ -31,14 +31,19 @@ coordinate frame so local construction can verify and place them later.
    and actual fixing/motion checks before treating the better candidate as solved.
 3. Start from the manufacturer's official product page and catalogue item. Use
    its own CAD link when available; do not select a visually similar component.
+   For **every Hettich item**, first read and execute the
+   [Hettich browser download procedure](references/hettich-cad-download.md), then
+   the product-specific reference below. This includes newly sourced articles.
 4. Prefer a complete STEP assembly in millimetres. Confirm whether one download
    contains the complete pair or whether separate handed files and accessories
    are required.
 5. When a vendor provides a public direct download whose terms permit automated
-   retrieval, save it unchanged. When access requires registration, personal
-   agreement, or a protected portal, open the exact page and give the user one
-   clear action: choose the stated format and complete the download. Never collect
-   or save their credentials.
+   retrieval, save it unchanged. Otherwise use the normal browser download flow
+   yourself when browser tools are available. A portal is not automatically a
+   user-only task. Ask for help only at an observed step requiring the user's
+   action, such as personal authentication, agreement or an unavailable download
+   capability. Prepare the exact item and format first, explain that one step,
+   then resume retrieval and verification. Never collect or save credentials.
 6. After the file reaches the computer, run:
 
    `python <skill-directory>/scripts/store_hardware_cad.py <project>/aikea.yaml --manufacturer <name> --product-family <family> --catalog-item <item> --product-url <official-product-url> --cad-page-url <official-cad-url> --terms-url <terms-url> --download <downloaded-file>`
@@ -55,6 +60,8 @@ For the Hettich KA 4532 runner and its approved 13952 spacer, instead read
 For the 400 mm KA 4532 article 9114274, read
 [the verified download route](references/hettich-ka-4532-400.md). This is a sourced
 candidate, not an approved shorter version of the 500 mm installation.
+For SL 322 hanging-rail support **70664**, read
+[the configured support download and native datums](references/hettich-sl322.md).
 
 For GRASS Tiomos 155 Plus F028122660 and its F058139748 plate, use
 [the verified public STEP archive route](references/grass-tiomos-155-plus.md).

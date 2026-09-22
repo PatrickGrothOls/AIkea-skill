@@ -12,6 +12,10 @@ installation is owned by [hanging rails](../../aikea-build-units/references/hang
 
 ## Download flow
 
+First execute the [shared Hettich browser procedure](hettich-cad-download.md).
+It includes screenshots from the successful 9114274 download and explicit
+recovery steps. Use **70664** throughout this run, not the article in those images.
+
 Open the configured portal with browser tools, or give the link to the user when
 browser control is unavailable. Confirm the actual table says **70664**; a generic
 family link can select 9056579 instead.

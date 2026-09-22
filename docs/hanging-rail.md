@@ -25,6 +25,7 @@ been published or declared fabrication-ready by this integration test.
 - [x] Exercise installation, purchases, drilled volumes and existing features.
 - [x] Document agent usage and CAD acquisition.
 - [x] Update README and review the focused diff.
+- [x] Make the proven Hettich download procedure mandatory and reachable for every Hettich item.
 
 ## Audit log
 - 2026-09-21: User requested the missing rail and two export fixes. Export fixes
@@ -46,3 +47,10 @@ been published or declared fabrication-ready by this integration test.
   intended cut-and-assemble output and per-project completion checks, as requested.
   Kept actual product-specific and desktop-delivery limitations visible; no gate
   or validation result was changed to support marketing wording.
+
+- 2026-09-21: User required explicit reuse of prior successful Hettich downloads.
+  Added a shared step-by-step guide with existing verified screenshots, exact
+  article checks, browser recovery and disk/import finish criteria. Linked it
+  from the main sourcing skill and all Hettich product references. Removed the
+  older KA 5332 instruction that handed the portal to the user categorically.
+  This documentation change does not claim the pending 70664 STEP was obtained.
