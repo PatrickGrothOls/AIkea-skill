@@ -33,5 +33,10 @@ task for the construction workflow, not a completed result of this release.
   expecting an empty material after generation. Updated that assertion to the
   fixture's selected material; production behavior and package bytes are unchanged.
 
+- 2026-09-23: Seven CI partitions and the viewer passed. The final partition
+  stopped advancing its visible log immediately before the oversized-response
+  case, whose default pytest ID contains one million characters. Added explicit
+  short case IDs without changing inputs, assertions or production code.
+
 ## Claude observation log
 Not started. No instructions or workarounds have been supplied to Claude.
