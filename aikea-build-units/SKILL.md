@@ -52,6 +52,22 @@ For the base's input, placement and evidence contract, read
    client's visual approval before producing other units. Use the plain cabinet
    review only for an assembly that is intentionally doorless.
 
+The generator automatically copies the saved material decisions onto every
+standard part: carcass stock for sides, shelves, tops, base decks and kickboards;
+the door choice for doors; and the back choice for backs. It writes these as
+`PartSpec.material_id`, preserving the selected description and each part's
+separate thickness. Users never need to supply internal material identifiers.
+Record their accepted defaults and overrides once in `aikea.yaml`, then generate.
+Do not replace saved choices with a hardcoded material or use viewer appearance
+as the material source. A family-level choice remains a family-level choice;
+supplier product and fit qualification are separate checks.
+
+For authored or additional parts, carry the same selected stock into their typed
+`PartSpec` inputs before building. Keep explicit per-part exceptions, including
+drawer bottoms, with their owning configurator. On material revision, regenerate
+through the normal writer, which preserves hand-edited files, and repeat the
+affected checks; never just relabel an already approved export.
+
 The default floor-standing cabinet base uses Korrekt 61854 plates and 70151
 adjustable feet, a deck, and a front kickboard. Never substitute a rail-and-brace
 base when hardware, height or installation evidence is missing. Read the

@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import pytest
+
 from assembly_taxonomy_generator import AssemblyTaxonomyGenerator
 from overall_wardrobe_test_project import OverallWardrobeTestProject
 
@@ -35,14 +37,21 @@ class TestAssemblyTaxonomyUpgrade:
         assert "BuiltPart," in specification
         assert "class PartBuildPlan" not in specification
 
+    @pytest.mark.parametrize("before_materials", [False, True])
     def test_untouched_pre_shelf_taxonomy_receives_generated_shelf_parts(
-        self, tmp_path
+        self, tmp_path, before_materials
     ) -> None:
         data = self._one_unit_project()
         taxonomy = self.generator.resolver.resolve(data)
         previous_files = self.generator.renderer.render_without_adjustable_shelves(
             taxonomy
         )
+        if before_materials:
+            previous_files = {
+                path: "".join(line for line in source.splitlines(keepends=True)
+                              if not line.startswith("            material_id="))
+                for path, source in previous_files.items()
+            }
         self._write(tmp_path, previous_files)
 
         self.generator.generate(data, tmp_path)
@@ -51,6 +60,7 @@ class TestAssemblyTaxonomyUpgrade:
             encoding="utf-8"
         )
         assert "part_id='shelf_01'" in spec
+        assert "material_id=" in spec
         assert (
             tmp_path / "assemblies/tall_storage_01/parts/shelf_03/builder.py"
         ).is_file()
