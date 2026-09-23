@@ -6,17 +6,24 @@ in one installer, then observe a fresh Claude desktop run from the public starte
 prompt. During that run, handle approvals only; do not coach or modify its work.
 
 ## Current state
-The fixes are integrated. All 66 selected regression checks pass and all 11 skill
-packages resolve their links. The clean installer passed real CAD and Blender probes. Public release and
-the fresh Claude run are pending; full CI exposed an outdated material assertion. The SL 322 exact STEP acquisition remains a
-task for the construction workflow, not a completed result of this release.
+Published v0.1.0-desktop.3 and merged PR #9 to main at af89870. The public archive
+matches its checksum and all 602 manifest members; a clean macOS setup passed
+real CAD and Blender probes. Seven CI partitions and the viewer passed on
+8f0edcd; the remaining partition passed on 92083d0 after shortening a megabyte
+parameter ID. No test inputs, assertions or production files changed in that
+last correction. The complete repeat CI run remains in progress.
+
+The fresh Claude run has not started. Native desktop screenshots remain visible,
+but New Chat and keyboard actions do not produce a verified new-chat screen;
+coordinate input reports noWindowsAvailable. Desktop access or permission to use
+Chrome is pending. No prompt, coaching or file changes were sent to Claude.
 
 ## Work packages
 - [x] WP1: Integrate the completed branches and resolve the README conflict.
 - [x] WP1: Review the combined diff and run affected regression checks.
 - [x] WP2: Build the versioned installer and verify its runtime probes.
-- [ ] WP2: Publish the release, update public links and merge to main.
-- [ ] WP2: Download the public archive and verify its checksum and contents.
+- [x] WP2: Publish the release, update public links and merge to main.
+- [x] WP2: Download the public archive and verify its checksum and contents.
 - [ ] WP3: Start a fresh Claude desktop run using only the public starter prompt.
 - [ ] WP3: Log observed steps, approvals, questions and final artifacts.
 - [ ] WP3: Report the actual outcome without repairing the acceptance run.
@@ -38,5 +45,11 @@ task for the construction workflow, not a completed result of this release.
   case, whose default pytest ID contains one million characters. Added explicit
   short case IDs without changing inputs, assertions or production code.
 
+- 2026-09-23: Published the installer from 7626f42 and independently verified its
+  public bytes. PR #9 merged at af89870. The remaining full CI rerun is recorded
+  separately from the completed coverage across validation runs. The desktop
+  interaction blocker remains unresolved; the acceptance run has not begun.
+
 ## Claude observation log
 Not started. No instructions or workarounds have been supplied to Claude.
+Detailed local observations: `local-evidence/desktop-rerun-20260923/RUN_LOG.md`.
