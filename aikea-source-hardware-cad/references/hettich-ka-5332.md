@@ -15,9 +15,11 @@ Use this reference only for the approved 500 mm Hettich KA 5332 runner pair.
 - CADENAS terms:
   `https://www.cadenas.de/terms-of-use-3d-cad-models`
 
-The user completes any registration or agreement required by the portal. Ask
-them to choose STEP and download the configured 9057405 assembly. Do not automate
-the protected portal or upload the resulting model elsewhere.
+Execute the [shared Hettich browser procedure](hettich-cad-download.md) for
+**9057405**, including format selection, generation, download and verification.
+The model owns those steps when browser tools are available. Pause only for an
+observed user-required authentication or agreement step, then resume. Do not
+bypass access controls or upload the resulting model elsewhere.
 
 ## Approved download identity
 

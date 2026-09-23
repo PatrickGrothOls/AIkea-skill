@@ -11,6 +11,7 @@ from concealed_hinge_machining import HingedPanelSet
 from door_hinge_review_geometry import DoorHingeReviewGeometry
 from riex_nc70_hardware_loader import RiexNc70HardwareLoader
 from riex_nc70_hinge_profile import RIEX_NC70_FULL_OVERLAY
+from riex_review_identity import RiexReviewIdentity
 from unit_mockup import UnitMockupInputError
 
 
@@ -49,13 +50,7 @@ class RiexNc70DoorReviewFeature:
             RIEX_NC70_FULL_OVERLAY,
             True,
         )
-        owned_names = {self.saved_plan.door_part_id, *(name for item in self.saved_plan.placements
-                       for name in (f"{item.hinge_id}__source_cad", f"{item.hinge_id}_plate__source_cad"))}
-        overlay = tuple(
-            part
-            for part in exact
-            if part.name in owned_names
-        )
+        overlay = RiexReviewIdentity().apply(exact, context.assembly, self.saved_plan)
         return AssemblyTreeReviewPlan(
             hidden_paths=hidden,
             overlays=(AssemblyReviewOverlay(context.owner_path, overlay),),

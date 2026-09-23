@@ -5,6 +5,7 @@ from pathlib import Path
 import struct
 
 from glb_artifact_snapshot import GlbArtifactSnapshot
+from glb_panel_material_defaults import GlbPanelMaterialDefaults
 from unit_mockup import MockupPart, UnitMockupInputError
 
 
@@ -32,6 +33,7 @@ class GlbInspectionMetadata:
             raise UnitMockupInputError([
                 "exported inspection parts are missing: " + ", ".join(sorted(identities.keys() - found))
             ])
+        GlbPanelMaterialDefaults().apply(document)
         encoded = json.dumps(document, separators=(",", ":")).encode("utf-8")
         encoded += b" " * (-len(encoded) % 4)
         chunk = struct.pack("<II", len(encoded), 0x4E4F534A) + encoded

@@ -13,18 +13,18 @@ the installer. The chat must provide file downloads and command execution.
 
 ## Download
 
-- [AIkea Skill installer](https://github.com/PatrickGrothOls/AIkea-skill/releases/download/v0.1.0-desktop.2/aikea-skill.zip)
-- [SHA-256 checksum](https://github.com/PatrickGrothOls/AIkea-skill/releases/download/v0.1.0-desktop.2/SHA256SUMS)
+- [AIkea Skill installer](https://github.com/PatrickGrothOls/AIkea-skill/releases/download/v0.1.0-desktop.3/aikea-skill.zip)
+- [SHA-256 checksum](https://github.com/PatrickGrothOls/AIkea-skill/releases/download/v0.1.0-desktop.3/SHA256SUMS)
 - [Installation and completion requirements](docs/desktop-installation.md)
 
-Version: `v0.1.0-desktop.2`. The archive contains all 11 skills and the editable source,
+Version: `v0.1.0-desktop.3`. The archive contains all 11 skills and the editable source,
 including the installer, construction tools and bundled viewer. Manufacturer CAD
 and customer designs are not included.
 
 ## Instructions for the assistant
 
 1. Download the ZIP above using your available file tools. Verify its SHA-256
-   before extracting: `52b6ae2d05b382b59b9cf64f2160fa62715ce0807420d9ccb1a516bc790e0494`.
+   before extracting: `efa8dccc093c91e985387d5bf00025245b9ed85dde6facc8de233b4e345674fa`.
 2. Extract its single `aikea/` folder into a fresh directory. Read the extracted
    `SKILL.md` and `BOOTSTRAP.md`. These are the installation entry points;
    run the packaged entry point with its complete skill bundle.

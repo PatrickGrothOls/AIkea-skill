@@ -79,7 +79,10 @@ The following sequence applies to the standard wardrobe's global schema:
 7. If an exceptional part needs a material or thickness the global groups cannot
    represent, preserve the build-blocking requirement using the reference's
    stable marker. Do not claim that the current construction will generate it.
-8. If only a material family is confirmed, say that exact product sourcing is
+8. `$aikea-build-units` automatically transfers these saved decisions to every
+   standard part's material field. Reuse accepted defaults and overrides; never
+   ask the client to invent or type an internal material identifier. If only a
+   material family is confirmed, say that exact product sourcing is
    still open. Do not claim fabrication readiness until every manufactured part
    receives a verified material identity in the manufacturing records.
 9. Return to `$aikea` only after the stage is complete. It resumes the first

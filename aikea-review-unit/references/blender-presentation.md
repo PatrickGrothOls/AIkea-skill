@@ -56,6 +56,11 @@ Prepare the material-bearing GLB from the active design's saved selections:
 
 - Give each panel its selected stock and finish. Bind oak, MDF, HDF and hardware
   separately; a material study must not turn everything into wood veneer.
+- Wood, MDF and HDF require explicit nonmetallic source materials. Raw CadQuery
+  colours now receive `metallicFactor: 0` for identified panels because omitting
+  it imports as fully metallic in Blender and produces an empty diffuse bake.
+  This is a placeholder default, not material selection. Preserve declared
+  metal finishes and hardware materials; do not force real metal into a wood bake.
 - Scale grain in physical units and orient it to that panel's selected direction.
   Keep broad veneered faces distinct from exposed sheet cores. Use the bundled
   `assets/viewer/materials/oak-veneer/SOURCE.md` for optional map provenance.
@@ -126,6 +131,10 @@ studio scaled to the furniture bounds, keeps a native material scene, then:
    mesh is joined; export reloads the original separate furniture objects.
 5. Checks source meshes, placements and UVs, exports the baked GLB, independently
    reimports it and compares world-space triangles and part identities.
+6. Requires finite, nonzero lighting at actual panel triangle samples. An empty
+   atlas writes failed `lighting-signal.json` and cannot produce a PASS summary.
+   This check detects the black-bake failure; it does not prove interior readability
+   or replace the visual inspection below.
 
 Defaults are one 4096² atlas, one CPU thread and 16 lighting samples. Keep
 one Blender job and one 3D browser tab at a time. Lower atlas sizes and samples
@@ -152,12 +161,14 @@ supplier-calibrated lighting simulation. Adjust illumination before baking, not
 the wood colour or a finished screenshot to make the interior look brighter.
 
 The shared viewer enforces this contract before binding a port or opening a tab.
-It requires the adjacent `presentation.json`, all four detailed check reports,
+It requires the adjacent `presentation.json`, all five detailed check reports,
 and `--inspection-model`. Both model hashes must match the snapshotted files;
 coverage and geometry evidence must pass at the existing 0.002 mm tolerance.
 The presentation must use the approved 4096 atlas and at least 16 samples.
 Reduced-budget engine probes remain installation tests and cannot be shown as
 furniture presentations. Supplying a second GLB does not establish a bake.
+Older presentations without `lighting-signal.json` require a fresh bake through
+the updated command. Do not manufacture a report for an existing atlas.
 Keep these reports beside `assembled.glb` when moving or packaging a presentation.
 Do not edit reports to make a raw or stale model pass; regenerate the bake.
 Decision records remain bound to the exact primary GLB displayed. If an existing

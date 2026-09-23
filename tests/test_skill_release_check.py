@@ -69,7 +69,10 @@ class TestSkillReleaseCheck:
         assert SkillReleaseCheck().check(tmp_path/"missing.json")["status"] == "unknown"
         assert not list(tmp_path.iterdir())
 
-    @pytest.mark.parametrize("raw", (b"bad-json", b'{"message":"rate limited"}', b"[null]", b"x"*1_000_001))
+    @pytest.mark.parametrize(
+        "raw", (b"bad-json", b'{"message":"rate limited"}', b"[null]", b"x"*1_000_001),
+        ids=("invalid-json", "api-error", "null-release", "oversized-response"),
+    )
     def test_invalid_response_does_not_block_intake(self, tmp_path, monkeypatch, raw):
         monkeypatch.setattr("skill_release_check.urlopen", lambda *args, **kwargs: FakeResponse(raw))
         assert SkillReleaseCheck().check(tmp_path/"missing.json")["status"] == "unavailable"

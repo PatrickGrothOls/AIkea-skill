@@ -34,6 +34,10 @@ source links, hashes, and native observations.
 
 ## Storage
 
+For each article, execute the [shared Hettich browser procedure](hettich-cad-download.md)
+using its configured CAD link above. Download the runner and spacer separately;
+one successful file does not complete both required components.
+
 Store each official ZIP separately with the general hardware command. Use
 product families `KA 4532 Silent System` and `KA 4532 spacer profile`, with
 catalogue items `9114276` and `13952`. The returned directories must end in:

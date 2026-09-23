@@ -26,6 +26,12 @@ class TestVerifiedBlenderPresentation:
         ("export-geometry.json", "exported_sha256", "stale"),
         ("export-geometry.json", "tolerance_mm", 0.1),
         ("export-geometry.json", "status", "FAIL"),
+        ("lighting-signal.json", "status", "FAIL"),
+        ("lighting-signal.json", "lit_triangle_centroids", 0),
+        ("lighting-signal.json", "sampled_triangle_centroids", 13),
+        ("lighting-signal.json", "maximum_luminance", 0.0),
+        ("lighting-signal.json", "maximum_luminance", float("nan")),
+        ("lighting-signal.json", "finite", False),
     ])
     def test_incomplete_or_changed_evidence_blocks_session(self, tmp_path, filename, key, value):
         model, inspection = self._pair(tmp_path)
@@ -65,6 +71,12 @@ class TestVerifiedBlenderPresentation:
         model, inspection = self._pair(tmp_path)
         (model.parent / "export-geometry.json").unlink()
         with pytest.raises(ValueError, match="export-geometry.json"):
+            ReviewServerSession(model, None, inspection)
+
+    def test_older_bake_without_lighting_proof_requires_rebake(self, tmp_path):
+        model, inspection = self._pair(tmp_path)
+        (model.parent / "lighting-signal.json").unlink()
+        with pytest.raises(ValueError, match="lighting-signal.json"):
             ReviewServerSession(model, None, inspection)
 
     def _pair(self, root):

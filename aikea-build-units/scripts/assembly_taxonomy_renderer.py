@@ -77,6 +77,13 @@ class AssemblyTaxonomyRenderer:
             self.render_metadata_scaffold(taxonomy),
             self.render_without_adjustable_shelves(taxonomy),
         )
+        # Exact pre-material source variants preserve existing unrecorded upgrades.
+        previous_sets += tuple(
+            {path: "".join(line for line in content.splitlines(keepends=True)
+                           if not line.startswith("            material_id="))
+             for path, content in files.items()}
+            for files in (previous_sets[1], self.render(taxonomy))
+        )
         paths = {path for files in previous_sets for path in files}
         return {
             path: tuple(files[path] for files in previous_sets if path in files)

@@ -19,6 +19,7 @@ from overall_wardrobe_calculator import OverallWardrobeCalculator
 from overall_wardrobe_inputs import OverallWardrobeInputs, OverallWardrobeInputReader
 from overall_wardrobe_results import CabinetOverallSize
 from project_part_placement_resolver import ProjectPartPlacementResolver
+from part_material_resolver import PartMaterialResolver
 from top_boundary import TopBoundaryKind
 from wardrobe_taxonomy_resolver import WardrobeTaxonomyResolver
 
@@ -56,7 +57,8 @@ class AssemblyTaxonomyResolver:
         placed = self.part_placements.resolve(
             ProjectAssemblyTaxonomy((*cabinets, base))
         )
-        return self.wardrobe.resolve(placed)
+        selected = PartMaterialResolver().resolve(placed, inputs.design_decisions)
+        return self.wardrobe.resolve(selected)
 
     def _resolve_assembly(
         self,

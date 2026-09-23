@@ -35,7 +35,8 @@ class GlbWorldGeometry:
             indices = (self.glb.array(primitive['indices']).reshape(-1) if 'indices' in primitive
                        else np.arange(len(local)))
             points.append((local @ world[:3,:3].T + world[:3,3])*self.unit_scale)
-            triangles.append(indices.reshape(-1,3)+offset)
+            # Primitive-local uint16 indices must not wrap or overflow at a part-wide offset.
+            triangles.append(indices.astype(np.int64).reshape(-1,3)+offset)
             offset += len(local)
         return np.concatenate(points), np.concatenate(triangles)
 

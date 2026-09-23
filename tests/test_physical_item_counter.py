@@ -79,7 +79,11 @@ class TestPhysicalItemCounter:
         assert any("tall_storage_01/drawer_01/" in path for path in paths)
         assert any("tall_storage_02/drawer_01/" in path for path in paths)
         codes = [row["code"] for row in report["unresolved"]]
-        assert codes.count("part.material_missing") == 47
+        missing = {row["path"] for row in report["unresolved"]
+                   if row["code"] == "part.material_missing"}
+        assert missing == {path for path in paths if "/drawer_01/" in path}
+        assert len(missing) == 10  # Legacy drawer geometry has no selected stock.
+        assert sum(bool(row["material_id"]) for row in report["manufactured_parts"]) == 37
         assert codes.count("joint.unresolved") == 7
         assert "shelf.support_product_undefined" in codes
         assert report["status"] == "draft"
@@ -121,8 +125,12 @@ class TestPhysicalItemCounter:
         _, visits = counted_project
         inventory = PhysicalItemCounter().count(visits)
         report = InventorySheetRequirements(SheetStock(allow_rotation=True)).calculate(inventory)
-        assert {group["thickness_mm"]: group["sheet_count"] for group in report["groups"]} == {
-            9.0: 1, 15.0: 1, 18.0: 16,
+        assert {(group["material_id"], group["thickness_mm"]): group["sheet_count"]
+                for group in report["groups"]} == {
+            ("", 9.0): 1, ("", 15.0): 1,
+            ("Test white back panel, 18 mm", 18.0): 4,
+            ("Test white cabinet panel, 18 mm", 18.0): 8,
+            ("Test white door panel, 18 mm", 18.0): 4,
         }
         assert report["part_count"] == 47
         assert report["oversized_part_paths"] == []

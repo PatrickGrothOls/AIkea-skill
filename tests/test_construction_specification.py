@@ -25,7 +25,7 @@ class TestConstructionSpecification(AssemblyCompositionTestCase):
         assert adapted.part(original.part_id).material_id == "mdf"
         assert adapted.part(original.part_id).local_to_parent == original.local_to_parent
         assert adapted.joints == configured.joints
-        assert original.material_id == ""
+        assert original.material_id == "Test white cabinet panel, 18 mm"
         built = values.BuiltAssembly(
             adapted, tuple(values.BuiltPart(part, object()) for part in adapted.parts),
             adapted.joints,

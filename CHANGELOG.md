@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.1.0-desktop.3 - 2026-09-23
+
+- Carry saved material choices into generated panel specifications and parts lists.
+- Correct CAD panel metalness and reject empty Blender lighting bakes.
+- Preserve large mesh indices and complete hinge identities in open-door views.
+- Add a hanging-rail installation module with manufacturer drawing datums.
+- Require the documented Hettich CAD download and import verification workflow.
+
+Exact hardware CAD and construction checks remain project-specific requirements.
+The SL 322 support preview is explicitly identified until its CAD is imported.
+
 ## 0.1.0-alpha.1 - 2026-09-06
 
 - Package all nine AIkea skills with local Codex and Claude discovery links.

@@ -21,6 +21,10 @@ and its datums; product-page hole spacings alone are not a complete fixing plan.
 
 ## Browser download, verified 2026-09-15
 
+Use the [shared Hettich browser procedure](hettich-cad-download.md) for execution,
+download recovery and completion criteria. The verified product-specific details
+and original screenshots follow.
+
 Use the active browser when available. Otherwise give the configured link and
 these images to the user, one action at a time. The observed session required no
 registration or agreement dialog; inspect each current session rather than

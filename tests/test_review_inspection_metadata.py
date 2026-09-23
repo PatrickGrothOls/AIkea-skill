@@ -68,6 +68,10 @@ class TestReviewInspectionMetadata:
         document,_ = self.document_and_binary(path)
         actual = [n["extras"]["aikea"] for n in document["nodes"] if n.get("name")=="part" and "mesh" in n]
         assert actual==[{"inspection_path":["drawer","part"],"kind":"panel"}]
+        node = next(n for n in document["nodes"] if n.get("name") == "part" and "mesh" in n)
+        for primitive in document["meshes"][node["mesh"]]["primitives"]:
+            material = document["materials"][primitive["material"]]
+            assert material["pbrMetallicRoughness"]["metallicFactor"] == 0
 
     def test_incorrect_exported_identity_does_not_partially_rewrite_artifact(self,tmp_path):
         path=tmp_path/"assembly.glb"

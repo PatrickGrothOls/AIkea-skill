@@ -19,6 +19,8 @@ class BlenderPresentationTestEvidence:
                 source_sha256=source_hash, exported_sha256=output_hash,
                 triangle_connectivity="bijective oriented world-space triangles",
                 maximum_vertex_error_mm=0.0, tolerance_mm=0.002),
+            "lighting-signal.json": dict(status="PASS", sampled_triangle_centroids=12,
+                lit_triangle_centroids=12, maximum_luminance=0.2, finite=True),
         }
         reports["presentation.json"] = dict(status="PASS", presentation_state="assembled_only",
             source_sha256=source_hash, assembled_sha256=output_hash,

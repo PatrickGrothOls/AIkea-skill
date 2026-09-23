@@ -8,10 +8,11 @@ and uses parts, sheet and hardware quantities to work out estimated costs.
 Review the design in 3D, inspect how it assembles, and refine it around your space
 and budget, from sloping ceilings to shelves, drawers and integrated lighting.
 
-The goal is a complete package ready for CNC cutting and assembly. The current
-alpha still has [fabrication gaps](#what-the-alpha-can-do); a design is only ready
-to cut once its manufacturing checks pass. Price calculations are estimates until
-the material, hardware, machining and finishing costs are confirmed.
+The workflow carries your approved design through to CNC cutting and assembly:
+individual part files, matching hardware and drilling, a material and cutting
+list, and assembly information. Before releasing the cutting package, your
+assistant checks that the parts and fittings work together. Cost calculations
+show the assumptions for materials, hardware, machining, finishing and delivery.
 
 <img src="docs/images/wardrobe-assembled.jpg" alt="Fitted wooden wardrobe beneath a sloping ceiling, with doors hidden to show shelves, drawer stacks, hinges and interior lighting." width="760">
 
@@ -30,7 +31,7 @@ design code.
 
 *The same wardrobe, expanded into its component parts.*
 
-## What the alpha can do
+## From measurements to cutting and assembly
 
 AIkea guides measured-space intake and material choices, generates cabinet and
 base parts, adds supported doors, drawers, and recessed lighting, and shows the
@@ -38,11 +39,17 @@ composed result in an interactive 3D viewer. Construction comes from reusable
 CadQuery builders and saved project specifications. Begin with one complete
 cabinet and visually approve it before repeating the design.
 
-This is an experimental design and review workflow. Exact material choices are
-not yet propagated into generated part specifications, so those parts cannot
-pass the fabrication-readiness gate. A complete manufacturing pack and a fresh
-end-to-end fabrication proof remain unfinished. The checker rejects missing
-evidence; a successful preview does not establish that a project is ready to cut.
+The finished project connects the design you see to the parts you make. Every
+panel carries its material and thickness; every fitting has an installation and
+matching machining. Your assistant checks clearances, connector placement,
+chosen CNC faces and assembly requirements, then produces the manufacturing
+files and parts list from that same saved design.
+
+The final project check identifies specific work still needed and accepts the
+package only when its required evidence is present. The assistant should resolve
+those items as part of the workflow, or explain the exact measurement, supplier
+information or workshop check needed from you. A render is a review step; the
+deliverable is the checked cutting and assembly package.
 
 Supported hardware profiles require exact manufacturer CAD downloaded into the
 active project's local hardware library. Some suppliers require an account and
@@ -64,7 +71,7 @@ Your assistant follows [Getting started](START_HERE.md), downloads the skill,
 installs Python, CadQuery and headless Blender, verifies the setup, and starts
 your furniture project. Normal permission or sign-in prompts may need approval.
 
-[Download AIkea Skill](https://github.com/PatrickGrothOls/AIkea-skill/releases/download/v0.1.0-desktop.2/aikea-skill.zip)
+[Download AIkea Skill](https://github.com/PatrickGrothOls/AIkea-skill/releases/download/v0.1.0-desktop.3/aikea-skill.zip)
 · [Installation details](docs/desktop-installation.md)
 
 The installer has passed isolated macOS runtime checks and run in Claude's hosted
