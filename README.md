@@ -14,7 +14,7 @@ list, and assembly information. Before releasing the cutting package, your
 assistant checks that the parts and fittings work together. Cost calculations
 show the assumptions for materials, hardware, machining, finishing and delivery.
 
-<img src="docs/images/wardrobe-assembled.png" alt="White fitted wardrobe beneath a sloping ceiling, with doors hidden to show shelves, drawer stacks, hinges and interior lighting." width="760">
+<img src="docs/images/wardrobe-assembled.png" alt="Wooden fitted wardrobe beneath a sloping ceiling, with doors hidden to show shelves, drawer stacks, hinges and interior lighting." width="760">
 
 *An example from the AIkea viewer: a fitted wardrobe with shelves, drawers and
 integrated lighting. The doors are hidden for inspection; these are digital
@@ -25,7 +25,7 @@ design previews.*
 [Open the assembled wardrobe](https://patrickgrothols.github.io/AIkea-skill/) ·
 [Explore the exploded view](https://patrickgrothols.github.io/AIkea-skill/?view=exploded)
 
-Zoom in to see the machining details. The viewer’s 84 white panels preserve the
+Zoom in to see the machining details. The viewer’s 84 wood-textured panels preserve the
 actual holes, pockets and grooves from the CAD model. Toggle the doors to see
 inside, including illuminated LED strips. Hinges, drawer runners, feet and other fittings are included; only
 Cabineo connector bodies are omitted. Some fixings use simplified geometry from
@@ -36,7 +36,7 @@ concepts; their attachment and additional clearance remain unqualified. This exa
 
 Toggle **Show doors** to inspect the proposed applied frames and brass handles.
 
-[![White framed doors with brass pulls following the wardrobe’s sloped outline.](docs/images/wardrobe-framed.png)](https://patrickgrothols.github.io/AIkea-skill/)
+[![Wooden framed doors with brass pulls following the wardrobe’s sloped outline.](docs/images/wardrobe-framed.png)](https://patrickgrothols.github.io/AIkea-skill/)
 
 ## From the whole cabinet to every part
 

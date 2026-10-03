@@ -3,7 +3,7 @@
 ## Scope
 
 Provide assembled and exploded wardrobe inspection from the README, with real
-machining visible in a white interactive viewer. Preserve the existing images
+machining visible in a wood-textured interactive viewer. Preserve the existing images
 and installation guidance. The audit below records the superseded STL approach.
 
 ## Work packages
@@ -17,7 +17,7 @@ and installation guidance. The audit below records the superseded STL approach.
 
 ## Current state
 
-The detailed white CAD viewer supersedes the simplified inline STL previews.
+The detailed CAD viewer supersedes the simplified inline STL previews.
 It includes all 84 original panels, 17 applied frame pieces and 507 saved hardware
 components (Cabineos excluded), plus four proposed brass pulls, with assembled and
 exploded views, a door-panel toggle and warm interior lighting with an on/off control. All machining stays
@@ -455,3 +455,27 @@ all approved viewer behavior, including warm light.
     Reviewed the diff and checked every image reference. PR remains unmerged;
     the default-branch README is unchanged. Capture tooling stays in ignored
     local evidence and is not included in the public branch.
+
+## Wood finish restoration
+
+Patrick clarified that white was chosen only because of the assumed limitations
+of a model inside the README. Restore wood in the hosted viewer and the four
+high-resolution README images, keeping the approved lighting and real geometry.
+
+- [x] Apply the existing packaged wood maps with shared textures and panel grain coordinates.
+- [x] Verify assembled, closed, exploded and machining views, plus controls.
+- [x] Regenerate all four high-resolution README images.
+- [ ] Publish and verify the viewer; push source and branch documentation to PR #1.
+
+57. Reuse the three existing CC0 plywood maps (about 2.2 MB total), shared by all
+    wood panels and frames. Keep metal fittings and brass handles separate.
+    Reuse the existing 500 mm grain mapping; do not simplify machining geometry.
+    Retain soft golden lighting and the existing render pipeline. This implements
+    Patrick's clarified finish preference rather than adding a new finish choice.
+
+58. All 78 existing viewer tests pass and the showcase production build succeeds.
+    Browser checks confirm rotation, doors, exploded/assembled controls and
+    lighting off/on behavior. Visually checked all four native 3600 × 2700 PNG
+    exports: wood grain, brass handles and real machining remain visible. No
+    browser warnings or errors were recorded in the local viewer check. The
+    existing bundle-size advisory remains; the model binary is unchanged.
