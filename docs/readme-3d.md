@@ -18,7 +18,8 @@ and installation guidance. The audit below records the superseded STL approach.
 ## Current state
 
 The detailed white CAD viewer supersedes the simplified inline STL previews.
-It includes all 84 panels and 507 saved hardware components (Cabineos excluded), with assembled and
+It includes all 84 original panels, 17 applied frame pieces and 507 saved hardware
+components (Cabineos excluded), with assembled and
 exploded views plus a door-panel toggle. All machining stays
 in the model; the page instructs visitors to zoom in to see it.
 The demo is published on GitHub Pages. The simplified two-view interface and
@@ -160,7 +161,7 @@ all other fittings, including the separate threaded inserts and machining.
 
 - [x] Remove only the inventoried Cabineo meshes from the public asset.
 - [x] Verify remaining geometry, ownership and viewer transitions.
-- [ ] Update documentation, publish and verify the live viewer.
+- [x] Update documentation, publish and verify the live viewer.
 
 22. The exclusion is limited to Cabineo connector bodies, per Patrick's request.
     The remaining 507 hardware components and all 84 machined panels stay in the
@@ -171,3 +172,41 @@ all other fittings, including the separate threaded inserts and machining.
     geometry and unchanged transforms and ownership. All 74 viewer tests and the
     production build pass. Local browser checks confirm retained hinges/runners
     in exploded view; the README screenshot now reflects the exclusion.
+
+24. Cabineo exclusion published as Pages commit `b99ba9c`; deployment succeeded
+    and the live page shows 507 hardware components and the explicit exclusion.
+
+## Framed-door appearance follow-up
+
+Patrick requested frames like the supplied entrance elevation. Use plain white
+65 mm-wide applied borders, 6 mm thick, following each current door outline.
+These are separate real CAD pieces bonded to the unchanged 18 mm backing.
+The proposed total door thickness is 24 mm; attachment, hinge load, operating
+clearance and the additional 6 mm front projection remain unqualified.
+The private reference drawing is not part of the public repository.
+
+- [x] Build explicit frame parts using the shared panel construction contracts.
+- [x] Verify geometry, closed placement and door visibility/grouping.
+- [ ] Show the framed doors for appearance review and record limitations.
+
+25. Chose separate flat applied strips to match the reference's plain recessed
+    centre appearance while retaining existing hinge machining. This is a draft
+    aesthetic choice within the requested frame addition, not fabrication approval.
+
+26. Rebuilt the complete draft parent with 17 separate applied strips through
+    PanelAssemblyBuilder. Applied-operation checks pass; every strip is one valid
+    solid, touches its backing and has no volumetric overlap with backing or other
+    strips. Explicit strip blanks fit the current 2497 by 1247 mm usable rectangle.
+    Existing base mounting extension qualifications remain unresolved; no full
+    fabrication clearance is claimed. The first frame export encountered unhydrated
+    base hardware, so the additive export now selects panels from the checked tree
+    and retains all previously verified hardware bytes from the saved viewer asset.
+27. Appended only the new frame geometry to the viewer. The existing binary buffers
+    remain identical, including all machining and the 507 retained fittings.
+    Seventeen strips add 204 triangles and about 1 kB compressed. The complete
+    model has 608 components. Saved editable frame specifications with the asset.
+28. All 74 viewer tests pass, including frame-to-door movement and restoration.
+    Local browser checks verify complete front visibility, attached exploded frames
+    and hidden wood with hinges retained. Subtle edges identify the actual frame
+    solids in the white CAD inspection view. Attachment, added mass and full motion
+    still require qualification; the additional front projection is 6 mm.
