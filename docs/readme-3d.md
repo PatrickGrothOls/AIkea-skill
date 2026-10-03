@@ -128,7 +128,7 @@ proximity guesses. Door visibility hides only the wood so hinges remain inspecta
 - [x] Preserve authored hardware-to-panel ownership during explosion.
 - [x] Display metal hardware separately from white panels.
 - [x] Verify visible hinges, runners and base fittings in the browser.
-- [ ] Update the live demo, tests, README and branch documentation.
+- [x] Update the live demo, tests, README and branch documentation.
 
 18. The earlier panel-only export caused the missing hardware. Restore the saved
     source assembly. Exact manufacturer hinges/runners coexist with illustrative
@@ -145,3 +145,9 @@ proximity guesses. Door visibility hides only the wood so hinges remain inspecta
     original transforms. All 74 viewer tests pass. Local browser inspection shows
     the real hinges, drawer runners and feet; hiding door wood retains hardware.
     Updated model metadata passes the private-data guard with zero findings.
+21. Published the full hardware model from source commit `49b8cd5` through the
+    existing Pages branch (`e7de96f`). Pages deployment succeeded. Live browser
+    verification shows the 641-component hardware caption and visible hinge CAD
+    with door panels hidden; a zoomed screenshot was saved as private evidence.
+    The source PR remains open and unmerged. Physical phone performance remains
+    unverified.
