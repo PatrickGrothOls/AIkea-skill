@@ -24,16 +24,8 @@ export class ShowcaseModel {
   }
 
   pose(mode, doorsShown) {
-    const detail = mode === "detail";
-    const scope = detail ? this.presentation.scopeForPart("cabinet_01__door_panel") : "";
-    const state = this.presentation.apply(scope, mode === "exploded" ? 0.14 : 0, "panels", detail ? false : !doorsShown);
+    const state = this.presentation.apply("", mode === "exploded" ? 0.14 : 0, "panels", !doorsShown);
     const center = state.bounds.getCenter(new Vector3());
-    if (detail) {
-      // The saved door's rear face carries the hinge cups; inspect that face.
-      const size = state.bounds.getSize(new Vector3());
-      center.set(state.bounds.min.x + 0.04, state.bounds.max.y - 0.12, state.bounds.min.z);
-      return { ...state, center, detail: true, span: Math.min(size.y, 0.12), direction: new Vector3(0.4, 0.2, -1) };
-    }
-    return { ...state, center, span: Math.max(...state.bounds.getSize(new Vector3()).toArray()) * 1.1, direction: mode === "exploded" ? new Vector3(0.8, 0.8, 1.8) : new Vector3(0.8, 0.3, 1.8) };
+    return { ...state, center, direction: mode === "exploded" ? new Vector3(0.8, 0.8, 1.8) : new Vector3(0.8, 0.3, 1.8) };
   }
 }

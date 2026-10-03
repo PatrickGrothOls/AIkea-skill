@@ -18,9 +18,10 @@ and installation guidance. The audit below records the superseded STL approach.
 ## Current state
 
 The detailed white CAD viewer supersedes the simplified inline STL previews.
-It includes assembled, exploded and hinge-cup close-up views, plus a door toggle.
-Local Chrome checks pass, including a narrow phone-size viewport. Public hosting
-and final branch verification are in progress. PR #1 remains unmerged.
+It includes assembled and exploded views plus a door toggle. All machining stays
+in the model; the page instructs visitors to zoom in to see it.
+The demo is published on GitHub Pages. The simplified two-view interface is
+being verified before updating that deployment. PR #1 remains unmerged.
 
 ## Audit log
 
@@ -66,7 +67,7 @@ machining details. This follow-up supersedes those inline STL blocks.
 - [x] Build a static white viewer using the existing shared explosion layout.
 - [x] Add assembled, exploded and machining close-up controls.
 - [x] Verify exact source/mesh provenance, privacy, desktop and phone layouts.
-- [ ] Publish a reviewable demo and replace the README links.
+- [x] Publish a reviewable demo and replace the README links.
 
 Current follow-up state: local implementation and browser verification complete. Purchased vendor hardware
 remains excluded. Machining geometry is design evidence, not fabrication approval.
@@ -98,3 +99,14 @@ The static output is `viewer/showcase-dist/`; only that output plus the project
 license belongs on the Pages publishing branch. No server, credentials, analytics,
 CNC source files or private evidence are required. The model is inspection geometry,
 not an approved manufacturing package. New source modules each stay under 150 lines.
+
+Live demo: https://patrickgrothols.github.io/AIkea-skill/
+
+The simplified interface builds successfully and all 74 viewer tests pass.
+The model asset is byte-for-byte unchanged. Updated README imagery shows
+ordinary zoom in the exploded view, with no separate machining control.
+
+16. Patrick clarified that machining should not appear optional. Removed the
+    separate detail button and its camera/isolation mode, retaining all original
+    geometry. Added the exact instruction: “Zoom in to see the machining details.”
+    Old detail links now open the assembled model. README links follow the same UX.

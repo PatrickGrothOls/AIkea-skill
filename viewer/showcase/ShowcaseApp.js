@@ -8,7 +8,7 @@ class ShowcaseApp {
     this.doors = document.querySelector("#doors");
     this.buttons = [...document.querySelectorAll("[data-pose]")];
     const requested = new URLSearchParams(location.search).get("view");
-    this.mode = ["exploded", "detail"].includes(requested) ? requested : "assembled";
+    this.mode = requested === "exploded" ? requested : "assembled";
     this.view = new ShowcaseScene(document.querySelector("#stage"));
     this.model = new ShowcaseModel();
     // One external boundary handles download, decompression and invalid model data.
@@ -30,13 +30,10 @@ class ShowcaseApp {
   }
 
   update() {
-    const detail = this.mode === "detail";
-    this.doors.disabled = detail;
     for (const button of this.buttons) button.setAttribute("aria-pressed", String(button.dataset.pose === this.mode));
     const captions = {
       assembled: this.doors.checked ? "84 machined panels · doors shown" : "84 machined panels · doors hidden to show the interior",
       exploded: "Panels separated for inspection · not an assembly sequence",
-      detail: "Inside face of a door · actual hinge cup and fixing holes",
     };
     document.querySelector("#caption").textContent = captions[this.mode];
     this.view.frame(this.model.pose(this.mode, this.doors.checked));

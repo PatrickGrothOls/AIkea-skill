@@ -23,14 +23,13 @@ design previews.*
 ### Explore the real model
 
 [Open the assembled wardrobe](https://patrickgrothols.github.io/AIkea-skill/) ·
-[Explore the exploded view](https://patrickgrothols.github.io/AIkea-skill/?view=exploded) ·
-[Inspect the machining](https://patrickgrothols.github.io/AIkea-skill/?view=detail)
+[Explore the exploded view](https://patrickgrothols.github.io/AIkea-skill/?view=exploded)
 
-Rotate and zoom in the interactive viewer. Its 84 white panels preserve the
+Zoom in to see the machining details. The viewer’s 84 white panels preserve the
 actual holes, pockets and grooves from the CAD model. Toggle the doors to see
 inside. Purchased hardware is omitted; this example is not a fabrication release.
 
-[![White CAD door showing its recessed hinge cup and fixing holes.](docs/images/wardrobe-machining.jpg)](https://patrickgrothols.github.io/AIkea-skill/?view=detail)
+[![Zoomed white CAD model showing panel drilling and grooves.](docs/images/wardrobe-cad.jpg)](https://patrickgrothols.github.io/AIkea-skill/)
 
 ## From the whole cabinet to every part
 

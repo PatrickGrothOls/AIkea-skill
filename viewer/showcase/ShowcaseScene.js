@@ -56,20 +56,17 @@ export class ShowcaseScene {
     this.currentPose = pose;
     const verticalFov = this.camera.fov * Math.PI / 180;
     const horizontalFov = 2 * Math.atan(Math.tan(verticalFov / 2) * this.camera.aspect);
-    let distance = pose.span / (2 * Math.tan(Math.min(verticalFov, horizontalFov) / 2));
-    if (!pose.detail) {
-      const backward = pose.direction.clone().normalize();
-      const right = new Vector3().crossVectors(this.camera.up, backward).normalize();
-      const up = new Vector3().crossVectors(backward, right);
-      distance = 0;
-      for (const x of [pose.bounds.min.x, pose.bounds.max.x]) {
-        for (const y of [pose.bounds.min.y, pose.bounds.max.y]) {
-          for (const z of [pose.bounds.min.z, pose.bounds.max.z]) {
-            const offset = new Vector3(x, y, z).sub(pose.center);
-            distance = Math.max(distance, offset.dot(backward) + Math.max(
-              Math.abs(offset.dot(right)) / Math.tan(horizontalFov / 2),
-              Math.abs(offset.dot(up)) / Math.tan(verticalFov / 2)));
-          }
+    let distance = 0;
+    const backward = pose.direction.clone().normalize();
+    const right = new Vector3().crossVectors(this.camera.up, backward).normalize();
+    const up = new Vector3().crossVectors(backward, right);
+    for (const x of [pose.bounds.min.x, pose.bounds.max.x]) {
+      for (const y of [pose.bounds.min.y, pose.bounds.max.y]) {
+        for (const z of [pose.bounds.min.z, pose.bounds.max.z]) {
+          const offset = new Vector3(x, y, z).sub(pose.center);
+          distance = Math.max(distance, offset.dot(backward) + Math.max(
+            Math.abs(offset.dot(right)) / Math.tan(horizontalFov / 2),
+            Math.abs(offset.dot(up)) / Math.tan(verticalFov / 2)));
         }
       }
     }
