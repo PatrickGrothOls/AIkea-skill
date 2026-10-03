@@ -329,3 +329,27 @@ current in-app browser. The original frozen state was not conclusively reproduce
     model orientation; LED glow returned after release. No renderer errors were
     reported. Saved the live screenshot and left the refreshed viewer open.
     The privacy scan reports zero findings. Phone interaction remains unverified.
+
+## Consistent illumination during motion
+
+Patrick reports residual flicker. Remove the drag/rest rendering switch introduced
+in the previous iteration and the screen-space occlusion pass. Preserve all CAD
+geometry, real lights, LED glow, depth precision and batched input rendering.
+
+- [x] Remove alternate moving/resting render modes and cached SSAO state.
+- [x] Soften the bloom cutoff for narrow, partially covered LED pixels.
+- [x] Verify rotation, zoom, glow and rendering tests.
+- [ ] Publish and inspect the updated live view.
+
+42. The previous optimization deliberately changed shading and glow on release,
+    creating a visible transition. Use one pipeline for every camera update.
+    Remove screen-space occlusion, which adds view-dependent noise and a second
+    full CAD geometry pass; real machined holes and grooves remain unchanged.
+    A wider bloom threshold transition reduces abrupt pixel-level glow changes.
+
+43. All 76 tests and the production build pass. Local rotation and reset controls
+    remain responsive, the LED glow is present after movement, and no renderer
+    errors were reported. Removed obsolete SSAO synchronization and interaction
+    mode state rather than retaining unused branches. The exact residual flicker
+    on the user device remains to be confirmed; screenshots alone do not prove
+    temporal stability.

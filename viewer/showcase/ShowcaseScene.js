@@ -1,11 +1,10 @@
-/** Scope: Render white CAD with cavity shading and frame inspection poses responsively. */
+/** Scope: Render white CAD with consistent lighting and responsive inspection poses. */
 import { ACESFilmicToneMapping, AmbientLight, Color, DirectionalLight, HemisphereLight, PerspectiveCamera, Scene, Vector2, Vector3, WebGLRenderer } from "three";
 import { ShowcaseRenderQueue } from "./ShowcaseRenderQueue.js";
 import { ShowcaseDepthRange } from "./ShowcaseDepthRange.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
-import { SSAOPass } from "three/addons/postprocessing/SSAOPass.js";
 import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
 import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 
@@ -29,24 +28,22 @@ export class ShowcaseScene {
       this.scene.add(light);
     }
     this.composer = new EffectComposer(this.renderer);
-    this.occlusion = new SSAOPass(this.scene, this.camera, 1, 1);
-    this.depthRange = new ShowcaseDepthRange(this.camera, this.occlusion);
+    this.depthRange = new ShowcaseDepthRange(this.camera);
     // Canvas antialiasing does not apply to offscreen postprocessing targets.
     const samples = Math.min(4, this.renderer.capabilities.maxSamples);
     for (const target of [this.composer.renderTarget1, this.composer.renderTarget2]) target.samples = samples;
-    this.occlusion.kernelRadius = 0.035;
     this.composer.addPass(new RenderPass(this.scene, this.camera));
-    this.composer.addPass(this.occlusion);
     // HDR threshold isolates the emissive strips from white panels and brass.
-    this.composer.addPass(new UnrealBloomPass(new Vector2(1, 1), 0.35, 0.25, 2));
+    const bloom = new UnrealBloomPass(new Vector2(1, 1), 0.35, 0.25, 2);
+    // A soft threshold avoids abrupt glow switching as narrow strips cross pixels.
+    bloom.highPassUniforms.smoothWidth.value = 1;
+    this.composer.addPass(bloom);
     this.composer.addPass(new OutputPass());
-    this.renderQueue = new ShowcaseRenderQueue(moving => this.draw(moving), callback => requestAnimationFrame(callback));
+    this.renderQueue = new ShowcaseRenderQueue(() => this.draw(), callback => requestAnimationFrame(callback));
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.controls.minDistance = 0.06;
     this.controls.maxDistance = 25;
     this.controls.addEventListener("change", () => this.render());
-    this.controls.addEventListener("start", () => this.renderQueue.setInteracting(true));
-    this.controls.addEventListener("end", () => this.renderQueue.setInteracting(false));
     this.observer = new ResizeObserver(() => this.resize());
     this.observer.observe(host);
     this.resize();
@@ -92,10 +89,9 @@ export class ShowcaseScene {
     this.renderQueue.request();
   }
 
-  draw(moving) {
-    // Keep full CAD and real lights during drag; defer costly screen effects until release.
+  draw() {
+    // Use the same pipeline at rest and in motion; no shading/glow switch on release.
     if (this.currentPose) this.depthRange.update(this.currentPose.bounds);
-    if (moving) this.renderer.render(this.scene, this.camera);
-    else this.composer.render();
+    this.composer.render();
   }
 }
