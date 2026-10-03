@@ -41,3 +41,7 @@ No deployment or changes to manufacturing geometry are included.
    panel positions are preserved. The CAD source is unchanged.
 7. Normalize display coordinates to 1:25 scale for the native viewer, keeping
    both poses on the same scale. The README explicitly labels scaled previews.
+8. Closer interaction testing superseded the axis assumption in entry 6:
+   the native ground plane is Z-up. Restored CAD orientation and normalized to
+   1:12.5 instead; the Y-up experiment intersected the viewer ground plane.
+   Both meshes have zero degenerate triangles and consistent outward winding.
