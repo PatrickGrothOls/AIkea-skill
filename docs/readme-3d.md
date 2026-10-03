@@ -18,6 +18,7 @@ and installation guidance. The audit below records the superseded STL approach.
 ## Current state
 
 The detailed CAD viewer supersedes the simplified inline STL previews.
+Its panels and applied frames now use the packaged wood texture.
 It includes all 84 original panels, 17 applied frame pieces and 507 saved hardware
 components (Cabineos excluded), plus four proposed brass pulls, with assembled and
 exploded views, a door-panel toggle and warm interior lighting with an on/off control. All machining stays
@@ -465,7 +466,7 @@ high-resolution README images, keeping the approved lighting and real geometry.
 - [x] Apply the existing packaged wood maps with shared textures and panel grain coordinates.
 - [x] Verify assembled, closed, exploded and machining views, plus controls.
 - [x] Regenerate all four high-resolution README images.
-- [ ] Publish and verify the viewer; push source and branch documentation to PR #1.
+- [x] Publish and verify the viewer; push source and branch documentation to PR #1.
 
 57. Reuse the three existing CC0 plywood maps (about 2.2 MB total), shared by all
     wood panels and frames. Keep metal fittings and brass handles separate.
@@ -479,3 +480,9 @@ high-resolution README images, keeping the approved lighting and real geometry.
     exports: wood grain, brass handles and real machining remain visible. No
     browser warnings or errors were recorded in the local viewer check. The
     existing bundle-size advisory remains; the model binary is unchanged.
+
+59. Published source 98e3691 through Pages 41b86c3; deployment 37156064103
+    succeeded. Reloaded the live page and visually verified textured wood with
+    golden illumination and no browser warnings/errors. All four GitHub README
+    images load at 3600 × 2700. Source and branch documentation are on PR #1;
+    the PR is unmerged and the default-branch README has not changed.
