@@ -20,7 +20,7 @@ and installation guidance. The audit below records the superseded STL approach.
 The detailed white CAD viewer supersedes the simplified inline STL previews.
 It includes all 84 original panels, 17 applied frame pieces and 507 saved hardware
 components (Cabineos excluded), plus four proposed brass pulls, with assembled and
-exploded views plus a door-panel toggle. All machining stays
+exploded views, a door-panel toggle and warm interior lighting with an on/off control. All machining stays
 in the model; the page instructs visitors to zoom in to see it.
 The demo is published on GitHub Pages. The simplified two-view interface and
 zoom instruction were verified on the live deployment. PR #1 remains unmerged.
@@ -413,3 +413,14 @@ Patrick requests visible light on the surrounding panels, beyond glowing strips.
     `3f8a750`; deployment `37153070520` succeeded. Inspected the live golden
     illumination, checked zoom/reset and on/off controls, captured a screenshot
     and left the public viewer open.
+
+## README lighting preview
+
+- [x] Capture the approved golden illumination from the published viewer.
+- [x] Add the linked image and describe the Interior lighting control.
+- [ ] Verify the rendered README and push documentation.
+
+52. Patrick requested adding the approved lighting to the README. Added a
+    screenshot of the live viewer, linked to the interactive model, and concise
+    on/off instructions. Retained existing machining and framed-door images.
+    Labelled lighting as illustrative rather than product output validation.
