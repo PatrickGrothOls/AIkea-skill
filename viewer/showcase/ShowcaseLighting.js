@@ -7,7 +7,7 @@ export class ShowcaseLighting {
     RectAreaLightUniformsLib.init();
     this.lights = [];
     this.enabled = true;
-    this.emitter = new MeshStandardMaterial({color: 0xfff9ed, emissive: 0xfff5df, emissiveIntensity: 6});
+    this.emitter = new MeshStandardMaterial({color: 0xffebd0, emissive: 0xffd6a0, emissiveIntensity: 6});
     for (const part of records.filter(record => record.name.endsWith("_light"))) {
       part.node.traverse(node => { if (node.isMesh) this.attach(node); });
     }
@@ -28,7 +28,7 @@ export class ShowcaseLighting {
     const {min, max} = geometry.boundingBox;
     // Three.js area-light dimensions ignore parent scale; convert CAD mm to world metres.
     const scale = mesh.getWorldScale(new Vector3());
-    const light = new RectAreaLight(0xfff5df, 1, (max.x - min.x) * scale.x, (max.y - min.y) * scale.y);
+    const light = new RectAreaLight(0xffd6a0, 1, (max.x - min.x) * scale.x, (max.y - min.y) * scale.y);
     // Illustrative output per metre, balanced for this preview exposure, not a product rating.
     light.power = 3 * light.width;
     light.position.set((min.x + max.x) / 2, (min.y + max.y) / 2, max.z + 0.5);

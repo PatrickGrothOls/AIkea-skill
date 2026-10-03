@@ -386,3 +386,7 @@ Patrick requests visible light on the surrounding panels, beyond glowing strips.
     light direction, unchanged CAD vertices, and on/off persistence across poses.
     Browser on/off, assembled/exploded and door controls work without reported
     renderer errors. All touched code files remain below 150 lines.
+
+48. Patrick requested a more golden, warm light. Set the diffuser emission and
+    cast area light to the same soft golden hue, preserving the white cabinet
+    material and existing output. Verify the combined result before final delivery.
