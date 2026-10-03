@@ -20,8 +20,8 @@ and installation guidance. The audit below records the superseded STL approach.
 The detailed white CAD viewer supersedes the simplified inline STL previews.
 It includes assembled and exploded views plus a door toggle. All machining stays
 in the model; the page instructs visitors to zoom in to see it.
-The demo is published on GitHub Pages. The simplified two-view interface is
-being verified before updating that deployment. PR #1 remains unmerged.
+The demo is published on GitHub Pages. The simplified two-view interface and
+zoom instruction were verified on the live deployment. PR #1 remains unmerged.
 
 ## Audit log
 
@@ -110,3 +110,8 @@ ordinary zoom in the exploded view, with no separate machining control.
     separate detail button and its camera/isolation mode, retaining all original
     geometry. Added the exact instruction: “Zoom in to see the machining details.”
     Old detail links now open the assembled model. README links follow the same UX.
+
+17. Published the simplified UI to the existing Pages branch without rewriting
+    history. Deployment succeeded; live browser verification confirms the exact
+    zoom instruction and only Assembled/Exploded controls. Privacy check: zero
+    findings. All 74 tests pass; production build passes.
