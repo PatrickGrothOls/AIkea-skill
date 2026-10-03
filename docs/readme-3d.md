@@ -227,7 +227,7 @@ No product has been selected and no fixing holes or fabrication approval are imp
 
 - [x] Build four valid CAD handle concepts and retain the existing model geometry.
 - [x] Verify placement, brass appearance and door-owned visibility/explosion.
-- [ ] Publish, capture the live result and record validation.
+- [x] Publish, capture the live result and record validation.
 
 30. A slim round pull adds the requested brass accent without obscuring the frame.
     All four doors are left-hinged, so pulls sit on their right-hand stiles. The
@@ -238,3 +238,8 @@ No product has been selected and no fixing holes or fabrication approval are imp
     confirms four brass pulls, aligned first-three placement, and handles hiding
     with their doors. Tests verify door-owned explosion and exact restoration.
     No fixing holes were added; the product and mounting remain to be selected.
+
+32. Published source `4954daa` through Pages commit `bc924c7`. Deployment
+    `37141935858` succeeded. Live browser inspection confirms all four brass pulls
+    on the framed doors and the updated component caption. Saved the live screenshot.
+    Privacy check reports zero findings. Source PR remains unmerged.
