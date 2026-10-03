@@ -1,0 +1,4 @@
+interface:
+  display_name: "AIkea Build Drawers"
+  short_description: "Build and place cabinet drawers"
+  default_prompt: "Use $aikea-build-drawers to add and review a drawer in my generated AIkea cabinet."

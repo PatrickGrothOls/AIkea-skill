@@ -1,0 +1,247 @@
+---
+name: aikea-review-unit
+description: Build and show AIkea furniture through verified Blender presentations with matching CAD inspection models. Use after local unit folders are generated or when reviewing how approved assemblies meet.
+---
+
+# AIkea review unit
+
+Before any client-facing message, including progress commentary, read
+[../aikea/references/client-conversation.md](../aikea/references/client-conversation.md)
+completely and apply it throughout this stage.
+
+## Goal
+
+Give the client a clear view of the real generated parts as physical assemblies,
+so visible form, proportions, and contact between approved assemblies can be
+checked before the design is repeated or manufacturing work continues.
+
+## Select the review route
+
+Apply [the manufacturing process](../aikea-design-furniture/references/manufacturing-process.md)
+to the current complete tree before claiming CNC compatibility. Run its face audit
+and reconcile missing hardware holes and connection requirements; a valid GLB
+alone does not establish a one-face process. Keep secondary finishing explicit.
+
+For any tree containing drawers, reconcile each one against the
+[complete installation contract](../aikea-build-drawers/references/complete-drawer-installation.md):
+its own runner set, any required spacers, actual host/drawer mounting cuts and
+current clearance evidence must be present. This also applies to custom and
+exploded views. If absent, return to drawer installation before delivering the
+drawer design; do not present bare boxes as completed drawers or release CNC files.
+
+Inspect the actual root builder and active brief. For a project-authored or mixed
+tree, use [the common project contract](../aikea-design-furniture/references/authored-assemblies.md)
+and [closed construction checks](references/construction-position.md): run
+`build_furniture_design.py <project> --assembly <root-id>` and inspect its report.
+For registered component states, run `generate_complete_assembly_review.py` with
+that same root and the complete feature selectors from its result. Serve the real
+GLB through the required Blender presentation below; do not require the legacy
+wardrobe calculator or invent a standard cabinet run. Read [visual presentation](references/visual-review.md)
+for useful viewing angles and client communication, applying wardrobe-specific
+steps only when the actual design is a configured wardrobe.
+
+Show what is complete and what remains unresolved. Apply the user's actual review
+and repetition boundary; a single custom piece need not wait on a run-wide door
+proposal. Preserve the existing left-hinge proposal for applicable fitted doors.
+Use that same real root ID for inventory and the fabrication gate below.
+
+Before assigning presentation materials, apply
+[material appearance](references/material-appearance.md): broad faces, exposed
+cores and edge treatments must come from the saved build specification and its
+material/finishing lists. Unspecified or invented finishes block delivery as a
+finished-product representation, even if Blender geometry checks pass.
+
+Before opening any client-facing furniture viewer, follow
+[the Blender bake workflow](references/blender-presentation.md). Its command
+automatically provisions the required background Blender engine and compatible
+Python; the client need not install or operate Blender. The viewer rejects raw
+CAD, missing/failed bake reports, stale model hashes and reduced-quality test
+bakes. There is no raw-preview fallback or bypass flag. If baking cannot finish,
+retain the previous verified presentation and report the unfinished update.
+Require coverage, geometry and `lighting-signal.json` before showing the baked
+model. A completed Blender job or geometry PASS does not establish a usable
+image. An empty diffuse atlas blocks delivery; inspect source material metalness
+and lighting, correct the cause and rebake. Never mark that presentation complete.
+Use the shared broad frontal studio lighting and representative LED defaults for
+every new presentation. Do not recreate a project-specific lighting rig. Preserve
+verified product output and explicitly requested lighting overrides. Check that
+compartments are readable as well as the exterior before delivery.
+Every GLB generated in the sequences below is a bake input, not a presentation.
+Before a complete-furniture delivery, reconcile the actual exported parts and
+machined solids with the requested features. For every door require the full
+hinges (cup/arm and plates), not holes alone. For each lighting run check its
+full usable span and justified end allowances, and follow its feed through real
+aligned cuts in every board down into the base service space. Use the owning
+door/lighting skills to finish missing work. A bright render, hardware download
+or groove-fit check does not complete those installations. Keep unresolved work
+open and continue the supported recovery paths; do not substitute a partial
+model for the requested complete result.
+Use the original material GLB for open or exploded inspection; baked assembled
+shadows do not follow moved
+parts. Preserve all CAD geometry and the selected material identities.
+
+The following first-cabinet, structural-base, full-wardrobe and drawer-run
+sequences apply to the standard wardrobe configurator.
+
+## Present the first cabinet
+
+1. Resolve the active project and require its completed `aikea.yaml` and generated
+   `assemblies/` folders.
+2. Read [references/visual-review.md](references/visual-review.md) completely.
+3. Resolve whether the first cabinet has a fitted hinged door. When it does, load
+   `$aikea-build-doors` and use its checked closed and open cabinet artifacts for
+   this review. The visible door panel, purchased hinges, and paired panel work
+   must come from that one completed door relationship.
+4. For an intentionally doorless assembly, run
+   `python <skill-directory>/scripts/generate_unit_mockup.py <project>/aikea.yaml`.
+5. For a cabinet with any registered features, generate the closed complete tree:
+
+   ```bash
+   python <skill-directory>/scripts/generate_complete_assembly_review.py \
+     <project>/aikea.yaml --assembly <cabinet-id> \
+     --output <project>/assemblies/<cabinet-id>/review/complete-closed.glb
+   ```
+
+   Generate an exact alternate feature state through the same command. For the
+   first fitted-door review, add
+   `--state <cabinet-id>/door_hinges=open` and write `complete-open.glb`. Never
+   create project-local scripts to combine features; their registered review
+   adapters contribute to this generic traversal. Read the command's generated
+   `.review.json` for every rendered item and its placed bounds. Do not create a
+   project-local inspection or collision script. The complete-tree report plus
+   each feature's saved fit, movement, and reservation reports are the evidence
+   for visual review; manufacturing authority remains with the later fabrication
+   readiness gate.
+6. Apply the Blender workflow to the generated complete GLB, then serve its
+   verified presentation and matching source model:
+
+   ```bash
+   python <skill-directory>/scripts/serve_unit_review.py <presentation>/assembled.glb \
+     --inspection-model <matching-source-materials.glb> \
+     --review-data <project>/reviews/door-openings.json
+   ```
+
+   Leave the local viewer available while the client reviews the cabinet. Show
+   both checked states when the completed door supplies closed and open artifacts.
+7. Let the loaded model reveal the run-wide opening proposal. It states that
+   single doors hinge on the left unless marked otherwise, labels each cabinet,
+   and ends with `Approve door openings` and `Change a door`.
+8. Stop with the project awaiting that visual decision. An approval confirms the
+   saved proposal. A change request returns to the conversation so the client can
+   name the cabinet and preferred side before a new checked review is produced.
+   Do not produce the other cabinets until the client approves this one.
+
+## Present the structural base
+
+After the first cabinet is approved and the structural base folders exist, read
+[references/assembly-positioning.md](references/assembly-positioning.md), then run
+`python <skill-directory>/scripts/generate_base_review.py <project>/aikea.yaml` and
+require its generated position check to pass before presenting the result.
+Show the complete base by itself from the angles that explain its construction,
+then show the first cabinet seated on its matching base module. Keep the review
+focused on the physical result and the next decision the client can make.
+
+## Present the full wardrobe
+
+After the first cabinet and its base relationship are approved, run
+`python <skill-directory>/scripts/generate_full_wardrobe_review.py <project>/aikea.yaml`
+and inspect both the legacy relationship report and `construction_position_status`.
+An invalid shared result exits 2 and retains the GLB for inspection: show its gaps
+and resolve them before requesting fabrication approval. An open/presentation
+view has no new closed-geometry status. Follow [the shared evidence rules](references/construction-position.md).
+Bake the generated GLB through the required Blender workflow and open the checked
+presentation in the same viewer. Present all saved cabinets with their doors closed on the complete base
+so the client can judge the finished facade, spacing, and overall proportions.
+Ask whether that complete visible result looks right before moving into the next
+construction or manufacturing stage.
+
+When the client wants to inspect the complete run differently, treat every
+cabinet door as an independent review module. Generate the same approved wardrobe
+with each requested door closed, open, or removed from view. Use `--doors open`
+for a uniform open review, or repeat `--door <assembly-id>=<state>` for specific
+cabinets. These are alternate views of unchanged parts and physical positions,
+so the verified closed assembly remains the fit and manufacturing reference.
+
+Communicate as a carpenter guiding a client through the physical result. Say what
+the current work gives them and why it matters; keep implementation instructions
+and standard construction details inside the skill.
+
+## Present a cabinet drawer
+
+When `$aikea-build-drawers` has generated a cabinet-owned drawer child, run
+`python <skill-directory>/scripts/generate_drawer_wardrobe_review.py <project>/aikea.yaml --assembly <cabinet-id> --drawer-state <closed|open|removed>`.
+Require its drawer position report and the complete wardrobe position report to
+pass. Show the door-removed cabinet close-up first, then the same composed
+cabinet in the complete furniture run. Treat the closed drawer as the physical
+fit authority and the open drawer as its presentation state. The open view must
+also pass its runner movement report. Use the removed state to inspect the exact
+cabinet-owned runner CAD in its checked mounting frames.
+
+For cabinets with repeated drawer children, use
+`generate_drawer_collection_wardrobe_review.py`. Assign drawer extensions and
+door states independently so the client can reveal the useful cabinets without
+changing any checked closed geometry. It accepts the same `--doors` default and
+repeated `--door <assembly-id>=<state>` choices as the full wardrobe review.
+
+For the first KA 4532 drawer fitted with exact article 13952 spacers, save the
+closed/open physical proof through the same recursive tree:
+
+`python <skill-directory>/scripts/generate_hettich_ka_4532_spacer_proof.py <project>/aikea.yaml --assembly <cabinet-id> --output-directory <review-directory>`
+
+If a fitted door is present, add `--state <cabinet-id>/door_hinges=open` so both
+drawer states are compared with the same unobstructed door state. Require the
+saved `ka4532-spacer-movement-collision-check.json` to have no failed checks.
+Its swept AABB result is conservative conflict evidence, not an exact collision
+claim. The report must retain `manufacturing_authority: false` until the spacer
+fixing authority is complete.
+
+## Inspect drawer locking devices
+
+When the client needs to inspect the moving locking devices before their mounting
+transform is resolved, export the verified native CAD separately:
+
+`python <skill-directory>/scripts/generate_locking_device_review.py <output.glb> --hardware-directory <directory-containing-the-downloaded-STEP-files>`
+
+This shows the verified handed T51.7601 parts in their vendor coordinate frames.
+It is an inspection view only: do not place it on the drawer or represent it as
+an installed rail relationship until the hardware-specific mounting transform is
+also verified.
+
+## Responsibility boundary
+
+For an exploded view, follow [exploded inspection](references/exploded-inspection.md).
+Use the shared viewer's assembly selector and separation slider on the existing
+GLB. Show whole pieces and an appropriate subassembly; keep the closed construction
+and its approval separate from this inspection pose.
+
+This stage places and displays the parts returned by generated assembly builders.
+It does not rebuild or alter their local geometry. Base review may isolate one
+module beneath the first cabinet to make their contact legible, while the complete
+base remains the authority for the full run. Full-wardrobe review maps every
+approved assembly from its own local zero into the shared project coordinates.
+Approved visible results become the reference for completing construction and
+manufacturing stages.
+
+## Grant fabrication readiness
+
+After the client accepts the complete design, or asks for a parts breakdown,
+read [references/physical-item-counting.md](references/physical-item-counting.md)
+and run its counter on the closed tree. Present known panel and hardware
+quantities plus unresolved requirements before proceeding to pricing. The draft
+inventory does not grant fabrication readiness or supply a selling price.
+
+Read [references/fabrication-readiness.md](references/fabrication-readiness.md)
+before making any fabrication claim. After the complete closed assembly is
+approved, run
+`python <skill-directory>/scripts/check_fabrication_readiness.py <project>/aikea.yaml --assembly <root-id>`.
+Only its `fabrication-ready` result grants that state. A valid GLB, a passed
+position report, or visual approval alone is insufficient; every recursive
+part, joint, machining declaration, purchased item, STEP, drawing, BOM, cut-list
+row, feature proof, and current model checksum must pass together.
+
+## Make it real and CNC quotes
+
+The quote preferences page is included. Customer sending remains unavailable
+until the hosted service is deployed and verified, and will initially require
+an invitation. Painting/installation outreach and ordering are not implemented.
+Read [CNC quote availability and setup](references/cnc-quotes.md) before offering submission.

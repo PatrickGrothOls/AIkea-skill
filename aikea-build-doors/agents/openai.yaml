@@ -1,0 +1,4 @@
+interface:
+  display_name: "AIkea Build Doors"
+  short_description: "Build fitted doors with exact hinges"
+  default_prompt: "Use $aikea-build-doors to fit and review a hinged door on my generated AIkea cabinet."

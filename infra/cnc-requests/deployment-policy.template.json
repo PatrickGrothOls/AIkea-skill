@@ -1,0 +1,111 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CncSourceUploads",
+      "Effect": "Allow",
+      "Action": ["s3:PutObject"],
+      "Resource": [
+        "arn:aws:s3:::${ACCEPTED_BUCKET}/aikea/cnc-requests/*/source-repository.zip",
+        "arn:aws:s3:::${ACCEPTED_BUCKET}/aikea/cnc-requests/*/preview.png",
+        "arn:aws:s3:::${ACCEPTED_BUCKET}/aikea/cnc-requests/*/request.json",
+        "arn:aws:s3:::${ACCEPTED_BUCKET}/aikea/cnc-requests/*/ready.json"
+      ]
+    },
+    {
+      "Sid": "InspectCncRequests",
+      "Effect": "Allow",
+      "Action": ["s3:GetObject"],
+      "Resource": "arn:aws:s3:::${ACCEPTED_BUCKET}/aikea/cnc-requests/*"
+    },
+    {
+      "Sid": "ListCncRequests",
+      "Effect": "Allow",
+      "Action": ["s3:ListBucket"],
+      "Resource": "arn:aws:s3:::${ACCEPTED_BUCKET}",
+      "Condition": {"StringLike": {"s3:prefix": ["aikea/cnc-requests/*"]}}
+    },
+    {
+      "Sid": "ConfigureExistingBucketHook",
+      "Effect": "Allow",
+      "Action": ["s3:GetBucketNotification", "s3:PutBucketNotification"],
+      "Resource": "arn:aws:s3:::${ACCEPTED_BUCKET}"
+    },
+    {
+      "Sid": "ManageCncQueues",
+      "Effect": "Allow",
+      "Action": ["sqs:CreateQueue", "sqs:DeleteQueue", "sqs:GetQueueUrl", "sqs:GetQueueAttributes", "sqs:SetQueueAttributes", "sqs:ListQueueTags", "sqs:TagQueue", "sqs:UntagQueue"],
+      "Resource": ["arn:aws:sqs:${REGION}:${ACCOUNT_ID}:aikea-cnc-requests", "arn:aws:sqs:${REGION}:${ACCOUNT_ID}:aikea-cnc-requests-dead-letters"]
+    },
+    {
+      "Sid": "ManageCncEmailTopic",
+      "Effect": "Allow",
+      "Action": ["sns:CreateTopic", "sns:DeleteTopic", "sns:GetTopicAttributes", "sns:SetTopicAttributes", "sns:GetSubscriptionAttributes", "sns:SetSubscriptionAttributes", "sns:Unsubscribe", "sns:ListSubscriptionsByTopic", "sns:TagResource", "sns:UntagResource", "sns:ListTagsForResource"],
+      "Resource": "arn:aws:sns:${REGION}:${ACCOUNT_ID}:aikea-cnc-requests"
+    },
+    {
+      "Sid": "SubscribeConfiguredRecipientOnly",
+      "Effect": "Allow",
+      "Action": ["sns:Subscribe"],
+      "Resource": "arn:aws:sns:${REGION}:${ACCOUNT_ID}:aikea-cnc-requests",
+      "Condition": {"StringEquals": {"sns:Protocol": "email", "sns:Endpoint": "${NOTIFICATION_EMAIL}"}}
+    },
+    {
+      "Sid": "ManageCncWorkerRole",
+      "Effect": "Allow",
+      "Action": ["iam:CreateRole", "iam:GetRole", "iam:DeleteRole", "iam:PutRolePolicy", "iam:GetRolePolicy", "iam:DeleteRolePolicy", "iam:ListRolePolicies", "iam:ListAttachedRolePolicies", "iam:TagRole", "iam:UntagRole"],
+      "Resource": "arn:aws:iam::${ACCOUNT_ID}:role/aikea-cnc-requests-worker"
+    },
+    {
+      "Sid": "PassCncRoleToLambda",
+      "Effect": "Allow",
+      "Action": ["iam:PassRole"],
+      "Resource": "arn:aws:iam::${ACCOUNT_ID}:role/aikea-cnc-requests-worker",
+      "Condition": {"StringEquals": {"iam:PassedToService": "lambda.amazonaws.com"}}
+    },
+    {
+      "Sid": "ManageCncWorker",
+      "Effect": "Allow",
+      "Action": ["lambda:CreateFunction", "lambda:GetFunction", "lambda:GetFunctionConfiguration", "lambda:GetFunctionCodeSigningConfig", "lambda:UpdateFunctionCode", "lambda:UpdateFunctionConfiguration", "lambda:DeleteFunction", "lambda:TagResource", "lambda:UntagResource", "lambda:ListTags"],
+      "Resource": "arn:aws:lambda:${REGION}:${ACCOUNT_ID}:function:aikea-cnc-requests"
+    },
+    {
+      "Sid": "CreateCncQueueTrigger",
+      "Effect": "Allow",
+      "Action": ["lambda:CreateEventSourceMapping"],
+      "Resource": "*",
+      "Condition": {"ArnEquals": {"lambda:FunctionArn": "arn:aws:lambda:${REGION}:${ACCOUNT_ID}:function:aikea-cnc-requests"}}
+    },
+    {
+      "Sid": "ManageCncQueueTrigger",
+      "Effect": "Allow",
+      "Action": ["lambda:GetEventSourceMapping", "lambda:UpdateEventSourceMapping", "lambda:DeleteEventSourceMapping"],
+      "Resource": "arn:aws:lambda:${REGION}:${ACCOUNT_ID}:event-source-mapping:*",
+      "Condition": {"ArnEquals": {"lambda:FunctionArn": "arn:aws:lambda:${REGION}:${ACCOUNT_ID}:function:aikea-cnc-requests"}}
+    },
+    {
+      "Sid": "ManageCncLogs",
+      "Effect": "Allow",
+      "Action": ["logs:CreateLogGroup", "logs:DeleteLogGroup", "logs:PutRetentionPolicy", "logs:DeleteRetentionPolicy", "logs:TagResource", "logs:UntagResource", "logs:ListTagsForResource", "logs:DescribeLogStreams", "logs:GetLogEvents", "logs:FilterLogEvents"],
+      "Resource": ["arn:aws:logs:${REGION}:${ACCOUNT_ID}:log-group:/aws/lambda/aikea-cnc-requests", "arn:aws:logs:${REGION}:${ACCOUNT_ID}:log-group:/aws/lambda/aikea-cnc-requests:*"]
+    },
+    {
+      "Sid": "ManageCncFailureAlarm",
+      "Effect": "Allow",
+      "Action": ["cloudwatch:PutMetricAlarm", "cloudwatch:DeleteAlarms", "cloudwatch:DescribeAlarms", "cloudwatch:ListTagsForResource", "cloudwatch:TagResource", "cloudwatch:UntagResource"],
+      "Resource": "arn:aws:cloudwatch:${REGION}:${ACCOUNT_ID}:alarm:aikea-cnc-requests-failed-delivery"
+    },
+    {
+      "Sid": "DeployAndRecoverCncStack",
+      "Effect": "Allow",
+      "Action": ["cloudformation:CreateStack", "cloudformation:UpdateStack", "cloudformation:DeleteStack", "cloudformation:CreateChangeSet", "cloudformation:DescribeChangeSet", "cloudformation:ExecuteChangeSet", "cloudformation:DeleteChangeSet", "cloudformation:DescribeStacks", "cloudformation:DescribeStackEvents", "cloudformation:ListStackResources", "cloudformation:GetTemplate"],
+      "Resource": "arn:aws:cloudformation:${REGION}:${ACCOUNT_ID}:stack/aikea-cnc-requests/*"
+    },
+    {
+      "Sid": "ReadDeploymentMetadata",
+      "Effect": "Allow",
+      "Action": ["logs:DescribeLogGroups", "cloudformation:ValidateTemplate", "lambda:ListEventSourceMappings"],
+      "Resource": "*"
+    }
+  ]
+}

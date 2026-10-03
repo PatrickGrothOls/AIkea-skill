@@ -1,0 +1,15 @@
+Studio Small 08 HDRI
+
+Author: Sergej Majboroda
+Source: https://polyhaven.com/a/studio_small_08
+License: CC0 1.0 Universal
+License text: https://creativecommons.org/publicdomain/zero/1.0/
+Downloaded: 2026-08-27
+
+Packaged file:
+- studio_small_08_1k.hdr
+
+SHA-256:
+f6a989f89432eb4eee3191364a9c1ceed195c4ec3544173a3c04fd96cb91d0ba
+
+The asset is bundled locally; the viewer does not access Poly Haven at runtime.

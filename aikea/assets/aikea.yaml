@@ -1,0 +1,43 @@
+schema_version: 9
+units: mm
+
+measured_space:
+  top_boundary: null
+  width_measurements: {}
+  depth_measurements: {}
+  height_measurements: []
+
+design_decisions: []
+
+design_settings:
+  fit_allowance: 2
+  fitted_dimensions:
+    width: null
+    depth: null
+    height: null
+  installation_boundaries:
+    left: null
+    right: null
+    top: null
+  door_openings: {}
+  cabinet_run:
+    cabinet_count: null
+    cabinet_width_shares: []
+    left_clearance: null
+    right_clearance: null
+    cabinet_gap: null
+    ceiling_clearance: null
+
+  base:
+    height: null
+    front: null
+    recess: null
+
+  doors:
+    gap: null
+    bottom: null
+
+  materials:
+    cabinet_panel_thickness: null
+    door_thickness: null
+    back_panel_thickness: null

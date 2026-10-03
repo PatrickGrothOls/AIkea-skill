@@ -1,0 +1,57 @@
+schema_version: 8
+units: mm
+
+measured_space:
+  top_boundary: flat
+  width_measurements:
+    bottom: 3000
+    middle: 3000
+    top: 3000
+  depth_measurements:
+    single: 600
+  height_measurements:
+    - distance_from_left: 0
+      height_from_floor: 2400
+    - distance_from_left: 1500
+      height_from_floor: 2400
+    - distance_from_left: 3000
+      height_from_floor: 2400
+
+design_decisions:
+  - subject: cabinet_carcass_material
+    decision: Test white cabinet panel, 18 mm
+    design_effect: Use the test fixture cabinet construction.
+    client_statement: Use the test white cabinet panel.
+  - subject: door_front_material
+    decision: Test white door panel, 18 mm
+    design_effect: Use the test fixture door construction.
+    client_statement: Use the test white door panel.
+  - subject: back_panel_material
+    decision: Test white back panel, 6 mm
+    design_effect: Use the test fixture back-panel construction.
+    client_statement: Use the test white back panel.
+
+design_settings:
+  fit_allowance: 2
+  fitted_dimensions:
+    width: true
+    depth: false
+    height: true
+  cabinet_run:
+    cabinet_count: 2
+    cabinet_width_shares: [1, 1]
+    left_clearance: 5
+    right_clearance: 5
+    cabinet_gap: 0
+    ceiling_clearance: 0
+
+  base:
+    height: 100
+
+  doors:
+    gap: 2
+
+  materials:
+    cabinet_panel_thickness: 18
+    door_thickness: 18
+    back_panel_thickness: 6

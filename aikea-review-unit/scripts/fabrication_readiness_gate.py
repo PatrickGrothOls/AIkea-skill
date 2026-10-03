@@ -1,0 +1,43 @@
+"""Scope: Combine recursive physical checks with the required fabrication pack."""
+
+from __future__ import annotations
+
+from pathlib import Path
+from typing import Any
+
+from assembly_fabrication_checker import AssemblyFabricationChecker
+from drawer_layout_policy_checker import DrawerLayoutPolicyChecker
+from construction_tree_checker import ConstructionTreeChecker
+from construction_requirement_checker import ConstructionRequirementChecker
+from construction_feature_qualification import ConstructionFeatureQualification
+from fabrication_artifact_checker import FabricationArtifactChecker
+from fabrication_readiness_report import FabricationReadinessReport
+from fabrication_tree_evidence import FabricationTreeEvidenceBuilder
+
+
+class FabricationReadinessGate:
+    """Produce one authoritative readiness result without feature-specific branches."""
+
+    def __init__(self) -> None:
+        self.assembly = AssemblyFabricationChecker()
+        self.artifacts = FabricationArtifactChecker()
+        self.evidence = FabricationTreeEvidenceBuilder()
+
+    def evaluate(
+        self,
+        project_root: Path,
+        visits: tuple[Any, ...],
+    ) -> FabricationReadinessReport:
+        evidence = self.evidence.build(visits)
+        qualified, features = ConstructionFeatureQualification().resolve(project_root, evidence, visits)
+        checks = (
+            (DrawerLayoutPolicyChecker().check(project_root, visits),)
+            + ConstructionTreeChecker().check(visits, qualified)
+            + ConstructionRequirementChecker().check(visits, features)
+            + self.assembly.check(visits)
+            + self.artifacts.check(project_root, evidence, visits)
+        )
+        return FabricationReadinessReport(checks)
+
+
+__all__ = ["FabricationReadinessGate"]

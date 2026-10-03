@@ -1,0 +1,148 @@
+{
+  "schema_version": 2,
+  "vendor": "Blum",
+  "source_urls": [
+    "https://www.blum.com/us/en/services/e-services/productdatabase/",
+    "https://publications.blum.com/2024/catalogue/en/504/"
+  ],
+  "assets": [
+    {
+      "asset_id": "movento-760h5000s-runner-left",
+      "component_type": "runner-left",
+      "product_code": "760H5000S",
+      "catalog_item_number": "05083446",
+      "local_filename": "blum-movento-760h5000s-runner-left.step",
+      "download_filename": "cad48346342_runner_1_cad_bau_$sall_$acadstp_$v1.step",
+      "expected_sha256": "4f2ff807bb1d8f77fba163059b4861ce2c32189cccd128b0cabd81d6c63eebe5",
+      "state": "ready",
+      "embedded_product_codes": [
+        "760H5001S_L",
+        "T75S746M00_L"
+      ],
+      "handedness": "left",
+      "handedness_basis": "embedded-left-product-code-and-positive-x-native-frame",
+      "unresolved_reason": null,
+      "native_step_observation": {
+        "solid_count": 2,
+        "bounds_mm": {
+          "xmin": -0.00000010000000018533116,
+          "xmax": 67.27500009999706,
+          "ymin": -38.1,
+          "ymax": 12.824999999999996,
+          "zmin": -465.495,
+          "zmax": 35.00000000000001
+        }
+      }
+    },
+    {
+      "asset_id": "movento-760h5000s-runner-right",
+      "component_type": "runner-right",
+      "product_code": "760H5000S",
+      "catalog_item_number": "05083446",
+      "local_filename": "blum-movento-760h5000s-runner-right.step",
+      "download_filename": "cad49027541_runner_1_cad_bau_$sall_$acadstp_$v1.step",
+      "expected_sha256": "fa5ffe6879c15d02fad183989e16152db77211b2fb633f7dba1e1872ff43d4f7",
+      "state": "ready",
+      "embedded_product_codes": [
+        "760H5001S",
+        "T75S746M00"
+      ],
+      "handedness": "right",
+      "handedness_basis": "paired-download-and-negative-x-native-frame-inference",
+      "unresolved_reason": null,
+      "native_step_observation": {
+        "solid_count": 2,
+        "bounds_mm": {
+          "xmin": -67.27500009999706,
+          "xmax": 0.00000010000000018533116,
+          "ymin": -38.1,
+          "ymax": 12.824999999999996,
+          "zmin": -465.495,
+          "zmax": 35.00000000000001
+        }
+      }
+    },
+    {
+      "asset_id": "movento-760h5500s-runner-candidate",
+      "component_type": "runner-candidate",
+      "product_code": "760H5500S",
+      "catalog_item_number": "07086828",
+      "local_filename": "blum-movento-760h5500s-runner-candidate.step",
+      "download_filename": "cad49101601_runner_1_cad_bau_$sall_$acadstp_$v1.step",
+      "expected_sha256": "67c41ab3ccac528daec668a45e9c573c38b6482477f81fc945b1245f40090260",
+      "state": "inspection-only",
+      "embedded_product_codes": [
+        "760H5501S",
+        "T75S746M00"
+      ],
+      "handedness": null,
+      "handedness_basis": "one-handed-download-without-formal-side-designation",
+      "unresolved_reason": "The downloaded set request contains a one-handed 760H5501S runner representation; the matching handed runner is unresolved.",
+      "native_step_observation": {
+        "solid_count": 2,
+        "bounds_mm": {
+          "xmin": -67.27500009999706,
+          "xmax": 0.00000010000000018533116,
+          "ymin": -38.1,
+          "ymax": 12.824999999999996,
+          "zmin": -515.4949999999999,
+          "zmax": 35.00000000000001
+        }
+      }
+    },
+    {
+      "asset_id": "t51-7601-left-locking-device",
+      "component_type": "locking-device-left",
+      "product_code": "T51.7601 L",
+      "catalog_item_number": "01311197",
+      "local_filename": "blum-t51-7601-left-locking-device.step",
+      "download_filename": "cad46166126_lockdev_1_cad_bau_$sall_$acadstp_$v1.step",
+      "expected_sha256": "275a727f96fd0f318ea1dd45757160ce6672264070e8947f8580b51b62a7d8ca",
+      "state": "ready",
+      "embedded_product_codes": [
+        "46166126"
+      ],
+      "handedness": "left",
+      "handedness_basis": "catalog-product-code-and-positive-x-native-frame",
+      "unresolved_reason": null,
+      "native_step_observation": {
+        "solid_count": 1,
+        "bounds_mm": {
+          "xmin": 21.0,
+          "xmax": 102.03852338137142,
+          "ymin": -24.97499999999902,
+          "ymax": -9.575000000000005,
+          "zmin": -51.49698223440286,
+          "zmax": 37.0000001
+        }
+      }
+    },
+    {
+      "asset_id": "t51-7601-right-locking-device",
+      "component_type": "locking-device-right",
+      "product_code": "T51.7601 R",
+      "catalog_item_number": "06247277",
+      "local_filename": "blum-t51-7601-right-locking-device.step",
+      "download_filename": "cad43107713_lockdev_1_cad_bau_$sall_$acadstp_$v1.step",
+      "expected_sha256": "90d7a46237f0fff4ef297e935b90f7352e6d1a1ceb3f12a506f260263dc04d5c",
+      "state": "ready",
+      "embedded_product_codes": [
+        "43107713"
+      ],
+      "handedness": "right",
+      "handedness_basis": "catalog-product-code-and-negative-x-native-frame",
+      "unresolved_reason": null,
+      "native_step_observation": {
+        "solid_count": 1,
+        "bounds_mm": {
+          "xmin": -101.53852338137142,
+          "xmax": -21.0,
+          "ymin": -24.97499999999902,
+          "ymax": -9.575000000000005,
+          "zmin": -51.49698223440286,
+          "zmax": 37.0000001
+        }
+      }
+    }
+  ]
+}

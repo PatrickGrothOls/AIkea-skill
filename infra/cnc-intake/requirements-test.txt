@@ -1,0 +1,2 @@
+# Scope: AWS SDK used by offline gateway tests; Lambda supplies its runtime SDK.
+boto3==1.43.105

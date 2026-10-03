@@ -1,0 +1,127 @@
+name: labelled-measurement-guidance
+type: eval_set
+skill: aikea
+run_mode: manual_fresh_chat
+purpose: Score whether AIkea uses the labelled outline to choose measurements that reveal the real fitting surfaces and shape.
+environment_guide: manual-eval-environment.md
+
+scoring:
+  required_item_points: 1
+  forbidden_item_result: fail_case
+  pass_when:
+    - Every required response item is satisfied.
+    - No forbidden response item occurs.
+    - The response asks about only the next unfinished measurement or design topic.
+  always_forbidden:
+    - Drop the established edge labels and rely on ambiguous positions alone.
+    - Use an edge letter in a client-facing request without its plain name in parentheses.
+    - Put requested readings into a sentence or unnumbered list instead of separate numbered lines.
+    - Ask for a measurement without a Width, Height, or Depth headline and a matching ASCII guide.
+    - Mix width, height, and depth paths in one ASCII guide.
+    - Show a target junction without both edges that form it or without the opposite measurement boundary.
+    - Add underscores, blanks, or pretend value fields after a numbered measurement description.
+    - Present design alternatives without numbered reply choices.
+    - Request a line that ends on a different surface merely to complete a standard count.
+    - Invent a measurement, feature, or shape not supplied by the client.
+    - Expose project-file fields or calculation mechanics to the client.
+
+cases:
+  - name: choose useful width lines below a slope
+    established_outline: A (left side), B (top flat), C (sloped top), D (right side), E (bottom)
+    chat_history:
+      - role: user
+        text: All five labelled edges are fitted inside the alcove.
+      - role: assistant
+        text: Does the wardrobe front need to finish flush with the surrounding wall or another fixed line?
+    next_user_message: Yes, it should finish flush with the surrounding wall.
+    answer_key:
+      response_required:
+        - Retain that depth must finish at the fixed front line, without asking for depth yet.
+        - Ask next for widths between A (left side) and D (right side) only where both walls exist below the C (sloped top)-D (right side) junction.
+        - Use a Width measurements headline and a compact front-view ASCII guide with A (left side), D (right side), and three numbered measurement paths between them.
+        - Present every requested reading as a separate numbered line in the form measurement description, colon, and where to measure, with no blank value field.
+        - Locate the useful lines with named labels, such as just above E (bottom), midway up the shared A (left side)-D (right side) wall height, and just below the C (sloped top)-D (right side) junction.
+        - Make clear that these lines compare the same walls and can expose lean, bow, or taper.
+        - Show that the client can reply with the item numbers and measurements.
+      response_forbidden:
+        - Ask for a top width that terminates on slope C.
+        - Treat the length of top-flat edge B as the third wall-to-wall width.
+        - Ask for width and depth in the same response.
+
+  - name: locate repeated flush-depth readings on the outline
+    established_outline: A (left side), B (top flat), C (sloped top), D (right side), E (bottom)
+    chat_history:
+      - role: user
+        text: The front must finish flush with the surrounding wall. Widths between A and D just above E, midway up their shared height, and just below C-D are all 250 cm.
+    next_user_message: What should I measure next?
+    answer_key:
+      response_required:
+        - Ask only for depth from the back boundary to the fixed finished-front line.
+        - Use a Depth measurements headline and a compact side- or top-view ASCII guide showing the back boundary, fixed front line, and three numbered paths between them.
+        - Request the readings as separate numbered lines in the form measurement description, colon, and where to measure near A (left side), at the centre of E (bottom), and near D (right side), with no blank value field.
+        - Explain briefly that comparing those same two depth boundaries reveals whether either line runs out of square.
+        - Show that the client can reply with the item numbers and measurements.
+      response_forbidden:
+        - Ask for only one depth after the fixed flush line was established.
+        - Use left, middle, and right without tying them to A, E, and D.
+        - Ask for height in the same response.
+
+  - name: capture every top change without assuming the slope
+    established_outline: A (left side), B (top flat), C (sloped top), D (right side), E (bottom)
+    chat_history:
+      - role: user
+        text: Width checks between A and D are complete. Flush depths near A, at the centre of E, and near D are 60, 59.8, and 60 cm.
+    next_user_message: What comes after that?
+    answer_key:
+      response_required:
+        - Ask only for the widths from A (left side) and heights from E (bottom) needed to locate the top-boundary junctions.
+        - Use separate Width and Height headlines and compact front-view ASCII guides so each junction position and height has one unambiguous measurement direction.
+        - Show both edges forming each target junction and the opposite reference edge from which its numbered path is measured.
+        - Present every requested reading as a separate numbered line in the form measurement description, colon, and where to measure, with no blank value field.
+        - Request heights at the A (left side)-B (top flat), B (top flat)-C (sloped top), and C (sloped top)-D (right side) junctions, with each junction's horizontal distance from A (left side).
+        - Request a useful check along C (sloped top) when needed to verify that the real surface follows the intended line.
+        - Show that the client can reply with the item numbers and measurements.
+      response_forbidden:
+        - Ask only for generic left, centre, and right heights.
+        - Infer the slope from its description without measuring its labelled endpoints.
+        - Ask for a horizontal width that terminates on slope C.
+
+  - name: accept a client-confirmed straight slope
+    established_outline: A (left side), B (top flat), C (sloped top), D (right side), E (bottom)
+    chat_history:
+      - role: user
+        text: The heights at B-C and C-D are measured, so both endpoints of edge C are known.
+      - role: assistant
+        text: Please take one additional height along edge C so I can check whether the slope is straight.
+    next_user_message: Edge C is straight. Use its endpoints; another reading there would be impractical.
+    answer_key:
+      response_required:
+        - Accept the client's confirmation that edge C is straight as sufficient evidence.
+        - Use the measured B-C and C-D endpoints without requesting another reading on C.
+        - Continue with only the next unfinished measurement or design topic, formatted as numbered lines or numbered choices.
+      response_forbidden:
+        - Describe the confirmed straightness as an assumption or unverified claim.
+        - Ask the client to prove edge C is straight.
+        - Repeat the request for an intermediate reading on edge C.
+      expected_design_decision:
+        subject: front_outline.edge_C
+        decision: straight
+        design_effect: use_measured_endpoints
+        client_statement: Edge C is straight. Use its endpoints; another reading there would be impractical.
+
+  - name: offer numbered cabinet-width choices
+    established_outline: A (left side), B (top), C (right side), D (bottom)
+    chat_history:
+      - role: user
+        text: The space measurements are finished. I want four cabinet sections.
+    next_user_message: What do you need to know about their widths?
+    answer_key:
+      response_required:
+        - Ask only how the four cabinet sections should relate in width.
+        - Present numbered choices for all equal, one or more narrower or wider, and help choosing from storage needs.
+        - Say that the client can reply with only the option number.
+        - Keep internal width-share terminology private.
+      response_forbidden:
+        - Ask the client for width shares or percentages.
+        - Ask about another design topic in the same response.
+        - Present the alternatives as prose or unnumbered bullets.

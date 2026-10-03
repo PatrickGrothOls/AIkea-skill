@@ -1,0 +1,105 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "cognito-idp:CreateUserPool"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "StringEquals": {
+          "aws:RequestTag/Service": "aikea-cnc-intake"
+        }
+      }
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "cognito-idp:TagResource"
+      ],
+      "Resource": "arn:aws:cognito-idp:eu-north-1:123456789012:userpool/*",
+      "Condition": {
+        "StringEquals": {
+          "aws:RequestTag/Service": "aikea-cnc-intake"
+        }
+      }
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "cognito-idp:DescribeUserPool",
+        "cognito-idp:UpdateUserPool",
+        "cognito-idp:DeleteUserPool",
+        "cognito-idp:CreateUserPoolClient",
+        "cognito-idp:DescribeUserPoolClient",
+        "cognito-idp:UpdateUserPoolClient",
+        "cognito-idp:DeleteUserPoolClient",
+        "cognito-idp:CreateResourceServer",
+        "cognito-idp:DescribeResourceServer",
+        "cognito-idp:UpdateResourceServer",
+        "cognito-idp:DeleteResourceServer",
+        "cognito-idp:CreateUserPoolDomain",
+        "cognito-idp:UpdateUserPoolDomain",
+        "cognito-idp:DeleteUserPoolDomain",
+        "cognito-idp:ListTagsForResource"
+      ],
+      "Resource": "arn:aws:cognito-idp:eu-north-1:123456789012:userpool/*",
+      "Condition": {
+        "StringEquals": {
+          "aws:ResourceTag/Service": "aikea-cnc-intake"
+        }
+      }
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "cognito-idp:DescribeUserPoolDomain"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "apigateway:POST"
+      ],
+      "Resource": "arn:aws:apigateway:eu-north-1::/apis",
+      "Condition": {
+        "StringEquals": {
+          "aws:RequestTag/Service": "aikea-cnc-intake"
+        }
+      }
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "apigateway:POST"
+      ],
+      "Resource": [
+        "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fv2%2Fapis%2F*",
+        "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2F*"
+      ],
+      "Condition": {
+        "StringEquals": {
+          "aws:RequestTag/Service": "aikea-cnc-intake"
+        }
+      }
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "apigateway:GET",
+        "apigateway:POST",
+        "apigateway:PATCH",
+        "apigateway:DELETE",
+        "apigateway:PUT"
+      ],
+      "Resource": "arn:aws:apigateway:eu-north-1::/apis/*",
+      "Condition": {
+        "StringEquals": {
+          "aws:ResourceTag/Service": "aikea-cnc-intake"
+        }
+      }
+    }
+  ]
+}

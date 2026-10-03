@@ -1,0 +1,39 @@
+{
+  "schema_version": 2,
+  "vendor": "Hettich",
+  "source_urls": [
+    "https://shop.hettich.com/de_EN/Runner-systems/Ball-bearing-runners/Side-installation/KA-5332-ball-bearing-runner%2C-side-installation%2C-dimensions-%28H-x-W%29-45-x-12-7-mm%2C-500%2C-blue-passivated%2C-galvanised%2C-passivated/p/9057405",
+    "https://hettich-embedded.partcommunity.com/3d-cad-models/sso/ka-5332-ball-bearing-runner-ka-5332-ball-bearing-runner-hettich?info=hettich%2Fdrawer_runners%2Fball_bearing_slides%2Fmounted_on_sides%2Fka_5332%2Fka_5332_asmtab.prj&cwid=6460",
+    "https://www.cadenas.de/terms-of-use-3d-cad-models"
+  ],
+  "assets": [
+    {
+      "asset_id": "hettich-ka-5332-500-runner-pair",
+      "component_type": "runner-pair-assembly",
+      "product_code": "KA 5332",
+      "catalog_item_number": "9057405",
+      "local_filename": "9057405.stp",
+      "download_filename": "9057405.stp",
+      "expected_sha256": "f67cf2f02ebaae80e734fd6101917290dec4203e5647f6a479944cf1e4ebdcde",
+      "state": "ready",
+      "embedded_product_codes": [
+        "KA 5332",
+        "9057405"
+      ],
+      "handedness": "pair",
+      "handedness_basis": "official-paired-hettich-step-assembly",
+      "unresolved_reason": null,
+      "native_step_observation": {
+        "solid_count": 6,
+        "bounds_mm": {
+          "xmin": -7.9500001000000005,
+          "xmax": 193.05000009999998,
+          "ymin": -35.0,
+          "ymax": 465.0,
+          "zmin": -22.25000009999999,
+          "zmax": 22.25000009999999
+        }
+      }
+    }
+  ]
+}

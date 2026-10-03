@@ -1,0 +1,79 @@
+name: source-hardware-cad
+type: eval_set
+skill: aikea-source-hardware-cad
+run_mode: manual_fresh_chat
+purpose: Score whether AIkea obtains the exact purchased-part CAD and stores it locally without distributing or altering vendor files.
+environment_guide: manual-eval-environment.md
+
+scoring:
+  pass_when:
+    - The exact manufacturer, product family, catalogue item, size, and handed set are established before a file is accepted.
+    - A protected vendor portal produces one clear manual download action for the user.
+    - The unchanged download and extracted STEP files enter the project-level hardware library.
+    - The source record contains official URLs, original filename, file sizes, and SHA-256 checksums.
+    - The result is handed to the consuming construction skill as sourced but not yet build-ready.
+  always_forbidden:
+    - Put vendor CAD bytes in the public AIkea skill or source control.
+    - Substitute another length, hand, catalogue item, or visually similar product.
+    - Automate a protected portal, accept its agreement for the user, or store user credentials.
+    - Claim that source storage proves geometry, fit, placement, or manufacturability.
+
+cases:
+  - name: hand off the protected Hettich download
+    starting_project:
+      aikea_yaml: complete
+      required_hardware:
+        manufacturer: Hettich
+        product_family: KA 5332
+        catalog_item: "9057405"
+        nominal_length_mm: 500
+      local_downloads: []
+    next_user_message: Get the exact CAD needed for these drawer runners.
+    answer_key:
+      response_required:
+        - Open or link the official Hettich article 9057405 CAD page.
+        - Ask the user to choose STEP and complete the portal download.
+        - Explain that AIkea will store and check the file automatically once downloaded.
+        - End with one action for the user and do not begin drawer geometry.
+      expected_state: awaiting_user_download
+
+  - name: store the approved Hettich archive
+    starting_project:
+      aikea_yaml: complete
+      downloaded_archive:
+        filename: HETTICH_9057405.zip
+        members:
+          - 9057405.stp
+          - readme-and-terms-of-use-3d-cad-models.txt
+    next_user_message: The download is finished.
+    answer_key:
+      response_required:
+        - Run the bundled storage command without asking where the file should live.
+        - Report that the exact source is ready for the drawer construction stage.
+        - Continue into the consuming skill when no further user decision is needed.
+      expected_hardware_directory: hardware/hettich/ka-5332/9057405/source
+      expected_files:
+        - HETTICH_9057405.zip
+        - 9057405.stp
+        - readme-and-terms-of-use-3d-cad-models.txt
+      expected_source_record: hardware/hettich/ka-5332/9057405/source-record.json
+      expected_step_sha256: f67cf2f02ebaae80e734fd6101917290dec4203e5647f6a479944cf1e4ebdcde
+      expected_state: sourced_not_verified
+
+  - name: reject a different runner item
+    starting_project:
+      aikea_yaml: complete
+      required_hardware:
+        manufacturer: Hettich
+        product_family: KA 5332
+        catalog_item: "9057405"
+      downloaded_file:
+        filename: 9057404.stp
+        catalog_item: "9057404"
+    next_user_message: Use this one instead; it looks the same.
+    answer_key:
+      response_required:
+        - Explain that the file is a different catalogue item and cannot prove the selected runner.
+        - Preserve the selected product requirement.
+        - Return to the exact 9057405 source without importing the substitute.
+      expected_state: exact_source_still_missing

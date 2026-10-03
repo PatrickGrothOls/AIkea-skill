@@ -1,0 +1,94 @@
+/** Scope: Lay out the responsive quote page, its service form and focus states. */
+
+.quote-dialog {
+  position: fixed; inset: 0; width: 100%; height: 100%; max-width: none; max-height: none;
+  margin: 0; padding: 0; border: 0; background: #fdfcf9; color: #183d35; overflow: auto;
+}
+.quote-dialog::backdrop { background: #fdfcf9; }
+.quote-page { max-width: 1540px; margin: auto; padding: 26px 48px 48px; }
+.quote-header { display: flex; align-items: center; gap: 24px; margin-bottom: 46px; }
+.quote-wordmark { font-size: 32px; font-weight: 800; letter-spacing: -1.5px; }
+.quote-steps { display: flex; gap: 28px; margin: 0 0 0 auto; padding: 0; list-style: none; }
+.quote-steps li { display: flex; align-items: center; gap: 9px; font-size: 13px; color: #58685f; }
+.quote-steps li[aria-current] { color: #174d3c; font-weight: 600; }
+.quote-steps span { display: grid; place-items: center; width: 28px; height: 28px; border: 1px solid #b8c4bd; border-radius: 50%; }
+.quote-steps [aria-current] span { background: #174d3c; color: white; border-color: #174d3c; }
+.quote-close { border: 0; background: transparent; color: inherit; font-size: 28px; min-width: 44px; min-height: 44px; cursor: pointer; }
+.quote-layout { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(420px, 1fr); align-items: start; gap: 30px; }
+.quote-preview h1 { margin: 0; font-size: clamp(30px, 3.1vw, 48px); line-height: 1.1; letter-spacing: -1.8px; }
+.quote-subtitle { font-size: clamp(18px, 1.7vw, 25px); margin: 10px 0 22px; }
+.quote-preview-image { display: grid; place-items: center; background: #e7dfd3; border-radius: 6px; min-height: 250px; overflow: hidden; }
+.quote-preview-image img { display: block; width: 100%; height: auto; }
+.quote-preview-image > p { padding: 28px; }
+.quote-preview-caption { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-top: 20px; font-size: 14px; }
+.quote-preview-caption strong { overflow-wrap: anywhere; }
+.quote-preview-caption p { margin: 6px 0 0; color: #65766d; }
+.quote-back { flex-shrink: 0; border: 0; background: transparent; color: #174d3c; text-decoration: underline; font: inherit; cursor: pointer; min-height: 44px; }
+.quote-form { border: 1px solid #dce0d9; border-radius: 8px; padding: 28px; color: #233e3c; background: #fff; }
+.quote-services { padding: 0; margin: 0; border: 0; min-width: 0; }
+.quote-services legend { padding: 0; font-weight: 700; font-size: clamp(23px, 2vw, 29px); letter-spacing: -.7px; }
+.quote-services > p { margin: 6px 0 20px; font-size: 15px; color: #52655f; line-height: 1.5; }
+.quote-service { margin-bottom: 10px; border: 1px solid #dfe5df; border-radius: 7px; background: #fff; }
+.quote-service.is-selected { background: #edf3ee; border-color: #dce8df; }
+.quote-service-choice { display: flex; gap: 14px; align-items: start; padding: 17px; cursor: pointer; }
+.quote-service-choice input { flex-shrink: 0; width: 21px; height: 21px; margin: 2px 0 0; accent-color: #18533f; }
+.quote-service-choice strong { display: block; font-size: 18px; line-height: 1.3; }
+.quote-service-choice span span { display: block; font-size: 14px; line-height: 1.5; margin-top: 4px; }
+.quote-paint-preferences { padding: 0 17px 17px 52px; }
+.quote-paint-preferences label + label { margin-top: 12px; }
+.quote-logistics { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 25px 0 20px; }
+.quote-logistics label, .quote-paint-preferences label, .quote-notes label { display: block; font-size: 13px; font-weight: 500; }
+.quote-form input:not([type="checkbox"]), .quote-form select, .quote-form textarea {
+  display: block; width: 100%; min-width: 0; margin-top: 8px; padding: 11px 12px;
+  border: 1px solid #bbc8c1; border-radius: 5px; font: inherit; font-size: 14px;
+  background: #fff; color: #233e3c; min-height: 44px;
+}
+.quote-form textarea { resize: vertical; }
+.quote-form input::placeholder, .quote-form textarea::placeholder { color: #718177; }
+.quote-notes summary { display: flex; justify-content: space-between; align-items: center; min-height: 44px; cursor: pointer; font-size: 14px; text-decoration: underline; }
+.quote-notes summary span { font-size: 22px; transition: transform .15s; }
+.quote-notes[open] summary span { transform: rotate(45deg); }
+.quote-notes label { margin-top: 8px; }
+.quote-design-note { border-top: 1px solid #e2e7e0; margin-top: 22px; padding-top: 20px; }
+.quote-design-note strong { font-size: 15px; }
+.quote-design-note p { font-size: 13px; line-height: 1.5; color: #586b62; margin: 7px 0 22px; }
+.quote-submit { display: flex; justify-content: center; align-items: center; gap: 16px; width: 100%; border: 0; border-radius: 6px; padding: 16px; font: inherit; font-size: 18px; font-weight: 600; color: white; background: #174d3c; }
+.quote-submit:disabled { background: #637c71; cursor: not-allowed; }
+.quote-availability { margin: 12px 0 0; font-size: 12px; text-align: center; line-height: 1.6; color: #52655f; }
+.quote-hint { color: #845623; font-size: 14px; }
+.quote-page :focus-visible { outline: 3px solid #957643; outline-offset: 4px; }
+.quote-preview h1:focus { outline: none; }
+.make-real-action:disabled { opacity: .55; cursor: wait; }
+
+@media (max-width: 1000px) {
+  .quote-page { padding: 20px 24px 32px; }
+  .quote-layout { grid-template-columns: minmax(0, 1fr) minmax(360px, 1fr); gap: 22px; }
+  .quote-header { margin-bottom: 28px; gap: 16px; }
+  .quote-steps { gap: 16px; }
+  .quote-form { padding: 22px; }
+  .quote-preview-caption { display: block; }
+  .quote-back { margin-top: 8px; padding-left: 0; }
+}
+@media (max-width: 760px) {
+  .quote-page { padding: 16px 18px 30px; }
+  .quote-header { flex-wrap: wrap; gap: 14px; margin-bottom: 26px; }
+  .quote-wordmark { font-size: 27px; }
+  .quote-close { margin-left: auto; order: 1; }
+  .quote-steps { width: 100%; justify-content: space-between; gap: 8px; order: 2; }
+  .quote-steps li { gap: 5px; font-size: 11px; }
+  .quote-steps span { width: 23px; height: 23px; }
+  .quote-layout { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+  .quote-preview h1 { font-size: 32px; letter-spacing: -1px; }
+  .quote-subtitle { font-size: 18px; margin-bottom: 16px; }
+  .quote-preview-image { min-height: 150px; }
+  .quote-preview-image img { max-height: 360px; object-fit: contain; }
+  .quote-preview-caption { display: flex; font-size: 12px; gap: 10px; margin-top: 10px; }
+  .quote-back { margin: 0; }
+  .quote-form { padding: 20px 16px; }
+  .quote-paint-preferences { padding-left: 17px; }
+}
+@media (max-width: 380px) {
+  .quote-logistics { grid-template-columns: 1fr; }
+  .quote-steps li { font-size: 10px; }
+  .quote-page { padding-inline: 12px; }
+}

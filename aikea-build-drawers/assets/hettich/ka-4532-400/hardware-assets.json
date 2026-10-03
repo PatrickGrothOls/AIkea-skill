@@ -1,0 +1,39 @@
+{
+  "schema_version": 2,
+  "vendor": "Hettich",
+  "source_urls": [
+    "https://shop.hettich.com/us_EN/Runner-systems/Ball-bearing-runners/Side-installation/KA-4532-Silent-System-ball-bearing-runner,-side-installation,-dimensions-(H-x-W)-46-x-12-7-mm,-400/p/9114274",
+    "https://hettich-embedded.partcommunity.com/3d-cad-models/sso/?varset=%7BARTICLENO%3D9114274%7D&languageIso=en&info=hettich%2Fdrawer_runners%2Fball_bearing_slides%2Fmounted_on_sides%2Fka_4532_sisy%2Fka_4532_sisy_asmtab.prj",
+    "https://www.cadenas.de/terms-of-use-3d-cad-models"
+  ],
+  "assets": [
+    {
+      "asset_id": "hettich-ka-4532-400-runner-pair",
+      "component_type": "runner-pair-assembly",
+      "product_code": "KA 4532 Silent System",
+      "catalog_item_number": "9114274",
+      "local_filename": "9114274.stp",
+      "download_filename": "9114274.stp",
+      "expected_sha256": "a73d27173bd8ba2075ab36f42b60f4816c45a5b79b79220a7348f09db252812e",
+      "state": "ready",
+      "embedded_product_codes": [
+        "KA 4532 Silent System",
+        "9114274"
+      ],
+      "handedness": "pair",
+      "handedness_basis": "official-paired-hettich-step-assembly",
+      "unresolved_reason": null,
+      "native_step_observation": {
+        "solid_count": 4,
+        "bounds_mm": {
+          "xmin": 0,
+          "xmax": 201,
+          "ymin": -9.5,
+          "ymax": 392.983917012,
+          "zmin": -22.85009328,
+          "zmax": 22.85009328
+        }
+      }
+    }
+  ]
+}

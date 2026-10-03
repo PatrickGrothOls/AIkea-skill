@@ -1,0 +1,144 @@
+"""Scope: Resolve one cabinet door's hinge quantity, positions, and fit status."""
+
+from __future__ import annotations
+
+from dataclasses import asdict, dataclass
+import json
+from pathlib import Path
+from typing import Any
+
+from door_hinge_compatibility import DoorHingeCompatibilityChecker
+from door_hinge_side import DoorHingeSide
+from door_host import DoorHost, DoorHostSpec
+from riex_nc70_hinge_profile import RiexNc70HingeProfile
+from system_32_hinge_placement_resolver import System32HingePlacementResolver
+from panel_hardware_reservation import PanelHardwareReservation
+from door_mass_estimate import DoorMassEstimate
+
+
+@dataclass(frozen=True, slots=True)
+class DoorHingePlacement:
+    """Name one shared vertical center for door and cabinet machining."""
+
+    hinge_id: str
+    door_height_mm: float
+    cabinet_height_mm: float
+    cabinet_fixing_rows_mm: tuple[float, float]
+
+
+@dataclass(frozen=True, slots=True)
+class DoorHingePlan:
+    """Carry the complete deterministic result for one hinged door."""
+
+    assembly_id: str
+    profile_id: str
+    relationship: str
+    hinge_side: DoorHingeSide
+    door_width_mm: float
+    door_height_mm: float
+    door_thickness_mm: float
+    door_mass_kg: float | None
+    overlay_mm: float
+    placements: tuple[DoorHingePlacement, ...]
+    compatibility_issues: tuple[str, ...]
+    host_spec: DoorHostSpec | None = None
+    mass_basis: str | None = None
+
+    @property
+    def door_part_id(self):
+        return self.host_spec.door_part_id if self.host_spec else "door_panel"
+
+    @property
+    def support_part_id(self):
+        return self.host_spec.support_part_id if self.host_spec else self.hinge_side.side_part_id
+
+    @property
+    def fabrication_ready(self) -> bool:
+        return not self.compatibility_issues
+
+    def write(self, path: Path) -> None:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(self.to_json(), encoding="utf-8")
+
+    def to_json(self) -> str:
+        values = asdict(self)
+        values["fabrication_ready"] = self.fabrication_ready
+        return json.dumps(values, indent=2) + "\n"
+
+    @classmethod
+    def read(cls, path: Path) -> "DoorHingePlan":
+        values = json.loads(path.read_text(encoding="utf-8"))
+        values.pop("fabrication_ready", None)
+        values["hinge_side"] = DoorHingeSide(values["hinge_side"])
+        values["placements"] = tuple(
+            DoorHingePlacement(
+                item["hinge_id"],
+                float(item["door_height_mm"]),
+                float(item["cabinet_height_mm"]),
+                tuple(float(value) for value in item["cabinet_fixing_rows_mm"]),
+            )
+            for item in values["placements"]
+        )
+        if values.get("host_spec") is not None:
+            values["host_spec"] = DoorHostSpec(**values["host_spec"])
+        values["compatibility_issues"] = tuple(values["compatibility_issues"])
+        return cls(**values)
+
+
+class DoorHingePlanner:
+    """Fit the manufacturer quantity around this cabinet's owned features."""
+
+    def __init__(self) -> None:
+        self.compatibility = DoorHingeCompatibilityChecker()
+        self.placement_resolver = System32HingePlacementResolver()
+
+    def plan(
+        self,
+        assembly: Any,
+        profile: RiexNc70HingeProfile,
+        hinge_side: DoorHingeSide = DoorHingeSide.LEFT,
+        blocked_reservations: tuple[PanelHardwareReservation, ...] = (),
+        mass_estimate: DoorMassEstimate | None = None,
+    ) -> DoorHingePlan:
+        host = DoorHost.resolve(assembly, hinge_side)
+        dimensions = host.dimensions
+        height_mm = dimensions[hinge_side.door_height_dimension]
+        count = profile.hinge_count(height_mm)
+        positions = self.placement_resolver.resolve(
+            host,
+            count,
+            hinge_side,
+            profile,
+            blocked_reservations,
+        )
+        overlay_mm = host.overlay_mm
+        issues = self.compatibility.check(dimensions, overlay_mm, profile)
+        mass = mass_estimate.total_kg if mass_estimate is not None else None
+        if mass is None:
+            issues += ("Finished door mass unresolved: supply material, finish and moving hardware inputs",)
+        issues += ("Manufacturer load/count qualification unresolved: hinge count is height-based",)
+        return DoorHingePlan(
+            assembly_id=assembly.assembly_id,
+            profile_id=profile.profile_id,
+            relationship=profile.relationship,
+            hinge_side=hinge_side,
+            door_width_mm=dimensions["width"],
+            door_height_mm=height_mm,
+            door_thickness_mm=dimensions["thickness"],
+            door_mass_kg=mass,
+            overlay_mm=overlay_mm,
+            placements=tuple(
+                DoorHingePlacement(
+                    f"hinge_{index:02d}",
+                    position.door_center_mm,
+                    position.cabinet_center_mm,
+                    position.cabinet_fixing_rows_mm,
+                )
+                for index, position in enumerate(positions, start=1)
+            ),
+            compatibility_issues=issues,
+            host_spec=host.spec,
+            mass_basis=mass_estimate.basis if mass_estimate is not None else None,
+        )
+
+__all__ = ["DoorHingePlacement", "DoorHingePlan", "DoorHingePlanner"]

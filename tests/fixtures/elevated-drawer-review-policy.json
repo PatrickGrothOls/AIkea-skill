@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "stacks": [
+    {
+      "cabinet": "wardrobe_01/tall_storage_01",
+      "floor": "wardrobe_01/base_01/part:deck_01",
+      "cap": "wardrobe_01/tall_storage_01/part:shelf_01",
+      "opening_sides": [
+        "wardrobe_01/tall_storage_01/part:left_side",
+        "wardrobe_01/tall_storage_01/part:right_side"
+      ],
+      "operating_gaps_mm": [356.0, 98.5],
+      "drawers": [
+        {
+          "path": "wardrobe_01/tall_storage_01/drawer_01",
+          "front": "wardrobe_01/tall_storage_01/drawer_01/part:front",
+          "sides": [
+            "wardrobe_01/tall_storage_01/drawer_01/part:left_side",
+            "wardrobe_01/tall_storage_01/drawer_01/part:right_side"
+          ]
+        }
+      ],
+      "user_requested_exceptions": [
+        {
+          "rule": "compact_stack",
+          "requested_by": "user",
+          "request_quote": "For this synthetic placement-inspection scenario, put the drawer 356 mm above the base and keep the existing shelf 98.5 mm above it.",
+          "request_reference": "tests/fixtures/elevated-drawer-review-policy.json synthetic client brief"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+/** Scope: Lay out viewer decision cards and emphasize the Make it real action. */
+
+.review-action-cards { display: flex; justify-content: end; }
+.review-action-cards[hidden] { display: none; }
+.review-action-cards > .decision-card {
+  position: absolute; right: 0; bottom: 58px;
+  width: min(340px, calc(100vw - 32px)); max-height: calc(100dvh - 130px); overflow-y: auto;
+}
+.make-real-card { position: relative; }
+.make-real-action {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 14px;
+  border: 1px solid rgb(255 255 255 / 0.22);
+  border-radius: 12px;
+  background: #244b3b;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.15), 0 4px 12px rgb(22 46 35 / 0.15);
+  color: #fff;
+  cursor: pointer;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+}
+.make-real-action:hover { background: #1c3f30; }
+.make-real-action span { font-size: 17px; line-height: 1; }

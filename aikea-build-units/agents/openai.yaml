@@ -1,0 +1,4 @@
+interface:
+  display_name: "AIkea Build Units"
+  short_description: "Generate local unit and part folders"
+  default_prompt: "Use $aikea-build-units to generate the local units for my completed AIkea project."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "AIkea Review Unit"
+  short_description: "Build and review one cabinet mock-up"
+  default_prompt: "Use $aikea-review-unit to build and show the first cabinet for visual approval."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "AIkea Arrange Units"
+  short_description: "Arrange furniture units across a measured space"
+  default_prompt: "Use $aikea-arrange-units to arrange the units in my AIkea project."
