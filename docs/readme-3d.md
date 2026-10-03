@@ -3,7 +3,7 @@
 ## Scope
 
 Provide assembled and exploded wardrobe inspection from the README, with real
-machining visible in a white interactive viewer. Preserve the existing images
+machining visible in a wood-textured interactive viewer. Preserve the existing images
 and installation guidance. The audit below records the superseded STL approach.
 
 ## Work packages
@@ -17,7 +17,8 @@ and installation guidance. The audit below records the superseded STL approach.
 
 ## Current state
 
-The detailed white CAD viewer supersedes the simplified inline STL previews.
+The detailed CAD viewer supersedes the simplified inline STL previews.
+Its panels and applied frames now use the packaged wood texture.
 It includes all 84 original panels, 17 applied frame pieces and 507 saved hardware
 components (Cabineos excluded), plus four proposed brass pulls, with assembled and
 exploded views, a door-panel toggle and warm interior lighting with an on/off control. All machining stays
@@ -429,3 +430,81 @@ Patrick requests visible light on the surrounding panels, beyond glowing strips.
     initial screenshot crop to include the complete wardrobe and lighting
     controls. Reviewed the saved image and Markdown diff. Changes are pushed
     to PR #1; the default-branch README remains unchanged until merge.
+
+## High-resolution README images
+
+Patrick confirmed reverting only the extra README lighting section and keeping
+all approved viewer behavior, including warm light.
+
+- [x] Remove the added lighting section from the README.
+- [x] Export sharp, high-resolution assembled, exploded, framed and detail images.
+- [x] Verify final image framing and update references.
+- [x] Push and verify the updated README on GitHub.
+
+54. Replace small browser screenshots with direct high-resolution canvas exports
+    from the existing scene. Use a temporary local capture page, not a new public
+    viewer feature. Keep geometry and lighting unchanged and inspect each output.
+
+55. Exported and visually inspected four 3600 × 2700 lossless PNGs directly
+    from the existing scene, with no browser controls. Replaced the four older
+    README images (about 2.1 MB combined), including an isolated machining
+    close-up. Preserved old JPEGs in ignored local evidence. Removed the extra
+    lighting image and section; viewer source, geometry and lighting are unchanged.
+
+56. Pushed image update 5566b76 to PR #1 and verified the rendered GitHub
+    README: all four images load at their native 3600 × 2700 resolution.
+    Reviewed the diff and checked every image reference. PR remains unmerged;
+    the default-branch README is unchanged. Capture tooling stays in ignored
+    local evidence and is not included in the public branch.
+
+## Wood finish restoration
+
+Patrick clarified that white was chosen only because of the assumed limitations
+of a model inside the README. Restore wood in the hosted viewer and the four
+high-resolution README images, keeping the approved lighting and real geometry.
+
+- [x] Apply the existing packaged wood maps with shared textures and panel grain coordinates.
+- [x] Verify assembled, closed, exploded and machining views, plus controls.
+- [x] Regenerate all four high-resolution README images.
+- [x] Publish and verify the viewer; push source and branch documentation to PR #1.
+
+57. Reuse the three existing CC0 plywood maps (about 2.2 MB total), shared by all
+    wood panels and frames. Keep metal fittings and brass handles separate.
+    Reuse the existing 500 mm grain mapping; do not simplify machining geometry.
+    Retain soft golden lighting and the existing render pipeline. This implements
+    Patrick's clarified finish preference rather than adding a new finish choice.
+
+58. All 78 existing viewer tests pass and the showcase production build succeeds.
+    Browser checks confirm rotation, doors, exploded/assembled controls and
+    lighting off/on behavior. Visually checked all four native 3600 × 2700 PNG
+    exports: wood grain, brass handles and real machining remain visible. No
+    browser warnings or errors were recorded in the local viewer check. The
+    existing bundle-size advisory remains; the model binary is unchanged.
+
+59. Published source 98e3691 through Pages 41b86c3; deployment 37156064103
+    succeeded. Reloaded the live page and visually verified textured wood with
+    golden illumination and no browser warnings/errors. All four GitHub README
+    images load at 3600 × 2700. Source and branch documentation are on PR #1;
+    the PR is unmerged and the default-branch README has not changed.
+
+## Lighter wood finish
+
+Patrick requested a lighter, brighter wood finish.
+
+- [x] Lighten the shared wood material while preserving texture and lighting.
+- [x] Inspect the finish and regenerate the four high-resolution README images.
+- [x] Publish, verify the live viewer and push branch documentation.
+
+60. Lift the wood material's linear albedo with a slightly cooler balance for a
+    pale natural finish. Keep grain maps, geometry, brass and LED settings intact.
+
+61. Production build succeeds. Inspected assembled, closed-door, exploded and
+    machining close-up exports; all four are 3600 × 2700 lossless PNGs with the
+    lighter finish. Only wood material tint changed; no geometry or lighting
+    parameters changed. Reviewed the two-line code diff and image replacements.
+
+62. Published source 1234d08 through Pages 98603e8; deployment 37156411505
+    succeeded. Reloaded the live viewer and visually verified the lighter finish.
+    The four matching README images and branch documentation are pushed to PR #1,
+    which remains unmerged. No test suite rerun for this material-tint-only edit;
+    production build and visual checks cover the change.

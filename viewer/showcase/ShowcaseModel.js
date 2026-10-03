@@ -2,6 +2,7 @@
 import { EdgesGeometry, LineBasicMaterial, LineSegments, MeshStandardMaterial, Vector3 } from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { AssemblyPresentation } from "../src/AssemblyPresentation.js";
+import { ShowcaseWoodSurface } from "./ShowcaseWoodSurface.js";
 import { ShowcaseLighting } from "./ShowcaseLighting.js";
 import modelUrl from "./wardrobe.glb.gz?url";
 
@@ -15,7 +16,7 @@ export class ShowcaseModel {
     gltf.scene.updateMatrixWorld(true);
     this.presentation = new AssemblyPresentation(gltf.scene, gltf.parser.associations);
     this.scene = this.presentation.scene;
-    const white = new MeshStandardMaterial({color: 0xfaf9f6, roughness: 0.7, metalness: 0});
+    const wood = await ShowcaseWoodSurface.load();
     const metal = new MeshStandardMaterial({color: 0x879399, roughness: 0.38, metalness: 0.4});
     const brass = new MeshStandardMaterial({color: 0xc79b4e, roughness: 0.38, metalness: 0.6});
     const materials = {hardware: metal, door_handle: brass};
@@ -23,7 +24,8 @@ export class ShowcaseModel {
     for (const part of this.presentation.records) {
       part.node.traverse(node => {
         if (!node.isMesh) return;
-        node.material = materials[part.kind] ?? white;
+        if (materials[part.kind]) node.material = materials[part.kind];
+        else wood.applyTo(node, part.name);
         if (part.kind === "door_frame") node.add(new LineSegments(new EdgesGeometry(node.geometry), frameEdges));
       });
     }

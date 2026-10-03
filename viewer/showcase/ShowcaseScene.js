@@ -1,4 +1,4 @@
-/** Scope: Render white CAD with consistent lighting and responsive inspection poses. */
+/** Scope: Render textured CAD with consistent lighting and responsive inspection poses. */
 import { ACESFilmicToneMapping, AmbientLight, Color, DirectionalLight, HemisphereLight, PerspectiveCamera, Scene, Vector2, Vector3, WebGLRenderer } from "three";
 import { ShowcaseRenderQueue } from "./ShowcaseRenderQueue.js";
 import { ShowcaseDepthRange } from "./ShowcaseDepthRange.js";
@@ -33,7 +33,7 @@ export class ShowcaseScene {
     const samples = Math.min(4, this.renderer.capabilities.maxSamples);
     for (const target of [this.composer.renderTarget1, this.composer.renderTarget2]) target.samples = samples;
     this.composer.addPass(new RenderPass(this.scene, this.camera));
-    // HDR threshold isolates the emissive strips from white panels and brass.
+    // HDR threshold isolates the emissive strips from wood panels and brass.
     const bloom = new UnrealBloomPass(new Vector2(1, 1), 0.35, 0.25, 2);
     // A soft threshold avoids abrupt glow switching as narrow strips cross pixels.
     bloom.highPassUniforms.smoothWidth.value = 1;
