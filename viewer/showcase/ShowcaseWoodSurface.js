@@ -19,6 +19,8 @@ export class ShowcaseWoodSurface {
       texture.anisotropy = 4;
     }
     this.material = new MeshStandardMaterial({map, normalMap, roughnessMap, roughness: 0.7, metalness: 0});
+    // Lift the wood albedo toward a pale natural finish without changing scene lighting.
+    this.material.color.setRGB(2.2, 2.35, 2.5);
     this.material.normalScale.set(0.12, 0.12);
     this.coordinates = new PanelTextureCoordinates();
   }

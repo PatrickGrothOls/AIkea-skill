@@ -486,3 +486,19 @@ high-resolution README images, keeping the approved lighting and real geometry.
     golden illumination and no browser warnings/errors. All four GitHub README
     images load at 3600 × 2700. Source and branch documentation are on PR #1;
     the PR is unmerged and the default-branch README has not changed.
+
+## Lighter wood finish
+
+Patrick requested a lighter, brighter wood finish.
+
+- [x] Lighten the shared wood material while preserving texture and lighting.
+- [x] Inspect the finish and regenerate the four high-resolution README images.
+- [ ] Publish, verify the live viewer and push branch documentation.
+
+60. Lift the wood material's linear albedo with a slightly cooler balance for a
+    pale natural finish. Keep grain maps, geometry, brass and LED settings intact.
+
+61. Production build succeeds. Inspected assembled, closed-door, exploded and
+    machining close-up exports; all four are 3600 × 2700 lossless PNGs with the
+    lighter finish. Only wood material tint changed; no geometry or lighting
+    parameters changed. Reviewed the two-line code diff and image replacements.
