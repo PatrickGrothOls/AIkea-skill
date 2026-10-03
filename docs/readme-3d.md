@@ -366,7 +366,7 @@ Patrick requests visible light on the surrounding panels, beyond glowing strips.
 
 - [x] Inspect area-light output and geometry scale.
 - [x] Tune emitted power and verify visible illumination on adjacent surfaces.
-- [ ] Run relevant tests and publish the verified preview.
+- [x] Run relevant tests and publish the verified preview.
 
 45. The area lights use a 4 mm-wide emitting surface with intensity 18,
     corresponding to only about 0.23 lumens per metre. Increase illustrative
@@ -390,3 +390,11 @@ Patrick requests visible light on the surrounding panels, beyond glowing strips.
 48. Patrick requested a more golden, warm light. Set the diffuser emission and
     cast area light to the same soft golden hue, preserving the white cabinet
     material and existing output. Verify the combined result before final delivery.
+
+49. Published the combined illumination and warm-color update from source
+    `f072892` through Pages `a890f58`; deployment `37152516619` succeeded.
+    The earlier cooler-light deployment was superseded by this update. Live
+    controls load, on/off works, warm illumination is visible, and no renderer
+    errors were reported. Captured the live view and left it open. The lighting
+    remains illustrative and does not include area-light occlusion or a physical
+    photometric validation.
