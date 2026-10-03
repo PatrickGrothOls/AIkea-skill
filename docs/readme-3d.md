@@ -438,7 +438,7 @@ all approved viewer behavior, including warm light.
 - [x] Remove the added lighting section from the README.
 - [x] Export sharp, high-resolution assembled, exploded, framed and detail images.
 - [x] Verify final image framing and update references.
-- [ ] Push and verify the updated README on GitHub.
+- [x] Push and verify the updated README on GitHub.
 
 54. Replace small browser screenshots with direct high-resolution canvas exports
     from the existing scene. Use a temporary local capture page, not a new public
@@ -449,3 +449,9 @@ all approved viewer behavior, including warm light.
     README images (about 2.1 MB combined), including an isolated machining
     close-up. Preserved old JPEGs in ignored local evidence. Removed the extra
     lighting image and section; viewer source, geometry and lighting are unchanged.
+
+56. Pushed image update 5566b76 to PR #1 and verified the rendered GitHub
+    README: all four images load at their native 3600 × 2700 resolution.
+    Reviewed the diff and checked every image reference. PR remains unmerged;
+    the default-branch README is unchanged. Capture tooling stays in ignored
+    local evidence and is not included in the public branch.
