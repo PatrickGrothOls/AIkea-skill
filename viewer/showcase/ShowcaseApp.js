@@ -24,6 +24,10 @@ class ShowcaseApp {
     for (const button of this.buttons) {
       button.addEventListener("click", () => { this.mode = button.dataset.pose; this.update(); });
     }
+    document.querySelector("#lighting").addEventListener("change", event => {
+      this.model.lighting.setEnabled(event.target.checked);
+      this.view.render();
+    });
     this.doors.addEventListener("change", () => this.update());
     document.querySelector("#fit").addEventListener("click", () => this.update());
     this.update();

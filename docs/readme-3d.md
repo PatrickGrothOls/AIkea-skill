@@ -359,3 +359,30 @@ geometry, real lights, LED glow, depth precision and batched input rendering.
     dragging with a visibly changed model orientation and no reported renderer
     errors. Saved a live screenshot and left the public viewer open. Temporal
     flicker on the user's device remains unconfirmed by these static captures.
+
+## Visible LED illumination
+
+Patrick requests visible light on the surrounding panels, beyond glowing strips.
+
+- [x] Inspect area-light output and geometry scale.
+- [x] Tune emitted power and verify visible illumination on adjacent surfaces.
+- [ ] Run relevant tests and publish the verified preview.
+
+45. The area lights use a 4 mm-wide emitting surface with intensity 18,
+    corresponding to only about 0.23 lumens per metre. Increase illustrative
+    output per metre at the existing exposure, preserving emitter placement and
+    the same rendering pipeline during movement. This is preview lighting, not
+    a manufacturer output specification or electrical design change.
+
+46. Balanced strip output at 3 preview lumens per metre. Kept the existing
+    studio lighting so closed doors retain their white appearance. Local on/off captures
+    show light on the backs and shelves from the same camera position. Added an
+    Interior lighting checkbox that changes both emitted light and diffuser glow
+    without reframing the model; the existing closed/exploded spill restriction
+    remains. No extra rendering passes or CAD changes were introduced.
+
+47. All 78 tests and the production build pass; privacy scan reports zero
+    findings. Added coverage for millimetre conversion, emitted power, outward
+    light direction, unchanged CAD vertices, and on/off persistence across poses.
+    Browser on/off, assembled/exploded and door controls work without reported
+    renderer errors. All touched code files remain below 150 lines.
