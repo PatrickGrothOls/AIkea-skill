@@ -429,3 +429,23 @@ Patrick requests visible light on the surrounding panels, beyond glowing strips.
     initial screenshot crop to include the complete wardrobe and lighting
     controls. Reviewed the saved image and Markdown diff. Changes are pushed
     to PR #1; the default-branch README remains unchanged until merge.
+
+## High-resolution README images
+
+Patrick confirmed reverting only the extra README lighting section and keeping
+all approved viewer behavior, including warm light.
+
+- [x] Remove the added lighting section from the README.
+- [x] Export sharp, high-resolution assembled, exploded, framed and detail images.
+- [x] Verify final image framing and update references.
+- [ ] Push and verify the updated README on GitHub.
+
+54. Replace small browser screenshots with direct high-resolution canvas exports
+    from the existing scene. Use a temporary local capture page, not a new public
+    viewer feature. Keep geometry and lighting unchanged and inspect each output.
+
+55. Exported and visually inspected four 3600 × 2700 lossless PNGs directly
+    from the existing scene, with no browser controls. Replaced the four older
+    README images (about 2.1 MB combined), including an isolated machining
+    close-up. Preserved old JPEGs in ignored local evidence. Removed the extra
+    lighting image and section; viewer source, geometry and lighting are unchanged.
