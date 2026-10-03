@@ -1,17 +1,22 @@
 {
-  "parts": 725,
+  "parts": 591,
   "panels": 84,
-  "hardware_components": 641,
-  "vendor_components_excluded": 0,
+  "hardware_components": 507,
+  "vendor_components_excluded": 134,
   "source_sha256": "3a9ff738ea0f758856f112df3021d75e2a45c59a913585e07273cd8a550d80f8",
-  "model_sha256": "a0e043337935c944442d8c1a831e2c1e5b57084ae04954e9e3ea41dd9075f716",
-  "compressed_bytes": 13821806,
-  "uncompressed_bytes": 67196668,
+  "model_sha256": "a497f1ddae9a47c220ed0982a9eecc84809dd00c3c342d400695ea9f4b569a0a",
+  "compressed_bytes": 12247028,
+  "uncompressed_bytes": 60527696,
   "tessellation_tolerance_mm": 0.1,
   "angular_tolerance_radians": 0.1,
   "geometry_simplified": false,
   "fabrication_ready": false,
   "packing_verified": true,
-  "triangles": 1849872,
-  "hardware_ownership_verified": true
+  "triangles": 1671384,
+  "hardware_ownership_verified": true,
+  "excluded_hardware": {
+    "manufacturer": "Lamello",
+    "product": "Cabineo",
+    "components": 134
+  }
 }

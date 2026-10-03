@@ -20,15 +20,19 @@ class ShowcaseAssetVerification {
     model.scene.scale.setScalar(0.001);
     model.scene.updateMatrixWorld(true);
     const presentation = new AssemblyPresentation(model.scene, model.parser.associations);
-    assert.equal(presentation.records.length, 725);
+    assert.equal(presentation.records.length, 591);
     assert.equal(presentation.records.filter(part => part.kind === "panel").length, 84);
-    assert.equal(presentation.records.filter(part => part.kind === "hardware").length, 641);
+    assert.equal(presentation.records.filter(part => part.kind === "hardware").length, 507);
+    assert.equal(metadata.vendor_components_excluded, 134);
+    assert.equal(metadata.excluded_hardware.product, "Cabineo");
+    assert.ok(presentation.records.every(part => !part.name.endsWith("_connector")), "Cabineo bodies must be absent");
+    assert.equal(presentation.records.filter(part => part.name.endsWith("_insert")).length, 134);
     let triangles = 0;
     model.scene.traverse(node => {
       if (node.isMesh) triangles += node.geometry.index.count / 3;
     });
-    assert.equal(triangles, 1849872);
-    assert.equal(presentation.apply("", 0, "panels", false).visibleCount, 725);
+    assert.equal(triangles, 1671384);
+    assert.equal(presentation.apply("", 0, "panels", false).visibleCount, 591);
     const positions = presentation.records.map(part => part.node.position.clone());
     const originalWorld = new Map(presentation.records.map(part => [part.name, part.node.getWorldPosition(new Vector3())]));
     presentation.apply("", 0.14, "panels", false);
@@ -43,7 +47,7 @@ class ShowcaseAssetVerification {
     assert.ok(presentation.records.some((part, i) => !part.node.position.equals(positions[i])));
     const scope = presentation.scopeForPart("cabinet_01__door_panel");
     assert.ok(presentation.apply(scope, 0, "panels", false).visibleCount > 1);
-    assert.equal(presentation.apply("", 0, "panels", false).visibleCount, 725);
+    assert.equal(presentation.apply("", 0, "panels", false).visibleCount, 591);
     assert.ok(presentation.records.every((part, i) => part.node.position.equals(positions[i])));
   }
 }

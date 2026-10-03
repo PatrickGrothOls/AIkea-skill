@@ -18,7 +18,7 @@ and installation guidance. The audit below records the superseded STL approach.
 ## Current state
 
 The detailed white CAD viewer supersedes the simplified inline STL previews.
-It includes all 84 panels and 641 saved hardware components, with assembled and
+It includes all 84 panels and 507 saved hardware components (Cabineos excluded), with assembled and
 exploded views plus a door-panel toggle. All machining stays
 in the model; the page instructs visitors to zoom in to see it.
 The demo is published on GitHub Pages. The simplified two-view interface and
@@ -151,3 +151,23 @@ proximity guesses. Door visibility hides only the wood so hinges remain inspecta
     with door panels hidden; a zoomed screenshot was saved as private evidence.
     The source PR remains open and unmerged. Physical phone performance remains
     unverified.
+
+## Cabineo exclusion follow-up
+
+Patrick requested that Cabineos alone be excluded. Remove the 134 components
+identified as Lamello Cabineo in the source inventory. Retain every panel and
+all other fittings, including the separate threaded inserts and machining.
+
+- [x] Remove only the inventoried Cabineo meshes from the public asset.
+- [x] Verify remaining geometry, ownership and viewer transitions.
+- [ ] Update documentation, publish and verify the live viewer.
+
+22. The exclusion is limited to Cabineo connector bodies, per Patrick's request.
+    The remaining 507 hardware components and all 84 machined panels stay in the
+    demonstration; the source assembly and fabrication files remain unchanged.
+
+23. Removed the 134 inventory-identified Cabineo bodies and their mesh buffers.
+    Independent comparison confirms every retained component has byte-identical
+    geometry and unchanged transforms and ownership. All 74 viewer tests and the
+    production build pass. Local browser checks confirm retained hinges/runners
+    in exploded view; the README screenshot now reflects the exclusion.
