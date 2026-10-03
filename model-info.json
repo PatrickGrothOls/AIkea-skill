@@ -1,22 +1,25 @@
 {
-  "parts": 591,
-  "panels": 84,
+  "parts": 608,
+  "panels": 101,
   "hardware_components": 507,
   "vendor_components_excluded": 134,
   "source_sha256": "3a9ff738ea0f758856f112df3021d75e2a45c59a913585e07273cd8a550d80f8",
-  "model_sha256": "a497f1ddae9a47c220ed0982a9eecc84809dd00c3c342d400695ea9f4b569a0a",
-  "compressed_bytes": 12247028,
-  "uncompressed_bytes": 60527696,
+  "model_sha256": "a33fc29679bdf74f890a0b24372681497ef07e0f923478e7a8450440b066f4a7",
+  "compressed_bytes": 12248011,
+  "uncompressed_bytes": 60554944,
   "tessellation_tolerance_mm": 0.1,
   "angular_tolerance_radians": 0.1,
   "geometry_simplified": false,
   "fabrication_ready": false,
   "packing_verified": true,
-  "triangles": 1671384,
+  "triangles": 1671588,
   "hardware_ownership_verified": true,
   "excluded_hardware": {
     "manufacturer": "Lamello",
     "product": "Cabineo",
     "components": 134
-  }
+  },
+  "original_panels": 84,
+  "door_frame_pieces": 17,
+  "door_frames_fabrication_ready": false
 }

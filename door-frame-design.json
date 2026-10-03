@@ -1,0 +1,1029 @@
+{
+  "border_width_mm": 65,
+  "frame_thickness_mm": 6,
+  "backing_thickness_mm": 18,
+  "attachment": "applied strips; adhesive qualification pending",
+  "fabrication_ready": false,
+  "parts": [
+    {
+      "path": [
+        "cabinet_01",
+        "part:door_frame_01"
+      ],
+      "spec": {
+        "part_id": "door_frame_01",
+        "role": "door_frame",
+        "dimensions_mm": [],
+        "local_to_parent": {
+          "origin_in_parent": {
+            "x_mm": 1,
+            "y_mm": -18,
+            "z_mm": 1
+          },
+          "axis_basis": {
+            "local_x_in_parent": {
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            "local_y_in_parent": {
+              "x": 0,
+              "y": 0,
+              "z": 1
+            },
+            "local_z_in_parent": {
+              "x": 0,
+              "y": -1,
+              "z": 0
+            }
+          }
+        },
+        "outline_mm": [
+          {
+            "x_mm": 0,
+            "height_mm": 0
+          },
+          {
+            "x_mm": 616.75,
+            "height_mm": 0
+          },
+          {
+            "x_mm": 551.75,
+            "height_mm": 65.0
+          },
+          {
+            "x_mm": 65.0,
+            "height_mm": 65.0
+          }
+        ],
+        "local_size_mm": [
+          616.75,
+          65.0,
+          6.0
+        ],
+        "inside_face": ">Z",
+        "material_id": "painted_mdf_6_proposal"
+      }
+    },
+    {
+      "path": [
+        "cabinet_01",
+        "part:door_frame_02"
+      ],
+      "spec": {
+        "part_id": "door_frame_02",
+        "role": "door_frame",
+        "dimensions_mm": [],
+        "local_to_parent": {
+          "origin_in_parent": {
+            "x_mm": 552.75,
+            "y_mm": -18.0,
+            "z_mm": 1.0
+          },
+          "axis_basis": {
+            "local_x_in_parent": {
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            "local_y_in_parent": {
+              "x": 0,
+              "y": 0,
+              "z": 1
+            },
+            "local_z_in_parent": {
+              "x": 0,
+              "y": -1,
+              "z": 0
+            }
+          }
+        },
+        "outline_mm": [
+          {
+            "x_mm": 65.0,
+            "height_mm": 0
+          },
+          {
+            "x_mm": 65.0,
+            "height_mm": 2272.0
+          },
+          {
+            "x_mm": 0.0,
+            "height_mm": 2207.0
+          },
+          {
+            "x_mm": 0.0,
+            "height_mm": 65.0
+          }
+        ],
+        "local_size_mm": [
+          65.0,
+          2272.0,
+          6.0
+        ],
+        "inside_face": ">Z",
+        "material_id": "painted_mdf_6_proposal"
+      }
+    },
+    {
+      "path": [
+        "cabinet_01",
+        "part:door_frame_03"
+      ],
+      "spec": {
+        "part_id": "door_frame_03",
+        "role": "door_frame",
+        "dimensions_mm": [],
+        "local_to_parent": {
+          "origin_in_parent": {
+            "x_mm": 1.0,
+            "y_mm": -18.0,
+            "z_mm": 2208.0
+          },
+          "axis_basis": {
+            "local_x_in_parent": {
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            "local_y_in_parent": {
+              "x": 0,
+              "y": 0,
+              "z": 1
+            },
+            "local_z_in_parent": {
+              "x": 0,
+              "y": -1,
+              "z": 0
+            }
+          }
+        },
+        "outline_mm": [
+          {
+            "x_mm": 616.75,
+            "height_mm": 65.0
+          },
+          {
+            "x_mm": 0,
+            "height_mm": 65.0
+          },
+          {
+            "x_mm": 65.0,
+            "height_mm": 0.0
+          },
+          {
+            "x_mm": 551.75,
+            "height_mm": 0.0
+          }
+        ],
+        "local_size_mm": [
+          616.75,
+          65.0,
+          6.0
+        ],
+        "inside_face": ">Z",
+        "material_id": "painted_mdf_6_proposal"
+      }
+    },
+    {
+      "path": [
+        "cabinet_01",
+        "part:door_frame_04"
+      ],
+      "spec": {
+        "part_id": "door_frame_04",
+        "role": "door_frame",
+        "dimensions_mm": [],
+        "local_to_parent": {
+          "origin_in_parent": {
+            "x_mm": 1,
+            "y_mm": -18,
+            "z_mm": 1
+          },
+          "axis_basis": {
+            "local_x_in_parent": {
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            "local_y_in_parent": {
+              "x": 0,
+              "y": 0,
+              "z": 1
+            },
+            "local_z_in_parent": {
+              "x": 0,
+              "y": -1,
+              "z": 0
+            }
+          }
+        },
+        "outline_mm": [
+          {
+            "x_mm": 0,
+            "height_mm": 2272.0
+          },
+          {
+            "x_mm": 0,
+            "height_mm": 0
+          },
+          {
+            "x_mm": 65.0,
+            "height_mm": 65.0
+          },
+          {
+            "x_mm": 65.0,
+            "height_mm": 2207.0
+          }
+        ],
+        "local_size_mm": [
+          65.0,
+          2272.0,
+          6.0
+        ],
+        "inside_face": ">Z",
+        "material_id": "painted_mdf_6_proposal"
+      }
+    },
+    {
+      "path": [
+        "cabinet_02",
+        "part:door_frame_01"
+      ],
+      "spec": {
+        "part_id": "door_frame_01",
+        "role": "door_frame",
+        "dimensions_mm": [],
+        "local_to_parent": {
+          "origin_in_parent": {
+            "x_mm": 1,
+            "y_mm": -18,
+            "z_mm": 1
+          },
+          "axis_basis": {
+            "local_x_in_parent": {
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            "local_y_in_parent": {
+              "x": 0,
+              "y": 0,
+              "z": 1
+            },
+            "local_z_in_parent": {
+              "x": 0,
+              "y": -1,
+              "z": 0
+            }
+          }
+        },
+        "outline_mm": [
+          {
+            "x_mm": 0,
+            "height_mm": 0
+          },
+          {
+            "x_mm": 616.75,
+            "height_mm": 0
+          },
+          {
+            "x_mm": 551.75,
+            "height_mm": 65.0
+          },
+          {
+            "x_mm": 65.0,
+            "height_mm": 65.0
+          }
+        ],
+        "local_size_mm": [
+          616.75,
+          65.0,
+          6.0
+        ],
+        "inside_face": ">Z",
+        "material_id": "painted_mdf_6_proposal"
+      }
+    },
+    {
+      "path": [
+        "cabinet_02",
+        "part:door_frame_02"
+      ],
+      "spec": {
+        "part_id": "door_frame_02",
+        "role": "door_frame",
+        "dimensions_mm": [],
+        "local_to_parent": {
+          "origin_in_parent": {
+            "x_mm": 552.75,
+            "y_mm": -18.0,
+            "z_mm": 1.0
+          },
+          "axis_basis": {
+            "local_x_in_parent": {
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            "local_y_in_parent": {
+              "x": 0,
+              "y": 0,
+              "z": 1
+            },
+            "local_z_in_parent": {
+              "x": 0,
+              "y": -1,
+              "z": 0
+            }
+          }
+        },
+        "outline_mm": [
+          {
+            "x_mm": 65.0,
+            "height_mm": 0
+          },
+          {
+            "x_mm": 65.0,
+            "height_mm": 1998.1111111111113
+          },
+          {
+            "x_mm": 0.0,
+            "height_mm": 1973.1682707711343
+          },
+          {
+            "x_mm": 0.0,
+            "height_mm": 65.0
+          }
+        ],
+        "local_size_mm": [
+          65.0,
+          1998.1111111111113,
+          6.0
+        ],
+        "inside_face": ">Z",
+        "material_id": "painted_mdf_6_proposal"
+      }
+    },
+    {
+      "path": [
+        "cabinet_02",
+        "part:door_frame_03"
+      ],
+      "spec": {
+        "part_id": "door_frame_03",
+        "role": "door_frame",
+        "dimensions_mm": [],
+        "local_to_parent": {
+          "origin_in_parent": {
+            "x_mm": 342.3014436940207,
+            "y_mm": -18.0,
+            "z_mm": 1974.1682707711343
+          },
+          "axis_basis": {
+            "local_x_in_parent": {
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            "local_y_in_parent": {
+              "x": 0,
+              "y": 0,
+              "z": 1
+            },
+            "local_z_in_parent": {
+              "x": 0,
+              "y": -1,
+              "z": 0
+            }
+          }
+        },
+        "outline_mm": [
+          {
+            "x_mm": 275.4485563059793,
+            "height_mm": 24.94284033997701
+          },
+          {
+            "x_mm": 28.94855630597931,
+            "height_mm": 298.8317292288657
+          },
+          {
+            "x_mm": 0.0,
+            "height_mm": 233.8317292288657
+          },
+          {
+            "x_mm": 210.4485563059793,
+            "height_mm": 0.0
+          }
+        ],
+        "local_size_mm": [
+          275.4485563059793,
+          298.8317292288657,
+          6.0
+        ],
+        "inside_face": ">Z",
+        "material_id": "painted_mdf_6_proposal"
+      }
+    },
+    {
+      "path": [
+        "cabinet_02",
+        "part:door_frame_04"
+      ],
+      "spec": {
+        "part_id": "door_frame_04",
+        "role": "door_frame",
+        "dimensions_mm": [],
+        "local_to_parent": {
+          "origin_in_parent": {
+            "x_mm": 1.0,
+            "y_mm": -18.0,
+            "z_mm": 2208.0
+          },
+          "axis_basis": {
+            "local_x_in_parent": {
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            "local_y_in_parent": {
+              "x": 0,
+              "y": 0,
+              "z": 1
+            },
+            "local_z_in_parent": {
+              "x": 0,
+              "y": -1,
+              "z": 0
+            }
+          }
+        },
+        "outline_mm": [
+          {
+            "x_mm": 370.25,
+            "height_mm": 65.0
+          },
+          {
+            "x_mm": 0,
+            "height_mm": 65.0
+          },
+          {
+            "x_mm": 65.0,
+            "height_mm": 0.0
+          },
+          {
+            "x_mm": 341.3014436940207,
+            "height_mm": 0.0
+          }
+        ],
+        "local_size_mm": [
+          370.25,
+          65.0,
+          6.0
+        ],
+        "inside_face": ">Z",
+        "material_id": "painted_mdf_6_proposal"
+      }
+    },
+    {
+      "path": [
+        "cabinet_02",
+        "part:door_frame_05"
+      ],
+      "spec": {
+        "part_id": "door_frame_05",
+        "role": "door_frame",
+        "dimensions_mm": [],
+        "local_to_parent": {
+          "origin_in_parent": {
+            "x_mm": 1,
+            "y_mm": -18,
+            "z_mm": 1
+          },
+          "axis_basis": {
+            "local_x_in_parent": {
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            "local_y_in_parent": {
+              "x": 0,
+              "y": 0,
+              "z": 1
+            },
+            "local_z_in_parent": {
+              "x": 0,
+              "y": -1,
+              "z": 0
+            }
+          }
+        },
+        "outline_mm": [
+          {
+            "x_mm": 0,
+            "height_mm": 2272.0
+          },
+          {
+            "x_mm": 0,
+            "height_mm": 0
+          },
+          {
+            "x_mm": 65.0,
+            "height_mm": 65.0
+          },
+          {
+            "x_mm": 65.0,
+            "height_mm": 2207.0
+          }
+        ],
+        "local_size_mm": [
+          65.0,
+          2272.0,
+          6.0
+        ],
+        "inside_face": ">Z",
+        "material_id": "painted_mdf_6_proposal"
+      }
+    },
+    {
+      "path": [
+        "cabinet_03",
+        "part:door_frame_01"
+      ],
+      "spec": {
+        "part_id": "door_frame_01",
+        "role": "door_frame",
+        "dimensions_mm": [],
+        "local_to_parent": {
+          "origin_in_parent": {
+            "x_mm": 1,
+            "y_mm": -18,
+            "z_mm": 1
+          },
+          "axis_basis": {
+            "local_x_in_parent": {
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            "local_y_in_parent": {
+              "x": 0,
+              "y": 0,
+              "z": 1
+            },
+            "local_z_in_parent": {
+              "x": 0,
+              "y": -1,
+              "z": 0
+            }
+          }
+        },
+        "outline_mm": [
+          {
+            "x_mm": 0,
+            "height_mm": 0
+          },
+          {
+            "x_mm": 616.75,
+            "height_mm": 0
+          },
+          {
+            "x_mm": 551.75,
+            "height_mm": 65.0
+          },
+          {
+            "x_mm": 65.0,
+            "height_mm": 65.0
+          }
+        ],
+        "local_size_mm": [
+          616.75,
+          65.0,
+          6.0
+        ],
+        "inside_face": ">Z",
+        "material_id": "painted_mdf_6_proposal"
+      }
+    },
+    {
+      "path": [
+        "cabinet_03",
+        "part:door_frame_02"
+      ],
+      "spec": {
+        "part_id": "door_frame_02",
+        "role": "door_frame",
+        "dimensions_mm": [],
+        "local_to_parent": {
+          "origin_in_parent": {
+            "x_mm": 552.75,
+            "y_mm": -18.0,
+            "z_mm": 1.0
+          },
+          "axis_basis": {
+            "local_x_in_parent": {
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            "local_y_in_parent": {
+              "x": 0,
+              "y": 0,
+              "z": 1
+            },
+            "local_z_in_parent": {
+              "x": 0,
+              "y": -1,
+              "z": 0
+            }
+          }
+        },
+        "outline_mm": [
+          {
+            "x_mm": 65.0,
+            "height_mm": 0
+          },
+          {
+            "x_mm": 65.0,
+            "height_mm": 1310.611111111111
+          },
+          {
+            "x_mm": 0.0,
+            "height_mm": 1285.668270771134
+          },
+          {
+            "x_mm": 0.0,
+            "height_mm": 65.0
+          }
+        ],
+        "local_size_mm": [
+          65.0,
+          1310.611111111111,
+          6.0
+        ],
+        "inside_face": ">Z",
+        "material_id": "painted_mdf_6_proposal"
+      }
+    },
+    {
+      "path": [
+        "cabinet_03",
+        "part:door_frame_03"
+      ],
+      "spec": {
+        "part_id": "door_frame_03",
+        "role": "door_frame",
+        "dimensions_mm": [],
+        "local_to_parent": {
+          "origin_in_parent": {
+            "x_mm": 1.0,
+            "y_mm": -18.0,
+            "z_mm": 1286.668270771134
+          },
+          "axis_basis": {
+            "local_x_in_parent": {
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            "local_y_in_parent": {
+              "x": 0,
+              "y": 0,
+              "z": 1
+            },
+            "local_z_in_parent": {
+              "x": 0,
+              "y": -1,
+              "z": 0
+            }
+          }
+        },
+        "outline_mm": [
+          {
+            "x_mm": 616.75,
+            "height_mm": 24.94284033997701
+          },
+          {
+            "x_mm": 0,
+            "height_mm": 710.2206181177546
+          },
+          {
+            "x_mm": 65.0,
+            "height_mm": 540.8333333333335
+          },
+          {
+            "x_mm": 551.75,
+            "height_mm": 0.0
+          }
+        ],
+        "local_size_mm": [
+          616.75,
+          710.2206181177546,
+          6.0
+        ],
+        "inside_face": ">Z",
+        "material_id": "painted_mdf_6_proposal"
+      }
+    },
+    {
+      "path": [
+        "cabinet_03",
+        "part:door_frame_04"
+      ],
+      "spec": {
+        "part_id": "door_frame_04",
+        "role": "door_frame",
+        "dimensions_mm": [],
+        "local_to_parent": {
+          "origin_in_parent": {
+            "x_mm": 1,
+            "y_mm": -18,
+            "z_mm": 1
+          },
+          "axis_basis": {
+            "local_x_in_parent": {
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            "local_y_in_parent": {
+              "x": 0,
+              "y": 0,
+              "z": 1
+            },
+            "local_z_in_parent": {
+              "x": 0,
+              "y": -1,
+              "z": 0
+            }
+          }
+        },
+        "outline_mm": [
+          {
+            "x_mm": 0,
+            "height_mm": 1995.8888888888887
+          },
+          {
+            "x_mm": 0,
+            "height_mm": 0
+          },
+          {
+            "x_mm": 65.0,
+            "height_mm": 65.0
+          },
+          {
+            "x_mm": 65.0,
+            "height_mm": 1826.5016041044676
+          }
+        ],
+        "local_size_mm": [
+          65.0,
+          1995.8888888888887,
+          6.0
+        ],
+        "inside_face": ">Z",
+        "material_id": "painted_mdf_6_proposal"
+      }
+    },
+    {
+      "path": [
+        "cabinet_04",
+        "part:door_frame_01"
+      ],
+      "spec": {
+        "part_id": "door_frame_01",
+        "role": "door_frame",
+        "dimensions_mm": [],
+        "local_to_parent": {
+          "origin_in_parent": {
+            "x_mm": 1,
+            "y_mm": -18,
+            "z_mm": 1
+          },
+          "axis_basis": {
+            "local_x_in_parent": {
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            "local_y_in_parent": {
+              "x": 0,
+              "y": 0,
+              "z": 1
+            },
+            "local_z_in_parent": {
+              "x": 0,
+              "y": -1,
+              "z": 0
+            }
+          }
+        },
+        "outline_mm": [
+          {
+            "x_mm": 0,
+            "height_mm": 0
+          },
+          {
+            "x_mm": 616.75,
+            "height_mm": 0
+          },
+          {
+            "x_mm": 551.75,
+            "height_mm": 65.0
+          },
+          {
+            "x_mm": 65.0,
+            "height_mm": 65.0
+          }
+        ],
+        "local_size_mm": [
+          616.75,
+          65.0,
+          6.0
+        ],
+        "inside_face": ">Z",
+        "material_id": "painted_mdf_6_proposal"
+      }
+    },
+    {
+      "path": [
+        "cabinet_04",
+        "part:door_frame_02"
+      ],
+      "spec": {
+        "part_id": "door_frame_02",
+        "role": "door_frame",
+        "dimensions_mm": [],
+        "local_to_parent": {
+          "origin_in_parent": {
+            "x_mm": 552.75,
+            "y_mm": -18.0,
+            "z_mm": 1.0
+          },
+          "axis_basis": {
+            "local_x_in_parent": {
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            "local_y_in_parent": {
+              "x": 0,
+              "y": 0,
+              "z": 1
+            },
+            "local_z_in_parent": {
+              "x": 0,
+              "y": -1,
+              "z": 0
+            }
+          }
+        },
+        "outline_mm": [
+          {
+            "x_mm": 65.0,
+            "height_mm": 0
+          },
+          {
+            "x_mm": 65.0,
+            "height_mm": 623.1111111111111
+          },
+          {
+            "x_mm": 0.0,
+            "height_mm": 598.1682707711342
+          },
+          {
+            "x_mm": 0.0,
+            "height_mm": 65.0
+          }
+        ],
+        "local_size_mm": [
+          65.0,
+          623.1111111111111,
+          6.0
+        ],
+        "inside_face": ">Z",
+        "material_id": "painted_mdf_6_proposal"
+      }
+    },
+    {
+      "path": [
+        "cabinet_04",
+        "part:door_frame_03"
+      ],
+      "spec": {
+        "part_id": "door_frame_03",
+        "role": "door_frame",
+        "dimensions_mm": [],
+        "local_to_parent": {
+          "origin_in_parent": {
+            "x_mm": 1.0,
+            "y_mm": -18.0,
+            "z_mm": 599.1682707711342
+          },
+          "axis_basis": {
+            "local_x_in_parent": {
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            "local_y_in_parent": {
+              "x": 0,
+              "y": 0,
+              "z": 1
+            },
+            "local_z_in_parent": {
+              "x": 0,
+              "y": -1,
+              "z": 0
+            }
+          }
+        },
+        "outline_mm": [
+          {
+            "x_mm": 616.75,
+            "height_mm": 24.942840339976897
+          },
+          {
+            "x_mm": 0,
+            "height_mm": 710.2206181177547
+          },
+          {
+            "x_mm": 65.0,
+            "height_mm": 540.8333333333334
+          },
+          {
+            "x_mm": 551.75,
+            "height_mm": 0.0
+          }
+        ],
+        "local_size_mm": [
+          616.75,
+          710.2206181177547,
+          6.0
+        ],
+        "inside_face": ">Z",
+        "material_id": "painted_mdf_6_proposal"
+      }
+    },
+    {
+      "path": [
+        "cabinet_04",
+        "part:door_frame_04"
+      ],
+      "spec": {
+        "part_id": "door_frame_04",
+        "role": "door_frame",
+        "dimensions_mm": [],
+        "local_to_parent": {
+          "origin_in_parent": {
+            "x_mm": 1,
+            "y_mm": -18,
+            "z_mm": 1
+          },
+          "axis_basis": {
+            "local_x_in_parent": {
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            "local_y_in_parent": {
+              "x": 0,
+              "y": 0,
+              "z": 1
+            },
+            "local_z_in_parent": {
+              "x": 0,
+              "y": -1,
+              "z": 0
+            }
+          }
+        },
+        "outline_mm": [
+          {
+            "x_mm": 0,
+            "height_mm": 1308.388888888889
+          },
+          {
+            "x_mm": 0,
+            "height_mm": 0
+          },
+          {
+            "x_mm": 65.0,
+            "height_mm": 65.0
+          },
+          {
+            "x_mm": 65.0,
+            "height_mm": 1139.0016041044676
+          }
+        ],
+        "local_size_mm": [
+          65.0,
+          1308.388888888889,
+          6.0
+        ],
+        "inside_face": ">Z",
+        "material_id": "painted_mdf_6_proposal"
+      }
+    }
+  ]
+}
