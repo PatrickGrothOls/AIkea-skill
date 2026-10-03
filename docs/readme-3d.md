@@ -2,8 +2,9 @@
 
 ## Scope
 
-Add two interactive GitHub STL previews: assembled and exploded. Keep the
-existing photographs of the digital design and the installation guidance.
+Provide assembled and exploded wardrobe inspection from the README, with real
+machining visible in a white interactive viewer. Preserve the existing images
+and installation guidance. The audit below records the superseded STL approach.
 
 ## Work packages
 
@@ -16,11 +17,10 @@ existing photographs of the digital design and the installation guidance.
 
 ## Current state
 
-Two interactive previews are available on `codex/readme-3d` in PR #1 (unmerged).
-Each contains 80 simplified panels and 1,002 triangles; four doors are hidden.
-Both native GitHub viewers render, and rotation and zoom were exercised in
-Chrome. Geometry and privacy checks pass. No runtime dependencies, source
-project files or manufacturing outputs ship.
+The detailed white CAD viewer supersedes the simplified inline STL previews.
+It includes assembled, exploded and hinge-cup close-up views, plus a door toggle.
+Local Chrome checks pass, including a narrow phone-size viewport. Public hosting
+and final branch verification are in progress. PR #1 remains unmerged.
 
 ## Audit log
 
@@ -56,3 +56,45 @@ project files or manufacturing outputs ship.
     edge vectors and shared-layout translations match within 0.0000021 units.
     Reviewed prose and generated data. PR #1 contains branch documentation;
     no merge performed.
+
+## Detailed white viewer follow-up
+
+Patrick requested a hosted white viewer because the simplified STL previews hid
+machining details. This follow-up supersedes those inline STL blocks.
+
+- [x] Export the 84 authored machined panels without hull simplification.
+- [x] Build a static white viewer using the existing shared explosion layout.
+- [x] Add assembled, exploded and machining close-up controls.
+- [x] Verify exact source/mesh provenance, privacy, desktop and phone layouts.
+- [ ] Publish a reviewable demo and replace the README links.
+
+Current follow-up state: local implementation and browser verification complete. Purchased vendor hardware
+remains excluded. Machining geometry is design evidence, not fabrication approval.
+
+11. Patrick approved trying the detailed white viewer. Reused the existing
+    inspection layout and exact panel tessellation instead of convex hulls.
+    All 84 authored panels remain; purchased hardware stays excluded.
+12. Exported at 0.1 mm linear and 0.1 rad angular tolerance: 775,824 triangles.
+    Primitive packing passed bitwise attribute and transform verification.
+    Lossless gzip reduces the GLB from 28,112,572 to 5,634,050 bytes. Safe source
+    and mesh hashes are recorded in `viewer/showcase/model-info.json`.
+13. Added a static Three.js entry point without new dependencies. A render pass
+    feeds ambient occlusion; its radius is expressed in model metres. Camera
+    framing uses projected bounds, with a separate close-up of the door recess.
+14. Inspected actual rendered assembled, exploded, door-toggle and machining
+    views in Chrome. A requested 390 × 844 viewport measured 433 CSS pixels wide
+    because of browser zoom; no horizontal overflow occurred. This checks the
+    responsive layout, not performance on a physical phone. Real screenshots
+    remain local except the deliberately selected public machining image.
+15. The disk filled during dependency installation. No unrelated cleanup was
+    performed; an existing installation with an identical lockfile was reused
+    through an ignored local symlink. Production build and viewer tests passed.
+
+## Build and publication
+
+Run `direnv exec . npm --prefix viewer ci`, then
+`direnv exec . npm --prefix viewer run build:showcase`.
+The static output is `viewer/showcase-dist/`; only that output plus the project
+license belongs on the Pages publishing branch. No server, credentials, analytics,
+CNC source files or private evidence are required. The model is inspection geometry,
+not an approved manufacturing package. New source modules each stay under 150 lines.

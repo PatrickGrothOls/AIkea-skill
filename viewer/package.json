@@ -10,7 +10,9 @@
   },
   "scripts": {
     "build": "vite build",
-    "test": "node --test src/*.test.js"
+    "test": "node --test src/*.test.js",
+    "dev:showcase": "vite --config vite.showcase.config.js --host 127.0.0.1",
+    "build:showcase": "vite build --config vite.showcase.config.js"
   },
   "dependencies": {
     "@react-three/drei": "10.7.7",
