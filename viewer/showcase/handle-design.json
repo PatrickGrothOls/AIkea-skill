@@ -1,0 +1,48 @@
+{
+  "scope": "Illustrative brushed-brass handle design; no selected manufacturer product",
+  "overall_length_mm": 160,
+  "post_centres_mm": 128,
+  "bar_diameter_mm": 10,
+  "projection_mm": 32,
+  "finish": "brushed brass",
+  "fixing_holes_added": false,
+  "fabrication_ready": false,
+  "placements": [
+    {
+      "door": "cabinet_01__door_panel",
+      "origin_mm": [
+        585.25,
+        -24,
+        1100
+      ],
+      "floor_height_mm": 1100
+    },
+    {
+      "door": "cabinet_02__door_panel",
+      "origin_mm": [
+        1204.0,
+        -24,
+        1100
+      ],
+      "floor_height_mm": 1100
+    },
+    {
+      "door": "cabinet_03__door_panel",
+      "origin_mm": [
+        1822.75,
+        -24,
+        1100
+      ],
+      "floor_height_mm": 1100
+    },
+    {
+      "door": "cabinet_04__door_panel",
+      "origin_mm": [
+        2441.5,
+        -24,
+        500
+      ],
+      "floor_height_mm": 500
+    }
+  ]
+}

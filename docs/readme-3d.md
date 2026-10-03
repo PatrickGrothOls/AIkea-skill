@@ -19,7 +19,7 @@ and installation guidance. The audit below records the superseded STL approach.
 
 The detailed white CAD viewer supersedes the simplified inline STL previews.
 It includes all 84 original panels, 17 applied frame pieces and 507 saved hardware
-components (Cabineos excluded), with assembled and
+components (Cabineos excluded), plus four proposed brass pulls, with assembled and
 exploded views plus a door-panel toggle. All machining stays
 in the model; the page instructs visitors to zoom in to see it.
 The demo is published on GitHub Pages. The simplified two-view interface and
@@ -216,3 +216,25 @@ The private reference drawing is not part of the public repository.
     framed fronts with Show doors enabled and the 101 panel-piece / 507 hardware
     caption. Saved live screenshots; privacy scan reports zero findings. The PR
     remains unmerged and all fabrication limitations above remain open.
+
+## Brass handle appearance follow-up
+
+Patrick requested golden/brass handles on the framed doors. Add one slim vertical
+brushed-brass pull on each free-edge stile. Use a 160 mm bar with 128 mm post
+centres, 10 mm diameter and 32 mm projection as an explicitly illustrative design.
+Place the first three at 1100 mm above the floor and the short door at 500 mm.
+No product has been selected and no fixing holes or fabrication approval are implied.
+
+- [x] Build four valid CAD handle concepts and retain the existing model geometry.
+- [x] Verify placement, brass appearance and door-owned visibility/explosion.
+- [ ] Publish, capture the live result and record validation.
+
+30. A slim round pull adds the requested brass accent without obscuring the frame.
+    All four doors are left-hinged, so pulls sit on their right-hand stiles. The
+    shortest door needs a lower pull; its outline limits the available height.
+
+31. Each handle is one valid CAD solid. The original mesh buffers remain unchanged.
+    All 74 viewer tests and the production build pass. Local browser inspection
+    confirms four brass pulls, aligned first-three placement, and handles hiding
+    with their doors. Tests verify door-owned explosion and exact restoration.
+    No fixing holes were added; the product and mounting remain to be selected.

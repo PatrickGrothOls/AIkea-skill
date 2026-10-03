@@ -16,11 +16,13 @@ export class ShowcaseModel {
     this.scene = this.presentation.scene;
     const white = new MeshStandardMaterial({color: 0xfaf9f6, roughness: 0.7, metalness: 0});
     const metal = new MeshStandardMaterial({color: 0x879399, roughness: 0.38, metalness: 0.4});
+    const brass = new MeshStandardMaterial({color: 0xc79b4e, roughness: 0.38, metalness: 0.6});
+    const materials = {hardware: metal, door_handle: brass};
     const frameEdges = new LineBasicMaterial({color: 0x737970, transparent: true, opacity: 0.25});
     for (const part of this.presentation.records) {
       part.node.traverse(node => {
         if (!node.isMesh) return;
-        node.material = part.kind === "hardware" ? metal : white;
+        node.material = materials[part.kind] ?? white;
         if (part.kind === "door_frame") node.add(new LineSegments(new EdgesGeometry(node.geometry), frameEdges));
       });
     }
@@ -29,7 +31,7 @@ export class ShowcaseModel {
 
   pose(mode, doorsShown) {
     const state = this.presentation.apply("", mode === "exploded" ? 0.14 : 0, "panels", false);
-    // Hide the entire wooden front, including its applied frame; keep hinges inspectable.
+    // Hide the entire wooden front, including frames and handles; keep hinges inspectable.
     for (const part of this.presentation.records) {
       if (part.kind !== "hardware" && part.path.includes("door_panel")) part.node.visible = doorsShown;
     }

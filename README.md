@@ -29,14 +29,14 @@ Zoom in to see the machining details. The viewer’s 84 white panels preserve th
 actual holes, pockets and grooves from the CAD model. Toggle the doors to see
 inside. Hinges, drawer runners, feet and other fittings are included; only
 Cabineo connector bodies are omitted. Some fixings use simplified geometry from
-the source assembly. The doors have plain applied frames; their attachment and
-additional clearance remain unqualified. This example is not a fabrication release.
+the source assembly. The doors have plain applied frames and slim brass handle
+concepts; their attachment and additional clearance remain unqualified. This example is not a fabrication release.
 
 [![Zoomed white CAD model showing panel drilling and grooves.](docs/images/wardrobe-cad.jpg)](https://patrickgrothols.github.io/AIkea-skill/)
 
-Toggle **Show doors** to inspect the proposed applied frames.
+Toggle **Show doors** to inspect the proposed applied frames and brass handles.
 
-[![White framed doors following the wardrobe’s sloped outline.](docs/images/wardrobe-framed.jpg)](https://patrickgrothols.github.io/AIkea-skill/)
+[![White framed doors with brass pulls following the wardrobe’s sloped outline.](docs/images/wardrobe-framed.jpg)](https://patrickgrothols.github.io/AIkea-skill/)
 
 ## From the whole cabinet to every part
 
