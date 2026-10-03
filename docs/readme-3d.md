@@ -281,7 +281,7 @@ its geometry or removing machining. Patrick reported flicker after LED publicati
 
 - [x] Inspect the depth range and postprocessing anti-aliasing path.
 - [x] Verify a tighter camera depth range and multisampled scene rendering.
-- [ ] Run regression checks and publish the verified correction.
+- [x] Run regression checks and publish the verified correction.
 
 36. The camera used a fixed 1 mm near plane with a 25 m far plane even at whole-
     wardrobe distance. Focus the depth range around the model bounding sphere,
@@ -295,3 +295,8 @@ its geometry or removing machining. Patrick reported flicker after LED publicati
     coverage and cached SSAO matrix synchronization. SSAO depth thresholds now
     preserve their physical distances when the clipping range changes. The CAD
     asset and LED placement are unchanged. Phone motion remains unverified.
+
+38. Published source `84f5675` through Pages `76e3f09`; deployment
+    `37150753158` succeeded. Live rotation and resulting surfaces were inspected
+    and captured. All 75 tests, build and privacy scan pass. Residual subpixel
+    shimmer and physical phone motion are not claimed eliminated by screenshots.
