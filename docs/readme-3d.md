@@ -273,3 +273,25 @@ approximation, not a photometric or electrical installation validation.
     `37142706796` succeeded. Verified visible LED glow in the live assembled
     interior and saved its screenshot. All CAD asset bytes remain unchanged.
     Privacy scan reports zero findings; source PR remains unmerged.
+
+## Rotation flicker correction
+
+Scope: stabilize the illuminated CAD preview while orbiting without simplifying
+its geometry or removing machining. Patrick reported flicker after LED publication.
+
+- [x] Inspect the depth range and postprocessing anti-aliasing path.
+- [x] Verify a tighter camera depth range and multisampled scene rendering.
+- [ ] Run regression checks and publish the verified correction.
+
+36. The camera used a fixed 1 mm near plane with a 25 m far plane even at whole-
+    wardrobe distance. Focus the depth range around the model bounding sphere,
+    retaining a 5 mm near plane when inside it. Synchronize cached SSAO projection
+    uniforms. Add four samples to the actual composer targets because canvas
+    antialiasing does not cover the postprocessed scene used for LED glow.
+
+37. The local comparison shows reduced unstable surface speckling across small
+    rotations. Overview, zoom and exploded views remain visible. All 75 viewer
+    tests pass, including 0.1 mm surface depth separation, near/far clipping
+    coverage and cached SSAO matrix synchronization. SSAO depth thresholds now
+    preserve their physical distances when the clipping range changes. The CAD
+    asset and LED placement are unchanged. Phone motion remains unverified.
