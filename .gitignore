@@ -49,3 +49,7 @@ credentials.json
 # Real deployment config and generated policies/artifacts stay local.
 *.local.json
 infra/**/deployment.local/
+
+# Generated public showcase build and local dependency symlinks
+viewer/showcase-dist/
+viewer/node_modules

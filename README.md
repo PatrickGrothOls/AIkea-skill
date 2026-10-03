@@ -20,6 +20,30 @@ show the assumptions for materials, hardware, machining, finishing and delivery.
 integrated lighting. The doors are hidden for inspection; these are digital
 design previews.*
 
+### Explore the real model
+
+[Open the assembled wardrobe](https://patrickgrothols.github.io/AIkea-skill/) ·
+[Explore the exploded view](https://patrickgrothols.github.io/AIkea-skill/?view=exploded)
+
+Zoom in to see the machining details. The viewer’s 84 white panels preserve the
+actual holes, pockets and grooves from the CAD model. Toggle the doors to see
+inside. Hinges, drawer runners, feet and other fittings are included; only
+Cabineo connector bodies are omitted. Some fixings use simplified geometry from
+the source assembly. The doors have plain applied frames and slim brass handle
+concepts; their attachment and additional clearance remain unqualified. This example is not a fabrication release.
+
+[![Zoomed white CAD model showing panel drilling and grooves.](docs/images/wardrobe-cad.jpg)](https://patrickgrothols.github.io/AIkea-skill/)
+
+Warm LED strips illuminate the shelves and back panels. Toggle **Interior
+lighting** in the interactive viewer to compare the light on and off. Lighting
+is illustrative, not a prediction of a specific LED product's output.
+
+[![Warm golden LED lighting illuminating the white wardrobe interior, with doors hidden.](docs/images/wardrobe-lighting.jpg)](https://patrickgrothols.github.io/AIkea-skill/)
+
+Toggle **Show doors** to inspect the proposed applied frames and brass handles.
+
+[![White framed doors with brass pulls following the wardrobe’s sloped outline.](docs/images/wardrobe-framed.jpg)](https://patrickgrothols.github.io/AIkea-skill/)
+
 ## From the whole cabinet to every part
 
 Rotate and zoom to review the design, hide the doors to see inside, or explode
@@ -30,6 +54,9 @@ design code.
 <img src="docs/images/wardrobe-exploded.jpg" alt="Exploded view of the same wardrobe, separating cabinet panels, shelves, drawers, hardware and the adjustable-leg base for inspection." width="760">
 
 *The same wardrobe, expanded into its component parts.*
+
+[Open the interactive exploded model](https://patrickgrothols.github.io/AIkea-skill/?view=exploded).
+Panels are separated for inspection; the view does not specify an assembly sequence.
 
 ## From measurements to cutting and assembly
 

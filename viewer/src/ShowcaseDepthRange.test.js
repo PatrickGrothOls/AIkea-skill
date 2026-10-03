@@ -1,0 +1,41 @@
+/** Scope: Verify CAD depth precision and clipping safety. */
+import { test } from "node:test";
+import assert from "node:assert/strict";
+import { Box3, PerspectiveCamera, Vector3 } from "three";
+import { ShowcaseDepthRange } from "../showcase/ShowcaseDepthRange.js";
+
+class DepthRangeVerification {
+  constructor() {
+    this.camera = new PerspectiveCamera(38, 1, 0.001, 25);
+    this.range = new ShowcaseDepthRange(this.camera);
+    this.bounds = new Box3(new Vector3(-1.3, -1.3, -0.3), new Vector3(1.3, 1.3, 0.3));
+  }
+
+  verify() {
+    for (const position of [[0, 0, 8], [8, 2, 0], [0, 0, 0.06], [0, 0, 25]]) {
+      this.camera.position.set(...position);
+      this.camera.lookAt(0, 0, 0);
+      this.camera.updateMatrixWorld(true);
+      this.range.update(this.bounds);
+      assert.ok(this.camera.near >= 0.005);
+      for (const x of [-1.3, 1.3]) for (const y of [-1.3, 1.3]) for (const z of [-0.3, 0.3]) {
+        const depth = -new Vector3(x, y, z).applyMatrix4(this.camera.matrixWorldInverse).z;
+        // Points behind the camera cannot be preserved by any positive near plane.
+        if (depth > 0.005) assert.ok(depth > this.camera.near && depth < this.camera.far);
+      }
+    }
+    this.camera.position.set(0, 0, 8);
+    this.camera.lookAt(0, 0, 0);
+    this.camera.updateMatrixWorld(true);
+    this.range.update(this.bounds);
+    const front = new Vector3(0, 0, 0).project(this.camera).z;
+    const adjacent = new Vector3(0, 0, 0.0001).project(this.camera).z;
+    assert.ok(Math.abs(front - adjacent) / 2 * (2 ** 24 - 1) > 10,
+      "Surfaces 0.1 mm apart must occupy distinct depth values at overview distance");
+  }
+}
+
+// node:test requires a callback; one fixture owns all camera depth checks.
+test("showcase keeps fine CAD depth distinct without clipping overview or close-up views", () => {
+  new DepthRangeVerification().verify();
+});
