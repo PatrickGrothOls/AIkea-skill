@@ -6,9 +6,32 @@ import { gunzipSync } from "node:zlib";
 import { createHash } from "node:crypto";
 import { Vector3 } from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { ShowcaseLighting } from "../showcase/ShowcaseLighting.js";
 import { AssemblyPresentation } from "./AssemblyPresentation.js";
 
 class ShowcaseAssetVerification {
+  verifyLighting(presentation) {
+    const lighting = new ShowcaseLighting(presentation.records);
+    assert.equal(lighting.lights.length, 9);
+    for (const light of lighting.lights) {
+      const mesh = light.parent;
+      const size = mesh.geometry.boundingBox.getSize(new Vector3());
+      assert.ok(Math.abs(light.width - size.x * 0.001) < 1e-6, "Area-light width must use metres");
+      assert.ok(Math.abs(light.height - 0.004) < 1e-6);
+      const emitting = mesh.geometry.groups.filter(group => group.materialIndex === 1);
+      assert.ok(emitting.length > 0 && emitting.length < mesh.geometry.groups.length);
+      for (const group of emitting) {
+        for (let i = group.start; i < group.start + group.count; i++) {
+          assert.ok(mesh.geometry.attributes.normal.getZ(mesh.geometry.index.getX(i)) > 0.99);
+        }
+      }
+    }
+    for (const [mode, doors, expected] of [["assembled", false, true], ["assembled", true, false], ["exploded", false, false]]) {
+      lighting.setPose(mode, doors);
+      assert.ok(lighting.lights.every(light => light.visible === expected));
+    }
+  }
+
   async verify() {
     const metadata = JSON.parse(readFileSync(new URL("../showcase/model-info.json", import.meta.url)));
     const compressed = readFileSync(new URL("../showcase/wardrobe.glb.gz", import.meta.url));
@@ -35,6 +58,7 @@ class ShowcaseAssetVerification {
       if (node.isMesh) triangles += node.geometry.index.count / 3;
     });
     assert.equal(triangles, 1678580);
+    this.verifyLighting(presentation);
     assert.equal(presentation.apply("", 0, "panels", false).visibleCount, 612);
     const positions = presentation.records.map(part => part.node.position.clone());
     const originalWorld = new Map(presentation.records.map(part => [part.name, part.node.getWorldPosition(new Vector3())]));

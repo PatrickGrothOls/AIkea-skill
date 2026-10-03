@@ -27,7 +27,7 @@ design previews.*
 
 Zoom in to see the machining details. The viewer’s 84 white panels preserve the
 actual holes, pockets and grooves from the CAD model. Toggle the doors to see
-inside. Hinges, drawer runners, feet and other fittings are included; only
+inside, including illuminated LED strips. Hinges, drawer runners, feet and other fittings are included; only
 Cabineo connector bodies are omitted. Some fixings use simplified geometry from
 the source assembly. The doors have plain applied frames and slim brass handle
 concepts; their attachment and additional clearance remain unqualified. This example is not a fabrication release.

@@ -2,6 +2,7 @@
 import { EdgesGeometry, LineBasicMaterial, LineSegments, MeshStandardMaterial, Vector3 } from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { AssemblyPresentation } from "../src/AssemblyPresentation.js";
+import { ShowcaseLighting } from "./ShowcaseLighting.js";
 import modelUrl from "./wardrobe.glb.gz?url";
 
 export class ShowcaseModel {
@@ -26,6 +27,7 @@ export class ShowcaseModel {
         if (part.kind === "door_frame") node.add(new LineSegments(new EdgesGeometry(node.geometry), frameEdges));
       });
     }
+    this.lighting = new ShowcaseLighting(this.presentation.records);
     return this;
   }
 
@@ -35,7 +37,8 @@ export class ShowcaseModel {
     for (const part of this.presentation.records) {
       if (part.kind !== "hardware" && part.path.includes("door_panel")) part.node.visible = doorsShown;
     }
+    this.lighting.setPose(mode, doorsShown);
     const center = state.bounds.getCenter(new Vector3());
-    return { ...state, center, direction: mode === "exploded" ? new Vector3(0.8, 0.8, 1.8) : new Vector3(0.8, 0.3, 1.8) };
+    return { ...state, center, direction: mode === "exploded" ? new Vector3(0.8, 0.8, 1.8) : new Vector3(doorsShown ? 0.8 : -0.55, 0.3, 1.8) };
   }
 }

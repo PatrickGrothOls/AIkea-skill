@@ -1,9 +1,10 @@
 /** Scope: Render white CAD with cavity shading and frame inspection poses responsively. */
-import { ACESFilmicToneMapping, AmbientLight, Color, DirectionalLight, HemisphereLight, PerspectiveCamera, Scene, Vector3, WebGLRenderer } from "three";
+import { ACESFilmicToneMapping, AmbientLight, Color, DirectionalLight, HemisphereLight, PerspectiveCamera, Scene, Vector2, Vector3, WebGLRenderer } from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { SSAOPass } from "three/addons/postprocessing/SSAOPass.js";
+import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
 import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 
 export class ShowcaseScene {
@@ -32,6 +33,8 @@ export class ShowcaseScene {
     this.occlusion.maxDistance = 0.004;
     this.composer.addPass(new RenderPass(this.scene, this.camera));
     this.composer.addPass(this.occlusion);
+    // HDR threshold isolates the emissive strips from white panels and brass.
+    this.composer.addPass(new UnrealBloomPass(new Vector2(1, 1), 0.35, 0.25, 2));
     this.composer.addPass(new OutputPass());
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.controls.minDistance = 0.06;

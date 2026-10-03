@@ -243,3 +243,28 @@ No product has been selected and no fixing holes or fabrication approval are imp
     `37141935858` succeeded. Live browser inspection confirms all four brass pulls
     on the framed doors and the updated component caption. Saved the live screenshot.
     Privacy check reports zero findings. Source PR remains unmerged.
+
+## LED illumination follow-up
+
+Scope: make the nine existing recessed strips visibly emit light in the public
+inspection viewer. Preserve the CAD mesh and machining. This is a visual lighting
+approximation, not a photometric or electrical installation validation.
+
+- [x] Identify existing strip geometry and its exposed local +Z diffuser faces.
+- [x] Add emissive faces, restrained HDR glow and interior light spill.
+- [x] Verify face selection, hardware ownership and browser appearance.
+- [ ] Publish and capture the illuminated result.
+
+33. Patrick requested visible LED illumination. Retain source strip placement and
+    light only the exposed diffuser faces. Area-light spill is active only with
+    the assembled doors hidden: these real-time lights have no shadow occlusion,
+    so disabling spill in closed and exploded poses prevents misleading leakage.
+    The emissive strips remain attached to their panels in every pose.
+
+34. All 74 viewer tests pass, including nine emitters, exposed-face selection,
+    millimetre-to-metre light dimensions and pose-dependent spill. Browser checks
+    show glow inside, no visible glow through closed fronts, and attached strips
+    in the exploded view. Production build passes with a bundle-size warning
+    (271 kB gzipped JavaScript); physical phone performance remains unverified.
+    The initial area-light dimensions ignored parent scale and overexposed the
+    scene; explicit world-unit dimensions fixed it and are regression tested.
