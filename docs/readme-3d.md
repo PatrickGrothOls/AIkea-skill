@@ -300,3 +300,26 @@ its geometry or removing machining. Patrick reported flicker after LED publicati
     `37150753158` succeeded. Live rotation and resulting surfaces were inspected
     and captured. All 75 tests, build and privacy scan pass. Residual subpixel
     shimmer and physical phone motion are not claimed eliminated by screenshots.
+
+## Drag responsiveness follow-up
+
+Patrick reported being unable to move the model after the anti-aliasing update.
+The live viewer reports no renderer errors; rotation works after reload in the
+current in-app browser. The original frozen state was not conclusively reproduced.
+
+- [x] Check live pointer input and renderer errors.
+- [x] Coalesce pointer renders and use one scene pass during dragging.
+- [x] Verify interaction start, updates, release and restored full lighting.
+- [ ] Publish and check the live controls.
+
+39. Full postprocessing plus multisampling on every pointer event makes dragging
+    unnecessarily expensive. Render at most once per animation frame, using the
+    complete CAD and area lights without SSAO/bloom during movement. Restore full
+    effects on release. Keep the depth-precision correction and avoid a continuous
+    render loop. This addresses rendering workload; it does not assert a proven
+    cause for the user's original frozen state.
+
+40. Local browser checks verify rotation in both directions, zoom and restored
+    LED glow after release, with no reported renderer errors. All 76 tests pass;
+    new coverage verifies event coalescing, release during a queued drag frame,
+    wheel completion and no idle render loop. The production build passes.

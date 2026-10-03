@@ -1,5 +1,6 @@
 /** Scope: Render white CAD with cavity shading and frame inspection poses responsively. */
 import { ACESFilmicToneMapping, AmbientLight, Color, DirectionalLight, HemisphereLight, PerspectiveCamera, Scene, Vector2, Vector3, WebGLRenderer } from "three";
+import { ShowcaseRenderQueue } from "./ShowcaseRenderQueue.js";
 import { ShowcaseDepthRange } from "./ShowcaseDepthRange.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
@@ -39,10 +40,13 @@ export class ShowcaseScene {
     // HDR threshold isolates the emissive strips from white panels and brass.
     this.composer.addPass(new UnrealBloomPass(new Vector2(1, 1), 0.35, 0.25, 2));
     this.composer.addPass(new OutputPass());
+    this.renderQueue = new ShowcaseRenderQueue(moving => this.draw(moving), callback => requestAnimationFrame(callback));
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.controls.minDistance = 0.06;
     this.controls.maxDistance = 25;
     this.controls.addEventListener("change", () => this.render());
+    this.controls.addEventListener("start", () => this.renderQueue.setInteracting(true));
+    this.controls.addEventListener("end", () => this.renderQueue.setInteracting(false));
     this.observer = new ResizeObserver(() => this.resize());
     this.observer.observe(host);
     this.resize();
@@ -85,8 +89,13 @@ export class ShowcaseScene {
   }
 
   render() {
-    // Render only on model, camera or size changes; no permanent animation loop.
+    this.renderQueue.request();
+  }
+
+  draw(moving) {
+    // Keep full CAD and real lights during drag; defer costly screen effects until release.
     if (this.currentPose) this.depthRange.update(this.currentPose.bounds);
-    this.composer.render();
+    if (moving) this.renderer.render(this.scene, this.camera);
+    else this.composer.render();
   }
 }
