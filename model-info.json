@@ -1,0 +1,13 @@
+{
+  "parts": 84,
+  "vendor_components_excluded": 641,
+  "source_sha256": "3a9ff738ea0f758856f112df3021d75e2a45c59a913585e07273cd8a550d80f8",
+  "model_sha256": "78360ee11f8dd2a0d3d8452fbf06e5bc6998a8415d13ebc456e365ee4382f6f3",
+  "compressed_bytes": 5634050,
+  "uncompressed_bytes": 28112572,
+  "tessellation_tolerance_mm": 0.1,
+  "angular_tolerance_radians": 0.1,
+  "geometry_simplified": false,
+  "fabrication_ready": false,
+  "packing_verified": true
+}
