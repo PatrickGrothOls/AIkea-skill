@@ -15,16 +15,21 @@ export class ShowcaseModel {
     this.presentation = new AssemblyPresentation(gltf.scene, gltf.parser.associations);
     this.scene = this.presentation.scene;
     const white = new MeshStandardMaterial({color: 0xfaf9f6, roughness: 0.7, metalness: 0});
-    this.scene.traverse(node => {
-      if (node.isMesh) {
-        node.material = white;
-      }
-    });
+    const metal = new MeshStandardMaterial({color: 0x879399, roughness: 0.38, metalness: 0.4});
+    for (const part of this.presentation.records) {
+      part.node.traverse(node => {
+        if (node.isMesh) node.material = part.kind === "panel" ? white : metal;
+      });
+    }
     return this;
   }
 
   pose(mode, doorsShown) {
-    const state = this.presentation.apply("", mode === "exploded" ? 0.14 : 0, "panels", !doorsShown);
+    const state = this.presentation.apply("", mode === "exploded" ? 0.14 : 0, "panels", false);
+    // Hide only the wooden door panels; their hinges remain available for inspection.
+    for (const part of this.presentation.records) {
+      if (part.kind === "panel" && part.path.at(-1) === "door_panel") part.node.visible = doorsShown;
+    }
     const center = state.bounds.getCenter(new Vector3());
     return { ...state, center, direction: mode === "exploded" ? new Vector3(0.8, 0.8, 1.8) : new Vector3(0.8, 0.3, 1.8) };
   }

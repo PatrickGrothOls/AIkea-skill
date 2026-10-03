@@ -18,7 +18,8 @@ and installation guidance. The audit below records the superseded STL approach.
 ## Current state
 
 The detailed white CAD viewer supersedes the simplified inline STL previews.
-It includes assembled and exploded views plus a door toggle. All machining stays
+It includes all 84 panels and 641 saved hardware components, with assembled and
+exploded views plus a door-panel toggle. All machining stays
 in the model; the page instructs visitors to zoom in to see it.
 The demo is published on GitHub Pages. The simplified two-view interface and
 zoom instruction were verified on the live deployment. PR #1 remains unmerged.
@@ -69,8 +70,8 @@ machining details. This follow-up supersedes those inline STL blocks.
 - [x] Verify exact source/mesh provenance, privacy, desktop and phone layouts.
 - [x] Publish a reviewable demo and replace the README links.
 
-Current follow-up state: local implementation and browser verification complete. Purchased vendor hardware
-remains excluded. Machining geometry is design evidence, not fabrication approval.
+Current follow-up state: local implementation and browser verification complete. The hardware follow-up below supersedes the initial panel-only export.
+Machining geometry is design evidence, not fabrication approval.
 
 11. Patrick approved trying the detailed white viewer. Reused the existing
     inspection layout and exact panel tessellation instead of convex hulls.
@@ -115,3 +116,32 @@ ordinary zoom in the exploded view, with no separate machining control.
     history. Deployment succeeded; live browser verification confirms the exact
     zoom instruction and only Assembled/Exploded controls. Privacy check: zero
     findings. All 74 tests pass; production build passes.
+
+## Hardware completeness follow-up
+
+Patrick identified missing hinge and other purchased CAD. Restore all 641 saved
+hardware components alongside the 84 machined panels. The source STEP remains
+unchanged. Use authored mounting ownership for exploded placement, never
+proximity guesses. Door visibility hides only the wood so hinges remain inspectable.
+
+- [x] Export and verify all 725 source components.
+- [x] Preserve authored hardware-to-panel ownership during explosion.
+- [x] Display metal hardware separately from white panels.
+- [x] Verify visible hinges, runners and base fittings in the browser.
+- [ ] Update the live demo, tests, README and branch documentation.
+
+18. The earlier panel-only export caused the missing hardware. Restore the saved
+    source assembly. Exact manufacturer hinges/runners coexist with illustrative
+    connectors and screw shapes already present in that source; do not claim
+    every fixing is an exact manufacturer model or a fabrication-approved fit.
+
+19. Exported all 725 saved STEP components without mesh simplification. The model
+    has 1,849,872 triangles and compresses to approximately 13.8 MB. Retrieved all
+    641 mounting-panel identities from the original authored builder; every one
+    resolves to an exported panel. Only inspection metadata changed after the
+    bitwise-verified packing step; the mesh binary payload remained identical.
+20. Automated verification confirms every fitting receives the same exploded
+    translation as its authored mounting panel, and restoration returns all 725
+    original transforms. All 74 viewer tests pass. Local browser inspection shows
+    the real hinges, drawer runners and feet; hiding door wood retains hardware.
+    Updated model metadata passes the private-data guard with zero findings.

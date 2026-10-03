@@ -32,7 +32,7 @@ class ShowcaseApp {
   update() {
     for (const button of this.buttons) button.setAttribute("aria-pressed", String(button.dataset.pose === this.mode));
     const captions = {
-      assembled: this.doors.checked ? "84 machined panels · doors shown" : "84 machined panels · doors hidden to show the interior",
+      assembled: this.doors.checked ? "84 panels + 641 hardware components · doors shown" : "84 panels + 641 hardware components · door panels hidden",
       exploded: "Panels separated for inspection · not an assembly sequence",
     };
     document.querySelector("#caption").textContent = captions[this.mode];

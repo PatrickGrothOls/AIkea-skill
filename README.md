@@ -27,7 +27,9 @@ design previews.*
 
 Zoom in to see the machining details. The viewer’s 84 white panels preserve the
 actual holes, pockets and grooves from the CAD model. Toggle the doors to see
-inside. Purchased hardware is omitted; this example is not a fabrication release.
+inside. Hinges, drawer runners, feet and other fittings are included. Some
+connectors and fasteners use simplified geometry from the source assembly;
+this example is not a fabrication release.
 
 [![Zoomed white CAD model showing panel drilling and grooves.](docs/images/wardrobe-cad.jpg)](https://patrickgrothols.github.io/AIkea-skill/)
 

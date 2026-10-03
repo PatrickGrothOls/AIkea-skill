@@ -4,6 +4,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { gunzipSync } from "node:zlib";
 import { createHash } from "node:crypto";
+import { Vector3 } from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { AssemblyPresentation } from "./AssemblyPresentation.js";
 
@@ -19,25 +20,35 @@ class ShowcaseAssetVerification {
     model.scene.scale.setScalar(0.001);
     model.scene.updateMatrixWorld(true);
     const presentation = new AssemblyPresentation(model.scene, model.parser.associations);
-    assert.equal(presentation.records.length, 84);
-    assert.ok(presentation.records.every(part => part.kind === "panel"));
+    assert.equal(presentation.records.length, 725);
+    assert.equal(presentation.records.filter(part => part.kind === "panel").length, 84);
+    assert.equal(presentation.records.filter(part => part.kind === "hardware").length, 641);
     let triangles = 0;
     model.scene.traverse(node => {
       if (node.isMesh) triangles += node.geometry.index.count / 3;
     });
-    assert.equal(triangles, 775824);
-    assert.equal(presentation.apply("", 0, "panels", true).visibleCount, 80);
+    assert.equal(triangles, 1849872);
+    assert.equal(presentation.apply("", 0, "panels", false).visibleCount, 725);
     const positions = presentation.records.map(part => part.node.position.clone());
-    presentation.apply("", 0.14, "panels", true);
+    const originalWorld = new Map(presentation.records.map(part => [part.name, part.node.getWorldPosition(new Vector3())]));
+    presentation.apply("", 0.14, "panels", false);
+    for (const part of presentation.records.filter(part => part.kind === "hardware")) {
+      const owner = presentation.records.find(panel => panel.kind === "panel"
+        && JSON.stringify(panel.path) === JSON.stringify(part.path.slice(0, -1)));
+      assert.ok(owner, `Missing mounting panel for ${part.name}`);
+      const movement = part.node.getWorldPosition(new Vector3()).sub(originalWorld.get(part.name));
+      const ownerMovement = owner.node.getWorldPosition(new Vector3()).sub(originalWorld.get(owner.name));
+      assert.ok(movement.distanceTo(ownerMovement) < 1e-8, `Detached fitting: ${part.name}`);
+    }
     assert.ok(presentation.records.some((part, i) => !part.node.position.equals(positions[i])));
     const scope = presentation.scopeForPart("cabinet_01__door_panel");
-    assert.equal(presentation.apply(scope, 0, "panels", false).visibleCount, 1);
-    assert.equal(presentation.apply("", 0, "panels", false).visibleCount, 84);
+    assert.ok(presentation.apply(scope, 0, "panels", false).visibleCount > 1);
+    assert.equal(presentation.apply("", 0, "panels", false).visibleCount, 725);
     assert.ok(presentation.records.every((part, i) => part.node.position.equals(positions[i])));
   }
 }
 
 // A callback is the node:test registration contract; the verification belongs to one fixture.
-test("public CAD retains all machined panels and restores assembly after inspection", async () => {
+test("public CAD retains machined panels and hardware with verified explosion attachments", async () => {
   await new ShowcaseAssetVerification().verify();
 });
