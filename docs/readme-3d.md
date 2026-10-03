@@ -187,7 +187,7 @@ The private reference drawing is not part of the public repository.
 
 - [x] Build explicit frame parts using the shared panel construction contracts.
 - [x] Verify geometry, closed placement and door visibility/grouping.
-- [ ] Show the framed doors for appearance review and record limitations.
+- [x] Show the framed doors for appearance review and record limitations.
 
 25. Chose separate flat applied strips to match the reference's plain recessed
     centre appearance while retaining existing hinge machining. This is a draft
@@ -210,3 +210,9 @@ The private reference drawing is not part of the public repository.
     and hidden wood with hinges retained. Subtle edges identify the actual frame
     solids in the white CAD inspection view. Attachment, added mass and full motion
     still require qualification; the additional front projection is 6 mm.
+
+29. Published the appearance preview from `9578b31` through Pages commit
+    `fdf7126`. Deployment succeeded. Live browser verification shows the white
+    framed fronts with Show doors enabled and the 101 panel-piece / 507 hardware
+    caption. Saved live screenshots; privacy scan reports zero findings. The PR
+    remains unmerged and all fabrication limitations above remain open.
