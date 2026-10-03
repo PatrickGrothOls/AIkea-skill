@@ -11,15 +11,16 @@ existing photographs of the digital design and the installation guidance.
 - [x] Locate the corresponding saved CAD assembly.
 - [x] Produce small panel-only preview meshes from that assembly.
 - [x] Add both interactive previews and explain their limitations.
-- [ ] Verify geometry, privacy, and GitHub rendering; review the diff.
-- [ ] Commit and open a pull request.
+- [x] Verify geometry, privacy, and GitHub rendering; review the diff.
+- [x] Commit and open a pull request.
 
 ## Current state
 
-Two ASCII STL blocks prepared: 80 panels and 1,002 triangles each; four doors
-hidden. README is approximately 278 kB. GitHub Markdown API recognizes both as
-STL render containers. Browser verification is pending.
-No deployment or changes to manufacturing geometry are included.
+Two interactive previews are available on `codex/readme-3d` in PR #1 (unmerged).
+Each contains 80 simplified panels and 1,002 triangles; four doors are hidden.
+Both native GitHub viewers render, and rotation and zoom were exercised in
+Chrome. Geometry and privacy checks pass. No runtime dependencies, source
+project files or manufacturing outputs ship.
 
 ## Audit log
 
@@ -45,3 +46,13 @@ No deployment or changes to manufacturing geometry are included.
    the native ground plane is Z-up. Restored CAD orientation and normalized to
    1:12.5 instead; the Y-up experiment intersected the viewer ground plane.
    Both meshes have zero degenerate triangles and consistent outward winding.
+9. Inspected GitHub's public renderer to resolve display assumptions:
+   it uses Z-up and automatically places the model above the grid. No extra
+   placement correction was needed. Browser controls successfully frame both
+   full models; GitHub controls the initial camera. Local screenshots saved.
+10. Final winding checks caught two slender triangles inverted by three-decimal
+    display rounding. Increased coordinate precision to six decimals. Both
+    1,002-triangle meshes now pass finite, nondegenerate, outward-winding checks;
+    edge vectors and shared-layout translations match within 0.0000021 units.
+    Reviewed prose and generated data. PR #1 contains branch documentation;
+    no merge performed.
