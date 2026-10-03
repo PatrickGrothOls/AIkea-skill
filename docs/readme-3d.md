@@ -36,3 +36,6 @@ No deployment or changes to manufacturing geometry are included.
 5. ASCII structure, finite coordinates and triangle counts passed. Both blocks
    are recognized by GitHub's Markdown renderer; no new runtime dependency or
    fabrication output is included. Private extraction intermediates stay ignored.
+6. Live GitHub rendering exposed an axis mismatch: its viewer uses Y-up.
+   Rotated both display meshes from CAD Z-up to Y-up; dimensions and relative
+   panel positions are preserved. The CAD source is unchanged.
