@@ -418,9 +418,14 @@ Patrick requests visible light on the surrounding panels, beyond glowing strips.
 
 - [x] Capture the approved golden illumination from the published viewer.
 - [x] Add the linked image and describe the Interior lighting control.
-- [ ] Verify the rendered README and push documentation.
+- [x] Verify the rendered README and push documentation.
 
 52. Patrick requested adding the approved lighting to the README. Added a
     screenshot of the live viewer, linked to the interactive model, and concise
     on/off instructions. Retained existing machining and framed-door images.
     Labelled lighting as illustrative rather than product output validation.
+
+53. GitHub renders the lighting paragraph and linked image. Corrected the
+    initial screenshot crop to include the complete wardrobe and lighting
+    controls. Reviewed the saved image and Markdown diff. Changes are pushed
+    to PR #1; the default-branch README remains unchanged until merge.
