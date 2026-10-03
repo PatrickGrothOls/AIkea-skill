@@ -253,7 +253,7 @@ approximation, not a photometric or electrical installation validation.
 - [x] Identify existing strip geometry and its exposed local +Z diffuser faces.
 - [x] Add emissive faces, restrained HDR glow and interior light spill.
 - [x] Verify face selection, hardware ownership and browser appearance.
-- [ ] Publish and capture the illuminated result.
+- [x] Publish and capture the illuminated result.
 
 33. Patrick requested visible LED illumination. Retain source strip placement and
     light only the exposed diffuser faces. Area-light spill is active only with
@@ -268,3 +268,8 @@ approximation, not a photometric or electrical installation validation.
     (271 kB gzipped JavaScript); physical phone performance remains unverified.
     The initial area-light dimensions ignored parent scale and overexposed the
     scene; explicit world-unit dimensions fixed it and are regression tested.
+
+35. Published source `82a7fde` through Pages `e6c1bf4`; deployment
+    `37142706796` succeeded. Verified visible LED glow in the live assembled
+    interior and saved its screenshot. All CAD asset bytes remain unchanged.
+    Privacy scan reports zero findings; source PR remains unmerged.
