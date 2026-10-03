@@ -339,7 +339,7 @@ geometry, real lights, LED glow, depth precision and batched input rendering.
 - [x] Remove alternate moving/resting render modes and cached SSAO state.
 - [x] Soften the bloom cutoff for narrow, partially covered LED pixels.
 - [x] Verify rotation, zoom, glow and rendering tests.
-- [ ] Publish and inspect the updated live view.
+- [x] Publish and inspect the updated live view.
 
 42. The previous optimization deliberately changed shading and glow on release,
     creating a visible transition. Use one pipeline for every camera update.
@@ -353,3 +353,9 @@ geometry, real lights, LED glow, depth precision and batched input rendering.
     mode state rather than retaining unused branches. The exact residual flicker
     on the user device remains to be confirmed; screenshots alone do not prove
     temporal stability.
+
+44. Published source `b1c7f36` through Pages `6b6fab8`; deployment
+    `37151806504` succeeded. The refreshed live viewer loads and responds to
+    dragging with a visibly changed model orientation and no reported renderer
+    errors. Saved a live screenshot and left the public viewer open. Temporal
+    flicker on the user's device remains unconfirmed by these static captures.
