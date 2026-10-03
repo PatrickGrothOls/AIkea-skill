@@ -493,7 +493,7 @@ Patrick requested a lighter, brighter wood finish.
 
 - [x] Lighten the shared wood material while preserving texture and lighting.
 - [x] Inspect the finish and regenerate the four high-resolution README images.
-- [ ] Publish, verify the live viewer and push branch documentation.
+- [x] Publish, verify the live viewer and push branch documentation.
 
 60. Lift the wood material's linear albedo with a slightly cooler balance for a
     pale natural finish. Keep grain maps, geometry, brass and LED settings intact.
@@ -502,3 +502,9 @@ Patrick requested a lighter, brighter wood finish.
     machining close-up exports; all four are 3600 × 2700 lossless PNGs with the
     lighter finish. Only wood material tint changed; no geometry or lighting
     parameters changed. Reviewed the two-line code diff and image replacements.
+
+62. Published source 1234d08 through Pages 98603e8; deployment 37156411505
+    succeeded. Reloaded the live viewer and visually verified the lighter finish.
+    The four matching README images and branch documentation are pushed to PR #1,
+    which remains unmerged. No test suite rerun for this material-tint-only edit;
+    production build and visual checks cover the change.
