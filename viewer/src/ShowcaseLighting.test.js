@@ -23,7 +23,7 @@ test("strip output scales with CAD length and emits away from its diffuser", () 
   const [light] = fixture.lighting.lights;
   assert.ok(Math.abs(light.width - 0.6) < 1e-9);
   assert.ok(Math.abs(light.height - 0.004) < 1e-9);
-  assert.ok(Math.abs(light.power - 1.8) < 1e-9);
+  assert.ok(Math.abs(light.power - 1.08) < 1e-9);
   const outward = new Vector3(0, 0, -1).transformDirection(light.matrixWorld);
   assert.ok(outward.distanceTo(new Vector3(1, 0, 0)) < 1e-9);
   assert.deepEqual(fixture.mesh.geometry.attributes.position.array, fixture.original);
@@ -41,7 +41,7 @@ test("off persists across poses and spill stays inside the supported interior vi
   assert.equal(light.visible, false);
   lighting.setEnabled(true);
   assert.equal(light.visible, true);
-  assert.equal(lighting.emitter.emissiveIntensity, 6);
+  assert.equal(lighting.emitter.emissiveIntensity, 3.5);
   for (const [mode, doors] of [["exploded", false], ["assembled", true]]) {
     lighting.setPose(mode, doors);
     assert.equal(light.visible, false);

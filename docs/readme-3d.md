@@ -398,3 +398,13 @@ Patrick requests visible light on the surrounding panels, beyond glowing strips.
     errors were reported. Captured the live view and left it open. The lighting
     remains illustrative and does not include area-light occlusion or a physical
     photometric validation.
+
+## Softer golden light
+
+- [x] Reduce cast light and diffuser brightness; make both more golden.
+- [ ] Verify the preview and publish.
+
+50. Patrick found the previous light too bright and asked for a more golden hue.
+    Reduce area-light output by 40 percent and diffuser emission from 6 to 3.5.
+    Change both emitted colors from `#ffd6a0` to `#ffbd68`, leaving cabinet
+    material, scene lighting, geometry and the rendering pipeline unchanged.
