@@ -402,9 +402,14 @@ Patrick requests visible light on the surrounding panels, beyond glowing strips.
 ## Softer golden light
 
 - [x] Reduce cast light and diffuser brightness; make both more golden.
-- [ ] Verify the preview and publish.
+- [x] Verify the preview and publish.
 
 50. Patrick found the previous light too bright and asked for a more golden hue.
     Reduce area-light output by 40 percent and diffuser emission from 6 to 3.5.
     Change both emitted colors from `#ffd6a0` to `#ffbd68`, leaving cabinet
     material, scene lighting, geometry and the rendering pipeline unchanged.
+
+51. All 78 tests and the build pass. Published source `a81f2d0` through Pages
+    `3f8a750`; deployment `37153070520` succeeded. Inspected the live golden
+    illumination, checked zoom/reset and on/off controls, captured a screenshot
+    and left the public viewer open.
