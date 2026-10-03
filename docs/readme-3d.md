@@ -310,7 +310,7 @@ current in-app browser. The original frozen state was not conclusively reproduce
 - [x] Check live pointer input and renderer errors.
 - [x] Coalesce pointer renders and use one scene pass during dragging.
 - [x] Verify interaction start, updates, release and restored full lighting.
-- [ ] Publish and check the live controls.
+- [x] Publish and check the live controls.
 
 39. Full postprocessing plus multisampling on every pointer event makes dragging
     unnecessarily expensive. Render at most once per animation frame, using the
@@ -323,3 +323,9 @@ current in-app browser. The original frozen state was not conclusively reproduce
     LED glow after release, with no reported renderer errors. All 76 tests pass;
     new coverage verifies event coalescing, release during a queued drag frame,
     wheel completion and no idle render loop. The production build passes.
+
+41. Published source `596ec43` through Pages `0f91fbc`; deployment
+    `37151354862` succeeded. Live forward and reverse drags visibly changed
+    model orientation; LED glow returned after release. No renderer errors were
+    reported. Saved the live screenshot and left the refreshed viewer open.
+    The privacy scan reports zero findings. Phone interaction remains unverified.
