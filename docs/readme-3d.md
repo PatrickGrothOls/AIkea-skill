@@ -39,3 +39,5 @@ No deployment or changes to manufacturing geometry are included.
 6. Live GitHub rendering exposed an axis mismatch: its viewer uses Y-up.
    Rotated both display meshes from CAD Z-up to Y-up; dimensions and relative
    panel positions are preserved. The CAD source is unchanged.
+7. Normalize display coordinates to 1:25 scale for the native viewer, keeping
+   both poses on the same scale. The README explicitly labels scaled previews.
