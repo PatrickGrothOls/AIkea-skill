@@ -1,12 +1,10 @@
 # AIkea Skill
 
-**AIkea turns your AI into a furniture designer, creating precision CAD files for wardrobes ready to cut and assemble, tailored to your exact measurements, with material guidance, complete parts and hardware lists, and cost calculations.**
+**Create your next custom wardrobe with your AI Agent.**
 
-AIkea helps you turn your room's measurements into furniture you can actually
-build. Your AI assistant guides material choices, compares supplier prices,
-and uses parts, sheet and hardware quantities to work out estimated costs.
-Review the design in 3D, inspect how it assembles, and refine it around your space
-and budget, from sloping ceilings to shelves, drawers and integrated lighting.
+Start with your room’s measurements and how you want to use the space. Choose
+materials, arrange shelves, drawers and lighting, then explore the design in 3D
+and refine it around your budget.
 
 The workflow carries your approved design through to CNC cutting and assembly:
 individual part files, matching hardware and drilling, a material and cutting

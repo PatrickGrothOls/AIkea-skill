@@ -508,3 +508,16 @@ Patrick requested a lighter, brighter wood finish.
     The four matching README images and branch documentation are pushed to PR #1,
     which remains unmerged. No test suite rerun for this material-tint-only edit;
     production build and visual checks cover the change.
+
+## Concise README introduction
+
+Patrick identified repetition between the headline and opening paragraph.
+
+- [x] Give the headline one concise promise using “AI Agent”.
+- [x] Use the next paragraph for the design process; retain cutting-package details below.
+- [x] Review the Markdown diff and commit the documentation update.
+
+63. Replaced the repeated feature lists with a short wardrobe-focused headline
+    and a paragraph covering measurements, layout, 3D review and budget. This
+    removes repetition while preserving the manufacturing explanation that follows.
+    Documentation-only change; no viewer or runtime behavior changed.
