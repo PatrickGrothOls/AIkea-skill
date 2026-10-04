@@ -24,6 +24,8 @@ export class ShowcaseModel {
     for (const part of this.presentation.records) {
       part.node.traverse(node => {
         if (!node.isMesh) return;
+        node.castShadow = true;
+        node.receiveShadow = true;
         if (materials[part.kind]) node.material = materials[part.kind];
         else wood.applyTo(node, part.name);
         if (part.kind === "door_frame") node.add(new LineSegments(new EdgesGeometry(node.geometry), frameEdges));
