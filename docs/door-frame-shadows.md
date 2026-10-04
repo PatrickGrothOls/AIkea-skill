@@ -13,14 +13,16 @@ Patrick requested shadows to reveal the door details.
 - [x] Fit the shadow volume to each furniture pose and cache it during orbit.
 - [x] Build and visually check closed doors, interior and exploded poses.
 - [x] Review the diff and publish the viewer adjustment.
+- [x] Regenerate the README front image at 3600 × 2700 with the approved shadows.
 
 ## Current state
 
 Production build and all 78 viewer tests pass. Closed-door frame shadows, orbit,
 interior and exploded poses were visually checked locally; no browser warnings or
 errors were observed. Published and verified live. One 2048px shadow map is updated on
-pose changes, not camera orbit. No geometry or LED changes. README images are
-unchanged; this request concerns the interactive viewer.
+pose changes, not camera orbit. No geometry or LED changes. The README front image now uses the approved
+shadows; other README images are unchanged. The image update is in PR #4,
+not yet merged into the default README.
 
 ## Audit log
 
@@ -35,3 +37,8 @@ unchanged; this request concerns the interactive viewer.
 4. Published Pages commit `0ab17ed`; deployment `37201463211` succeeded.
    Reloaded the live viewer and confirmed the closed-door shadows. Source PR #4
    remains open; the viewer publication is separate from merging source to main.
+
+5. Patrick requested the front README image be updated. Re-rendered the closed
+   wardrobe from the actual CAD viewer at 3600 × 2700, verified PNG integrity
+   and inspected the frame and handle shadows. Replaced only
+   `docs/images/wardrobe-framed.png`; no runtime changes or additional tests.
