@@ -1,5 +1,6 @@
 /** Scope: Render textured CAD with consistent lighting and responsive inspection poses. */
-import { ACESFilmicToneMapping, AmbientLight, Color, DirectionalLight, HemisphereLight, PerspectiveCamera, Scene, Vector2, Vector3, WebGLRenderer } from "three";
+import { ACESFilmicToneMapping, Color, PerspectiveCamera, Scene, Vector2, Vector3, WebGLRenderer } from "three";
+import { ShowcaseStudioLighting } from "./ShowcaseStudioLighting.js";
 import { ShowcaseRenderQueue } from "./ShowcaseRenderQueue.js";
 import { ShowcaseDepthRange } from "./ShowcaseDepthRange.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -21,12 +22,7 @@ export class ShowcaseScene {
     host.append(this.renderer.domElement);
     this.renderer.domElement.setAttribute("aria-label", "Interactive 3D wardrobe. Drag to rotate; pinch or scroll to zoom. Use Reset view to restore the camera.");
     this.renderer.domElement.setAttribute("role", "img");
-    this.scene.add(new HemisphereLight(0xffffff, 0x858f7b, 0.8), new AmbientLight(0xffffff, 0.2));
-    for (const [position, intensity] of [[[3, 5, 4], 2], [[-3, 2, -4], 2]]) {
-      const light = new DirectionalLight(0xffffff, intensity);
-      light.position.set(...position);
-      this.scene.add(light);
-    }
+    this.studioLighting = new ShowcaseStudioLighting(this.scene, this.renderer);
     this.composer = new EffectComposer(this.renderer);
     this.depthRange = new ShowcaseDepthRange(this.camera);
     // Canvas antialiasing does not apply to offscreen postprocessing targets.
@@ -61,6 +57,7 @@ export class ShowcaseScene {
 
   frame(pose) {
     this.currentPose = pose;
+    this.studioLighting.fit(pose.bounds);
     const verticalFov = this.camera.fov * Math.PI / 180;
     const horizontalFov = 2 * Math.atan(Math.tan(verticalFov / 2) * this.camera.aspect);
     let distance = 0;
