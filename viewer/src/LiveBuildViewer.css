@@ -1,0 +1,17 @@
+/* Scope: Keep live status legible without obstructing furniture interaction. */
+.live-build-shell { position: relative; width: 100%; height: 100%; color: #293c32; }
+.live-build-heading { position: absolute; top: 26px; left: 30px; display: flex; align-items: baseline; gap: 18px; pointer-events: none; }
+.live-build-heading strong { font-size: 26px; letter-spacing: -1px; }
+.live-build-heading span { font-size: 13px; color: #667167; }
+.live-build-status { position: absolute; bottom: 32px; left: 30px; width: min(400px, calc(100% - 60px)); padding: 22px; background: #fffaf2ee; border: 1px solid #d7dbd0; border-radius: 16px; box-shadow: 0 8px 32px #283e3310; }
+.live-build-eyebrow { font-size: 10px; letter-spacing: 1.4px; color: #827043; }
+.live-build-status h1 { font-size: 20px; margin: 10px 0; font-weight: 500; }
+.live-build-status p { font-size: 13px; line-height: 1.5; overflow-wrap: anywhere; }
+.live-build-status small { display: block; font-size: 11px; color: #657168; }
+.live-build-status details { font-size: 12px; margin-bottom: 14px; }
+.live-build-status details ul { max-height: 150px; overflow: auto; padding-left: 16px; overflow-wrap: anywhere; }
+.live-build-status button { margin-top: 16px; padding: 8px 12px; color: inherit; background: transparent; border: 1px solid #bbc6bb; border-radius: 7px; cursor: pointer; }
+.live-build-status[data-state="failed"] { border-color: #b57848; }
+.live-build-hint { position: absolute; bottom: 24px; right: 30px; font-size: 12px; color: #687368; pointer-events: none; }
+.live-build-empty { position: absolute; top: 36%; left: 15%; right: 15%; text-align: center; color: #7e857a; pointer-events: none; }
+@media (max-width: 600px) { .live-build-heading span, .live-build-hint { display: none; } .live-build-status { bottom: 18px; padding: 16px; } }

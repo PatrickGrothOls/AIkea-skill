@@ -87,6 +87,12 @@ does not qualify a novel operation for fabrication.
 
 ## Review the complete design
 
+On a local host, open the [live construction preview](references/live-building.md)
+before the first build and keep it open while editing. Save coherent changes;
+the watcher rebuilds and shows completed parts automatically. Use the shared
+panel builder and explicit child frames for part-by-part progress. A stopped or
+failed build must be reported as such; the live preview never replaces review.
+
 Run the mandatory setup and connection checks in
 [the manufacturing process](references/manufacturing-process.md) on the complete
 current tree. A geometrically valid preview with missing holes or conflicting
