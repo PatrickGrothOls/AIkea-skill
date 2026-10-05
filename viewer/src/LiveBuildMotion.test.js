@@ -10,13 +10,13 @@ test("shimmer travels upward and wraps outside the model; delayed parts ease in"
   model.add(new Mesh(new BoxGeometry(), new MeshStandardMaterial()));
   const surface = new LiveBuildSurface(model, false, 0.2);
   let previous = -Infinity;
-  for (let time = 0; time < 3.2; time += 0.1) {
+  for (let time = 0; time < 1.8; time += 0.1) {
     surface.update(0, time, true);
     assert.ok(surface.uniforms.liveBand.value > previous);
     previous = surface.uniforms.liveBand.value;
   }
   assert.ok(previous > surface.bounds.max.y);
-  surface.update(0.1, 3.2, true);
+  surface.update(0.1, 1.8, true);
   assert.ok(surface.uniforms.liveBand.value < surface.bounds.min.y);
   assert.equal(model.visible, false);
   surface.update(0.575, 3.3, true);
@@ -46,4 +46,28 @@ test("automatic framing glides to growing bounds and stops when the user orbits"
   framing.fit(new Box3(new Vector3(), new Vector3(4, 3, 1)), camera, controls, true);
   assert.deepEqual(camera.position, framing.position);
   assert.equal(framing.moving, false);
+});
+
+test("glints accelerate with one continuous phase across separate and newly arriving parts", () => {
+  const bounds = new Box3(new Vector3(0, 0, 0), new Vector3(2, 3, 1));
+  const first = new LiveBuildSurface(new Group(), false);
+  const second = new LiveBuildSurface(new Group(), false, 0.48);
+  const positions = [0.3, 0.6, 0.9].map((time) => {
+    first.update(0, time, true, bounds);
+    return first.uniforms.liveBand.value;
+  });
+  assert.ok(positions[2] - positions[1] > positions[1] - positions[0]);
+  first.update(0.05, 1.2, true, bounds);
+  second.update(0, 1.2, true, bounds);
+  for (const key of ["liveBand", "liveEchoBand", "liveScale", "liveTime"]) {
+    assert.equal(first.uniforms[key].value, second.uniforms[key].value);
+  }
+  assert.deepEqual(first.uniforms.liveOrigin.value, second.uniforms.liveOrigin.value);
+  first.update(0, 0, true, bounds);
+  assert.ok(first.uniforms.liveBand.value < bounds.min.y);
+  assert.ok(first.uniforms.liveEchoBand.value > bounds.min.y);
+  assert.ok(first.uniforms.liveEchoBand.value < bounds.max.y);
+  const reduced = new LiveBuildSurface(new Group(), true);
+  reduced.update(1, 1.2, true, bounds);
+  assert.equal(reduced.uniforms.liveStrength.value, 0);
 });
