@@ -16,6 +16,8 @@ fabrication approval retain their existing immutable evidence contracts.
 - [x] Document the early-viewer workflow and custom-builder integration.
 - [x] Test actual CAD events, updates, failures and the browser experience.
 - [x] Review the final diff and prepare the coherent implementation for commit.
+- [x] Refine shimmer to upward-only glints and buffer GPU-ready, eased part arrivals.
+- [x] Verify refined motion in the browser and run the updated viewer suite.
 
 ## Current state
 
@@ -33,6 +35,17 @@ hardware reconcile at the complete-tree checkpoint.
    replay of an already completed cabinet.
 3. Preserve the formal review boundary: the live preview is explicitly unfinished
    work and has no approval or ordering endpoint. This follows the existing plan.
+4. Patrick requested a stronger upward-only shimmer and accepted buffering in
+   exchange for smoother presentation. Revisions wait 450 ms; new materials compile
+   before reveal, then fade over 950 ms with a bounded 80 ms part stagger. Automatic
+   framing eases toward growing bounds and stops immediately on user interaction.
+5. The first phone demo captured 136 screenshots over about 26 seconds (roughly
+   5 fps). Its 30 fps encoding repeated frames, so that recording cannot establish
+   the viewer's actual animation frame rate. Camera snapping was also present in
+   the implementation and is addressed directly; no 60 fps claim is made.
+6. Buffering finishes in-flight asset preparation and keeps only the latest queued
+   revision. This prevents frequent updates from repeatedly cancelling slow loads.
+   Build/check/failure status remains immediate while geometry catches up.
 
 ## Verification and review
 
@@ -40,6 +53,12 @@ hardware reconcile at the complete-tree checkpoint.
   nested placement, stable asset hashes, removal reconciliation, failed edits,
   local HTTP boundaries, existing panel builders, generated wardrobes and packaging.
 - Viewer suite passed (83 tests), including the native-fetch receiver regression.
+- Motion refinement: 88 viewer tests passed, covering monotonic upward travel,
+  off-model wrapping, delayed fades, camera interruption, pre-reveal preparation,
+  failure retention, slow-load coalescing and disposal. Production bundle rebuilt.
+  The actual synthetic rebuild showed glints on the model with no browser errors;
+  its intentional fabrication warning remains. Smooth frame rate on Patrick's
+  phone has not been measured. The former low-frame-rate recording is unchanged.
 - Production viewer bundle builds with locked dependencies. The pre-existing large
   JavaScript chunk warning remains; no dependency versions changed.
 - Browser verification used an explicitly synthetic seven-panel cabinet. Saving an

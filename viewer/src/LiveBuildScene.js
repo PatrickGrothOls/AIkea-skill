@@ -16,7 +16,7 @@ export class LiveBuildScene {
     this.running = false;
   }
 
-  async apply(revision) {
+  async apply(revision, prepare = async () => {}) {
     const generation = ++this.generation;
     for (const loader of this.pending) loader.dispose();
     this.pending.clear();
@@ -33,8 +33,10 @@ export class LiveBuildScene {
           loader.dispose();
           return false;
         }
-        additions.push({ ...part, loader, scene: gltf.scene,
-          surface: new LiveBuildSurface(gltf.scene, this.reducedMotion) });
+        const surface = new LiveBuildSurface(gltf.scene, this.reducedMotion, Math.min(additions.length * 0.08, 0.48));
+        await prepare(gltf.scene, surface);
+        if (generation !== this.generation) return false;
+        additions.push({ ...part, loader, scene: gltf.scene, surface });
       }
       if (generation !== this.generation) return false;
       const wanted = new Map(revision.parts.map((part) => [part.id, part.hash]));
@@ -79,7 +81,7 @@ export class LiveBuildScene {
   }
 
   arriving() {
-    return [...this.entries.values()].some((entry) => entry.surface.elapsed < 0.45);
+    return [...this.entries.values()].some((entry) => entry.surface.arriving());
   }
 
   dispose() {

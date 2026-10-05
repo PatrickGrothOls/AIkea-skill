@@ -1,15 +1,19 @@
-/** Scope: Animate arrival and a soft moving highlight without changing CAD geometry. */
+/** Scope: Animate part arrival and bind the assembly glint field without changing CAD geometry. */
 
 import { Box3 } from "three";
+import { LiveBuildShimmer } from "./LiveBuildShimmer.js";
 
 export class LiveBuildSurface {
-  constructor(scene, reducedMotion) {
+  constructor(scene, reducedMotion, delay = 0) {
     this.scene = scene;
     this.reducedMotion = reducedMotion;
     this.elapsed = 0;
+    this.delay = reducedMotion ? 0 : delay;
+    this.duration = reducedMotion ? 0 : 0.95;
     this.materials = [];
     this.bounds = new Box3().setFromObject(scene);
-    this.uniforms = { liveBand: { value: 0 }, liveStrength: { value: 0 }, liveWidth: { value: 1 } };
+    this.shimmer = new LiveBuildShimmer();
+    this.uniforms = this.shimmer.uniforms;
     scene.traverse((node) => {
       if (!node.isMesh) return;
       for (const material of [node.material].flat()) {
@@ -17,26 +21,17 @@ export class LiveBuildSurface {
         this.materials.push(material);
         material.transparent = !reducedMotion;
         material.opacity = reducedMotion ? 1 : 0;
-        material.onBeforeCompile = (shader) => {
-          Object.assign(shader.uniforms, this.uniforms);
-          shader.vertexShader = `varying float liveHeight;\n${shader.vertexShader}`
-            .replace("#include <project_vertex>",
-              "#include <project_vertex>\nliveHeight = (modelMatrix * vec4(transformed, 1.0)).y;");
-          shader.fragmentShader = `varying float liveHeight;
-            uniform float liveBand; uniform float liveStrength; uniform float liveWidth;
-            ${shader.fragmentShader}`.replace("#include <opaque_fragment>", `
-              float band = 1.0 - smoothstep(0.0, liveWidth, abs(liveHeight - liveBand));
-              outgoingLight += vec3(0.48, 0.36, 0.20) * band * liveStrength;
-              #include <opaque_fragment>`);
-        };
-        material.customProgramCacheKey = () => "aikea-live-band-v1";
+        material.onBeforeCompile = (shader) => this.shimmer.apply(shader);
+        material.customProgramCacheKey = () => "aikea-live-shimmer-v3";
       }
     });
   }
 
   update(delta, time, active, bounds = this.bounds) {
     this.elapsed += delta;
-    const opacity = this.reducedMotion ? 1 : Math.min(1, this.elapsed / 0.45);
+    const progress = this.reducedMotion ? 1 : Math.min(1, Math.max(0, (this.elapsed - this.delay) / this.duration));
+    const opacity = progress * progress * (3 - 2 * progress);
+    this.scene.visible = progress > 0;
     for (const material of this.materials) {
       material.opacity = opacity;
       if (opacity === 1 && material.transparent) {
@@ -44,9 +39,10 @@ export class LiveBuildSurface {
         material.needsUpdate = true;
       }
     }
-    const height = Math.max(1, bounds.max.y - bounds.min.y);
-    this.uniforms.liveBand.value = bounds.min.y + height * (0.5 - Math.cos(time * 1.6) * 0.5);
-    this.uniforms.liveWidth.value = height * 0.16;
-    this.uniforms.liveStrength.value = active && !this.reducedMotion ? 0.6 : 0;
+    this.shimmer.update(time, active && !this.reducedMotion, bounds);
+  }
+
+  arriving() {
+    return this.elapsed < this.delay + this.duration;
   }
 }
