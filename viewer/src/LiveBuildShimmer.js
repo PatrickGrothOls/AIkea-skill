@@ -1,4 +1,4 @@
-/** Scope: Apply one world-space electric glint field with accelerating upward sweeps. */
+/** Scope: Carry continuous luminous ribbons through assembly surfaces on one shared clock. */
 import { Vector3 } from "three";
 
 export class LiveBuildShimmer {
@@ -42,25 +42,24 @@ export class LiveBuildShimmer {
       float scaled = distance / width;
       return exp(-2.0 * scaled * scaled);
     }
-    // Pure shader functions evaluate the same spatial field on every surface fragment.
-    float liveHash(vec2 cell) {
-      return fract(sin(dot(cell, vec2(127.1, 311.7))) * 43758.5453);
-    }
-    // Shared procedural sampling avoids storing geometry or per-part particle state.
-    float liveStars(vec2 point) {
-      vec2 grid = point * 34.0;
-      vec2 cell = floor(grid);
-      float seed = liveHash(cell);
-      vec2 center = vec2(0.25) + 0.5 * vec2(seed, liveHash(cell + 19.3));
-      vec2 offset = abs(fract(grid) - center);
-      // Screen-space minimum thickness prevents fine sparks aliasing while orbiting.
-      vec2 pixel = max(fwidth(grid), vec2(0.018));
-      vec2 arm = max(pixel * 0.85, vec2(0.022));
-      float core = exp(-dot(offset / max(pixel, vec2(0.055)), offset / max(pixel, vec2(0.055))));
-      float cross = exp(-offset.x / arm.x - offset.y * 13.0)
-                  + exp(-offset.y / arm.y - offset.x * 13.0);
-      float twinkle = pow(0.5 + 0.5 * sin(liveTime * 7.0 + seed * 24.0), 3.0);
-      return (core + cross * 0.6) * twinkle * smoothstep(0.52, 0.75, seed);
+    // Continuous scalar fields give every mesh the same flowing ribbon, without particles.
+    vec3 liveRibbon(vec3 point, float head, float offset) {
+      float across = point.x * 3.4 + point.z * 2.7;
+      float bend = sin(across * 2.6 + liveTime * 1.1 + offset) * 0.055
+                 + sin(across * 5.1 - liveTime * 0.65 + offset) * 0.022;
+      float distance = point.y - head + bend;
+      float fold = sin(across * 3.2 + distance * 12.0 - liveTime * 1.4 + offset);
+      float taper = 0.70 + 0.30 * sin(across * 1.7 + liveTime * 0.8 + offset);
+      float width = 0.010 + 0.009 * (0.5 + 0.5 * fold);
+      float pixel = max(fwidth(distance) * 1.3, 0.002);
+      float edge = liveEnvelope(distance, max(width * 0.25, pixel));
+      float body = liveEnvelope(distance + width, width * 1.8);
+      float wake = liveEnvelope(distance + 0.055, 0.065) * 0.22;
+      float echo = liveEnvelope(distance + 0.11 + fold * 0.015, max(pixel, 0.003)) * 0.28;
+      // A bright continuous crest stretches into a translucent wake, like luminous silk.
+      return taper * (vec3(1.25, 1.90, 2.50) * edge
+        + vec3(0.18, 0.70, 1.20) * body
+        + vec3(0.30, 0.25, 0.85) * (wake + echo));
     }
   `;
 
@@ -68,25 +67,8 @@ export class LiveBuildShimmer {
     vec3 point = (livePosition - liveOrigin) * liveScale;
     float head = (liveBand - liveOrigin.y) * liveScale;
     float echo = (liveEchoBand - liveOrigin.y) * liveScale;
-    float arc = 0.035 * sin(point.x * 11.0 + point.z * 7.0 + liveTime * 2.0);
-    float distanceToHead = point.y - head + arc;
-    float distanceToEcho = point.y - echo + arc;
-    float envelope = liveEnvelope(distanceToHead, 0.13)
-                   + liveEnvelope(distanceToEcho, 0.13);
-    float trail = liveEnvelope(distanceToHead + 0.15, 0.20)
-                + liveEnvelope(distanceToEcho + 0.15, 0.20);
-    distanceToHead = abs(distanceToHead) < abs(distanceToEcho) ? distanceToHead : distanceToEcho;
-    vec3 face = abs(normalize(cross(dFdx(livePosition), dFdy(livePosition))));
-    face /= max(face.x + face.y + face.z, 0.0001);
-    float stars = liveStars(point.xy) * face.z
-                + liveStars(point.zy) * face.x + liveStars(point.xz) * face.y;
-    float ripple = sin(point.x * 47.0 + point.z * 33.0 + liveTime * 4.0) * 0.008;
-    float threadWidth = max(fwidth(distanceToHead) * 1.2, 0.002);
-    float thread = exp(-abs(distanceToHead + ripple) / threadWidth);
-    float fragments = smoothstep(0.15, 0.9, sin(point.x * 81.0 + point.z * 59.0 - liveTime * 5.0));
-    // Emission is sparse: no broad fill, spotlight, material change, or extra geometry.
+    // Whole ribbons travel together; no spatial grid, point flashes, or per-part phase.
     outgoingLight += liveStrength * (
-      vec3(1.65, 2.05, 2.50) * stars * (envelope * 3.0 + trail * 1.4)
-      + vec3(0.55, 0.90, 1.35) * thread * fragments * 0.8);
+      liveRibbon(point, head, 0.0) + liveRibbon(point, echo, 1.3) * 0.85);
   `;
 }

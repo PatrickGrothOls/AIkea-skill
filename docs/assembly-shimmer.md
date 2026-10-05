@@ -1,11 +1,13 @@
 # Assembly shimmer
 
 ## Scope
-Replace the live-build torch-like wash with fine luminous glints flowing across
-an active assembly. Preserve real build status, arrival buffering, camera controls,
+Replace the live-build torch-like wash with continuous energy ribbons flowing
+through an active assembly; discrete sparkles were rejected after visual review. Preserve real build status, arrival buffering, camera controls,
 and reduced-motion behaviour. This branch stacks on the existing live-build viewer.
 
 ## Work packages
+- [x] Replace rejected discrete glints with continuous flowing ribbons.
+- [x] Verify and record the revised energy effect for Patrick.
 - [x] Replace the broad wash with a spatially continuous sparkling surface effect.
 - [x] Accelerate upward sweeps and overlap a trailing wave without per-part resets.
 - [x] Verify shared coordinates, phase continuity, failure stop, and reduced motion.
@@ -14,10 +16,11 @@ and reduced-motion behaviour. This branch stacks on the existing live-build view
 - [x] Review the diff and commit this visual refinement.
 
 ## Current state
-Implementation complete; 89 viewer tests pass and the production bundle builds.
-Browser shader compilation succeeds. Two overlapping quadratic 1.8-second upward
-sweeps carry blue-white glints, rippling filaments, and weaker trailing sparkles.
-Every part uses the same assembly bounds and absolute clock. Local video and the verified Google Drive upload are ready. Visual acceptance remains Patrick's decision.
+Revised energy effect implemented and recorded. Continuous bending ribbons replace
+all discrete sparkles. Bright crests and soft trailing folds flow through the
+assembly on the existing accelerating shared clock. 89 viewer tests pass, the
+bundle builds, and the browser reports no shader errors. The new video was uploaded
+to Google Drive and its metadata verified. Patrick's visual acceptance is pending.
 No push, merge, deployment, or fabrication approval was performed.
 
 ## Audit log
@@ -41,8 +44,20 @@ No push, merge, deployment, or fabrication approval was performed.
 6. Patrick explicitly approved the preview upload and future private recording uploads
    to his Google Drive. Upload completed and file metadata was read back successfully.
 
+7. Patrick rejected the separate bright points: the intended effect is energy
+   passing through the furniture, not pixels or a torch. Replace the sampled star
+   field with continuous bending ribbons and soft trailing folds; no Blender change
+   is needed for this browser shader. Visual approval remains outstanding.
+
+8. Verified the continuous-ribbon revision in the actual browser and removed the
+   recorder's initial 1.5-second blank startup. The remaining source captured
+   29.75 fps with a 93.37 ms maximum gap and no gaps over 100 ms. The H.264 delivery
+   file normalizes that verified cadence to 30 fps and decodes cleanly. Uploaded
+   privately under Patrick's standing authorization and verified Drive metadata.
+
 ## Verification
-- 89 viewer tests passed, including shared phase for delayed/new parts, acceleration,
+- Revised ribbon shader: 89 viewer tests passed and production bundle rebuilt.
+- Initial glint version: 89 viewer tests passed, including shared phase for delayed/new parts, acceleration,
   off-model wrap, reduced motion, and existing failure/assembly isolation checks.
 - Production bundle built; existing large-chunk warning remains. No shader errors
   observed; the pre-existing Three.Clock deprecation warning remains.
