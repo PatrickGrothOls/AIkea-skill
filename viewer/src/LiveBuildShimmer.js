@@ -1,4 +1,4 @@
-/** Scope: Carry continuous luminous ribbons through assembly surfaces on one shared clock. */
+/** Scope: Move straight white energy lines and soft halos through the active assembly. */
 import { Vector3 } from "three";
 
 export class LiveBuildShimmer {
@@ -7,7 +7,7 @@ export class LiveBuildShimmer {
   constructor() {
     this.uniforms = {
       liveBand: { value: 0 }, liveEchoBand: { value: 0 }, liveStrength: { value: 0 },
-      liveOrigin: { value: new Vector3() }, liveScale: { value: 1 }, liveTime: { value: 0 },
+      liveOrigin: { value: new Vector3() }, liveScale: { value: 1 },
     };
   }
 
@@ -21,7 +21,6 @@ export class LiveBuildShimmer {
     this.uniforms.liveStrength.value = active ? 0.6 : 0;
     this.uniforms.liveOrigin.value.copy(bounds.min);
     this.uniforms.liveScale.value = 1 / height;
-    this.uniforms.liveTime.value = time;
   }
 
   apply(shader) {
@@ -35,31 +34,22 @@ export class LiveBuildShimmer {
 
   static declarations = `
     varying vec3 livePosition;
-    uniform float liveBand, liveEchoBand, liveStrength, liveScale, liveTime;
+    uniform float liveBand, liveEchoBand, liveStrength, liveScale;
     uniform vec3 liveOrigin;
     // Shared scalar falloff uses multiplication: GLSL pow is undefined for negative bases.
     float liveEnvelope(float distance, float width) {
       float scaled = distance / width;
       return exp(-2.0 * scaled * scaled);
     }
-    // Continuous scalar fields give every mesh the same flowing ribbon, without particles.
-    vec3 liveRibbon(vec3 point, float head, float offset) {
-      float across = point.x * 3.4 + point.z * 2.7;
-      float bend = sin(across * 2.6 + liveTime * 1.1 + offset) * 0.055
-                 + sin(across * 5.1 - liveTime * 0.65 + offset) * 0.022;
-      float distance = point.y - head + bend;
-      float fold = sin(across * 3.2 + distance * 12.0 - liveTime * 1.4 + offset);
-      float taper = 0.70 + 0.30 * sin(across * 1.7 + liveTime * 0.8 + offset);
-      float width = 0.010 + 0.009 * (0.5 + 0.5 * fold);
+    // Height alone keeps the line straight and aligned across every part of the assembly.
+    vec3 liveEnergyLine(float height, float head) {
+      float distance = height - head;
       float pixel = max(fwidth(distance) * 1.3, 0.002);
-      float edge = liveEnvelope(distance, max(width * 0.25, pixel));
-      float body = liveEnvelope(distance + width, width * 1.8);
-      float wake = liveEnvelope(distance + 0.055, 0.065) * 0.22;
-      float echo = liveEnvelope(distance + 0.11 + fold * 0.015, max(pixel, 0.003)) * 0.28;
-      // A bright continuous crest stretches into a translucent wake, like luminous silk.
-      return taper * (vec3(1.25, 1.90, 2.50) * edge
-        + vec3(0.18, 0.70, 1.20) * body
-        + vec3(0.30, 0.25, 0.85) * (wake + echo));
+      float core = liveEnvelope(distance, max(0.003, pixel));
+      float halo = liveEnvelope(distance, 0.020);
+      float aura = liveEnvelope(distance, 0.055);
+      // Neutral emission gives a white electrical core with a soft, symmetric halo.
+      return vec3(core * 4.0 + halo * 0.65 + aura * 0.12);
     }
   `;
 
@@ -67,8 +57,8 @@ export class LiveBuildShimmer {
     vec3 point = (livePosition - liveOrigin) * liveScale;
     float head = (liveBand - liveOrigin.y) * liveScale;
     float echo = (liveEchoBand - liveOrigin.y) * liveScale;
-    // Whole ribbons travel together; no spatial grid, point flashes, or per-part phase.
+    // Preserve the approved accelerating motion; the lines never bend or ripple.
     outgoingLight += liveStrength * (
-      liveRibbon(point, head, 0.0) + liveRibbon(point, echo, 1.3) * 0.85);
+      liveEnergyLine(point.y, head) + liveEnergyLine(point.y, echo) * 0.85);
   `;
 }

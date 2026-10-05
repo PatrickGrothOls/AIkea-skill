@@ -59,7 +59,7 @@ test("glints accelerate with one continuous phase across separate and newly arri
   assert.ok(positions[2] - positions[1] > positions[1] - positions[0]);
   first.update(0.05, 1.2, true, bounds);
   second.update(0, 1.2, true, bounds);
-  for (const key of ["liveBand", "liveEchoBand", "liveScale", "liveTime"]) {
+  for (const key of ["liveBand", "liveEchoBand", "liveScale"]) {
     assert.equal(first.uniforms[key].value, second.uniforms[key].value);
   }
   assert.deepEqual(first.uniforms.liveOrigin.value, second.uniforms.liveOrigin.value);

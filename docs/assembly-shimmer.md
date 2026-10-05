@@ -6,6 +6,8 @@ through an active assembly; discrete sparkles were rejected after visual review.
 and reduced-motion behaviour. This branch stacks on the existing live-build viewer.
 
 ## Work packages
+- [x] Straighten the energy line and add a white halo, preserving approved motion.
+- [x] Verify and deliver a recording of the straight-line revision.
 - [x] Replace rejected discrete glints with continuous flowing ribbons.
 - [x] Verify and record the revised energy effect for Patrick.
 - [x] Replace the broad wash with a spatially continuous sparkling surface effect.
@@ -16,11 +18,11 @@ and reduced-motion behaviour. This branch stacks on the existing live-build view
 - [x] Review the diff and commit this visual refinement.
 
 ## Current state
-Revised energy effect implemented and recorded. Continuous bending ribbons replace
-all discrete sparkles. Bright crests and soft trailing folds flow through the
-assembly on the existing accelerating shared clock. 89 viewer tests pass, the
-bundle builds, and the browser reports no shader errors. The new video was uploaded
-to Google Drive and its metadata verified. Patrick's visual acceptance is pending.
+Straight white energy lines and soft symmetric halos are implemented. All bending,
+colour, and lateral modulation are removed; the approved 1.8-second acceleration
+and half-cycle overlap are unchanged. 89 tests pass, the production bundle builds,
+and browser inspection shows straight lines with no shader errors. A verified
+720p/30 fps recording is ready for delivery. Visual acceptance remains pending.
 No push, merge, deployment, or fabrication approval was performed.
 
 ## Audit log
@@ -54,6 +56,16 @@ No push, merge, deployment, or fabrication approval was performed.
    29.75 fps with a 93.37 ms maximum gap and no gaps over 100 ms. The H.264 delivery
    file normalizes that verified cadence to 30 fps and decodes cleanly. Uploaded
    privately under Patrick's standing authorization and verified Drive metadata.
+
+9. Patrick approved the motion but requested a straight, white lightning-like line
+   with a halo. Remove all bending, folds, colour, and lateral modulation; preserve
+   the existing accelerating travel. Height-only shading keeps the line aligned
+   across all parts. Removed the now-unused shader time uniform.
+
+10. Browser recording confirms the straight white core and halo. Trimmed the first
+    half-second of capture startup. Remaining raw footage measures 29.99 fps,
+    33.33 ms median gap and 52.20 ms maximum, with no gaps over 100 ms. The H.264
+    delivery file decodes cleanly. No new geometry, render passes, or dependencies.
 
 ## Verification
 - Revised ribbon shader: 89 viewer tests passed and production bundle rebuilt.
