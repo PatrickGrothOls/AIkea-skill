@@ -45,9 +45,9 @@ export class LiveBuildShimmer {
     vec3 liveEnergyLine(float height, float head) {
       float distance = height - head;
       float pixel = max(fwidth(distance) * 1.3, 0.002);
-      float core = liveEnvelope(distance, max(0.003, pixel));
-      float halo = liveEnvelope(distance, 0.020);
-      float aura = liveEnvelope(distance, 0.055);
+      float core = liveEnvelope(distance, max(0.014, pixel));
+      float halo = liveEnvelope(distance, 0.045);
+      float aura = liveEnvelope(distance, 0.090);
       // Neutral emission gives a white electrical core with a soft, symmetric halo.
       return vec3(core * 4.0 + halo * 0.65 + aura * 0.12);
     }

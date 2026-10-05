@@ -6,6 +6,7 @@ through an active assembly; discrete sparkles were rejected after visual review.
 and reduced-motion behaviour. This branch stacks on the existing live-build viewer.
 
 ## Work packages
+- [x] Widen the approved white band and fading halo; verify and record it.
 - [x] Straighten the energy line and add a white halo, preserving approved motion.
 - [x] Verify and deliver a recording of the straight-line revision.
 - [x] Replace rejected discrete glints with continuous flowing ribbons.
@@ -18,11 +19,12 @@ and reduced-motion behaviour. This branch stacks on the existing live-build view
 - [x] Review the diff and commit this visual refinement.
 
 ## Current state
-Straight white energy lines and soft symmetric halos are implemented. All bending,
-colour, and lateral modulation are removed; the approved 1.8-second acceleration
-and half-cycle overlap are unchanged. 89 tests pass, the production bundle builds,
-and browser inspection shows straight lines with no shader errors. A verified
-720p/30 fps recording is ready for delivery. Visual acceptance remains pending.
+Patrick approved the straight white halo and requested a taller band with fading
+edges. Core width increases from 0.003 to 0.014 of assembly height, with halo and
+aura widths of 0.045 and 0.090. The white colour, brightness, acceleration, and
+shared assembly motion remain unchanged. All 89 viewer tests pass and the production
+bundle builds. Browser inspection confirms the wider white halo without shader
+errors. The new recording is uploaded; visual acceptance remains pending.
 No push, merge, deployment, or fabrication approval was performed.
 
 ## Audit log
@@ -66,6 +68,16 @@ No push, merge, deployment, or fabrication approval was performed.
     half-second of capture startup. Remaining raw footage measures 29.99 fps,
     33.33 ms median gap and 52.20 ms maximum, with no gaps over 100 ms. The H.264
     delivery file decodes cleanly. No new geometry, render passes, or dependencies.
+
+11. Patrick confirmed the straight white halo looks much better and requested a
+    taller band fading into its halo. Widen only the three vertical falloffs;
+    preserve colour, emission strength, and the approved motion.
+12. Verified 89 tests and the production build. Recorded the actual viewer using
+    the existing synthetic cabinet, then trimmed the first 0.5 seconds containing
+    capture startup delay. The retained source measures 29.95 fps, with a 52.47 ms
+    maximum frame gap and no gaps over 100 ms. The 720p H.264 delivery file decodes
+    cleanly and was uploaded to the previously authorized Drive destination.
+    This is an effect preview, not evidence of a new CAD build or validation.
 
 ## Verification
 - Revised ribbon shader: 89 viewer tests passed and production bundle rebuilt.
