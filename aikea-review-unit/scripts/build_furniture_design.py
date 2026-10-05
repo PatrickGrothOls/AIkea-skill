@@ -32,7 +32,7 @@ class FurnitureDesignBuild:
     def __init__(self) -> None:
         self.loader = GeneratedAssemblyBuilderLoader()
 
-    def build(self, project_root: Path, assembly_id: str, output: Path, fabrication_review=False) -> dict:
+    def build(self, project_root: Path, assembly_id: str, output: Path, fabrication_review=False, progress=None) -> dict:
         canonical = project_root / "assemblies/full_wardrobe_review.glb"
         if fabrication_review and output.resolve() != canonical.resolve():
             raise ValueError("fabrication review must use assemblies/full_wardrobe_review.glb")
@@ -52,6 +52,8 @@ class FurnitureDesignBuild:
         if len(paths) != len(set(paths)):
             raise ValueError("assembly tree paths must be unique")
         parts = AssemblyTreeReviewGeometry().build(visits, {})
+        if progress:
+            progress.checking(visits, parts)
         position = ConstructionPositionEvidence().write(project_root, visits, envelope, allowances, source)
         report = dict(position["geometry"])
         report["status"] = position["status"]
@@ -78,6 +80,8 @@ class FurnitureDesignBuild:
             record = FabricationAssemblyReviewRecord().write_proposal(project_root, output, report["construction_sha256"])
             report["review_record"] = str(record)
         report_path.write_text(json.dumps(report, indent=2) + "\n")
+        if progress:
+            progress.finished(report)
         return report
 
     def _hydrate(self, project_root, built):

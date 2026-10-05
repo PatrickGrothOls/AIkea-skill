@@ -77,6 +77,7 @@ class WardrobeAssemblyRenderer:
         return (
             f'"""Scope: Build every ordered child of {wardrobe.assembly_id}."""\n\n'
             "from assemblies.specification import BuiltAssembly, BuiltChildAssembly\n\n"
+            "from live_build_progress import LiveBuildChild\n\n"
             f"{imports}\n"
             "from .spec import SPEC\n\n\n"
             'ENVELOPE_SOURCE = "configured_measurements"\n'
@@ -84,13 +85,11 @@ class WardrobeAssemblyRenderer:
             "class WardrobeBuilder:\n"
             "    \"\"\"Build the base and every complete cabinet in saved order.\"\"\"\n\n"
             "    def build(self) -> BuiltAssembly:\n"
-            "        children = tuple(\n"
-            "            BuiltChildAssembly(spec, builder.build())\n"
-            "            for spec, builder in zip(\n"
-            "                SPEC.child_assemblies, CHILD_BUILDERS, strict=True\n"
-            "            )\n"
-            "        )\n"
-            "        return BuiltAssembly(SPEC, (), (), child_assemblies=children)\n\n\n"
+            "        children = []\n"
+            "        for spec, builder in zip(SPEC.child_assemblies, CHILD_BUILDERS, strict=True):\n"
+            "            with LiveBuildChild(spec):\n"
+            "                children.append(BuiltChildAssembly(spec, builder.build()))\n"
+            "        return BuiltAssembly(SPEC, (), (), child_assemblies=tuple(children))\n\n\n"
             "BUILDER = WardrobeBuilder()\n"
         )
 

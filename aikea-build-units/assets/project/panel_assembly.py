@@ -7,6 +7,7 @@ from panel_cut_applicator import PanelCutApplicator
 from panel_machining_builder import PanelMachiningBuilder
 from part_construction_error import PartConstructionError
 from part_cut import AssemblyCuts
+from live_build_progress import LiveBuildProgress
 from .construction_specification import ConstructionSpecification, PanelAssemblySpec, PartMachiningSpec
 from .specification import BuiltAssembly, BuiltPart
 
@@ -27,6 +28,7 @@ class PanelAssemblyBuilder:
         self.validation = ConstructionCutValidator(allow_unresolved=allow_unresolved)
 
     def build(self) -> BuiltAssembly:
+        LiveBuildProgress.started(self.spec)
         identifiers = tuple(part.part_id for part in self.spec.parts)
         if len(set(identifiers)) != len(identifiers):
             raise PartConstructionError("panel IDs must be unique within an assembly")
@@ -36,9 +38,13 @@ class PanelAssemblyBuilder:
         cuts = AssemblyCuts(joints.all + self.machining.build(self.spec).all)
         self.validation.validate_cuts(self.spec, cuts.all)
         requests = {request.machining_id: request for request in self.spec.machining}
-        parts = tuple(BuiltPart(part, PanelCutApplicator().apply(
-            part, solid, cuts.for_part(part.part_id), requests)) for part, solid in zip(self.spec.parts, blanks))
+        parts = []
+        for part, solid in zip(self.spec.parts, blanks):
+            built = BuiltPart(part, PanelCutApplicator().apply(
+                part, solid, cuts.for_part(part.part_id), requests))
+            parts.append(built)
+            LiveBuildProgress.part(self.spec, built)
         return BuiltAssembly(
-            self.spec, parts, self.spec.joints, cuts.all,
+            self.spec, tuple(parts), self.spec.joints, cuts.all,
             self.children, self.hardware,
         )
