@@ -6,6 +6,7 @@ through an active assembly; discrete sparkles were rejected after visual review.
 and reduced-motion behaviour. This branch stacks on the existing live-build viewer.
 
 ## Work packages
+- [x] Extend the halo downward with a long fade; verify and record it.
 - [x] Widen the approved white band and fading halo; verify and record it.
 - [x] Straighten the energy line and add a white halo, preserving approved motion.
 - [x] Verify and deliver a recording of the straight-line revision.
@@ -19,12 +20,14 @@ and reduced-motion behaviour. This branch stacks on the existing live-build view
 - [x] Review the diff and commit this visual refinement.
 
 ## Current state
-Patrick approved the straight white halo and requested a taller band with fading
-edges. Core width increases from 0.003 to 0.014 of assembly height, with halo and
-aura widths of 0.045 and 0.090. The white colour, brightness, acceleration, and
-shared assembly motion remain unchanged. All 89 viewer tests pass and the production
-bundle builds. Browser inspection confirms the wider white halo without shader
-errors. The new recording is uploaded; visual acceptance remains pending.
+Patrick requested a longer downward-fading halo, approximately five times the
+height of the bright band, and clarified that it should not become brighter.
+The core, emission weights, colour, and motion remain unchanged. The trailing
+halo falloff is 0.140 of assembly height (five times the core's 0.028 nominal
+full width); a faint 0.180 aura softens the end. The leading edge stays narrow.
+All 89 tests pass and the production bundle builds. Browser inspection confirms
+the downward fade with no shader errors; a new 720p recording is ready.
+Visual acceptance remains pending.
 No push, merge, deployment, or fabrication approval was performed.
 
 ## Audit log
@@ -78,6 +81,15 @@ No push, merge, deployment, or fabrication approval was performed.
     maximum frame gap and no gaps over 100 ms. The 720p H.264 delivery file decodes
     cleanly and was uploaded to the previously authorized Drive destination.
     This is an effect preview, not evidence of a new CAD build or validation.
+
+13. Patrick clarified "longer", not "stronger": extend only the downward halo
+    and fade it out below the moving band. Preserve brightness and upward motion.
+
+14. Recorded the actual viewer with the existing synthetic cabinet. Removed the
+    first 0.5 seconds containing the blank capture startup frame. The retained
+    raw interval measures 30.0 fps, with a 46.27 ms maximum gap and no gaps over
+    100 ms. Sampled frames show the long downward fade; the delivery MP4 decodes
+    cleanly. This remains an effect preview, not a new CAD validation.
 
 ## Verification
 - Revised ribbon shader: 89 viewer tests passed and production bundle rebuilt.

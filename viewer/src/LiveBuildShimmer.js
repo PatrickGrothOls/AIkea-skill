@@ -46,9 +46,10 @@ export class LiveBuildShimmer {
       float distance = height - head;
       float pixel = max(fwidth(distance) * 1.3, 0.002);
       float core = liveEnvelope(distance, max(0.014, pixel));
-      float halo = liveEnvelope(distance, 0.045);
-      float aura = liveEnvelope(distance, 0.090);
-      // Neutral emission gives a white electrical core with a soft, symmetric halo.
+      // A long trailing fade sits below the rising band; keep its leading edge tight.
+      float halo = liveEnvelope(distance, distance < 0.0 ? 0.140 : 0.020);
+      float aura = liveEnvelope(distance, distance < 0.0 ? 0.180 : 0.040);
+      // Extend the halo without increasing the approved white emission strength.
       return vec3(core * 4.0 + halo * 0.65 + aura * 0.12);
     }
   `;
