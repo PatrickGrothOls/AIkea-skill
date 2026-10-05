@@ -10,15 +10,14 @@ and reduced-motion behaviour. This branch stacks on the existing live-build view
 - [x] Accelerate upward sweeps and overlap a trailing wave without per-part resets.
 - [x] Verify shared coordinates, phase continuity, failure stop, and reduced motion.
 - [x] Build and inspect the browser shader; record and verify an MP4 demo.
-- [ ] Upload the preview to Google Drive after explicit file/destination approval.
+- [x] Upload the preview to Google Drive after explicit file/destination approval.
 - [x] Review the diff and commit this visual refinement.
 
 ## Current state
 Implementation complete; 89 viewer tests pass and the production bundle builds.
 Browser shader compilation succeeds. Two overlapping quadratic 1.8-second upward
 sweeps carry blue-white glints, rippling filaments, and weaker trailing sparkles.
-Every part uses the same assembly bounds and absolute clock. Local video is ready;
-Drive upload requires user approval. Visual acceptance remains Patrick's decision.
+Every part uses the same assembly bounds and absolute clock. Local video and the verified Google Drive upload are ready. Visual acceptance remains Patrick's decision.
 No push, merge, deployment, or fabrication approval was performed.
 
 ## Audit log
@@ -37,8 +36,10 @@ No push, merge, deployment, or fabrication approval was performed.
 4. Removed an unused legacy width uniform; signed falloffs use multiplication rather
    than GLSL pow on negative inputs, whose behaviour is undefined.
 5. Automatic approval review blocked the Drive upload of the CAD-derived preview:
-   explicit authorization for the video and destination is required. Local delivery
-   is complete; no alternate upload path was attempted.
+   explicit authorization for the video and destination is required. No alternate upload path was attempted before authorization.
+
+6. Patrick explicitly approved the preview upload and future private recording uploads
+   to his Google Drive. Upload completed and file metadata was read back successfully.
 
 ## Verification
 - 89 viewer tests passed, including shared phase for delayed/new parts, acceleration,
