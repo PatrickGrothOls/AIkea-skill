@@ -27,8 +27,9 @@ halo falloff is 0.140 of assembly height (five times the core's 0.028 nominal
 full width); a faint 0.180 aura softens the end. The leading edge stays narrow.
 All 89 tests pass and the production bundle builds. Browser inspection confirms
 the downward fade with no shader errors; a new 720p recording is ready.
-Visual acceptance remains pending.
-No push, merge, deployment, or fabrication approval was performed.
+Patrick approved the final downward-fading halo and authorized pushing and merging
+the complete live-building stack. Publication is in progress; no fabrication
+approval or separate deployment is included.
 
 ## Audit log
 1. Patrick requested fairy-tale/electric glistening instead of illumination from a
@@ -90,6 +91,10 @@ No push, merge, deployment, or fabrication approval was performed.
     raw interval measures 30.0 fps, with a 46.27 ms maximum gap and no gaps over
     100 ms. Sampled frames show the long downward fade; the delivery MP4 decodes
     cleanly. This remains an effect preview, not a new CAD validation.
+
+15. Patrick approved the final recording ("Perfect") and requested push and merge.
+    Land the existing stream and viewer PRs first, then this refinement, preserving
+    the small branch boundaries and checking each published head.
 
 ## Verification
 - Revised ribbon shader: 89 viewer tests passed and production bundle rebuilt.
