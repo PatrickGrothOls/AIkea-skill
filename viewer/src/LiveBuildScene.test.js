@@ -71,3 +71,23 @@ test("shimmer stops on failure and does not affect other assemblies", async () =
   assert.equal(scene.entries.get("cabinet").surface.materials[0].opacity, 1);
   scene.dispose();
 });
+
+test("graphics preparation completes before replacement and failures keep the previous model", async () => {
+  const scene = new LiveBuildScene(false, () => new FixtureLoader());
+  const part = { id: "panel", hash: "one", url: "one" };
+  await scene.apply({ parts: [part] });
+  const original = scene.entries.get("panel").scene;
+  let release;
+  const pending = scene.apply({ parts: [{ ...part, hash: "two" }] },
+    () => new Promise((resolve) => { release = resolve; }));
+  await Promise.resolve();
+  assert.equal(scene.entries.get("panel").scene, original);
+  release();
+  await pending;
+  const replacement = scene.entries.get("panel").scene;
+  assert.notEqual(replacement, original);
+  await assert.rejects(scene.apply({ parts: [{ ...part, hash: "three" }] },
+    async () => { throw new Error("graphics preparation failed"); }));
+  assert.equal(scene.entries.get("panel").scene, replacement);
+  scene.dispose();
+});

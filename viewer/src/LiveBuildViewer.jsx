@@ -3,9 +3,10 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
-import { Vector3 } from "three";
 import { LiveBuildFeed } from "./LiveBuildFeed.js";
 import { LiveBuildScene } from "./LiveBuildScene.js";
+import { LiveBuildCamera } from "./LiveBuildCamera.js";
+import { LiveBuildBuffer } from "./LiveBuildBuffer.js";
 import "./LiveBuildViewer.css";
 
 // React coordinates one persistent feed and DOM status while the scene stays mounted.
@@ -56,43 +57,38 @@ export function LiveBuildViewer() {
 function LiveBuildLayer({ revision, connected, fit, onProblem }) {
   const reduced = useMemo(() => matchMedia("(prefers-reduced-motion: reduce)").matches, []);
   const model = useMemo(() => new LiveBuildScene(reduced), [reduced]);
+  const framing = useMemo(() => new LiveBuildCamera(), []);
   const controls = useRef();
   const touched = useRef(false);
-  const { camera, invalidate } = useThree();
+  const { camera, gl, scene, invalidate } = useThree();
   const [applied, setApplied] = useState(0);
-  useEffect(() => () => model.dispose(), [model]);
+  const buffer = useRef();
   useEffect(() => {
-    if (!revision) return;
-    let current = true;
-    model.apply(revision).then((changed) => {
-      if (current && changed) { setApplied((value) => value + 1); onProblem(""); invalidate(); }
-    }).catch((error) => {
-      if (current) onProblem(`Preview update failed: ${error.message}. Previous geometry retained.`);
-    });
-    return () => { current = false; };
-  }, [model, revision, onProblem, invalidate]);
+    buffer.current = new LiveBuildBuffer(model, async (asset, surface) => {
+      await gl.compileAsync(asset, camera, scene);
+      if (reduced) return;
+      for (const material of surface.materials) material.transparent = false;
+      await gl.compileAsync(asset, camera, scene);
+      for (const material of surface.materials) { material.transparent = true; material.needsUpdate = true; }
+    }, () => { setApplied((value) => value + 1); onProblem(""); invalidate(); },
+    (error) => onProblem(`Preview update failed: ${error.message}. Previous geometry retained.`));
+    return () => { buffer.current.dispose(); model.dispose(); };
+  }, [model, onProblem, invalidate, gl, camera, scene, reduced]);
+  useEffect(() => { if (revision) buffer.current.enqueue(revision); }, [revision]);
   useEffect(() => { touched.current = false; }, [fit]);
   useEffect(() => {
-    if (touched.current || !model.bounds || model.bounds.isEmpty()) return;
-    const center = model.bounds.getCenter(new Vector3());
-    const size = model.bounds.getSize(new Vector3());
-    const vertical = camera.fov * Math.PI / 180;
-    const limitingFov = Math.min(vertical, 2 * Math.atan(Math.tan(vertical / 2) * camera.aspect));
-    const distance = size.length() / (2 * Math.sin(limitingFov / 2)) * 1.1;
-    camera.position.copy(center).addScaledVector(new Vector3(1, 0.65, 1.5).normalize(), distance);
-    camera.near = Math.max(distance / 10000, 0.001);
-    camera.far = Math.max(distance * 100, 100);
-    camera.updateProjectionMatrix();
-    controls.current.target.copy(center);
-    controls.current.update();
-  }, [model, applied, fit, camera]);
+    if (touched.current) return;
+    framing.fit(model.bounds, camera, controls.current, reduced);
+    invalidate();
+  }, [model, applied, fit, camera, framing, reduced, invalidate]);
   useFrame((state, delta) => {
     model.active = revision?.active || "";
     model.running = connected && ["building", "checking"].includes(revision?.state);
     model.update(Math.min(delta, 0.05), state.clock.elapsedTime);
-    if (!reduced && (model.running || model.arriving())) invalidate();
+    framing.update(Math.min(delta, 0.05), camera, controls.current);
+    if (framing.moving || (!reduced && (model.running || model.arriving()))) invalidate();
   });
   return <><primitive object={model.root} />
-    <OrbitControls ref={controls} makeDefault onStart={() => { touched.current = true; }} />
+    <OrbitControls ref={controls} makeDefault onStart={() => { touched.current = true; framing.stop(); }} />
   </>;
 }
