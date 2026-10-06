@@ -72,3 +72,12 @@ The quote preferences page is included. Customer sending remains unavailable
 until the hosted service is deployed and verified, and will initially require
 an invitation. Painting/installation outreach and ordering are not implemented.
 Read [CNC quote availability and setup](skills/aikea-review-unit/references/cnc-quotes.md) before offering submission.
+
+## Report an AIkea problem
+
+For a user-requested report or an unresolved installation/design failure, read
+[the reporting workflow](skills/aikea-report-issue/SKILL.md). Prepare the exact
+public-safe text for approval in chat. Use the configured browser form or a
+prefilled-form handover; no customer GitHub account or token is needed. If the
+publisher has not activated reporting, keep the report local and state that
+sending is unavailable. Never claim a report was delivered without confirmation.

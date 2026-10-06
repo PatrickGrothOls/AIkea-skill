@@ -25,6 +25,13 @@ construction; apply it before choosing the furniture's internal arrangement.
 The measurement guidance below applies when it describes the active brief; never
 invent wardrobe fields merely to enter a template for another furniture layout.
 
+## Report an experienced problem
+
+When a user asks to report an AIkea problem, or an AIkea failure remains unresolved,
+load [$aikea-report-issue](../aikea-report-issue/SKILL.md). It prepares a public-safe
+report for approval in chat, then submits through the configured browser form or
+hands over a prefilled form. Never request GitHub credentials from the customer.
+
 ## Client conversation
 
 Read [references/client-conversation.md](references/client-conversation.md)
