@@ -20,6 +20,9 @@ Receiver tests are included in CI. The private Google project has the three sour
 files saved; Google permissions, form creation, credential setup and live delivery
 remain pending. Distributed configuration is deliberately `not_configured`.
 No public issue has been posted and hosted reporting is not yet available.
+The local portable archive built successfully from commit `2a9e6b0`; its reporting
+instructions, helper and inactive configuration were verified inside the archive,
+with operator infrastructure excluded. Privacy scan reports zero findings.
 
 ## Audit log
 1. Patrick approved browser-based reporting with a prefilled-form fallback,
@@ -33,3 +36,5 @@ No public issue has been posted and hosted reporting is not yet available.
 5. Automatic approval review blocked saving the explicit Google permission
    manifest. Ask Patrick to approve Forms access, trigger management and external
    requests before continuing setup. No credential or authorization was supplied.
+6. Reviewed and committed the implementation, then built and inspected a local
+   portable archive. It is a packaging check only, not a published release.
