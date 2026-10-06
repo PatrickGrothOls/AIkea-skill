@@ -205,3 +205,15 @@ The quote preferences page is included. Customer sending remains unavailable
 until the hosted service is deployed and verified, and will initially require
 an invitation. Painting/installation outreach and ordering are not implemented.
 Read [CNC quote availability and setup](aikea-review-unit/references/cnc-quotes.md) before offering submission.
+
+## Report a problem
+
+Ask your AI agent to “report this AIkea problem.” It prepares a short report,
+removes private details, and asks you to approve the exact text before sending it
+for public publication. You do not need a GitHub account. With an activated
+reporting service, the agent submits a browser form. If browser interaction is
+unavailable, it gives you a prefilled form to submit yourself.
+
+**Current status:** the workflow and Google-hosted receiver are implemented, but
+hosted reporting is not activated yet. Reports remain local until it is configured
+and verified. Maintainers: see [reporting setup](docs/issue-reporting-setup.md).

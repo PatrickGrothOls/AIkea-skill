@@ -10,6 +10,21 @@ permissions:
   contents: read
 
 jobs:
+  issue-reporting:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .nvmrc
+      - name: Verify hosted report receiver contracts
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y direnv
+          direnv allow .
+          direnv exec . node --test tests/issue_reporting_receiver.test.cjs
+
   python:
     strategy:
       fail-fast: false
