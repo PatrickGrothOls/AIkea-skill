@@ -52,3 +52,8 @@ with operator infrastructure excluded. Privacy scan reports zero findings.
    before the restricted token can be prepared; requested GitHub Mobile approval.
    The confirmation request timed out without verification; left the Retry control
    open for Patrick. No token has been generated or supplied.
+9. Patrick completed GitHub Mobile verification. Prepared an unsubmitted token
+   request restricted to AIkea-skill, Issues read/write and required Metadata read,
+   expiring 2026-11-06. Prepared an empty GITHUB_TOKEN property in the private Google
+   project for user entry. Token generation and credential entry remain a handoff;
+   intake stays disabled and no token value has been read or recorded.
