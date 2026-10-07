@@ -17,9 +17,11 @@ knowledge. Google hosts the form and a private Apps Script posts the issue.
 Implemented on codex/issue-reporting. Local checks pass: 24 Python tests plus four
 portable-package subtests, six receiver tests, skill discovery and skill validation.
 Receiver tests are included in CI. The private Google project has the three source
-files and explicit permission manifest saved. Google authorization is waiting at
-an unverified-app warning; form creation, credential setup and live delivery remain
-pending. Distributed configuration is deliberately `not_configured`.
+files and explicit permission manifest saved. Google authorization and form creation
+completed successfully. Verified one form-submit trigger, disabled email collection,
+disabled one-response sign-in requirement and disabled public response summaries.
+The form remains unpublished and intake disabled. GitHub credential setup and live
+delivery remain pending. Distributed configuration is deliberately `not_configured`.
 No public issue has been posted and hosted reporting is not yet available.
 The local portable archive built successfully from commit `2a9e6b0`; its reporting
 instructions, helper and inactive configuration were verified inside the archive,
@@ -44,3 +46,9 @@ with operator infrastructure excluded. Privacy scan reports zero findings.
    expose the authorization popup; Chrome opened it successfully. Google displayed
    an unverified-app warning for this private script, left for Patrick to handle.
    No Google authorization, form creation or GitHub delivery was confirmed.
+8. Patrick completed the Google warning. Observed successful setup execution,
+   the unpublished form, private configuration with intake disabled, and exactly
+   one `receiveIssueReport` submission trigger. GitHub requires an identity check
+   before the restricted token can be prepared; requested GitHub Mobile approval.
+   The confirmation request timed out without verification; left the Retry control
+   open for Patrick. No token has been generated or supplied.
