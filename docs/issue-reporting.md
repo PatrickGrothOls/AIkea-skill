@@ -14,6 +14,13 @@ knowledge. Google hosts the form and a private Apps Script posts the issue.
 - [ ] Activate the hosted form and verify one approved synthetic submission.
 
 ## Current state
+Parked at Patrick’s request until skill adoption warrants activation. Preserve the
+implementation and these notes on `codex/issue-reporting` without merging or
+publishing a release. No activation or credential generation is part of parking.
+To resume, follow [operator setup](issue-reporting-setup.md), recheck the existing
+private form and trigger before creating anything, and complete credential setup
+and an approved live submission before enabling distributed reporting.
+
 Implemented on codex/issue-reporting. Local checks pass: 24 Python tests plus four
 portable-package subtests, six receiver tests, skill discovery and skill validation.
 Receiver tests are included in CI. The private Google project has the three source
@@ -57,3 +64,7 @@ with operator infrastructure excluded. Privacy scan reports zero findings.
    expiring 2026-11-06. Prepared an empty GITHUB_TOKEN property in the private Google
    project for user entry. Token generation and credential entry remain a handoff;
    intake stays disabled and no token value has been read or recorded.
+
+10. On 2026-10-07 Patrick postponed activation and requested saving all work on a
+    GitHub branch. Retain the implementation unmerged with inactive configuration;
+    document the restart point so adoption can guide when to finish activation.
