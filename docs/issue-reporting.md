@@ -17,8 +17,9 @@ knowledge. Google hosts the form and a private Apps Script posts the issue.
 Implemented on codex/issue-reporting. Local checks pass: 24 Python tests plus four
 portable-package subtests, six receiver tests, skill discovery and skill validation.
 Receiver tests are included in CI. The private Google project has the three source
-files saved; Google permissions, form creation, credential setup and live delivery
-remain pending. Distributed configuration is deliberately `not_configured`.
+files and explicit permission manifest saved. Google authorization is waiting at
+an unverified-app warning; form creation, credential setup and live delivery remain
+pending. Distributed configuration is deliberately `not_configured`.
 No public issue has been posted and hosted reporting is not yet available.
 The local portable archive built successfully from commit `2a9e6b0`; its reporting
 instructions, helper and inactive configuration were verified inside the archive,
@@ -38,3 +39,8 @@ with operator infrastructure excluded. Privacy scan reports zero findings.
    requests before continuing setup. No credential or authorization was supplied.
 6. Reviewed and committed the implementation, then built and inspected a local
    portable archive. It is a packaging check only, not a published release.
+7. On 2026-10-07 Patrick explicitly approved Forms, submission-trigger and external
+   request permissions. Saved the matching manifest. The in-app browser did not
+   expose the authorization popup; Chrome opened it successfully. Google displayed
+   an unverified-app warning for this private script, left for Patrick to handle.
+   No Google authorization, form creation or GitHub delivery was confirmed.
