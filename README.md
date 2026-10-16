@@ -12,11 +12,11 @@ list, and assembly information. Before releasing the cutting package, your
 assistant checks that the parts and fittings work together. Cost calculations
 show the assumptions for materials, hardware, machining, finishing and delivery.
 
-<img src="docs/images/wardrobe-assembled.png" alt="Wooden fitted wardrobe beneath a sloping ceiling, with doors hidden to show shelves, drawer stacks, hinges and interior lighting." width="760">
+<a href="docs/images/wardrobe-assembled.png"><img src="docs/images/wardrobe-assembled.jpg" alt="Wooden fitted wardrobe beneath a sloping ceiling, with doors hidden to show shelves, drawer stacks, hinges and interior lighting." width="760"></a>
 
 *An example from the AIkea viewer: a fitted wardrobe with shelves, drawers and
 integrated lighting. The doors are hidden for inspection; these are digital
-design previews.*
+design previews. Click any image for the full-resolution original.*
 
 ### Explore the real model
 
@@ -30,11 +30,11 @@ Cabineo connector bodies are omitted. Some fixings use simplified geometry from
 the source assembly. The doors have plain applied frames and slim brass handle
 concepts; their attachment and additional clearance remain unqualified. This example is not a fabrication release.
 
-[![Close-up of a machined side panel showing shelf drilling, connector pockets and hinge plates.](docs/images/wardrobe-cad.png)](https://patrickgrothols.github.io/AIkea-skill/)
+[![Close-up of a machined side panel showing shelf drilling, connector pockets and hinge plates.](docs/images/wardrobe-cad.jpg)](docs/images/wardrobe-cad.png)
 
 Toggle **Show doors** to inspect the proposed applied frames and brass handles.
 
-[![Wooden framed doors with brass pulls following the wardrobe’s sloped outline.](docs/images/wardrobe-framed.png)](https://patrickgrothols.github.io/AIkea-skill/)
+[![Wooden framed doors with brass pulls following the wardrobe’s sloped outline.](docs/images/wardrobe-framed.jpg)](docs/images/wardrobe-framed.png)
 
 ## From the whole cabinet to every part
 
@@ -43,7 +43,7 @@ the assembly to inspect its panels and hardware. The furniture is generated from
 saved specifications and reusable construction tools, so changes remain in the
 design code.
 
-<img src="docs/images/wardrobe-exploded.png" alt="Exploded view of the same wardrobe, separating cabinet panels, shelves, drawers, hardware and the adjustable-leg base for inspection." width="760">
+<a href="docs/images/wardrobe-exploded.png"><img src="docs/images/wardrobe-exploded.jpg" alt="Exploded view of the same wardrobe, separating cabinet panels, shelves, drawers, hardware and the adjustable-leg base for inspection." width="760"></a>
 
 *The same wardrobe, expanded into its component parts.*
 
