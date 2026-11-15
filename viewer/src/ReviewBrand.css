@@ -1,11 +1,15 @@
-/** Scope: Keep the AIkea wordmark prominent without crowding viewer guidance. */
+/** Scope: Fit the WardrobeAgentWizard wordmark within the existing viewer header. */
 
 .review-brand {
   margin-left: auto;
   flex-shrink: 0;
   width: clamp(150px, 23vw, 285px);
   height: auto;
-  display: block;
+  display: grid;
+  font-size: 21px;
+  font-weight: 800;
+  line-height: 1.1;
+  text-align: right;
   color: #244b3b;
   pointer-events: none;
   user-select: none;
@@ -26,4 +30,5 @@
 
 @media (max-width: 480px) {
   .review-shell .review-card { left: 12px; right: 12px; gap: 8px; }
+  .review-brand { font-size: 13px; }
 }

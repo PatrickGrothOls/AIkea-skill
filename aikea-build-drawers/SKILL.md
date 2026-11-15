@@ -1,9 +1,9 @@
 ---
 name: aikea-build-drawers
-description: Build a complete drawer installation with compatible runners, mounting holes and any required hinge-clearance spacers. Use whenever an AIkea design contains drawers, including custom compositions, configurators, or changes to an existing drawer or its surrounding doors.
+description: Build a complete drawer installation with compatible runners, mounting holes and any required hinge-clearance spacers. Use whenever an WardrobeAgentWizard design contains drawers, including custom compositions, configurators, or changes to an existing drawer or its surrounding doors.
 ---
 
-# AIkea build drawers
+# WardrobeAgentWizard build drawers
 
 Every drawer must include its runners and mounting holes. Read and apply the
 [complete installation contract](references/complete-drawer-installation.md)
@@ -99,7 +99,7 @@ authored-host route above.
 
 ## Build drawer children from verified source CAD
 
-1. Resolve the active AIkea project and require its completed `aikea.yaml` and
+1. Resolve the active WardrobeAgentWizard project and require its completed `aikea.yaml` and
    generated `assemblies/` folders.
 2. Read [references/drawer-construction.md](references/drawer-construction.md)
    completely. For MOVENTO, also read
@@ -152,7 +152,7 @@ authored-host route above.
 5. Treat the generated cabinet-local files as the source for this drawer. The
    composed cabinet builder must load the original cabinet builder and its saved
    drawer child rather than reconstructing either assembly. Later proposals may
-   regenerate files still owned by AIkea, while a locally changed file stops the
+   regenerate files still owned by WardrobeAgentWizard, while a locally changed file stops the
    complete revision for client review.
    Preserve each runner's resolved installation datum and save its cabinet and
    drawer machining plus physical hardware reservation with the generated child.
@@ -235,4 +235,4 @@ physical panel space.
 
 ### Default frontage and vertical layout
 
-Use one functional structural front wall as the visible drawer front. Maximize its width within the verified unobstructed travel opening while preserving the intended hinge layout and mounting pattern. Measure left/right obstruction deductions independently, then use the governing required clearance on both visible sides for centered, aligned fronts. Derive the runner-compatible box and necessary supports separately; do not automatically add a fascia or doubled front. Place the first drawer close above the cabinet floor, stack shallow drawers with small operating gaps, and cap every stack with a shelf. These are AIkea defaults unless the user explicitly requests an exception. Apply the detailed [frontage and compact-stack contract](references/complete-drawer-installation.md#frontage-and-compact-stacks) to geometry, joints, captured bottoms, machining and full travel.
+Use one functional structural front wall as the visible drawer front. Maximize its width within the verified unobstructed travel opening while preserving the intended hinge layout and mounting pattern. Measure left/right obstruction deductions independently, then use the governing required clearance on both visible sides for centered, aligned fronts. Derive the runner-compatible box and necessary supports separately; do not automatically add a fascia or doubled front. Place the first drawer close above the cabinet floor, stack shallow drawers with small operating gaps, and cap every stack with a shelf. These are WardrobeAgentWizard defaults unless the user explicitly requests an exception. Apply the detailed [frontage and compact-stack contract](references/complete-drawer-installation.md#frontage-and-compact-stacks) to geometry, joints, captured bottoms, machining and full travel.

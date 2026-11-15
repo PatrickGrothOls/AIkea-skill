@@ -1,9 +1,9 @@
 ---
 name: aikea-choose-materials
-description: Advise on and confirm materials for an AIkea cabinet or fitted-furniture project using current local pricing, appearance, durability, construction quality, and fabrication constraints. Use when choosing or comparing carcass, shelf, door, or back-panel materials; when a client asks what material is best; or before AIkea asks for panel thicknesses without an approved material choice.
+description: Advise on and confirm materials for an WardrobeAgentWizard cabinet or fitted-furniture project using current local pricing, appearance, durability, construction quality, and fabrication constraints. Use when choosing or comparing carcass, shelf, door, or back-panel materials; when a client asks what material is best; or before WardrobeAgentWizard asks for panel thicknesses without an approved material choice.
 ---
 
-# AIkea choose materials
+# WardrobeAgentWizard choose materials
 
 Before any client-facing message, including progress commentary, read
 [../aikea/references/client-conversation.md](../aikea/references/client-conversation.md)

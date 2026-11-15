@@ -10,7 +10,7 @@ export class QuoteRequestPage extends Component {
     return (
       <div className="quote-page">
         <header className="quote-header">
-          <span className="quote-wordmark" aria-label="AIkea">AIkea</span>
+          <span className="quote-wordmark" aria-label="WardrobeAgentWizard">Wardrobe<wbr />AgentWizard</span>
           <ol className="quote-steps" aria-label="Quote process">
             <li aria-current="step"><span>1</span> Request quotes</li>
             <li><span>2</span> Compare offers</li>

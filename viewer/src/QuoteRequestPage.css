@@ -7,7 +7,7 @@
 .quote-dialog::backdrop { background: #fdfcf9; }
 .quote-page { max-width: 1540px; margin: auto; padding: 26px 48px 48px; }
 .quote-header { display: flex; align-items: center; gap: 24px; margin-bottom: 46px; }
-.quote-wordmark { font-size: 32px; font-weight: 800; letter-spacing: -1.5px; }
+.quote-wordmark { font-size: 32px; font-weight: 800; letter-spacing: -1.5px; min-width: 0; }
 .quote-steps { display: flex; gap: 28px; margin: 0 0 0 auto; padding: 0; list-style: none; }
 .quote-steps li { display: flex; align-items: center; gap: 9px; font-size: 13px; color: #58685f; }
 .quote-steps li[aria-current] { color: #174d3c; font-weight: 600; }
@@ -72,7 +72,7 @@
 @media (max-width: 760px) {
   .quote-page { padding: 16px 18px 30px; }
   .quote-header { flex-wrap: wrap; gap: 14px; margin-bottom: 26px; }
-  .quote-wordmark { font-size: 27px; }
+  .quote-wordmark { font-size: 21px; }
   .quote-close { margin-left: auto; order: 1; }
   .quote-steps { width: 100%; justify-content: space-between; gap: 8px; order: 2; }
   .quote-steps li { gap: 5px; font-size: 11px; }

@@ -9,7 +9,9 @@ from skill_release_version import SkillReleaseVersion
 
 
 class SkillReleaseCheck:
-    REPOSITORY = "PatrickGrothOls/AIkea-skill"
+    REPOSITORY = "PatrickGrothOls/WardrobeAgentWizard"
+    LEGACY_REPOSITORY = "PatrickGrothOls/AIkea-skill"
+    ARCHIVES = ("wardrobe-agent-wizard.zip", "aikea-skill.zip")
     API_URL = f"https://api.github.com/repos/{REPOSITORY}/releases?per_page=100"
     RELEASES_URL = f"https://github.com/{REPOSITORY}/releases"
 
@@ -17,7 +19,7 @@ class SkillReleaseCheck:
         # File/network/JSON errors are handled once at this external read boundary.
         try:
             installed = json.loads(Path(metadata_path).read_text()) if Path(metadata_path).exists() else {}
-            request = Request(self.API_URL, headers={"Accept": "application/vnd.github+json", "User-Agent": "AIkea-version-check"})
+            request = Request(self.API_URL, headers={"Accept": "application/vnd.github+json", "User-Agent": "WardrobeAgentWizard-version-check"})
             with urlopen(request, timeout=8) as response:
                 raw = response.read(1_000_001)
             if len(raw) > 1_000_000:
@@ -42,22 +44,25 @@ class SkillReleaseCheck:
                 version = SkillReleaseVersion.parse(tag)
             except ValueError:
                 continue
-            prefix = f"https://github.com/{self.REPOSITORY}/releases/download/{tag}/"
             assets = {asset["name"]: asset["browser_download_url"] for asset in release["assets"]}
-            if any(assets.get(name) != prefix+name for name in ("aikea-skill.zip", "SHA256SUMS")):
+            prefixes = [f"https://github.com/{repository}/releases/download/{tag}/"
+                        for repository in (self.REPOSITORY, self.LEGACY_REPOSITORY)]
+            archives = [name for name in self.ARCHIVES
+                        if any(assets.get(name) == prefix + name for prefix in prefixes)]
+            if not archives or not any(assets.get("SHA256SUMS") == prefix + "SHA256SUMS" for prefix in prefixes):
                 continue
-            candidates.append((version, tag, assets))
+            candidates.append((version, tag, assets, archives[0]))
         if not candidates:
             return {"status": "unavailable", "reason": "No complete supported release was found.",
                     "releases_url": self.RELEASES_URL}
-        newest, tag, assets = max(candidates, key=lambda item: item[0])
+        newest, tag, assets, archive = max(candidates, key=lambda item: item[0])
         result = {"installed_version": installed.get("version"), "available_version": tag,
                   "release_url": f"{self.RELEASES_URL}/tag/{tag}",
-                  "download_url": assets["aikea-skill.zip"], "checksums_url": assets["SHA256SUMS"]}
+                  "download_url": assets[archive], "checksums_url": assets["SHA256SUMS"]}
         distribution = installed.get("distribution")
         if distribution == "development":
             return dict(result, status="development", action="Keep this development checkout; do not offer a release as an upgrade.")
-        if (distribution != "release" or installed.get("repository") != self.REPOSITORY
+        if (distribution != "release" or installed.get("repository") not in (self.REPOSITORY, self.LEGACY_REPOSITORY)
                 or not isinstance(installed.get("version"), str)):
             return dict(result, status="unknown", action="Installed release identity is unknown; do not claim an update or current status.")
         current = SkillReleaseVersion.parse(installed["version"])

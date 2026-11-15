@@ -1,9 +1,9 @@
 ---
 name: aikea-source-hardware-cad
-description: Find exact manufacturer CAD for purchased furniture hardware, guide the user through any required vendor download, and store the untouched files in an AIkea project's local hardware library. Use when a runner, hinge, bracket, lift, or other bought component needs exact CAD before sizing, placement, or visual review.
+description: Find exact manufacturer CAD for purchased furniture hardware, guide the user through any required vendor download, and store the untouched files in an WardrobeAgentWizard project's local hardware library. Use when a runner, hinge, bracket, lift, or other bought component needs exact CAD before sizing, placement, or visual review.
 ---
 
-# AIkea source hardware CAD
+# WardrobeAgentWizard source hardware CAD
 
 Before any client-facing message, including progress commentary, read
 [../aikea/references/client-conversation.md](../aikea/references/client-conversation.md)
@@ -11,7 +11,7 @@ completely and apply it throughout this stage.
 
 ## Goal
 
-Give later AIkea builders the exact purchased component they are designing
+Give later WardrobeAgentWizard builders the exact purchased component they are designing
 around. Match the manufacturer, product family, catalogue item, size, and handed
 set before accepting a file. Preserve the downloaded bytes and their original
 coordinate frame so local construction can verify and place them later.
@@ -48,7 +48,7 @@ coordinate frame so local construction can verify and place them later.
 
    `python <skill-directory>/scripts/store_hardware_cad.py <project>/aikea.yaml --manufacturer <name> --product-family <family> --catalog-item <item> --product-url <official-product-url> --cad-page-url <official-cad-url> --terms-url <terms-url> --download <downloaded-file>`
 
-7. Use the returned `hardware_directory` for the relevant AIkea construction
+7. Use the returned `hardware_directory` for the relevant WardrobeAgentWizard construction
    skill. Sourcing proves identity, provenance, and unchanged bytes only. The
    consuming skill must still verify solids, native bounds, placement, fit, and
    machining before it can treat the hardware as build-ready.
@@ -80,7 +80,7 @@ Purchased CAD is shared project input, not part of one cabinet assembly:
     └── <vendor-supplied-notices>
 ```
 
-The `hardware/` library is local-only and ignored by Git. The public AIkea skill
+The `hardware/` library is local-only and ignored by Git. The public WardrobeAgentWizard skill
 may keep product identity, source links, checksums, and verified observations,
 but never the vendor's CAD bytes.
 

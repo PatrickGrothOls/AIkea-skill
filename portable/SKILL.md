@@ -1,9 +1,9 @@
 ---
-name: aikea
-description: Install the bundled AIkea furniture workflow in a desktop work environment, verify its CAD and Blender dependencies, and begin a new furniture project.
+name: wardrobe-agent-wizard
+description: Install the bundled WardrobeAgentWizard furniture workflow in a desktop work environment, verify its CAD and Blender dependencies, and begin a new furniture project.
 ---
 
-# AIkea Skill
+# WardrobeAgentWizard Skill
 
 Own setup from the single starter prompt. Read [BOOTSTRAP.md](BOOTSTRAP.md) and
 run its setup command using your available execution tools. Do not substitute
@@ -16,7 +16,7 @@ trusted system dialog, never in chat. If the actual app lacks execution/network
 capabilities, report the specific blocker instead of claiming success.
 
 The installer produces RUNTIME_VERIFIED only. Finish the user-accessible viewer
-check in BOOTSTRAP.md, load `skills/aikea/SKILL.md` and ask its next missing intake
+check in BOOTSTRAP.md, load `skills/wardrobe-agent-wizard/SKILL.md` and ask its next missing intake
 question before declaring the full setup READY. Use a fresh project and only the
 user's supplied measurements. The synthetic setup panel is not a design template.
 
@@ -37,3 +37,12 @@ The quote preferences page is included. Customer sending remains unavailable
 until the hosted service is deployed and verified, and will initially require
 an invitation. Painting/installation outreach and ordering are not implemented.
 Read [CNC quote availability and setup](skills/aikea-review-unit/references/cnc-quotes.md) before offering submission.
+
+## Report an WardrobeAgentWizard problem
+
+For a user-requested report or an unresolved installation/design failure, read
+[the reporting workflow](skills/aikea-report-issue/SKILL.md). Prepare the exact
+public-safe text for approval in chat. Use the configured browser form or a
+prefilled-form handover; no customer GitHub account or token is needed. If the
+publisher has not activated reporting, keep the report local and state that
+sending is unavailable. Never claim a report was delivered without confirmation.

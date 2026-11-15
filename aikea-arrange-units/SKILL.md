@@ -1,9 +1,9 @@
 ---
 name: aikea-arrange-units
-description: Arrange the physical units in a measured AIkea furniture project from left to right and save their purposes and relative widths. Use after the overall space is checked when deciding, revising, or reviewing an arrangement containing tall storage, benches, or other sheet-material units, before local unit design, parts, joinery, or folder generation begins.
+description: Arrange the physical units in a measured WardrobeAgentWizard furniture project from left to right and save their purposes and relative widths. Use after the overall space is checked when deciding, revising, or reviewing an arrangement containing tall storage, benches, or other sheet-material units, before local unit design, parts, joinery, or folder generation begins.
 ---
 
-# AIkea arrange units
+# WardrobeAgentWizard arrange units
 
 Before any client-facing message, including progress commentary, read
 [../aikea/references/client-conversation.md](../aikea/references/client-conversation.md)

@@ -11,7 +11,7 @@ The assistant verifies the published ZIP checksum, extracts it and reads
 `SKILL.md` followed by `BOOTSTRAP.md`. It runs:
 
 ```sh
-bash /absolute/path/aikea/setup.sh /absolute/path/workspace/aikea-runtime
+bash /absolute/path/wardrobe-agent-wizard/setup.sh /absolute/path/workspace/wardrobe-agent-wizard-runtime
 ```
 
 The installer verifies the pinned uv download, provisions isolated Python,
