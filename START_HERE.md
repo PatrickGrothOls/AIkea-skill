@@ -24,7 +24,7 @@ and customer designs are not included.
 ## Instructions for the assistant
 
 1. Download the ZIP above using your available file tools. Verify its SHA-256
-   before extracting: `e6fd2db936c88c01709ebda14c3e23c1116978d0e8e3ff2df449ab5cf6ac06bf`.
+   before extracting: `b061e1a27ab555f3e2dc29354009229b2ed77fd1d699543355532877981ce873`.
 2. Extract its single `aikea/` folder into a fresh directory. Read the extracted
    `SKILL.md` and `BOOTSTRAP.md`. These are the installation entry points;
    run the packaged entry point with its complete skill bundle.
