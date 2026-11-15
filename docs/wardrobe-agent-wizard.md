@@ -18,7 +18,8 @@ the independently committed installer-checksum fix. No client projects change.
 - [x] Rebuild the viewer and inspect phone, tablet and desktop captures.
 - [x] Verify reporting, download counts and update behavior.
 - [x] Verify the complete renamed release archive and its checksum.
-- [ ] Prepare the release artifact, official links and publication checkpoint.
+- [x] Prepare the release artifact, official links and publication checkpoint.
+- [ ] Obtain repository-rename approval and publish the prepared release.
 
 ## Current state
 
@@ -30,6 +31,11 @@ The renamed `v0.1.1` archive is built from `e748e4c`. Full archive integrity,
 all 13 skill entrypoints, the exact stamped release identity and exclusion of
 operator infrastructure/private runtime files are verified. Its checksum is
 pinned in `START_HERE.md`. Hosted reporting remains inactive in this archive.
+The prepared change is public in PR #9. Automatic approval review rejected the
+repository rename because selection of the product name was not explicit approval
+to change the public repository URL, which can affect links and integrations.
+A specific approval request is pending. The repository has not been renamed and
+the new release has not been published; do not merge its new links prematurely.
 Focused Python verification passes: 50 tests and four packaging subtests. The
 receiver's six tests and all 13 discoverable skill links pass. Package generation
 now stamps the exact release version automatically and keeps the public alias.
@@ -69,3 +75,6 @@ Record measured header bounds with the final responsive captures.
    encoding, which causes double decoding in the showcase loader. Verify the
    production static build, whose model loads correctly; no unrelated geometry
    or loader change is included in the rename.
+5. The GitHub connector could not create the pull request, so the authenticated
+   GitHub CLI created PR #9. The later repository-rename refusal is an automatic
+   approval-review boundary, not a GitHub API error; do not bypass it.
