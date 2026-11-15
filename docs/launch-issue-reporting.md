@@ -18,7 +18,7 @@ Branch: `codex/launch-issue-reporting`, based on public `origin/main` at
 - [x] Add and verify a maintainer command for existing GitHub download counts.
 - [ ] Check the existing hosted form and identify the remaining activation step.
 - [ ] Activate and verify delivery only with the required account access.
-- [ ] Prepare the reviewed release change and record any remaining blocker.
+- [x] Prepare a verified local package and record the activation blocker.
 
 ## Current state
 
@@ -38,6 +38,11 @@ Hosted activation is not verified. Automatic approval review rejected running
 `exportReportingConfiguration` in the existing Google project because execution
 could expose private configuration or credentials. No script was run or property
 changed. The distributed reporting configuration remains `not_configured`.
+
+A local-only package candidate built from `cbf27da` passes full package integrity
+verification and includes the report helper plus inactive public configuration.
+Operator infrastructure is excluded. This is not a published release or a working
+hosted reporting endpoint.
 
 ## Audit log
 
