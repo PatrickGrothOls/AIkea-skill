@@ -19,6 +19,7 @@ the independently committed installer-checksum fix. No client projects change.
 - [x] Verify reporting, download counts and update behavior.
 - [x] Verify the complete renamed release archive and its checksum.
 - [x] Prepare the release artifact, official links and publication checkpoint.
+- [x] Put the starter prompt immediately below the README title.
 - [ ] Obtain repository-rename approval and publish the prepared release.
 
 ## Current state
@@ -36,6 +37,8 @@ repository rename because selection of the product name was not explicit approva
 to change the public repository URL, which can affect links and integrations.
 A specific approval request is pending. The repository has not been renamed and
 the new release has not been published; do not merge its new links prematurely.
+The README now presents the starter prompt before explanatory text or images.
+The prompt body is unchanged and matches the packaged starter prompt.
 Focused Python verification passes: 50 tests and four packaging subtests. The
 receiver's six tests and all 13 discoverable skill links pass. Package generation
 now stamps the exact release version automatically and keeps the public alias.
@@ -78,3 +81,5 @@ Record measured header bounds with the final responsive captures.
 5. The GitHub connector could not create the pull request, so the authenticated
    GitHub CLI created PR #9. The later repository-rename refusal is an automatic
    approval-review boundary, not a GitHub API error; do not bypass it.
+6. Patrick requested the starter prompt at the very top. Move the existing prompt
+   below the README title, remove its duplicate and preserve its approved text.

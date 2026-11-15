@@ -1,5 +1,11 @@
 # WardrobeAgentWizard Skill
 
+**Want to use it yourself?** Paste this starter prompt into your AI application:
+
+```text
+Set up WardrobeAgentWizard Skill and help me design my furniture. Go to https://github.com/PatrickGrothOls/WardrobeAgentWizard and follow the getting-started instructions. Handle the setup and ask me for any necessary approvals.
+```
+
 **Create your next custom wardrobe with your AI Agent.**
 
 Start with your room’s measurements and how you want to use the space. Choose
@@ -80,11 +86,7 @@ screws and cabinet pilot specification unresolved.
 
 ### Desktop Work / Cowork
 
-Copy this prompt into a fresh chat:
-
-```text
-Set up WardrobeAgentWizard Skill and help me design my furniture. Go to https://github.com/PatrickGrothOls/WardrobeAgentWizard and follow the getting-started instructions. Handle the setup and ask me for any necessary approvals.
-```
+Use the starter prompt at the top of this page in a fresh chat.
 
 Your assistant follows [Getting started](START_HERE.md), downloads the skill,
 installs Python, CadQuery and headless Blender, verifies the setup, and starts
