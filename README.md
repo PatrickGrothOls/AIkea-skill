@@ -199,6 +199,10 @@ requests. Include the commit or release version, operating system, failing
 command, and a small synthetic example. Remove private room measurements,
 download credentials, personal paths, and licensed CAD before attaching files.
 
+Maintainers can read GitHub's existing release ZIP download counts with
+`direnv exec . python scripts/release_downloads.py`. These are download counts,
+not unique users or installations. The command adds no tracking to the skill.
+
 ## Make it real and CNC quotes
 
 The quote preferences page is included. Customer sending remains unavailable

@@ -14,12 +14,12 @@ knowledge. Google hosts the form and a private Apps Script posts the issue.
 - [ ] Activate the hosted form and verify one approved synthetic submission.
 
 ## Current state
-Parked at Patrick’s request until skill adoption warrants activation. Preserve the
-implementation and these notes on `codex/issue-reporting` without merging or
-publishing a release. No activation or credential generation is part of parking.
-To resume, follow [operator setup](issue-reporting-setup.md), recheck the existing
-private form and trigger before creating anything, and complete credential setup
-and an approved live submission before enabling distributed reporting.
+Resumed for launch at Patrick's request on `codex/launch-issue-reporting`, based
+on current public main. The original parked branch remains preserved. Follow
+[operator setup](issue-reporting-setup.md), recheck the existing private form and
+trigger before creating anything, and complete credential setup and an approved
+live submission before enabling distributed reporting. See the current
+[launch status](launch-issue-reporting.md) for checks and the activation blocker.
 
 Implemented on codex/issue-reporting. Local checks pass: 24 Python tests plus four
 portable-package subtests, six receiver tests, skill discovery and skill validation.
