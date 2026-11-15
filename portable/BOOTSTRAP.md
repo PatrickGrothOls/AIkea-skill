@@ -1,6 +1,6 @@
-# Set up AIkea and begin the furniture flow
+# Set up WardrobeAgentWizard and begin the furniture flow
 
-AIkea Skill requires an AI environment with file and command execution tools.
+WardrobeAgentWizard Skill requires an AI environment with file and command execution tools.
 Compatibility depends on those tools. Installation may execute
 locally or in the app's hosted workspace; record where it really happens.
 
@@ -10,7 +10,7 @@ After checking the downloaded ZIP against the SHA-256 supplied on the
 getting-started page, extract it into a new directory. Read this file, then run:
 
 ```sh
-bash /absolute/path/aikea/setup.sh /absolute/path/chosen-workspace/aikea-runtime
+bash /absolute/path/wardrobe-agent-wizard/setup.sh /absolute/path/chosen-workspace/wardrobe-agent-wizard-runtime
 ```
 
 The assistant runs the command. Do not ask the user to open a terminal or install
@@ -46,7 +46,7 @@ Record where the package, runtime and project will live and how to reopen them.
 Do not claim cross-session persistence or account skill registration without
 testing it. Keep one heavy bake and one 3D tab active at a time.
 
-Then load `skills/aikea/SKILL.md`, create a separate fresh project when needed and
+Then load `skills/wardrobe-agent-wizard/SKILL.md`, create a separate fresh project when needed and
 ask the first missing intake question, one topic at a time. Report READY only
 after package integrity, CAD, Blender, accessible interactive viewer and intake
 have all succeeded. Installation is distinct from the later furniture build.
@@ -73,7 +73,7 @@ until the hosted service is deployed and verified, and will initially require
 an invitation. Painting/installation outreach and ordering are not implemented.
 Read [CNC quote availability and setup](skills/aikea-review-unit/references/cnc-quotes.md) before offering submission.
 
-## Report an AIkea problem
+## Report an WardrobeAgentWizard problem
 
 For a user-requested report or an unresolved installation/design failure, read
 [the reporting workflow](skills/aikea-report-issue/SKILL.md). Prepare the exact

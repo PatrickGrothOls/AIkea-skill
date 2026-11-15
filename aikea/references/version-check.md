@@ -1,6 +1,6 @@
 # Check for an update before starting
 
-At the beginning of a new AIkea design session, before the first intake question
+At the beginning of a new WardrobeAgentWizard design session, before the first intake question
 or dependency installation, check the installed package against the official
 published release. Check once per session; do not interrupt an active build with
 repeated checks. Preserve measurements already supplied by the user.
@@ -13,7 +13,7 @@ dependencies, download the package, or transmit any project measurements.
 ## Respond to the result
 
 - `update_available`: briefly name the installed and available versions, link
-  the release, then ask: "A newer AIkea version is available. Download it before
+  the release, then ask: "A newer WardrobeAgentWizard version is available. Download it before
   we start? 1. Update, 2. Keep this version." Wait for the answer. No answer is
   not approval. If declined, continue intake without repeatedly asking.
 - `current`: silently continue to the unit question or next missing design topic.
@@ -32,7 +32,7 @@ accessible and inspect the official GitHub releases page. Compare numeric
 semantic versions, including alpha/beta suffixes; do not use string sorting or
 assume `/releases/latest` includes prereleases. If neither comparison is possible,
 follow the unknown/unavailable behavior. Use only the official
-[AIkea releases](https://github.com/PatrickGrothOls/AIkea-skill/releases).
+[WardrobeAgentWizard releases](https://github.com/PatrickGrothOls/WardrobeAgentWizard/releases).
 
 ## After the user accepts
 

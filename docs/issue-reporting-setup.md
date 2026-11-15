@@ -4,7 +4,7 @@
 
 Customers never configure GitHub or provide credentials. The distributed helper
 only prepares text and a Google Form link. The private Apps Script receives browser
-form submissions, then calls the fixed `PatrickGrothOls/AIkea-skill` issue endpoint.
+form submissions, then calls the fixed `PatrickGrothOls/WardrobeAgentWizard` issue endpoint.
 There is no web app endpoint or server to operate. Google stores responses and runs
 an installable form-submit trigger under its creator's account and quotas.
 

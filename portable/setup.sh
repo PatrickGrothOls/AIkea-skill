@@ -1,5 +1,5 @@
 #!/bin/bash
-# Scope: Bootstrap pinned uv and Python locally before invoking AIkea setup.
+# Scope: Bootstrap pinned uv and Python locally before invoking WardrobeAgentWizard setup.
 set -euo pipefail
 stage=bootstrap
 trap 'code=$?; printf "BLOCKED stage=%s exit=%s; inspect the error above and retry this command after resolving it.\n" "$stage" "$code" >&2; exit "$code"' ERR

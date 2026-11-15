@@ -1,9 +1,9 @@
 ---
 name: aikea-review-unit
-description: Build and show AIkea furniture through verified Blender presentations with matching CAD inspection models. Use after local unit folders are generated or when reviewing how approved assemblies meet.
+description: Build and show WardrobeAgentWizard furniture through verified Blender presentations with matching CAD inspection models. Use after local unit folders are generated or when reviewing how approved assemblies meet.
 ---
 
-# AIkea review unit
+# WardrobeAgentWizard review unit
 
 Before any client-facing message, including progress commentary, read
 [../aikea/references/client-conversation.md](../aikea/references/client-conversation.md)

@@ -14,7 +14,7 @@ test('publishes only to fixed repository and deduplicates ID and content', () =>
   assert.equal(f.receiver.receive(f.event(otherId)), 'created');
   assert.equal(f.requests.length, 1);
   const request = f.requests[0];
-  assert.equal(request.url, 'https://api.github.com/repos/PatrickGrothOls/AIkea-skill/issues');
+  assert.equal(request.url, 'https://api.github.com/repos/PatrickGrothOls/WardrobeAgentWizard/issues');
   assert.equal(request.options.followRedirects, false);
   assert.equal(JSON.parse(request.options.payload).title, 'Viewer stopped');
   assert.equal(f.released, true);

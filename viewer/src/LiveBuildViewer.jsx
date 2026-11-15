@@ -37,7 +37,7 @@ export function LiveBuildViewer() {
       <directionalLight position={[-3, 2, -2]} intensity={0.6} />
       <LiveBuildLayer revision={revision} connected={connected && !problem} fit={fit} onProblem={setProblem} />
     </Canvas>
-    <header className="live-build-heading"><strong>AIkea</strong><span>Live construction preview</span></header>
+    <header className="live-build-heading"><strong>WardrobeAgentWizard</strong><span>Live construction preview</span></header>
     {!revision?.parts.length && <div className="live-build-empty">Your furniture will appear here as its parts are built.</div>}
     <section className="live-build-status" aria-live="polite" data-state={state}>
       <span className="live-build-eyebrow">WORK IN PROGRESS</span>

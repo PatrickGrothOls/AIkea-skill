@@ -1,9 +1,9 @@
 ---
 name: aikea-add-lighting
-description: Add recessed linear lighting to an AIkea sheet-material furniture part from one saved part-local run. Use when a generated cabinet, wardrobe, shelf, or furniture assembly needs an integrated light groove, a purchased light body, or an illuminated visual review.
+description: Add recessed linear lighting to an WardrobeAgentWizard sheet-material furniture part from one saved part-local run. Use when a generated cabinet, wardrobe, shelf, or furniture assembly needs an integrated light groove, a purchased light body, or an illuminated visual review.
 ---
 
-# AIkea Add Lighting
+# WardrobeAgentWizard Add Lighting
 
 Before any client-facing message, including progress commentary, read
 [../aikea/references/client-conversation.md](../aikea/references/client-conversation.md)

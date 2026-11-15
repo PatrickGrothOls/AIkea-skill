@@ -1,9 +1,9 @@
 ---
 name: aikea-build-doors
-description: Build a complete fitted door on an existing generated AIkea cabinet, including exact purchased concealed hinges, paired door and cabinet machining, saved local placement, and closed/open visual review. Use when adding, attaching, checking, opening, or reviewing a hinged AIkea door.
+description: Build a complete fitted door on an existing generated WardrobeAgentWizard cabinet, including exact purchased concealed hinges, paired door and cabinet machining, saved local placement, and closed/open visual review. Use when adding, attaching, checking, opening, or reviewing a hinged WardrobeAgentWizard door.
 ---
 
-# AIkea Build Doors
+# WardrobeAgentWizard Build Doors
 
 Before any client-facing message, including progress commentary, read
 [../aikea/references/client-conversation.md](../aikea/references/client-conversation.md)
@@ -78,7 +78,7 @@ exception.
 
 ## Build one complete door
 
-1. Resolve the active AIkea project and the existing generated cabinet that owns
+1. Resolve the active WardrobeAgentWizard project and the existing generated cabinet that owns
    the door.
 2. Read
    [references/door-and-hinge-construction.md](references/door-and-hinge-construction.md)

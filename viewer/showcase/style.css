@@ -11,9 +11,9 @@ a:hover{text-decoration:underline}
 button:focus-visible,a:focus-visible,input:focus-visible,canvas:focus-visible{outline:3px solid #31765e;outline-offset:4px}
 
 header{display:flex;justify-content:space-between;align-items:center;max-width:1440px;margin:auto;padding:28px 48px;border-bottom:1px solid #d9dfd5}
-.brand{display:flex;align-items:center;gap:22px;font-size:30px;font-weight:800;letter-spacing:-1.4px}
+.brand{display:flex;align-items:center;gap:22px;font-size:30px;font-weight:800;letter-spacing:-1.4px;min-width:0;flex-wrap:wrap;row-gap:8px}
 .brand span{font-size:13px;font-weight:500;letter-spacing:0;border-left:1px solid #c5cdc4;padding-left:22px;color:#5a6a61}
-.repo-link{font-size:14px;font-weight:600}
+.repo-link{font-size:14px;font-weight:600;white-space:nowrap;flex-shrink:0}
 .repo-link span{margin-left:10px}
 
 main{max-width:1440px;margin:auto;padding:34px 48px 20px}
@@ -38,8 +38,8 @@ canvas{display:block;width:100%;height:100%;touch-action:none}
 .gesture{color:#737d73}
 .note{font-size:11px;line-height:1.6;color:#788176;margin:14px 2px}
 
-@media(max-width:700px){header{padding:18px 20px}
-.brand{font-size:27px;gap:12px}
+@media(max-width:700px){header{padding:18px 20px;gap:13px}
+.brand{font-size:21px;gap:12px}
 .brand span{padding-left:12px;font-size:11px}
 .repo-link{font-size:12px}
 main{padding:26px 14px 18px}

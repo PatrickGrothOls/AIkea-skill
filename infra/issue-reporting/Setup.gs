@@ -3,11 +3,11 @@ class ReportingSetup {
   prepare() {
     const props = PropertiesService.getScriptProperties();
     if (props.getProperty('FORM_ID')) throw new Error('Form already configured; do not create a duplicate.');
-    const form = FormApp.create('AIkea problem report', false);
+    const form = FormApp.create('WardrobeAgentWizard problem report', false);
     form.setAcceptingResponses(false).setCollectEmail(false).setLimitOneResponsePerUser(false)
       .setAllowResponseEdits(false).setPublishingSummary(false).setShowLinkToRespondAgain(false)
       .setDescription('Review the report prepared in your chat. Approved reports are sent to ' +
-        'AIkea and published on its public issue tracker. Do not include names, email addresses, ' +
+        'WardrobeAgentWizard and published on its public issue tracker. Do not include names, email addresses, ' +
         'home details, credentials or private files. Google stores this form response.')
       .setConfirmationMessage('Your report has been received. Publication may be delayed or held ' +
         'for review. This receipt does not confirm that a public issue has been created.');

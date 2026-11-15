@@ -24,6 +24,9 @@ class PortablePackageTest(unittest.TestCase):
         self.package = PortablePackage(self.root)
         self.git("init", "-q")
         for name, content in {"aikea/SKILL.md": "# Skill", "portable/setup.sh": "true\n",
+                              "aikea/release.json": json.dumps({"repository": "PatrickGrothOls/WardrobeAgentWizard",
+                                  "distribution": "development", "version": None}),
+                              "wardrobe-agent-wizard/SKILL.md": "# Public entrypoint",
                               "portable/start-prompt.txt": "{download_url} {sha256}",
                               "requirements.txt": "cadquery==2.7.0\n",
                               "private.txt": "must not be packaged"}.items():
@@ -42,14 +45,20 @@ class PortablePackageTest(unittest.TestCase):
         outputs = [Path(self.temp.name) / name for name in ("first", "second")]
         for output in outputs:
             self.package.build(output, "0.1.0-desktop.1")
-        archives = [(path / "aikea-skill.zip").read_bytes() for path in outputs]
+        archives = [(path / "wardrobe-agent-wizard.zip").read_bytes() for path in outputs]
         self.assertEqual(archives[0], archives[1])
-        with zipfile.ZipFile(outputs[0] / "aikea-skill.zip") as bundle:
-            self.assertEqual(set(bundle.namelist()), {"aikea/skills/aikea/SKILL.md",
-                             "aikea/setup.sh", "aikea/requirements.txt", "aikea/package-manifest.json"})
+        with zipfile.ZipFile(outputs[0] / "wardrobe-agent-wizard.zip") as bundle:
+            self.assertEqual(set(bundle.namelist()), {"wardrobe-agent-wizard/skills/aikea/SKILL.md",
+                             "wardrobe-agent-wizard/skills/aikea/release.json",
+                             "wardrobe-agent-wizard/skills/wardrobe-agent-wizard/SKILL.md",
+                             "wardrobe-agent-wizard/setup.sh", "wardrobe-agent-wizard/requirements.txt",
+                             "wardrobe-agent-wizard/package-manifest.json"})
             bundle.extractall(Path(self.temp.name) / "extract")
-        extracted = Path(self.temp.name) / "extract/aikea"
+        extracted = Path(self.temp.name) / "extract/wardrobe-agent-wizard"
         self.assertEqual(PackageIntegrity().verify(extracted)["version"], "0.1.0-desktop.1")
+        identity = json.loads((extracted / "skills/aikea/release.json").read_text())
+        self.assertEqual(identity["distribution"], "release")
+        self.assertEqual(identity["version"], "0.1.0-desktop.1")
         (extracted / "setup.sh").write_text("tampered")
         with self.assertRaisesRegex(ValueError, "integrity failed"):
             PackageIntegrity().verify(extracted)
@@ -60,7 +69,7 @@ class PortablePackageTest(unittest.TestCase):
         self.assertFalse((local / "START_PROMPT.txt").exists())
         remote = Path(self.temp.name) / "remote"
         self.package.build(remote, "0.1.0-desktop.1", "https://example.invalid/candidate.zip")
-        digest = hashlib.sha256((remote / "aikea-skill.zip").read_bytes()).hexdigest()
+        digest = hashlib.sha256((remote / "wardrobe-agent-wizard.zip").read_bytes()).hexdigest()
         self.assertIn(digest, (remote / "START_PROMPT.txt").read_text())
         self.assertEqual(json.loads((remote / "distribution.json").read_text())["status"],
                          "DOWNLOAD_URL_UNVERIFIED")
@@ -77,8 +86,8 @@ class PortablePackageTest(unittest.TestCase):
     def test_normal_release_version_is_recorded_and_invalid_versions_are_rejected(self):
         output = Path(self.temp.name) / "release"
         self.package.build(output, "0.1.0", "https://example.invalid/aikea-skill.zip")
-        with zipfile.ZipFile(output / "aikea-skill.zip") as bundle:
-            manifest = json.loads(bundle.read("aikea/package-manifest.json"))
+        with zipfile.ZipFile(output / "wardrobe-agent-wizard.zip") as bundle:
+            manifest = json.loads(bundle.read("wardrobe-agent-wizard/package-manifest.json"))
             self.assertEqual(manifest["version"], "0.1.0")
         for version in ("latest", "../0.1.0", "0.1", "0.1.0-extra"):
             with self.subTest(version=version), self.assertRaisesRegex(ValueError, "release version"):

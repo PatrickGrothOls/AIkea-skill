@@ -13,7 +13,8 @@ class SkillPackageVerifier:
         self.root = root.resolve()
 
     def verify(self) -> None:
-        entrypoints = sorted(self.root.glob("aikea*/SKILL.md"))
+        entrypoints = sorted(path for path in self.root.glob("*/SKILL.md")
+                             if path.parent.name != "portable")
         self._require(bool(entrypoints), "No AIkea skill entrypoints found")
         for path in entrypoints:
             contents = path.read_text(encoding="utf-8")

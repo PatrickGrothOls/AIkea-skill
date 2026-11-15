@@ -1,0 +1,4 @@
+interface:
+  display_name: "WardrobeAgentWizard"
+  short_description: "Design a custom wardrobe with your AI agent"
+  default_prompt: "Use $wardrobe-agent-wizard to design a fitted wardrobe for my space."

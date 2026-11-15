@@ -1,5 +1,5 @@
 # Scope: Verify the packaged alpha from declared Python and viewer environments.
-name: Verify AIkea
+name: Verify WardrobeAgentWizard
 
 on:
   push:

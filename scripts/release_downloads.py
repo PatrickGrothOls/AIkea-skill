@@ -38,7 +38,7 @@ class ReleaseDownloads:
 class DownloadCountsCommand:
     def run(self):
         parser = argparse.ArgumentParser(description=__doc__)
-        parser.add_argument("--repository", default="PatrickGrothOls/AIkea-skill")
+        parser.add_argument("--repository", default="PatrickGrothOls/WardrobeAgentWizard")
         args = parser.parse_args()
         try:
             result = ReleaseDownloads(args.repository).read()

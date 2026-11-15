@@ -1,4 +1,4 @@
-"""Scope: Build a deterministic AIkea skill package using only tracked distributable files."""
+"""Scope: Build a deterministic WardrobeAgentWizard bundle from tracked distributable files."""
 
 import argparse
 import hashlib
@@ -17,7 +17,8 @@ class PortablePackage:
         return subprocess.check_output(["git", *args], cwd=self.root).decode().strip()
 
     def members(self):
-        skills = {path.parent.name for path in self.root.glob("aikea*/SKILL.md")}
+        skills = {path.parent.name for path in self.root.glob("*/SKILL.md")
+                  if path.parent.name != "portable"}
         members = {}
         for name in self.git("ls-files", "-z").split("\0"):
             if not name:
@@ -45,17 +46,20 @@ class PortablePackage:
         if download_url and not download_url.startswith("https://"):
             raise ValueError("The package download URL must use HTTPS")
         members = self.members()
+        identity = json.loads(members["skills/aikea/release.json"])
+        identity.update(distribution="release", version=version)
+        members["skills/aikea/release.json"] = (json.dumps(identity, indent=2) + "\n").encode()
         metadata = {"version": version, "source_revision": self.git("rev-parse", "HEAD")}
         manifest = dict(metadata, files={name: hashlib.sha256(data).hexdigest()
                                         for name, data in sorted(members.items())})
         members["package-manifest.json"] = (json.dumps(manifest, indent=2) + "\n").encode()
         output.mkdir(parents=True, exist_ok=True)
-        archive = output / "aikea-skill.zip"
+        archive = output / "wardrobe-agent-wizard.zip"
         if archive.exists():
             raise ValueError("Use a new output directory; do not overwrite an existing package")
         with zipfile.ZipFile(archive, "w") as bundle:
             for name, contents in sorted(members.items()):
-                info = zipfile.ZipInfo("aikea/" + name, date_time=(2026, 1, 1, 0, 0, 0))
+                info = zipfile.ZipInfo("wardrobe-agent-wizard/" + name, date_time=(2026, 1, 1, 0, 0, 0))
                 info.compress_type = zipfile.ZIP_DEFLATED
                 info.create_system = 3
                 info.external_attr = (0o100755 if name.endswith(".sh") else 0o100644) << 16

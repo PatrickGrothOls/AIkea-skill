@@ -1,9 +1,9 @@
 ---
 name: aikea
-description: Start and route an AIkea frameless sheet-material furniture project by establishing, revising, and checking the overall measured space and shared design choices. Use when starting an AIkea wardrobe or fitted-furniture project, measuring a flat or sloped space, recalculating overall dimensions, or deciding which AIkea design stage should run next.
+description: Start and route an WardrobeAgentWizard frameless sheet-material furniture project by establishing, revising, and checking the overall measured space and shared design choices. Use when starting an WardrobeAgentWizard wardrobe or fitted-furniture project, measuring a flat or sloped space, recalculating overall dimensions, or deciding which WardrobeAgentWizard design stage should run next.
 ---
 
-# AIkea
+# WardrobeAgentWizard
 
 Before starting a new design session, follow
 [the version check](references/version-check.md). Check for a newer published
@@ -27,7 +27,7 @@ invent wardrobe fields merely to enter a template for another furniture layout.
 
 ## Report an experienced problem
 
-When a user asks to report an AIkea problem, or an AIkea failure remains unresolved,
+When a user asks to report an WardrobeAgentWizard problem, or an WardrobeAgentWizard failure remains unresolved,
 load [$aikea-report-issue](../aikea-report-issue/SKILL.md). It prepares a public-safe
 report for approval in chat, then submits through the configured browser form or
 hands over a prefilled form. Never request GitHub credentials from the customer.
@@ -36,7 +36,7 @@ hands over a prefilled form. Never request GitHub credentials from the customer.
 
 Read [references/client-conversation.md](references/client-conversation.md)
 completely before any client-facing message, including progress commentary. Keep
-that contract active through every routed AIkea stage.
+that contract active through every routed WardrobeAgentWizard stage.
 
 ## Guide measurements and design choices
 
@@ -109,7 +109,7 @@ that contract active through every routed AIkea stage.
   with a fixed line, ask for left, centre, and right readings from the back to that
   line.
 - Speak to the client in terms of physical wardrobe decisions and results. Keep
-  AIkea's implementation private unless the client asks for technical details or
+  WardrobeAgentWizard's implementation private unless the client asks for technical details or
   project files.
 - Never ask the client to provide width shares. Ask whether sections should be equal or whether any should be wider or narrower, then translate that relationship internally.
 - Settle where the doors end and whether the plinth front is flush or recessed as
@@ -142,7 +142,7 @@ that the schema cannot express, continue through `$aikea-design-furniture` with
 its saved measurements and requirements instead.
 
 1. Read `references/overall-wardrobe-measurements-and-settings.md` completely.
-2. Read only the user's messages, user-identified attachments, and the active project's AIkea files for project values.
+2. Read only the user's messages, user-identified attachments, and the active project's WardrobeAgentWizard files for project values.
 3. Classify the measured space and non-material inputs as missing,
    contradictory, or complete. Do not classify the project complete until the
    material adviser reports a confirmed, globally representable material stage.

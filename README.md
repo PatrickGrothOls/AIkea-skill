@@ -1,4 +1,4 @@
-# AIkea Skill
+# WardrobeAgentWizard Skill
 
 **Create your next custom wardrobe with your AI Agent.**
 
@@ -14,14 +14,14 @@ show the assumptions for materials, hardware, machining, finishing and delivery.
 
 <img src="docs/images/wardrobe-assembled.png" alt="Wooden fitted wardrobe beneath a sloping ceiling, with doors hidden to show shelves, drawer stacks, hinges and interior lighting." width="760">
 
-*An example from the AIkea viewer: a fitted wardrobe with shelves, drawers and
+*An example from the WardrobeAgentWizard viewer: a fitted wardrobe with shelves, drawers and
 integrated lighting. The doors are hidden for inspection; these are digital
 design previews.*
 
 ### Explore the real model
 
-[Open the assembled wardrobe](https://patrickgrothols.github.io/AIkea-skill/) ·
-[Explore the exploded view](https://patrickgrothols.github.io/AIkea-skill/?view=exploded)
+[Open the assembled wardrobe](https://patrickgrothols.github.io/WardrobeAgentWizard/) ·
+[Explore the exploded view](https://patrickgrothols.github.io/WardrobeAgentWizard/?view=exploded)
 
 Zoom in to see the machining details. The viewer’s 84 wood-textured panels preserve the
 actual holes, pockets and grooves from the CAD model. Toggle the doors to see
@@ -30,11 +30,11 @@ Cabineo connector bodies are omitted. Some fixings use simplified geometry from
 the source assembly. The doors have plain applied frames and slim brass handle
 concepts; their attachment and additional clearance remain unqualified. This example is not a fabrication release.
 
-[![Close-up of a machined side panel showing shelf drilling, connector pockets and hinge plates.](docs/images/wardrobe-cad.png)](https://patrickgrothols.github.io/AIkea-skill/)
+[![Close-up of a machined side panel showing shelf drilling, connector pockets and hinge plates.](docs/images/wardrobe-cad.png)](https://patrickgrothols.github.io/WardrobeAgentWizard/)
 
 Toggle **Show doors** to inspect the proposed applied frames and brass handles.
 
-[![Wooden framed doors with brass pulls following the wardrobe’s sloped outline.](docs/images/wardrobe-framed.png)](https://patrickgrothols.github.io/AIkea-skill/)
+[![Wooden framed doors with brass pulls following the wardrobe’s sloped outline.](docs/images/wardrobe-framed.png)](https://patrickgrothols.github.io/WardrobeAgentWizard/)
 
 ## From the whole cabinet to every part
 
@@ -47,12 +47,12 @@ design code.
 
 *The same wardrobe, expanded into its component parts.*
 
-[Open the interactive exploded model](https://patrickgrothols.github.io/AIkea-skill/?view=exploded).
+[Open the interactive exploded model](https://patrickgrothols.github.io/WardrobeAgentWizard/?view=exploded).
 Panels are separated for inspection; the view does not specify an assembly sequence.
 
 ## From measurements to cutting and assembly
 
-AIkea guides measured-space intake and material choices, generates cabinet and
+WardrobeAgentWizard guides measured-space intake and material choices, generates cabinet and
 base parts, adds supported doors, drawers, and recessed lighting, and shows the
 composed result in an interactive 3D viewer. Construction comes from reusable
 CadQuery builders and saved project specifications. Begin with one complete
@@ -72,7 +72,7 @@ deliverable is the checked cutting and assembly package.
 
 Supported hardware profiles require exact manufacturer CAD downloaded into the
 active project's local hardware library. Some suppliers require an account and
-a manual download. AIkea guides that step; vendor CAD is not bundled with the
+a manual download. WardrobeAgentWizard guides that step; vendor CAD is not bundled with the
 public skills. Current KA 4532 spacer support also leaves the longer fixing
 screws and cabinet pilot specification unresolved.
 
@@ -83,14 +83,14 @@ screws and cabinet pilot specification unresolved.
 Copy this prompt into a fresh chat:
 
 ```text
-Set up AIkea Skill and help me design my furniture. Go to https://github.com/PatrickGrothOls/AIkea-skill and follow the getting-started instructions. Handle the setup and ask me for any necessary approvals.
+Set up WardrobeAgentWizard Skill and help me design my furniture. Go to https://github.com/PatrickGrothOls/WardrobeAgentWizard and follow the getting-started instructions. Handle the setup and ask me for any necessary approvals.
 ```
 
 Your assistant follows [Getting started](START_HERE.md), downloads the skill,
 installs Python, CadQuery and headless Blender, verifies the setup, and starts
 your furniture project. Normal permission or sign-in prompts may need approval.
 
-[Download AIkea Skill](https://github.com/PatrickGrothOls/AIkea-skill/releases/download/v0.1.0/aikea-skill.zip)
+[Download WardrobeAgentWizard Skill](https://github.com/PatrickGrothOls/WardrobeAgentWizard/releases/download/v0.1.1/wardrobe-agent-wizard.zip)
 · [Installation details](docs/desktop-installation.md)
 
 The installer has passed isolated macOS runtime checks and run in Claude's hosted
@@ -104,7 +104,7 @@ Install the Python environment below, open this repository as your Codex or
 Claude Code working folder, and start a fresh conversation with:
 
 ```text
-$aikea
+$wardrobe-agent-wizard
 Help me design a fitted wardrobe. Use a new sibling project folder at
 ../my-first-wardrobe. Ask me for the measurements and choices you need,
 one topic at a time, and guide me to the first complete cabinet review.
@@ -116,8 +116,14 @@ not measurements for your project. Keep the generated project private; its
 dimensions, local hardware downloads, and approval records belong to you.
 
 The repository's `.agents/skills/` and `.claude/skills/` links expose the complete
-skill set, beginning with `$aikea`. Source includes the builders, tests and editable
+skill set, beginning with `$wardrobe-agent-wizard`. Source includes the builders, tests and editable
 viewer; generated client projects and licensed manufacturer CAD stay local.
+
+Existing `$aikea` commands, project filenames and `AIKEA_*` environment variables
+remain supported as implementation names. New users start with
+`$wardrobe-agent-wizard`; existing furniture projects do not need renaming.
+Installations made before the product rename should download the new bundle once
+to adopt the renamed update checker. Keep existing customer projects separate.
 
 The current release has been exercised on macOS with Apple Silicon. Native
 Windows is not supported by the viewer approval lock, which uses POSIX `fcntl`.
@@ -126,20 +132,20 @@ review on Linux has not received the same local verification as macOS.
 
 ## License and permitted use
 
-AIkea is licensed under the [PolyForm Noncommercial License 1.0.0](LICENSE.md).
+WardrobeAgentWizard is licensed under the [PolyForm Noncommercial License 1.0.0](LICENSE.md).
 Personal furniture, private experiments, study, and hobby projects are permitted.
 
-Commercial use is not granted. This includes using AIkea for paid furniture
+Commercial use is not granted. This includes using WardrobeAgentWizard for paid furniture
 design, manufacture, installation, or sale. Contact the repository owner for a
 separate commercial license. The license text controls if this summary differs
 from it.
 
-Because commercial use is restricted, AIkea is source-available rather than
+Because commercial use is restricted, WardrobeAgentWizard is source-available rather than
 Open Source Initiative open-source software.
 
-AIkea is an independent project. It is not affiliated with or endorsed by IKEA,
+WardrobeAgentWizard is an independent project. It is not affiliated with or endorsed by IKEA,
 Lamello, Hettich, or other referenced manufacturers. Product names and
-trademarks belong to their respective owners. AIkea's authored Cabineo machining
+trademarks belong to their respective owners. WardrobeAgentWizard's authored Cabineo machining
 volumes preserve its custom brass-insert receiver without importing STEP files.
 Their dimensions and regression proof are documented in
 [Cabineo machining](aikea-build-units/references/cabineo-machining.md).
@@ -212,7 +218,7 @@ Read [CNC quote availability and setup](aikea-review-unit/references/cnc-quotes.
 
 ## Report a problem
 
-Ask your AI agent to “report this AIkea problem.” It prepares a short report,
+Ask your AI agent to “report this WardrobeAgentWizard problem.” It prepares a short report,
 removes private details, and asks you to approve the exact text before sending it
 for public publication. You do not need a GitHub account. With an activated
 reporting service, the agent submits a browser form. If browser interaction is

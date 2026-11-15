@@ -49,6 +49,29 @@ class TestSkillReleaseCheck:
         release["assets"][0]["browser_download_url"] = "https://unrelated.example/skill.zip"
         assert SkillReleaseCheck().compare(self._installed(), [release])["status"] == "unavailable"
 
+    def test_renamed_bundle_is_preferred_over_legacy_asset(self):
+        release = self._release("v0.1.1")
+        url = f"https://github.com/{SkillReleaseCheck.REPOSITORY}/releases/download/v0.1.1/wardrobe-agent-wizard.zip"
+        release["assets"].append({"name": "wardrobe-agent-wizard.zip", "browser_download_url": url})
+        result = SkillReleaseCheck().compare(self._installed(), [release])
+        assert result["status"] == "update_available"
+        assert result["download_url"] == url
+
+    def test_legacy_repository_identity_and_assets_remain_recognized(self):
+        release = self._release("v0.1.1")
+        for asset in release["assets"]:
+            asset["browser_download_url"] = asset["browser_download_url"].replace(
+                SkillReleaseCheck.REPOSITORY, SkillReleaseCheck.LEGACY_REPOSITORY)
+        installed = dict(self._installed("v0.1.0"), repository=SkillReleaseCheck.LEGACY_REPOSITORY)
+        result = SkillReleaseCheck().compare(installed, [release])
+        assert result["status"] == "update_available"
+        assert result["download_url"].endswith("/aikea-skill.zip")
+
+    def test_external_checksum_is_not_accepted_with_an_official_bundle(self):
+        release = self._release()
+        release["assets"][1]["browser_download_url"] = "https://unrelated.example/SHA256SUMS"
+        assert SkillReleaseCheck().compare(self._installed(), [release])["status"] == "unavailable"
+
     def test_offline_continues_without_current_claim(self, tmp_path, monkeypatch):
         path = tmp_path/"release.json"
         path.write_text(json.dumps(self._installed()))

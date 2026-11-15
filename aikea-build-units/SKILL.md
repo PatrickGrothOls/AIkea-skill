@@ -1,9 +1,9 @@
 ---
 name: aikea-build-units
-description: Generate populated local assembly, part, builder, and joint folders from a completed AIkea assembly run. Use immediately after unit arrangement or when rebuilding or checking a project's local unit taxonomy.
+description: Generate populated local assembly, part, builder, and joint folders from a completed WardrobeAgentWizard assembly run. Use immediately after unit arrangement or when rebuilding or checking a project's local unit taxonomy.
 ---
 
-# AIkea build units
+# WardrobeAgentWizard build units
 
 Before any client-facing message, including progress commentary, read
 [../aikea/references/client-conversation.md](../aikea/references/client-conversation.md)
