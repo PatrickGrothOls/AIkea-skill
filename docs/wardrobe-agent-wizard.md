@@ -17,7 +17,7 @@ the independently committed installer-checksum fix. No client projects change.
 - [x] Update packaging and version checks, retaining legacy release recognition.
 - [x] Rebuild the viewer and inspect phone, tablet and desktop captures.
 - [x] Verify reporting, download counts and update behavior.
-- [ ] Verify the complete renamed release archive and its checksum.
+- [x] Verify the complete renamed release archive and its checksum.
 - [ ] Prepare the release artifact, official links and publication checkpoint.
 
 ## Current state
@@ -26,6 +26,10 @@ The reporting implementation is locally verified but hosted reporting remains
 inactive. The Google configuration check was rejected by automatic approval
 review; this rename does not authorize a credential change or bypass that block.
 Download visibility uses GitHub's release counts without client telemetry.
+The renamed `v0.1.1` archive is built from `e748e4c`. Full archive integrity,
+all 13 skill entrypoints, the exact stamped release identity and exclusion of
+operator infrastructure/private runtime files are verified. Its checksum is
+pinned in `START_HERE.md`. Hosted reporting remains inactive in this archive.
 Focused Python verification passes: 50 tests and four packaging subtests. The
 receiver's six tests and all 13 discoverable skill links pass. Package generation
 now stamps the exact release version automatically and keeps the public alias.
