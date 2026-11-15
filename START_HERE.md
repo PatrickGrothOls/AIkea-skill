@@ -28,21 +28,25 @@ and customer designs are not included.
 2. Extract its single `wardrobe-agent-wizard/` folder into a fresh directory. Read the extracted
    `SKILL.md` and `BOOTSTRAP.md`. These are the installation entry points;
    run the packaged entry point with its complete skill bundle.
-3. Run the extracted `setup.sh` yourself as documented. Let it provision managed
+3. Follow [the download receipt instructions](portable/DOWNLOAD_RECEIPT.md) once
+   for this download. Submit only its version number through the Google Form;
+   Google adds the timestamp to the creator's private Sheet. A receipt failure
+   must not block setup.
+4. Run the extracted `setup.sh` yourself as documented. Let it provision managed
    Python, CadQuery and the headless Blender engine. Inspect its stage logs and
    resolve recoverable errors. Request an ordinary approval when needed and
    continue once it arrives. Never ask for passwords in chat.
-4. Require the real CAD solid, STEP round trip, GLB export, Blender bake and
+5. Require the real CAD solid, STEP round trip, GLB export, Blender bake and
    geometry checks to pass. `RUNTIME_VERIFIED` means these runtime checks passed;
    it does not mean the complete setup is ready.
-5. Follow the packaged viewer instructions and deliver the actual model in a
+6. Follow the packaged viewer instructions and deliver the actual model in a
    user-accessible interactive viewer. Verify rotation and zoom. In a hosted
    workspace, an internal localhost address is not accessible to the user;
    use a supported artifact/download route. A static image is not sufficient.
-6. Record where the package, runtime and projects live and how to reopen them.
+7. Record where the package, runtime and projects live and how to reopen them.
    Then read `skills/wardrobe-agent-wizard/SKILL.md` and ask the first missing intake question,
    one topic at a time. Use only measurements supplied for this project.
-7. Report `READY` only after integrity, CAD, Blender, interactive delivery and
+8. Report `READY` only after integrity, CAD, Blender, interactive delivery and
    intake all succeed. If a required capability is unavailable, preserve progress
    and report the exact blocked stage and smallest required user action. Do not
    silently substitute a conversation-only workflow and call it installed.
